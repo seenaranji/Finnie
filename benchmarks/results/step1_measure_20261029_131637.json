@@ -1,0 +1,218 @@
+{
+  "summary": {
+    "latency_s": {
+      "count": 20,
+      "mean": 1.739851393799927,
+      "p50": 1.6004452705010408,
+      "p95": 2.7809835502997884,
+      "min": 1.372342041999218,
+      "max": 2.825522082999669
+    },
+    "input_tokens": {
+      "count": 20,
+      "mean": 35.0,
+      "p50": 35.0,
+      "p95": 35.0,
+      "min": 35.0,
+      "max": 35.0
+    },
+    "output_tokens": {
+      "count": 20,
+      "mean": 133.55,
+      "p50": 131.0,
+      "p95": 142.35000000000002,
+      "min": 124.0,
+      "max": 168.0
+    },
+    "cost_usd": {
+      "count": 20,
+      "mean": 0.001423,
+      "p50": 0.0013975,
+      "p95": 0.0015110000000000002,
+      "min": 0.0013275,
+      "max": 0.0017675
+    }
+  },
+  "calls": [
+    {
+      "n": 1,
+      "text": "Compound interest is the interest on a loan or deposit calculated based on both the initial principal and the accumulated interest from previous periods. Unlike simple interest, which is calculated only on the principal amount, compound interest grows faster because it includes interest on interest. \n\nHere's a simple formula to understand it: \n\nA = P(1 + r/n)^(nt)\n\n- A is the amount of money accumulated after n years, including interest.\n- P is the principal amount (initial money).\n- r is the annual interest rate (decimal).\n- n is the number of times interest is compounded per year.\n- t is the time in years.\n\nCompound interest is commonly used in savings accounts, loans, and investments.",
+      "in": 35,
+      "out": 141,
+      "latency_s": 2.825522082999669,
+      "cost_usd": 0.0014975,
+      "attempts": 1
+    },
+    {
+      "n": 2,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. \n\nFor example, if you have $100 with an annual compound interest rate of 5%, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, which only calculates interest on the original amount.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 2.161685999999463,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 3,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. \n\nFor example, if you have $100 with an annual compound interest rate of 5%, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, where interest is only calculated on the principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 2.0879567920001136,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 4,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (called the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has been added. It can make your savings grow faster compared to simple interest, which only earns interest on the principal. The formula for compound interest is:\n\n\\[ A = P \\times (1 + r/n)^{nt} \\]\n\nWhere:\n- \\( A \\) is the amount of money accumulated after n years, including interest.\n- \\( P \\) is the principal amount.\n- \\( r \\) is the annual interest rate (decimal).\n- \\( n \\) is the number of times interest is compounded per year.\n- \\( t \\) is the time in years.",
+      "in": 35,
+      "out": 168,
+      "latency_s": 1.8666946659996029,
+      "cost_usd": 0.0017675,
+      "attempts": 1
+    },
+    {
+      "n": 5,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. It can make your savings grow faster compared to simple interest, which only calculates interest on the original principal. For example, if you have $100 with a 5% annual compound interest rate, after the first year, you earn $5. In the second year, you earn interest on $105, not just the original $100, so you get $5.25, and so on.",
+      "in": 35,
+      "out": 134,
+      "latency_s": 1.6166905830014002,
+      "cost_usd": 0.0014275,
+      "attempts": 1
+    },
+    {
+      "n": 6,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. It can make your savings grow faster compared to simple interest, which only earns interest on the original amount. For example, if you have $100 with a 5% annual compound interest rate, after the first year, you earn $5. In the second year, you earn interest on $105, not just the original $100, so you earn $5.25, and so on.",
+      "in": 35,
+      "out": 134,
+      "latency_s": 1.526087833000929,
+      "cost_usd": 0.0014275,
+      "attempts": 1
+    },
+    {
+      "n": 7,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. \n\nFor example, if you have $100 with an annual compound interest rate of 5%, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, where interest is only calculated on the principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 1.4274052919990936,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 8,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. It can make your savings grow faster compared to simple interest, which only calculates interest on the original principal. For example, if you invest $100 at a 5% annual compound interest rate, after the first year, you earn $5. In the second year, you earn interest on $105, not just the original $100, leading to more growth over time.",
+      "in": 35,
+      "out": 129,
+      "latency_s": 1.372342041999218,
+      "cost_usd": 0.0013775,
+      "attempts": 1
+    },
+    {
+      "n": 9,
+      "text": "Compound interest is the interest on a loan or deposit calculated based on both the initial principal and the accumulated interest from previous periods. Unlike simple interest, which is calculated only on the principal amount, compound interest grows faster because it includes interest on interest. \n\nHere's a simple formula to understand it: \n\nA = P(1 + r/n)^(nt)\n\n- A is the amount of money accumulated after n years, including interest.\n- P is the principal amount (initial money).\n- r is the annual interest rate (decimal).\n- n is the number of times interest is compounded per year.\n- t is the time in years.\n\nCompound interest is commonly used in savings accounts, loans, and investments.",
+      "in": 35,
+      "out": 141,
+      "latency_s": 1.5841999580006814,
+      "cost_usd": 0.0014975,
+      "attempts": 1
+    },
+    {
+      "n": 10,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. \n\nFor example, if you have $100 with an annual compound interest rate of 5%, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, where interest is only calculated on the principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 1.4588994999994611,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 11,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (called the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has been added. \n\nFor example, if you have $100 with a 5% annual compound interest rate, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, where interest is only calculated on the principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 1.5708490409997466,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 12,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (called the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. \n\nFor example, if you have $100 with an annual interest rate of 5%, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, where interest is only calculated on the principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 1.6244186669991905,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 13,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (called the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has been added. \n\nFor example, if you have $100 with a 5% annual compound interest rate, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, which only calculates interest on the original amount.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 1.506950708999284,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 14,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (called the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has been added. \n\nFor example, if you have $100 with a 5% annual compound interest rate, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, where interest is only calculated on the principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 1.4644792090002738,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 15,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. \n\nFor example, if you have $100 with an annual compound interest rate of 5%, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, which only calculates interest on the original principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 1.7100234999998065,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 16,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. It can make your savings grow faster compared to simple interest, which only calculates interest on the original principal. For example, if you invest $100 at a 5% annual compound interest rate, after the first year, you earn $5. In the second year, you earn interest on $105, not just the original $100, leading to more growth over time.",
+      "in": 35,
+      "out": 129,
+      "latency_s": 1.373677375000625,
+      "cost_usd": 0.0013775,
+      "attempts": 1
+    },
+    {
+      "n": 17,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (called the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has been added. \n\nFor example, if you have $100 with a 5% annual compound interest rate, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, where interest is only calculated on the principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 1.4007199170009699,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 18,
+      "text": "Compound interest is a way of calculating interest where the interest earned over time is added to the original amount (the principal), and then future interest is calculated on this new total. This means you earn interest on both the initial amount and the interest that has already been added. \n\nFor example, if you have $100 with an annual compound interest rate of 5%, after the first year, you earn $5, making it $105. In the second year, you earn interest on $105, not just the original $100. This process continues, allowing your money to grow faster compared to simple interest, where interest is only calculated on the principal.",
+      "in": 35,
+      "out": 131,
+      "latency_s": 2.7786394169997948,
+      "cost_usd": 0.0013975,
+      "attempts": 1
+    },
+    {
+      "n": 19,
+      "text": "Compound interest is the interest on a loan or deposit calculated based on both the initial principal and the accumulated interest from previous periods. Unlike simple interest, which is calculated only on the principal amount, compound interest grows faster because it adds the interest earned back to the principal, allowing you to earn interest on interest. \n\nFor example, if you invest $100 at an annual interest rate of 5%, compounded annually, after the first year, you'll have $105. In the second year, you'll earn interest on $105, not just the original $100. This process continues, helping your money grow more quickly over time.",
+      "in": 35,
+      "out": 124,
+      "latency_s": 1.714743250000538,
+      "cost_usd": 0.0013275,
+      "attempts": 1
+    },
+    {
+      "n": 20,
+      "text": "Compound interest is the interest on a loan or deposit calculated based on both the initial principal and the accumulated interest from previous periods. Unlike simple interest, which is calculated only on the principal amount, compound interest grows faster because it includes interest on interest. \n\nHere's a simple example: If you invest $100 at an annual interest rate of 5%, compounded yearly, after the first year, you'll earn $5 in interest. In the second year, you'll earn interest on $105 (the original $100 plus the $5 interest), which is $5.25. Over time, this effect can significantly increase the amount of money you earn or owe.",
+      "in": 35,
+      "out": 130,
+      "latency_s": 1.7250420419986767,
+      "cost_usd": 0.0013875,
+      "attempts": 1
+    }
+  ]
+}

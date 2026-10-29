@@ -5,16 +5,18 @@ app:
   log_level: INFO            # DEBUG | INFO | WARNING | ERROR
 
 llm:
-  # UNVERIFIED placeholders: Step 1 checks the current OpenAI model list and prices.
-  answer_model: gpt-4o       # larger model for answers
-  router_model: gpt-4o-mini  # cheaper model: the router only classifies
+  # Verified 2026-10-29: prices from OpenAI's pricing page; models checked against what
+  # THIS API key can actually use (client.models.list()). gpt-6* exist but are not enabled
+  # for this project (403).
+  answer_model: gpt-4o       # non-reasoning, so it accepts temperature
+  router_model: gpt-4o-mini  # cheapest accessible: the router only classifies
   timeout_seconds: 30
   max_retries: 3
-  # Dollars per 1 million tokens. 0.0 = not set yet (cost will show as $0 until Step 1).
+  # Dollars per 1 million tokens (standard). Re-check before trusting cost numbers.
   prices_per_million_tokens:
-    answer_model:   {input: 0.0, output: 0.0}
-    router_model:   {input: 0.0, output: 0.0}
-    embedding_model: {input: 0.0, output: 0.0}
+    answer_model:    {input: 2.50, output: 10.00}
+    router_model:    {input: 0.15, output: 0.60}
+    embedding_model: {input: 0.02, output: 0.0}
 
 rag:
   embedding_model: text-embedding-3-small
