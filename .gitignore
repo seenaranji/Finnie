@@ -1,0 +1,22 @@
+# Secrets: never commit
+.env
+
+# Local project spec and learning notebooks (kept out of git)
+PROJECT_SPEC.md
+PROGRESS.md
+LEARNING_LOG.md
+
+# Virtual environment (rebuilt from requirements.txt)
+.venv/
+
+# Python junk
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Generated data (rebuilt by scripts)
+chroma_db/
+*.log
+.DS_Store

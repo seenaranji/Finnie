@@ -1,0 +1,28 @@
+# Finnie settings. Safe to commit: NO secrets here (those live in .env).
+# Every value below is a starting default; later steps tune them with data.
+
+app:
+  log_level: INFO            # DEBUG | INFO | WARNING | ERROR
+
+llm:
+  # UNVERIFIED placeholders: Step 1 checks the current OpenAI model list and prices.
+  answer_model: gpt-4o       # larger model for answers
+  router_model: gpt-4o-mini  # cheaper model: the router only classifies
+  timeout_seconds: 30
+  max_retries: 3
+  # Dollars per 1 million tokens. 0.0 = not set yet (cost will show as $0 until Step 1).
+  prices_per_million_tokens:
+    answer_model:   {input: 0.0, output: 0.0}
+    router_model:   {input: 0.0, output: 0.0}
+    embedding_model: {input: 0.0, output: 0.0}
+
+rag:
+  embedding_model: text-embedding-3-small
+  chunk_size: 500            # characters; a guess, compared with 200/1000 in Step 8
+  chunk_overlap: 50
+  top_k: 5
+  similarity_threshold: 0.0  # 0.0 = off; chosen from data in Step 7
+
+cache:
+  quote_ttl_seconds: 60
+  history_ttl_seconds: 900   # 15 minutes

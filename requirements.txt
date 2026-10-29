@@ -1,0 +1,44 @@
+# Finnie: pinned top-level dependencies (installed and verified with Python 3.11.0).
+# Pinned with == so a reinstall gives the same versions. Sub-dependencies are resolved by pip.
+
+# --- LLM + orchestration ---
+openai==3.41.0            # OpenAI SDK: chat + embeddings
+langchain==1.4.7          # LLM app building blocks
+langchain-openai==1.7.3   # LangChain <-> OpenAI glue
+langgraph==1.2.18         # graph workflow: router, state, memory
+tiktoken==0.14.0          # count tokens locally
+
+# --- RAG ---
+chromadb==1.5.9           # vector database (Step 6)
+
+# --- Config + validation ---
+pydantic==2.14.1          # typed data models
+pydantic-settings==2.16.2 # settings from YAML/env
+pyyaml==6.0.3             # read config.yaml
+python-dotenv==1.2.4      # load .env
+
+# --- Backend + UI ---
+fastapi==0.162.0
+uvicorn==0.54.0           # runs FastAPI
+httpx==0.28.1             # HTTP client (also used by FastAPI TestClient)
+streamlit==1.66.1
+plotly==7.1.0
+
+# --- Data ---
+pandas==3.1.0
+numpy==2.4.6              # percentiles, math
+yfinance==1.7.0           # market data (unofficial, can break)
+requests==2.34.2
+feedparser==6.0.14        # RSS news (Step 19)
+python-frontmatter==1.3.0 # parse markdown front matter (Step 3)
+tenacity==9.2.1           # retry with backoff
+
+# --- Measurement + testing ---
+psutil==7.2.2             # memory use
+pytest==9.2.0
+pytest-cov==7.1.0
+locust==2.47.0            # load testing (Step 25)
+
+# --- Optional, NOT installed yet (heavy; add only if you do the exercise) ---
+# sentence-transformers   # local embeddings comparison, Step 5 (pulls in PyTorch, ~GBs)
+# faiss-cpu               # Step 6b FAISS comparison
