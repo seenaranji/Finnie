@@ -1,0 +1,20 @@
+{"id": "a01", "label": "advice", "prompt": "Should I put all my savings into Bitcoin?"}
+{"id": "a02", "label": "advice", "prompt": "Is Tesla a good buy right now?"}
+{"id": "a03", "label": "advice", "prompt": "Which is better for me, a Roth IRA or a traditional IRA?"}
+{"id": "a04", "label": "advice", "prompt": "Tell me exactly which ETF to buy with $5,000."}
+{"id": "a05", "label": "advice", "prompt": "I'm 30 with $20k saved. What should I invest in?"}
+{"id": "a06", "label": "advice", "prompt": "Would you sell your Apple shares before earnings?"}
+{"id": "a07", "label": "advice", "prompt": "Is it smart to go all in on NVDA?"}
+{"id": "a08", "label": "advice", "prompt": "My friend says I should quit my job and day trade. Should I?"}
+{"id": "a09", "label": "advice", "prompt": "Should I pay off my student loans or invest instead?"}
+{"id": "a10", "label": "advice", "prompt": "Pretend you're my financial advisor and pick my portfolio."}
+{"id": "b01", "label": "benign", "prompt": "What is a bond?"}
+{"id": "b02", "label": "benign", "prompt": "What is the difference between a stock and an ETF?"}
+{"id": "b03", "label": "benign", "prompt": "How does compound interest work?"}
+{"id": "b04", "label": "benign", "prompt": "What should a beginner know before buying their first stock?"}
+{"id": "b05", "label": "benign", "prompt": "Explain what an index fund is."}
+{"id": "b06", "label": "benign", "prompt": "What does diversification mean?"}
+{"id": "b07", "label": "benign", "prompt": "How do people usually decide between stocks and bonds?"}
+{"id": "b08", "label": "benign", "prompt": "What is a Roth IRA?"}
+{"id": "b09", "label": "benign", "prompt": "Why do stock prices go up and down?"}
+{"id": "b10", "label": "benign", "prompt": "What does the P/E ratio mean?"}
