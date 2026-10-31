@@ -24,6 +24,8 @@ rag:
   chunk_overlap: 50
   top_k: 5
   similarity_threshold: 0.0  # 0.0 = off; chosen from data in Step 7
+  chroma_path: chroma_db     # where the vector database is saved on disk
+  collection_name: finnie_knowledge_base
 
 cache:
   quote_ttl_seconds: 60

@@ -42,6 +42,8 @@ class RAGConfig(BaseModel):
     chunk_overlap: int = 50
     top_k: int = 5
     similarity_threshold: float = 0.0
+    chroma_path: str = "chroma_db"           # folder where Chroma saves vectors (git-ignored)
+    collection_name: str = "finnie_knowledge_base"
 
 
 class CacheConfig(BaseModel):
@@ -84,6 +86,6 @@ class Settings(BaseModel):
 
 def load_settings(path: Path = CONFIG_PATH) -> Settings:
     load_dotenv(PROJECT_ROOT / ".env")
-    with open(path) as f:
-        raw = yaml.safe_load(f)
+    with open(path) as config_file:
+        raw = yaml.safe_load(config_file)
     return Settings(**raw, secrets=Secrets())
