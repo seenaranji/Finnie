@@ -1,0 +1,48 @@
+[
+  {
+    "question": "How is Apple doing today and what does that mean?",
+    "plain": "I can't provide real-time data, but I can explain how to understand Apple's performance. To see how Apple is doing today, you can check its stock price on financial news websites or apps. Look for changes in the stock price compared to previous days. If the price is up, it might mean investors are optimistic about Apple's future. If it's down, there might be concerns or negative news. Also, consider other factors like market trends, economic news, or Apple's recent product launches and earnings reports. Remember, stock prices fluctuate due to many factors, and short-term changes don't always reflect a company's long-term health.",
+    "with_tools": "As of 2026-10-30 (source: yfinance), Apple's last closing price was $344.63, which is a decrease of 1.23% from the previous close of $348.91. This is the last closing price, not live data.\n\nFor a beginner, this means that Apple's stock price went down slightly compared to the previous day. A percentage change like this is common and can happen due to various factors like market trends, news, or investor sentiment. It's important to look at longer-term trends and other factors to understand the bigger picture.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 2.755860333001043,
+      "input_tokens": 1100,
+      "output_tokens": 132,
+      "cost_usd": 0.00407,
+      "tool_trace": [
+        {
+          "tool": "get_quote",
+          "arguments": {
+            "symbol": "AAPL"
+          },
+          "result": {
+            "symbol": "AAPL",
+            "price": 344.63,
+            "previous_close": 348.91,
+            "change_pct": -1.23,
+            "currency": "USD",
+            "as_of": "2026-10-30",
+            "source": "yfinance",
+            "is_stale": false,
+            "fetched_at": "2026-10-31T21:08:11+00:00",
+            "age_seconds": 0.0
+          },
+          "seconds": 0.4639,
+          "cache_hits": 0,
+          "cache_misses": 1,
+          "step": 1
+        }
+      ],
+      "tool_names": [
+        "get_quote"
+      ],
+      "llm_calls": 2,
+      "llm_seconds": 2.292,
+      "tool_seconds": 0.4639
+    }
+  }
+]

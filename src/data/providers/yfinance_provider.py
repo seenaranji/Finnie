@@ -43,7 +43,7 @@ class YFinanceProvider(MarketDataProvider):
         previous = float(closes.iloc[-2]) if len(closes) > 1 else None
         change = round((price - previous) / previous * 100, 2) if previous else None
         return Quote(symbol=symbol, price=round(price, 4), previous_close=None if previous is None else round(previous, 4),
-                     change_pct=change, source=self.name)
+                     change_pct=change, source=self.name, as_of=str(closes.index[-1].date()))   # date of the last bar
 
     def get_history(self, symbol: str, period: str) -> PriceHistory:
         closes = self._bars(symbol, period)
