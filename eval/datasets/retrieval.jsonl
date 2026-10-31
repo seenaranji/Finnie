@@ -13,7 +13,7 @@
 {"id": "q13", "split": "dev", "qtype": "paraphrase", "query": "how long until my money doubles", "expected_ids": ["compound-interest"], "answerable": true}
 {"id": "q14", "split": "dev", "qtype": "paraphrase", "query": "what is an index fund", "expected_ids": ["glossary", "mutual-funds-basics", "etf-basics"], "answerable": true}
 {"id": "q15", "split": "dev", "qtype": "paraphrase", "query": "what happens to my shares if the company goes bankrupt", "expected_ids": ["stocks-basics"], "answerable": true}
-{"id": "q16", "split": "dev", "qtype": "partial", "query": "what is the 401(k) contribution limit this year", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
+{"id": "q16", "split": "dev", "qtype": "partial", "query": "what is the 401(k) contribution limit this year", "expected_ids": ["retirement-contribution-limits", "retirement-accounts-overview"], "answerable": true}
 {"id": "q17", "split": "dev", "qtype": "unanswerable", "query": "best pizza in Rome", "expected_ids": [], "answerable": false}
 {"id": "q18", "split": "dev", "qtype": "unanswerable", "query": "how do I fix a flat bike tire", "expected_ids": [], "answerable": false}
 {"id": "q19", "split": "dev", "qtype": "unanswerable", "query": "what is the P/E ratio", "expected_ids": [], "answerable": false}

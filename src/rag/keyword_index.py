@@ -62,6 +62,11 @@ class KeywordHit:
     score: float   # BM25 score: unbounded, depends on this corpus. NOT comparable to cosine similarity.
 
 
+def _matches(actual, wanted) -> bool:
+    """Exact match, or membership when `wanted` is {"$in": [...]} (the same operator Chroma uses)."""
+    return actual in wanted["$in"] if isinstance(wanted, dict) and "$in" in wanted else actual == wanted
+
+
 class KeywordIndex:
     def __init__(self, chunk_ids: list[str], texts: list[str], metadatas: list[dict],
                  bm25: bm25s.BM25, fingerprint: str) -> None:
@@ -92,7 +97,7 @@ class KeywordIndex:
             return []
         scores = self._bm25.get_scores(tokens)
         if where:
-            allowed = np.array([all(meta.get(key) == value for key, value in where.items())
+            allowed = np.array([all(_matches(meta.get(key), value) for key, value in where.items())
                                 for meta in self.metadatas])
             scores = np.where(allowed, scores, 0.0)
         order = np.argsort(-scores, kind="stable")[:top_k]

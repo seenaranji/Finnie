@@ -1,0 +1,146 @@
+[
+  {
+    "question": "What is the difference between a Roth IRA and a traditional IRA?",
+    "text": "The main difference between a Roth IRA and a traditional IRA is when you pay taxes. For a traditional IRA, contributions are often made with pre-tax money, which may lower your taxable income now, but withdrawals in retirement are generally taxed as income [retirement-accounts-overview#3]. In contrast, Roth IRA contributions are made with after-tax money, meaning you don't get a tax deduction now, but qualified withdrawals in retirement are generally tax-free [retirement-accounts-overview#3].\n\nAdditionally, Roth IRAs have income-based eligibility rules that determine whether you can contribute directly, depending on your income level [retirement-accounts-overview#5]. For tax year 2026, for example, single filers can contribute directly if their income is between $153,000 and $168,000 (IRS, updated 2026-10-31). Above this range, direct contributions are generally not allowed [retirement-contribution-limits#3]. Always confirm current numbers on irs.gov.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 2.066059041000699,
+      "input_tokens": 927,
+      "output_tokens": 203,
+      "cost_usd": 0.0043475,
+      "retrieval_latency_s": 0.6965469159986242,
+      "retrieved_ids": [
+        "retirement-accounts-overview#3",
+        "retirement-accounts-overview#4",
+        "retirement-accounts-overview#5",
+        "retirement-accounts-overview#2",
+        "retirement-contribution-limits#3"
+      ],
+      "best_similarity": 0.7018948793411255,
+      "answerable": true,
+      "context": "[retirement-accounts-overview#3] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply\nSource: IRS, updated 2026-10-30\n## Traditional vs. Roth: the core difference is when taxes apply\n| | Traditional | Roth |\n|---|---|---|\n| Money going in | Often pre-tax (may lower taxable income now, subject to rules) | After-tax (no deduction now) |\n| Growth | Grows without yearly tax on gains inside the account | Same |\n| Money coming out in retirement | Generally taxed as income | Generally tax-free if the rules are met |\n\n[retirement-accounts-overview#4] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply\nSource: IRS, updated 2026-10-30\nThe idea: traditional means a possible tax benefit now and taxes later; Roth means taxes now and potentially tax-free withdrawals later.\n\n[retirement-accounts-overview#5] Retirement Accounts Overview (401(k), IRA, Roth) > Other points to know\nSource: IRS, updated 2026-10-30\n## Other points to know\n- **Rules and limits:** accounts have yearly contribution limits, and Roth IRAs have income-based eligibility rules.\n- **Early withdrawals:** taking money out before retirement age (generally 59 and a half) can bring taxes and penalties, with some exceptions.\n- **Required withdrawals:** traditional accounts generally require withdrawals starting at a certain age.\n\n[retirement-accounts-overview#2] Retirement Accounts Overview (401(k), IRA, Roth) > IRA\nSource: IRS, updated 2026-10-30\n## IRA\nAn IRA (individual retirement account) is one you open yourself, not through an employer. It can hold investments such as stocks, bonds, and funds.\n\n[retirement-contribution-limits#3] Retirement Account Contribution Limits (Tax Year 2026) > Roth IRA: income ranges for 2026\nSource: IRS, updated 2026-10-31\n## Roth IRA: income ranges for 2026\nWhether you can contribute directly to a Roth IRA depends on your income. The IRS describes a range: inside the range the amount you may contribute is reduced, and above it you generally cannot contribute directly.\n- Single and head of household: between $153,000 and $168,000 (2025: $150,000 to $165,000)\n- Married filing jointly: between $242,000 and $252,000 (2025: $236,000 to $246,000)\n- Married filing separately: between $0 and $10,000 (unchanged)",
+      "cited_ids": [
+        "retirement-accounts-overview#3",
+        "retirement-accounts-overview#5",
+        "retirement-contribution-limits#3"
+      ],
+      "invalid_citations": []
+    }
+  },
+  {
+    "question": "How should I file my taxes this year?",
+    "text": "I can't tell you how to file your taxes. The choice depends on personal details like income, taxes, and goals, which are best discussed with a licensed tax professional. For your specific situation, consider consulting a CPA or Enrolled Agent, or visiting IRS.gov for guidance [retirement-accounts-overview#6].",
+    "metadata": {
+      "advice_requested": true,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.015758707999339,
+      "input_tokens": 513,
+      "output_tokens": 64,
+      "cost_usd": 0.0019225,
+      "retrieval_latency_s": 0.1959084999980405,
+      "retrieved_ids": [
+        "retirement-accounts-overview#6"
+      ],
+      "best_similarity": 0.46820068359375,
+      "answerable": true,
+      "context": "[retirement-accounts-overview#6] Retirement Accounts Overview (401(k), IRA, Roth) > Other points to know\nSource: IRS, updated 2026-10-30\nWhich type fits someone depends on personal details such as income, taxes, and goals. A licensed tax professional can advise on that.\n\nThis article is general education, not tax or investment advice.",
+      "cited_ids": [
+        "retirement-accounts-overview#6"
+      ],
+      "invalid_citations": []
+    }
+  },
+  {
+    "question": "What is the 401(k) contribution limit for 2026?",
+    "text": "The 401(k) employee contribution limit for tax year 2026 is $24,500 (IRS, updated 2026-10-31). Always confirm the current number on irs.gov [retirement-contribution-limits#1].",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 0.6688383329965291,
+      "input_tokens": 1046,
+      "output_tokens": 50,
+      "cost_usd": 0.003115,
+      "retrieval_latency_s": 0.20469012499961536,
+      "retrieved_ids": [
+        "retirement-contribution-limits#1",
+        "retirement-contribution-limits#0",
+        "retirement-accounts-overview#1",
+        "retirement-accounts-overview#0",
+        "retirement-contribution-limits#4"
+      ],
+      "best_similarity": 0.748426079750061,
+      "answerable": true,
+      "context": "[retirement-contribution-limits#1] Retirement Account Contribution Limits (Tax Year 2026) > Contribution limits for 2026\nSource: IRS, updated 2026-10-31\n## Contribution limits for 2026\n| Account | 2026 limit | 2025 limit |\n|---|---|---|\n| 401(k) employee contribution | $24,500 | $23,500 |\n| 401(k) catch-up (age 50 and over) | $8,000 | $7,500 |\n| 401(k) higher catch-up (ages 60 to 63) | $11,250 (instead of the $8,000) | not stated in the release |\n| IRA (traditional and Roth combined) | $7,500 | $7,000 |\n| IRA catch-up (age 50 and over) | $1,100 | $1,000 |\n\n[retirement-contribution-limits#0] Retirement Account Contribution Limits (Tax Year 2026) > Retirement Account Contribution Limits (Tax Year 2026)\nSource: IRS, updated 2026-10-31\n# Retirement Account Contribution Limits (Tax Year 2026)\n\nThese figures are for **tax year 2026**, as announced by the IRS in news release IR-2025-111 on 2025-11-13, and were checked against that release on 2026-10-31. The IRS updates these limits regularly, so always confirm the current numbers on irs.gov before acting. This article covers tax year 2026 only.\n\n[retirement-accounts-overview#1] Retirement Accounts Overview (401(k), IRA, Roth) > 401(k)\nSource: IRS, updated 2026-10-30\n## 401(k)\nA 401(k) is a retirement plan offered through an employer. You choose an amount to contribute from each paycheck. Some employers add matching contributions. Plans usually offer a menu of funds to pick from. Many plans offer a traditional option, a Roth option, or both.\n\n[retirement-accounts-overview#0] Retirement Accounts Overview (401(k), IRA, Roth) > Retirement Accounts Overview (401(k), IRA, Roth)\nSource: IRS, updated 2026-10-30\n# Retirement Accounts Overview (401(k), IRA, Roth)\n\nThis article describes general rules for common U.S. retirement accounts as of 2026-10-30. Tax rules change, and the details depend on your situation, so check the official source before acting. Yearly contribution limits are deliberately not listed here, because they change; the IRS website publishes the current numbers.\n\n[retirement-contribution-limits#4] Retirement Account Contribution Limits (Tax Year 2026) > Traditional IRA: deduction ranges for 2026\nSource: IRS, updated 2026-10-31\n## Traditional IRA: deduction ranges for 2026\nAnyone with earned income can generally contribute to a traditional IRA, but whether the contribution is **tax-deductible** can depend on income when you (or your spouse) are covered by a workplace retirement plan. The IRS ranges for 2026 are:\n- Single and covered by a workplace plan: between $81,000 and $91,000 (2025: $79,000 to $89,000)",
+      "cited_ids": [
+        "retirement-contribution-limits#1"
+      ],
+      "invalid_citations": []
+    }
+  },
+  {
+    "question": "Should I convert my traditional IRA to a Roth IRA?",
+    "text": "I can't tell you what to do about your own taxes or whether you qualify for something, because that depends on details of your situation. I can explain how these rules work in general. A licensed tax professional (a CPA or Enrolled Agent) or IRS.gov can look at your specifics.",
+    "metadata": {
+      "advice_requested": true,
+      "output_flagged": true,
+      "flagged_phrases": [
+        "you should convert"
+      ],
+      "original_text": "I can't tell you whether you should convert your traditional IRA to a Roth IRA. However, I can explain how these accounts generally work. With a traditional IRA, contributions are often pre-tax, which may lower your taxable income now, but withdrawals in retirement are generally taxed as income [retirement-accounts-overview#3]. In contrast, Roth IRA contributions are made with after-tax money, so you don't get a tax deduction now, but qualified withdrawals in retirement are generally tax-free [retirement-accounts-overview#3].\n\nConverting a traditional IRA to a Roth IRA means you would pay taxes on the converted amount now, but future qualified withdrawals could be tax-free. It's important to consider your current and future tax situations when making this decision.\n\nFor personalized advice, please consult a licensed tax professional or visit IRS.gov.",
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.871440041999449,
+      "input_tokens": 790,
+      "output_tokens": 165,
+      "cost_usd": 0.003625,
+      "retrieval_latency_s": 0.22346562500024447,
+      "retrieved_ids": [
+        "retirement-accounts-overview#4",
+        "retirement-accounts-overview#3",
+        "retirement-contribution-limits#4"
+      ],
+      "best_similarity": 0.5248960852622986,
+      "answerable": true,
+      "context": "[retirement-accounts-overview#4] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply\nSource: IRS, updated 2026-10-30\nThe idea: traditional means a possible tax benefit now and taxes later; Roth means taxes now and potentially tax-free withdrawals later.\n\n[retirement-accounts-overview#3] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply\nSource: IRS, updated 2026-10-30\n## Traditional vs. Roth: the core difference is when taxes apply\n| | Traditional | Roth |\n|---|---|---|\n| Money going in | Often pre-tax (may lower taxable income now, subject to rules) | After-tax (no deduction now) |\n| Growth | Grows without yearly tax on gains inside the account | Same |\n| Money coming out in retirement | Generally taxed as income | Generally tax-free if the rules are met |\n\n[retirement-contribution-limits#4] Retirement Account Contribution Limits (Tax Year 2026) > Traditional IRA: deduction ranges for 2026\nSource: IRS, updated 2026-10-31\n## Traditional IRA: deduction ranges for 2026\nAnyone with earned income can generally contribute to a traditional IRA, but whether the contribution is **tax-deductible** can depend on income when you (or your spouse) are covered by a workplace retirement plan. The IRS ranges for 2026 are:\n- Single and covered by a workplace plan: between $81,000 and $91,000 (2025: $79,000 to $89,000)",
+      "cited_ids": [
+        "retirement-accounts-overview#3"
+      ],
+      "invalid_citations": []
+    }
+  },
+  {
+    "question": "How are cryptocurrency gains taxed?",
+    "text": "I cannot answer how cryptocurrency gains are taxed from the knowledge base provided. The context does not include information about cryptocurrency taxation. For specific details, you should check IRS guidelines or consult a licensed tax professional.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 0.702523583000584,
+      "input_tokens": 793,
+      "output_tokens": 40,
+      "cost_usd": 0.0023825,
+      "retrieval_latency_s": 0.16025954200085835,
+      "retrieved_ids": [
+        "investment-taxes-basics#3",
+        "investment-taxes-basics#0",
+        "investment-taxes-basics#1"
+      ],
+      "best_similarity": 0.6246185302734375,
+      "answerable": true,
+      "context": "[investment-taxes-basics#3] Taxes on Investment Gains and Losses (Basics) > How each is taxed, in general terms\nSource: IRS, updated 2026-10-31\n## How each is taxed, in general terms\n- **Short-term gains** are taxed as ordinary income, at your regular tax rates.\n- **Long-term gains** may qualify for lower rates than ordinary income. The long-term rates are 0%, 15%, and 20%, and which one applies depends on your taxable income and filing status. The income thresholds are updated, so see IRS Topic No. 409 for the current figures.\n- Some gains, such as collectibles (coins or art), are taxed at higher maximum rates.\n\n[investment-taxes-basics#0] Taxes on Investment Gains and Losses (Basics) > Taxes on Investment Gains and Losses (Basics)\nSource: IRS, updated 2026-10-31\n# Taxes on Investment Gains and Losses (Basics)\n\nThis article explains the general U.S. federal rules for gains and losses when you sell an investment, based on IRS Topic No. 409 and checked on 2026-10-31. Tax rules change and depend on your situation, so check the official source or ask a licensed tax professional before acting. It does not cover state taxes, dividends, or interest.\n\n[investment-taxes-basics#1] Taxes on Investment Gains and Losses (Basics) > What is a capital gain or loss?\nSource: IRS, updated 2026-10-31\n## What is a capital gain or loss?\nAlmost everything you own and use for personal or investment purposes, such as stocks, funds, or a home, is a **capital asset**. When you sell one, the difference between your **basis** (generally what you paid for it) and the amount you sold it for is a gain or a loss.\n- Sell for more than your basis: a **capital gain**.\n- Sell for less than your basis: a **capital loss**.\n- Losses on personal-use property, such as your home or car, are not tax deductible.",
+      "cited_ids": [],
+      "invalid_citations": []
+    }
+  }
+]

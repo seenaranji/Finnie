@@ -54,6 +54,8 @@ class FinanceQAAgent(BaseAgent):
     system_prompt = SYSTEM_PROMPT
     default_disclaimer = DISCLAIMER_STANDARD
     temperature = 0.2   # evals set this to 0 for repeatability
+    no_info_text: str = NO_INFO_TEXT      # what the user sees when retrieval returns nothing (the LLM is never called)
+    categories: list[str] | None = None   # restrict retrieval to these knowledge-base categories (None = all)
 
     def __init__(self, llm: LLMClient, retriever, top_k: int | None = None, threshold: float | None = None) -> None:
         """`retriever` is anything with the Step 7 retrieve(question, top_k, threshold) interface:
@@ -63,9 +65,12 @@ class FinanceQAAgent(BaseAgent):
         self.top_k = top_k
         self.threshold = threshold   # None = use config.yaml; evals and demos override it
 
+    def format_passages(self, passages: list[Passage]) -> str:
+        return build_context(passages)
+
     def answer(self, request: AgentRequest, system: str) -> AgentAnswer:
         with timer() as retrieval_timing:
-            result = self.retriever.retrieve(request.message, top_k=self.top_k, threshold=self.threshold)
+            result = self.retriever.retrieve(request.message, top_k=self.top_k, threshold=self.threshold, category=self.categories)
         retrieval_info = {
             "retrieval_latency_s": retrieval_timing["seconds"],
             "retrieved_ids": [p.chunk_id for p in result.passages],
@@ -74,12 +79,13 @@ class FinanceQAAgent(BaseAgent):
         }
 
         if not result.passages:   # layer 1: nothing passed the gate -> do not even call the LLM
-            return AgentAnswer(NO_INFO_TEXT, model="none (no context)", input_tokens=0, output_tokens=0,
+            return AgentAnswer(self.no_info_text, model="none (no context)", input_tokens=0, output_tokens=0,
                                latency_s=0.0, cost_usd=0.0, attempts=0,
                                extra={**retrieval_info, "cited_ids": [], "invalid_citations": []})
 
-        retrieval_info["context"] = build_context(result.passages)   # kept so evals can show a judge exactly what the model saw
-        llm_result = self.llm.chat(build_prompt(request.message, result.passages), system=system,
+        context = self.format_passages(result.passages)
+        retrieval_info["context"] = context   # kept so evals can show a judge exactly what the model saw
+        llm_result = self.llm.chat(f"CONTEXT (reference text only):\n\n{context}\n\nQUESTION: {request.message}", system=system,
                                    temperature=self.temperature)
         by_id = {p.chunk_id: p for p in result.passages}
         cited = list(dict.fromkeys(_CITED_ID.findall(llm_result.text)))   # unique, in order of first mention

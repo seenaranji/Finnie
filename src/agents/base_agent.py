@@ -42,24 +42,33 @@ class BaseAgent(ABC):
     name: str = "base"
     system_prompt: str = ""
     default_disclaimer: str = DISCLAIMER_STANDARD
+    advice_instruction: str = ADVICE_INSTRUCTION   # added to the system prompt when the request asks for personal advice
+    advice_redirect: str = ADVICE_REDIRECT         # replaces an answer whose text slipped into directive advice
 
     def __init__(self, llm: LLMClient) -> None:
         self.llm = llm
+
+    # Hooks: an agent with its own domain (taxes) overrides these; the defaults are the Step 2 rules.
+    def detect_advice_request(self, message: str) -> bool:
+        return is_advice_request(message)
+
+    def find_advice_leaks(self, text: str) -> list[str]:
+        return find_advice_phrases(text)
 
     @abstractmethod
     def answer(self, request: AgentRequest, system: str) -> LLMResult:
         """Produce the raw model answer. Each agent decides how (plain LLM, RAG, tools...)."""
 
     def handle(self, request: AgentRequest) -> AgentResponse:
-        advice_requested = is_advice_request(request.message)         # 1. check request
+        advice_requested = self.detect_advice_request(request.message)  # 1. check request
         system = self.system_prompt                                    # 2. build prompt
         if advice_requested:
-            system = f"{system}\n\n{ADVICE_INSTRUCTION}".strip()
+            system = f"{system}\n\n{self.advice_instruction}".strip()
 
         result = self.answer(request, system)                          # 3. call model
 
-        leaks = find_advice_phrases(result.text)                       # 4. check output
-        text = ADVICE_REDIRECT if leaks else result.text
+        leaks = self.find_advice_leaks(result.text)                     # 4. check output
+        text = self.advice_redirect if leaks else result.text
 
         stronger = advice_requested or bool(leaks)                     # 5. disclaimer
         log.info("agent=%s advice_requested=%s output_flagged=%s",

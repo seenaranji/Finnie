@@ -40,3 +40,21 @@ def test_save_and_load_round_trip(tmp_path):
     loaded = KeywordIndex.load(tmp_path)
     assert loaded.fingerprint == index.fingerprint
     assert [h.chunk_id for h in loaded.search("expense ratio", 5)] == ["a#0"]
+
+
+def test_category_filter_shapes_for_one_many_and_no_category():
+    from src.rag.vector_store import category_filter
+    assert category_filter(None) is None and category_filter([]) is None
+    assert category_filter("taxes") == {"category": "taxes"}
+    assert category_filter(["taxes", "retirement_accounts"]) == {"category": {"$in": ["taxes", "retirement_accounts"]}}
+
+
+def test_keyword_search_filters_by_one_or_several_categories():
+    from src.rag.vector_store import category_filter
+    index = KeywordIndex.build([make_chunk("a#0", "Roth IRA tax rules apply.", "retirement_accounts"),
+                                make_chunk("b#0", "Capital gains tax rules apply.", "taxes"),
+                                make_chunk("c#0", "Stock tax rules differ from fund rules.", "stocks")])
+    found = lambda category: sorted(h.chunk_id for h in index.search("tax rules", 5, category_filter(category)))
+    assert found(None) == ["a#0", "b#0", "c#0"]
+    assert found("taxes") == ["b#0"]
+    assert found(["taxes", "retirement_accounts"]) == ["a#0", "b#0"]   # the new multi-category filter; "stocks" stays out

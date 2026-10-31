@@ -23,7 +23,7 @@ from src.rag.keyword_index import KeywordHit, KeywordIndex
 from src.rag.passages import Passage, dedupe_passages, passage_from_hit
 from src.rag.reranker import Reranker
 from src.rag.retriever import RetrievalResult, Retriever
-from src.rag.vector_store import SearchHit, VectorStore
+from src.rag.vector_store import SearchHit, VectorStore, category_filter
 
 MODES = ("dense", "bm25", "hybrid")
 _FROM_CONFIG = object()   # sentinel: "use rag.bm25_min_score" (None is a real value meaning "BM25 cannot open the gate")
@@ -61,16 +61,16 @@ class HybridRetriever:
         return self._keyword_index
 
     # ------------------------------------------------------------------ the two raw lists
-    def candidates(self, question: str, category: str | None = None, n: int | None = None) -> Candidates:
+    def candidates(self, question: str, category: str | list[str] | None = None, n: int | None = None) -> Candidates:
         """Top n from each retriever with the SAME category filter, no gate. n defaults to candidates_per_retriever."""
         n = n or self.settings.rag.candidates_per_retriever
-        where = {"category": category} if category else None
+        where = category_filter(category)
         query_vector = self.dense.embedder.embed([question]).vectors[0]
         dense = [passage_from_hit(hit) for hit in self.dense.store.search(query_vector, n, where)]
         return Candidates(dense, self.keyword_index.search(question, n, where))
 
     # ------------------------------------------------------------------ the Step 7 interface
-    def retrieve(self, question: str, top_k: int | None = None, category: str | None = None,
+    def retrieve(self, question: str, top_k: int | None = None, category: str | list[str] | None = None,
                  threshold: float | None = None, rerank: bool | None = None,
                  mode: str | None = None, bm25_min_score=_FROM_CONFIG) -> RetrievalResult:
         """Arguments override config.yaml for this one call. `mode` and `bm25_min_score` are the only new (optional)
@@ -87,7 +87,7 @@ class HybridRetriever:
         use_rerank = rag.rerank if rerank is None else rerank
 
         found = self.candidates(question, category) if mode == "hybrid" else Candidates([], self.keyword_index.search(
-            question, rag.candidates_per_retriever, {"category": category} if category else None))
+            question, rag.candidates_per_retriever, category_filter(category)))
         best_similarity = found.dense[0].similarity if found.dense else None
 
         # --- the gate, applied to each list on its own scale BEFORE fusing ---

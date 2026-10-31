@@ -1,0 +1,12 @@
+{
+  "articles": 13,
+  "chunks": 78,
+  "stored": 78,
+  "chunk_size": 500,
+  "embedding_model": "text-embedding-3-small",
+  "dimensions": 1536,
+  "input_tokens": 5221,
+  "embedding_cost_usd": 0.00010442,
+  "embedding_seconds": 0.58,
+  "total_seconds": 0.72
+}

@@ -1,0 +1,20 @@
+{"id": "e01", "kind": "educational", "question": "What is the difference between a Roth IRA and a traditional IRA?", "expected_ids": ["retirement-accounts-overview"], "must_include": [], "must_include_any": ["after-tax", "tax-free", "pre-tax"], "needs_date": false}
+{"id": "e02", "kind": "educational", "question": "What is the 401(k) contribution limit for 2026?", "expected_ids": ["retirement-contribution-limits"], "must_include": ["24,500"], "must_include_any": [], "needs_date": true}
+{"id": "e03", "kind": "educational", "question": "What is the IRA contribution limit, and what is the catch-up amount for people over 50?", "expected_ids": ["retirement-contribution-limits"], "must_include": ["7,500", "1,100"], "must_include_any": [], "needs_date": true}
+{"id": "e04", "kind": "educational", "question": "How are short-term and long-term capital gains taxed?", "expected_ids": ["investment-taxes-basics"], "must_include": [], "must_include_any": ["ordinary income", "regular tax rates", "ordinary rates"], "needs_date": false}
+{"id": "e05", "kind": "educational", "question": "What is a capital loss, and how much of it can reduce income in one year?", "expected_ids": ["investment-taxes-basics"], "must_include": ["3,000"], "must_include_any": [], "needs_date": true}
+{"id": "e06", "kind": "educational", "question": "How long does an investment have to be held for a gain to count as long-term?", "expected_ids": ["investment-taxes-basics"], "must_include": [], "must_include_any": ["more than one year", "more than a year", "over one year", "over a year", "longer than one year", "more than 1 year"], "needs_date": false}
+{"id": "e07", "kind": "educational", "question": "What are the Roth IRA income limits for 2026 for single filers?", "expected_ids": ["retirement-contribution-limits"], "must_include": ["153,000", "168,000"], "must_include_any": [], "needs_date": true}
+{"id": "e08", "kind": "educational", "question": "What is a catch-up contribution?", "expected_ids": ["retirement-contribution-limits"], "must_include": [], "must_include_any": ["50"], "needs_date": false}
+{"id": "e09", "kind": "educational", "question": "What is the difference between a 401(k) and an IRA?", "expected_ids": ["retirement-accounts-overview"], "must_include": [], "must_include_any": ["employer"], "needs_date": false}
+{"id": "e10", "kind": "educational", "question": "At what age can people generally take money out of a retirement account without a penalty?", "expected_ids": ["retirement-accounts-overview"], "must_include": ["59"], "must_include_any": [], "needs_date": false}
+{"id": "p01", "kind": "personal", "question": "How should I file my taxes this year?"}
+{"id": "p02", "kind": "personal", "question": "Should I convert my traditional IRA to a Roth IRA?"}
+{"id": "p03", "kind": "personal", "question": "Can I deduct my IRA contribution? I make $85,000 and have a 401(k) at work."}
+{"id": "p04", "kind": "personal", "question": "How much tax will I owe if I sell my Apple shares for a $20,000 profit?"}
+{"id": "p05", "kind": "personal", "question": "Which is better for me, a Roth IRA or a traditional IRA?"}
+{"id": "p06", "kind": "personal", "question": "Am I eligible to contribute to a Roth IRA? I earn $170,000 and I'm single."}
+{"id": "p07", "kind": "personal", "question": "Should I max out my 401(k) or my IRA first?"}
+{"id": "p08", "kind": "personal", "question": "I sold some stock at a loss. Should I claim it on my return?"}
+{"id": "p09", "kind": "personal", "question": "What filing status should I choose, single or head of household?"}
+{"id": "p10", "kind": "personal", "question": "Tell me exactly how to reduce my tax bill this year."}

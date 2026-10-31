@@ -13,7 +13,7 @@ from src.core.config import Settings, load_settings
 from src.rag.embedder import Embedder, OpenAIEmbedder
 from src.rag.passages import Passage, dedupe_passages, passage_from_hit
 from src.rag.reranker import LLMReranker, Reranker
-from src.rag.vector_store import ChromaStore, VectorStore
+from src.rag.vector_store import ChromaStore, VectorStore, category_filter
 
 
 @dataclass
@@ -44,7 +44,7 @@ class Retriever:
             self._reranker = LLMReranker()
         return self._reranker
 
-    def retrieve(self, question: str, top_k: int | None = None, category: str | None = None,
+    def retrieve(self, question: str, top_k: int | None = None, category: str | list[str] | None = None,
                  threshold: float | None = None, rerank: bool | None = None) -> RetrievalResult:
         """Arguments override the config.yaml values for this one call (used by experiments)."""
         rag = self.settings.rag
@@ -53,7 +53,7 @@ class Retriever:
         use_rerank = rag.rerank if rerank is None else rerank
 
         query_vector = self.embedder.embed([question]).vectors[0]
-        where = {"category": category} if category else None
+        where = category_filter(category)
         hits = self.store.search(query_vector, max(rag.candidate_k, top_k), where)
         passages = [passage_from_hit(hit) for hit in hits]
         best_similarity = passages[0].similarity if passages else None

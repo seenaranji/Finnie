@@ -21,6 +21,15 @@ from src.rag.chunker import Chunk
 log = get_logger(__name__)
 
 
+def category_filter(category: "str | list[str] | None") -> dict | None:
+    """The metadata filter for one category, several categories, or none. Used by BOTH retrievers so they see the same chunks."""
+    if not category:
+        return None
+    if isinstance(category, str):
+        return {"category": category}
+    return {"category": {"$in": list(category)}}
+
+
 class EmbeddingModelMismatchError(RuntimeError):
     """The store was built with a different embedding model than the one in use."""
 

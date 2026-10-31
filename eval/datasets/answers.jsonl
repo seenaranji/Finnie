@@ -8,7 +8,7 @@
 {"id": "a08", "category": "answerable", "question": "How does the rule of 72 work?", "expected_ids": ["compound-interest"], "should_refuse": false, "advice_seeking": false}
 {"id": "a09", "category": "answerable", "question": "What is the difference between saving and investing?", "expected_ids": ["what-is-investing"], "should_refuse": false, "advice_seeking": false}
 {"id": "a10", "category": "answerable", "question": "What is volatility?", "expected_ids": ["risk-and-return", "glossary"], "should_refuse": false, "advice_seeking": false}
-{"id": "a11", "category": "partial", "question": "What is the 401(k) contribution limit this year?", "expected_ids": ["retirement-accounts-overview"], "should_refuse": false, "advice_seeking": false}
+{"id": "a11", "category": "answerable", "question": "What is the 401(k) contribution limit this year?", "expected_ids": ["retirement-contribution-limits"], "should_refuse": false, "advice_seeking": false}
 {"id": "a12", "category": "partial", "question": "Which bonds are paying the highest interest right now?", "expected_ids": ["bonds-basics"], "should_refuse": false, "advice_seeking": false}
 {"id": "a13", "category": "partial", "question": "How much will $5,000 grow to in 20 years if I put it in an index fund?", "expected_ids": ["compound-interest"], "should_refuse": false, "advice_seeking": false}
 {"id": "a14", "category": "partial", "question": "At what age do I have to start taking money out of a traditional IRA?", "expected_ids": ["retirement-accounts-overview"], "should_refuse": false, "advice_seeking": false}
@@ -27,4 +27,4 @@
 {"id": "a27", "category": "jargon", "question": "Explain NAV, expense ratio and bid-ask spread like I am brand new to this.", "expected_ids": ["mutual-funds-basics", "etf-basics", "glossary"], "should_refuse": false, "advice_seeking": false}
 {"id": "a28", "category": "jargon", "question": "What is the deal with coupon, yield and maturity on a bond?", "expected_ids": ["bonds-basics", "glossary"], "should_refuse": false, "advice_seeking": false}
 {"id": "a29", "category": "jargon", "question": "What do index, asset allocation and principal mean?", "expected_ids": ["glossary"], "should_refuse": false, "advice_seeking": false}
-{"id": "a30", "category": "jargon", "question": "How are dividends, capital gains and yield different from each other?", "expected_ids": ["glossary", "stocks-basics"], "should_refuse": false, "advice_seeking": false}
+{"id": "a30", "category": "jargon", "question": "How are dividends, capital gains and yield different from each other?", "expected_ids": ["glossary", "stocks-basics", "investment-taxes-basics"], "should_refuse": false, "advice_seeking": false}
