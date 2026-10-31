@@ -6,6 +6,7 @@ handle() is the fixed pipeline all agents share (the "franchise rules"):
 Subclasses only fill in what is different (their prompt and how they get an answer).
 """
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
 
 from src.core.guardrails import (
     ADVICE_REDIRECT,
@@ -16,7 +17,7 @@ from src.core.guardrails import (
 )
 from src.core.llm import LLMClient, LLMResult
 from src.core.logging import get_logger
-from src.core.schemas import AgentRequest, AgentResponse
+from src.core.schemas import AgentRequest, AgentResponse, Source
 
 log = get_logger(__name__)
 
@@ -27,6 +28,14 @@ ADVICE_INSTRUCTION = (
     "think about this kind of decision, the main tradeoffs and risks, and what "
     "information would matter. Suggest talking to a licensed professional."
 )
+
+
+@dataclass
+class AgentAnswer(LLMResult):
+    """An LLMResult plus what a RAG or tool agent also knows: the sources it used and extra details.
+    answer() may return a plain LLMResult (as before) or this."""
+    sources: list[Source] = field(default_factory=list)
+    extra: dict = field(default_factory=dict)
 
 
 class BaseAgent(ABC):
@@ -58,6 +67,7 @@ class BaseAgent(ABC):
         return AgentResponse(
             text=text,
             agent_name=self.name,
+            sources=getattr(result, "sources", []),
             disclaimer=DISCLAIMER_STRONG if stronger else self.default_disclaimer,
             metadata={
                 "advice_requested": advice_requested,
@@ -69,5 +79,6 @@ class BaseAgent(ABC):
                 "input_tokens": result.input_tokens,
                 "output_tokens": result.output_tokens,
                 "cost_usd": result.cost_usd,
+                **getattr(result, "extra", {}),
             },
         )

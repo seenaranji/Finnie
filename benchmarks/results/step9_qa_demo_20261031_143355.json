@@ -1,0 +1,121 @@
+[
+  {
+    "case": "covered",
+    "question": "What is the difference between an ETF and a mutual fund?",
+    "rag": {
+      "text": "ETFs and mutual funds both pool money to hold many investments, providing diversification. However, they differ in how they are traded and priced. ETFs are traded on an exchange like a stock, and their prices update continuously during the trading day. In contrast, mutual funds are traded directly with the fund company, and their prices update once per day after markets close [etf-vs-mutual-fund#0].",
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.3667386659981275,
+      "retrieval_latency_s": 0.7149613340006908,
+      "input_tokens": 593,
+      "output_tokens": 83,
+      "cost_usd": 0.0023125,
+      "retrieved_ids": [
+        "etf-vs-mutual-fund#0",
+        "etf-vs-mutual-fund#2",
+        "etf-basics#0",
+        "mutual-funds-basics#4",
+        "diversification#4"
+      ],
+      "cited_ids": [
+        "etf-vs-mutual-fund#0"
+      ],
+      "invalid_citations": [],
+      "best_similarity": 0.8030635118484497
+    },
+    "plain": {
+      "text": "An ETF (Exchange-Traded Fund) and a mutual fund both pool money from many investors to buy a diversified portfolio of stocks, bonds, or other assets. The main differences are:\n\n1. **Trading**: ETFs trade on stock exchanges like individual stocks, so you can buy or sell them throughout the trading day. Mutual funds are bought or sold at the end of the trading day at the net asset value (NAV).\n\n2. **Fees**: ETFs often have lower expense ratios than mutual funds, but you may pay a brokerage fee when buying or selling.\n\n3. **Minimum Investment**: Mutual funds often require a minimum investment, while ETFs can be bought in single shares.\n\n4. **Tax Efficiency**: ETFs are generally more tax-efficient due to their structure.",
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.4533562920005352,
+      "input_tokens": 53,
+      "output_tokens": 155,
+      "cost_usd": 0.0016825
+    }
+  },
+  {
+    "case": "partly covered",
+    "question": "What is the 401(k) contribution limit this year?",
+    "rag": {
+      "text": "I cannot answer what the 401(k) contribution limit is this year because the context does not provide specific contribution limits. It advises checking the IRS website for the current numbers [retirement-accounts-overview#0].",
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 0.9794065829992178,
+      "retrieval_latency_s": 0.3086704999986978,
+      "input_tokens": 413,
+      "output_tokens": 44,
+      "cost_usd": 0.0014725,
+      "retrieved_ids": [
+        "retirement-accounts-overview#1",
+        "retirement-accounts-overview#0"
+      ],
+      "cited_ids": [
+        "retirement-accounts-overview#0"
+      ],
+      "invalid_citations": [],
+      "best_similarity": 0.5732186436653137
+    },
+    "plain": {
+      "text": "For 2023, the 401(k) contribution limit is $22,500 for individuals under age 50. If you're 50 or older, you can make an additional \"catch-up\" contribution of $7,500, bringing the total limit to $30,000. These limits apply to traditional and Roth 401(k) plans. Contributing to a 401(k) can help you save for retirement while potentially reducing your taxable income. Remember, these limits can change annually, so it's good to check for updates each year.",
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.0075725829992734,
+      "input_tokens": 53,
+      "output_tokens": 109,
+      "cost_usd": 0.0012225
+    }
+  },
+  {
+    "case": "outside (gate on)",
+    "question": "How does a 529 college savings plan work?",
+    "rag": {
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts.",
+      "model": "none (no context)",
+      "latency_s": 0.0,
+      "retrieval_latency_s": 0.2961933339975076,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "retrieved_ids": [],
+      "cited_ids": [],
+      "invalid_citations": [],
+      "best_similarity": 0.40556788444519043
+    },
+    "plain": {
+      "text": "A 529 college savings plan is a tax-advantaged account designed to help families save for education expenses. You contribute money to the plan, which can then be invested in various options like mutual funds. The earnings grow tax-free, and withdrawals are also tax-free if used for qualified education expenses, such as tuition, fees, and books at eligible institutions. Some plans also allow funds to be used for K-12 education and student loan repayments. Each state offers its own 529 plan, and you can choose any state's plan regardless of where you live. Contributions might also be eligible for state tax deductions, depending on the state.",
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.5672541670028295,
+      "input_tokens": 51,
+      "output_tokens": 127,
+      "cost_usd": 0.0013975
+    }
+  },
+  {
+    "case": "outside (gate OFF)",
+    "question": "How does a 529 college savings plan work?",
+    "rag": {
+      "text": "I can't answer how a 529 college savings plan works because the context provided does not include information about 529 plans.",
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 0.675700167001196,
+      "retrieval_latency_s": 0.17084604199772002,
+      "input_tokens": 629,
+      "output_tokens": 24,
+      "cost_usd": 0.0018125,
+      "retrieved_ids": [
+        "retirement-accounts-overview#1",
+        "what-is-investing#1",
+        "mutual-funds-basics#4",
+        "retirement-accounts-overview#5",
+        "compound-interest#6"
+      ],
+      "cited_ids": [],
+      "invalid_citations": [],
+      "best_similarity": 0.40556788444519043
+    },
+    "plain": {
+      "text": "A 529 college savings plan is a tax-advantaged account designed to help families save for education expenses. You contribute money to the plan, and it grows tax-free over time. When you withdraw the funds for qualified education expenses, like tuition, books, or room and board, you don't pay taxes on the earnings. Each state offers its own 529 plan, and you can choose any state's plan regardless of where you live. Some states even offer tax deductions or credits for contributions. It's a flexible way to save for future education costs, and anyone can contribute, making it a popular choice for parents and grandparents.",
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.4734188749971509,
+      "input_tokens": 51,
+      "output_tokens": 124,
+      "cost_usd": 0.0013675
+    }
+  }
+]
