@@ -1,0 +1,19 @@
+{
+  "_note": "Hand-written classification for the tickers Finnie knows about. General knowledge, NOT fetched from a data provider: verify before relying on it. Unknown tickers are reported as 'Unknown'.",
+  "VTI":   {"asset_class": "US stock",            "sector": "Broad market"},
+  "VOO":   {"asset_class": "US stock",            "sector": "Broad market"},
+  "SPY":   {"asset_class": "US stock",            "sector": "Broad market"},
+  "QQQ":   {"asset_class": "US stock",            "sector": "Technology"},
+  "VXUS":  {"asset_class": "International stock", "sector": "Broad market"},
+  "BND":   {"asset_class": "Bond",                "sector": "Aggregate bonds"},
+  "AGG":   {"asset_class": "Bond",                "sector": "Aggregate bonds"},
+  "TLT":   {"asset_class": "Bond",                "sector": "Long-term Treasuries"},
+  "VTIP":  {"asset_class": "Bond",                "sector": "Inflation-protected bonds"},
+  "VNQ":   {"asset_class": "Real estate",         "sector": "Real estate"},
+  "AAPL":  {"asset_class": "US stock",            "sector": "Technology"},
+  "MSFT":  {"asset_class": "US stock",            "sector": "Technology"},
+  "NVDA":  {"asset_class": "US stock",            "sector": "Technology"},
+  "GOOGL": {"asset_class": "US stock",            "sector": "Communication services"},
+  "AMZN":  {"asset_class": "US stock",            "sector": "Consumer discretionary"},
+  "TSLA":  {"asset_class": "US stock",            "sector": "Consumer discretionary"}
+}

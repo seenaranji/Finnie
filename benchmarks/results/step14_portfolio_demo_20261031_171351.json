@@ -1,0 +1,283 @@
+{
+  "timings_s": {
+    "5": 0.007388582998828497,
+    "50": 0.06447012499847915,
+    "500": 0.6455070409974724
+  },
+  "portfolios": {
+    "diversified": {
+      "total_value": 42093.880000000005,
+      "total_cost": 29420.0,
+      "unpriced": [],
+      "by_asset_class": {
+        "US stock": 0.6288201515279656,
+        "Bond": 0.17000095975947097,
+        "International stock": 0.1565453220278102,
+        "Real estate": 0.04463356668475322
+      },
+      "by_sector": {
+        "Broad market": 0.6861757576160715,
+        "Aggregate bonds": 0.17000095975947097,
+        "Technology": 0.09918971593970428,
+        "Real estate": 0.04463356668475322
+      },
+      "largest_position": [
+        "VTI",
+        0.5296304355882613
+      ],
+      "hhi": 0.34574591749254496,
+      "effective_holdings": 2.8922973472898987,
+      "volatility_pct": 11.287318413929347,
+      "avg_correlation": 0.4707830865711133,
+      "correlated_pairs": [
+        [
+          "VTI",
+          "VXUS",
+          0.8434979959585838
+        ]
+      ],
+      "returns_days": 250,
+      "asset_volatility_pct": {
+        "VTI": 13.01,
+        "BND": 3.97,
+        "VXUS": 17.25,
+        "MSFT": 32.85,
+        "VNQ": 13.75
+      },
+      "notes": [],
+      "diversification": {
+        "score": 44.1,
+        "concentration": 0.289,
+        "asset_class_spread": 0.555,
+        "low_correlation": 0.529
+      },
+      "positions": [
+        {
+          "ticker": "VTI",
+          "shares": 60.0,
+          "avg_cost": 220.0,
+          "price": 371.57,
+          "value": 22294.2,
+          "weight": 0.5296304355882613,
+          "cost_basis": 13200.0,
+          "gain_pct": 68.89545454545454
+        },
+        {
+          "ticker": "BND",
+          "shares": 100.0,
+          "avg_cost": 74.0,
+          "price": 71.56,
+          "value": 7156.0,
+          "weight": 0.17000095975947097,
+          "cost_basis": 7400.0,
+          "gain_pct": -3.297297297297297
+        },
+        {
+          "ticker": "VXUS",
+          "shares": 80.0,
+          "avg_cost": 58.0,
+          "price": 82.37,
+          "value": 6589.6,
+          "weight": 0.1565453220278102,
+          "cost_basis": 4640.0,
+          "gain_pct": 42.017241379310356
+        },
+        {
+          "ticker": "MSFT",
+          "shares": 8.0,
+          "avg_cost": 310.0,
+          "price": 521.91,
+          "value": 4175.28,
+          "weight": 0.09918971593970428,
+          "cost_basis": 2480.0,
+          "gain_pct": 68.35806451612902
+        },
+        {
+          "ticker": "VNQ",
+          "shares": 20.0,
+          "avg_cost": 85.0,
+          "price": 93.94,
+          "value": 1878.8,
+          "weight": 0.04463356668475322,
+          "cost_basis": 1700.0,
+          "gain_pct": 10.51764705882352
+        }
+      ]
+    },
+    "concentrated_single_stock": {
+      "total_value": 176388.5,
+      "total_cost": 77570.0,
+      "unpriced": [],
+      "by_asset_class": {
+        "US stock": 0.9979715230868226,
+        "Bond": 0.0020284769131774464
+      },
+      "by_sector": {
+        "Technology": 0.9769060908165782,
+        "Broad market": 0.021065432270244374,
+        "Aggregate bonds": 0.0020284769131774464
+      },
+      "largest_position": [
+        "AAPL",
+        0.9769060908165782
+      ],
+      "hhi": 0.954793377429848,
+      "effective_holdings": 1.047347021500967,
+      "volatility_pct": 23.65008441989422,
+      "avg_correlation": 0.29148161378815074,
+      "correlated_pairs": [],
+      "returns_days": 250,
+      "asset_volatility_pct": {
+        "AAPL": 24.12,
+        "VTI": 13.01,
+        "BND": 3.97
+      },
+      "notes": [],
+      "diversification": {
+        "score": 33.0,
+        "concentration": 0.105,
+        "asset_class_spread": 0.251,
+        "low_correlation": 0.709
+      },
+      "positions": [
+        {
+          "ticker": "AAPL",
+          "shares": 500.0,
+          "avg_cost": 150.0,
+          "price": 344.63,
+          "value": 172315.0,
+          "weight": 0.9769060908165782,
+          "cost_basis": 75000.0,
+          "gain_pct": 129.75333333333333
+        },
+        {
+          "ticker": "VTI",
+          "shares": 10.0,
+          "avg_cost": 220.0,
+          "price": 371.57,
+          "value": 3715.7,
+          "weight": 0.021065432270244374,
+          "cost_basis": 2200.0,
+          "gain_pct": 68.89545454545454
+        },
+        {
+          "ticker": "BND",
+          "shares": 5.0,
+          "avg_cost": 74.0,
+          "price": 71.56,
+          "value": 357.8,
+          "weight": 0.0020284769131774464,
+          "cost_basis": 370.0,
+          "gain_pct": -3.297297297297297
+        }
+      ]
+    },
+    "bond_heavy": {
+      "total_value": 53222.45,
+      "total_cost": 50920.0,
+      "unpriced": [],
+      "by_asset_class": {
+        "Bond": 0.8254636906042468,
+        "US stock": 0.17453630939575313
+      },
+      "by_sector": {
+        "Aggregate bonds": 0.6749407439905528,
+        "Broad market": 0.17453630939575313,
+        "Long-term Treasuries": 0.0768848484051373,
+        "Inflation-protected bonds": 0.07363809820855674
+      },
+      "largest_position": [
+        "BND",
+        0.40336361817240657
+      ],
+      "hhi": 0.27825311645232426,
+      "effective_holdings": 3.5938501345458946,
+      "volatility_pct": 4.795713320716903,
+      "avg_correlation": 0.6513159255721925,
+      "correlated_pairs": [
+        [
+          "BND",
+          "AGG",
+          0.9947666248174366
+        ],
+        [
+          "BND",
+          "TLT",
+          0.9213866157269346
+        ],
+        [
+          "AGG",
+          "TLT",
+          0.9179998559592886
+        ]
+      ],
+      "returns_days": 250,
+      "asset_volatility_pct": {
+        "BND": 3.97,
+        "AGG": 4.07,
+        "VTI": 13.01,
+        "TLT": 9.59,
+        "VTIP": 1.64
+      },
+      "notes": [],
+      "diversification": {
+        "score": 35.4,
+        "concentration": 0.359,
+        "asset_class_spread": 0.351,
+        "low_correlation": 0.349
+      },
+      "positions": [
+        {
+          "ticker": "BND",
+          "shares": 300.0,
+          "avg_cost": 74.0,
+          "price": 71.56,
+          "value": 21468.0,
+          "weight": 0.40336361817240657,
+          "cost_basis": 22200.0,
+          "gain_pct": -3.297297297297297
+        },
+        {
+          "ticker": "AGG",
+          "shares": 150.0,
+          "avg_cost": 98.0,
+          "price": 96.36,
+          "value": 14454.0,
+          "weight": 0.2715771258181463,
+          "cost_basis": 14700.0,
+          "gain_pct": -1.6734693877551
+        },
+        {
+          "ticker": "VTI",
+          "shares": 25.0,
+          "avg_cost": 220.0,
+          "price": 371.57,
+          "value": 9289.25,
+          "weight": 0.17453630939575313,
+          "cost_basis": 5500.0,
+          "gain_pct": 68.89545454545454
+        },
+        {
+          "ticker": "TLT",
+          "shares": 50.0,
+          "avg_cost": 92.0,
+          "price": 81.84,
+          "value": 4092.0,
+          "weight": 0.0768848484051373,
+          "cost_basis": 4600.0,
+          "gain_pct": -11.043478260869566
+        },
+        {
+          "ticker": "VTIP",
+          "shares": 80.0,
+          "avg_cost": 49.0,
+          "price": 48.99,
+          "value": 3919.2000000000003,
+          "weight": 0.07363809820855674,
+          "cost_basis": 3920.0,
+          "gain_pct": -0.020408163265306367
+        }
+      ]
+    }
+  }
+}
