@@ -95,6 +95,24 @@ class GoalPlanningConfig(BaseModel):
     risk_profiles: dict[str, ScenarioReturns]     # profile name -> assumed returns
 
 
+class NewsFeed(BaseModel):
+    name: str
+    url: str
+
+
+class NewsConfig(BaseModel):
+    ttl_seconds: int
+    timeout_seconds: float
+    max_items: int
+    max_per_feed: int             # so one busy feed cannot crowd out the others
+    max_age_days: int
+    max_title_chars: int
+    max_summary_chars: int
+    user_agent: str
+    ticker_feed_url: str          # contains {symbol}
+    market_feeds: list[NewsFeed]
+
+
 class Secrets(BaseSettings):
     """Read from environment variables / .env. Missing is allowed here (None);
     code that actually needs a key calls the require_* method for a clear error."""
@@ -119,6 +137,7 @@ class Settings(BaseModel):
     market_data: MarketDataConfig = MarketDataConfig()
     alpha_vantage: AlphaVantageConfig = AlphaVantageConfig()
     goal_planning: GoalPlanningConfig
+    news: NewsConfig
     secrets: Secrets
 
     def masked(self) -> dict:

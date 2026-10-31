@@ -61,3 +61,22 @@ goal_planning:
     low:      {conservative: 1.0, expected: 3.0, optimistic: 5.0}    # mostly cash and bonds
     medium:   {conservative: 2.0, expected: 5.0, optimistic: 8.0}    # a mix of stocks and bonds
     high:     {conservative: 0.0, expected: 7.0, optimistic: 11.0}   # mostly stocks
+
+# News (Step 19). TERMS OF USE: the Federal Reserve and SEC feeds are official government announcements. Yahoo Finance, MarketWatch (Dow Jones)
+# and CNBC are commercial publishers: Yahoo and Dow Jones declare "All rights reserved" in their feeds and I could not verify their RSS terms.
+# Finnie uses only headline + short summary + link + attribution, caches for 15 minutes and identifies itself. That is a personal learning
+# project. CHECK EACH PUBLISHER'S TERMS BEFORE ANY PUBLIC DEPLOYMENT.
+news:
+  ttl_seconds: 900
+  timeout_seconds: 10
+  max_items: 8                 # items shown to the model after dedupe
+  max_per_feed: 3              # at most this many from any one feed (market news only; a ticker has one feed)
+  max_age_days: 7              # older items are dropped
+  max_title_chars: 200
+  max_summary_chars: 500
+  user_agent: "FinnieLearningProject/0.1 (educational)"
+  ticker_feed_url: "https://feeds.finance.yahoo.com/rss/2.0/headline?s={symbol}&region=US&lang=en-US"
+  market_feeds:
+    - {name: "CNBC Finance", url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664"}
+    - {name: "MarketWatch Top Stories", url: "https://feeds.content.dowjones.io/public/rss/mw_topstories"}
+    - {name: "Federal Reserve Press Releases", url: "https://www.federalreserve.gov/feeds/press_all.xml"}

@@ -1,0 +1,47 @@
+{
+  "summary": {},
+  "runs": [],
+  "live_flagged": [],
+  "live_total": 45,
+  "live_quality": [
+    {
+      "topic": "AAPL",
+      "bullets": 6,
+      "cited_bullets": 6,
+      "validation_issues": [],
+      "links_in_text": 0,
+      "numbers_grounded": true,
+      "missing_numbers": [],
+      "sources": 6,
+      "seconds": 1.9833710420025454,
+      "cost": 0.0047925,
+      "words": 192
+    },
+    {
+      "topic": "MSFT",
+      "bullets": 6,
+      "cited_bullets": 5,
+      "validation_issues": [],
+      "links_in_text": 0,
+      "numbers_grounded": true,
+      "missing_numbers": [],
+      "sources": 5,
+      "seconds": 1.800740875001793,
+      "cost": 0.00486,
+      "words": 164
+    },
+    {
+      "topic": "markets",
+      "bullets": 5,
+      "cited_bullets": 5,
+      "validation_issues": [],
+      "links_in_text": 0,
+      "numbers_grounded": true,
+      "missing_numbers": [],
+      "sources": 5,
+      "seconds": 1.9310734159989806,
+      "cost": 0.0040175,
+      "words": 185
+    }
+  ]
+}
