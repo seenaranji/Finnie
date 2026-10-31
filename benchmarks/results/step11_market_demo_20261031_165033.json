@@ -1,0 +1,116 @@
+{
+  "cold_vs_warm_s": {
+    "cold": 0.41167308300282457,
+    "warm": 0.00010558299982221797
+  },
+  "hit_rate": {
+    "hits": 42,
+    "misses": 8,
+    "rate": 0.84,
+    "miss_latency": {
+      "count": 8,
+      "mean": 0.18697783850029737,
+      "p50": 0.1487409375004063,
+      "p95": 0.46049004384913106,
+      "min": 0.030189416000212077,
+      "max": 0.6141210419991694
+    },
+    "hit_latency": {
+      "count": 42,
+      "mean": 9.569440477380773e-05,
+      "p50": 5.318750118021853e-05,
+      "p95": 0.000221235402568709,
+      "min": 2.9916998755652457e-05,
+      "max": 0.000565958001971012
+    }
+  },
+  "fault_injection": {
+    "rate": 1.0,
+    "outcomes": [
+      {
+        "scenario": "timeout",
+        "cache": "cold",
+        "good": true,
+        "result": "clean error: 'The market data service is not responding right now.'",
+        "seconds": 0.21442462499908288
+      },
+      {
+        "scenario": "timeout",
+        "cache": "warm",
+        "good": true,
+        "result": "stale value (101.5), is_stale=True, age 0.2s",
+        "seconds": 0.20515254199926858
+      },
+      {
+        "scenario": "429",
+        "cache": "cold",
+        "good": true,
+        "result": "clean error: 'The market data service is not responding right now.'",
+        "seconds": 0.1961166660003073
+      },
+      {
+        "scenario": "429",
+        "cache": "warm",
+        "good": true,
+        "result": "stale value (101.5), is_stale=True, age 0.2s",
+        "seconds": 0.2315775829993072
+      },
+      {
+        "scenario": "malformed (no Close column)",
+        "cache": "cold",
+        "good": true,
+        "result": "clean error: 'The market data service is not responding right now.'",
+        "seconds": 0.22419458299918915
+      },
+      {
+        "scenario": "malformed (no Close column)",
+        "cache": "warm",
+        "good": true,
+        "result": "stale value (101.5), is_stale=True, age 0.2s",
+        "seconds": 0.22829216700120014
+      },
+      {
+        "scenario": "malformed (not a table)",
+        "cache": "cold",
+        "good": true,
+        "result": "clean error: 'The market data service is not responding right now.'",
+        "seconds": 0.21620904200244695
+      },
+      {
+        "scenario": "malformed (not a table)",
+        "cache": "warm",
+        "good": true,
+        "result": "stale value (101.5), is_stale=True, age 0.2s",
+        "seconds": 0.22907833399949595
+      },
+      {
+        "scenario": "offline",
+        "cache": "cold",
+        "good": true,
+        "result": "clean error: 'The market data service is not responding right now.'",
+        "seconds": 0.21661716699964018
+      },
+      {
+        "scenario": "offline",
+        "cache": "warm",
+        "good": true,
+        "result": "stale value (101.5), is_stale=True, age 0.2s",
+        "seconds": 0.19605837500057532
+      },
+      {
+        "scenario": "invalid ticker",
+        "cache": "cold",
+        "good": true,
+        "result": "clean error: \"I couldn't find a ticker called AAPL.\"",
+        "seconds": 0.0011293749994365498
+      },
+      {
+        "scenario": "invalid ticker",
+        "cache": "warm",
+        "good": true,
+        "result": "clean error: \"I couldn't find a ticker called AAPL.\"",
+        "seconds": 0.0004657499994209502
+      }
+    ]
+  }
+}

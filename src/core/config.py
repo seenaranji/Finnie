@@ -60,6 +60,12 @@ class CacheConfig(BaseModel):
     history_ttl_seconds: int = 900
 
 
+class MarketDataConfig(BaseModel):
+    timeout_seconds: float = 10       # per provider call
+    max_attempts: int = 3             # 1 try + 2 retries, transient errors only
+    retry_base_seconds: float = 0.5   # first wait; doubles each retry, with random jitter
+
+
 class Secrets(BaseSettings):
     """Read from environment variables / .env. Missing is allowed here (None);
     code that actually needs a key calls the require_* method for a clear error."""
@@ -81,6 +87,7 @@ class Settings(BaseModel):
     llm: LLMConfig
     rag: RAGConfig
     cache: CacheConfig
+    market_data: MarketDataConfig = MarketDataConfig()
     secrets: Secrets
 
     def masked(self) -> dict:

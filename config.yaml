@@ -39,3 +39,8 @@ rag:
 cache:
   quote_ttl_seconds: 60
   history_ttl_seconds: 900   # 15 minutes
+
+market_data:
+  timeout_seconds: 10
+  max_attempts: 3            # 1 try + 2 retries, transient errors only
+  retry_base_seconds: 0.5    # doubles each retry, with jitter
