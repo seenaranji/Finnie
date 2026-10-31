@@ -1,0 +1,418 @@
+[
+  {
+    "title": "A. COMPLETE REQUEST",
+    "user": "I want to save $50,000 in 5 years. I already have $2,000 and I'm fine with medium risk.",
+    "kind": "PLAN",
+    "text": "- I understand you want to save $50,000 in 5 years, starting with $2,000, and you're comfortable with a medium risk level.\n\n- Here are three scenarios for your savings plan, based on illustrative assumptions:\n\n  - **Conservative Scenario**: \n    - Annual return: 2.0%\n    - Monthly saving: $758\n    - Growth from returns: $2,498\n\n  - **Expected Scenario**: \n    - Annual return: 5.0%\n    - Monthly saving: $700\n    - Growth from returns: $6,020\n\n  - **Optimistic Scenario**: \n    - Annual return: 8.0%\n    - Monthly saving: $645\n    - Growth from returns: $9,290\n\n- These returns are assumptions, not predictions. Real returns can vary and may be negative.\n\n- Inflation is assumed at 3.0%, making your inflation-adjusted goal $57,964.\n\n- Your current savings alone won't reach the goal in any scenario.\n\n- Consider adjusting levers like saving more, extending the time, or changing the goal amount.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.8434467919978488,
+      "input_tokens": 754,
+      "output_tokens": 231,
+      "cost_usd": 0.00427105,
+      "metrics": {
+        "inputs_understood": {
+          "goal_usd": 50000,
+          "years": 5.0,
+          "current_savings_usd": 2000,
+          "risk_profile": "medium"
+        },
+        "assumptions": {
+          "inflation_pct": 3.0,
+          "annual_return_pct": {
+            "conservative": 2.0,
+            "expected": 5.0,
+            "optimistic": 8.0
+          },
+          "note": "illustrative assumptions chosen for teaching, not forecasts; monthly savings are flat and made at the end of each month; no taxes or fees"
+        },
+        "inflation_adjusted_goal_usd": 57964,
+        "scenarios": [
+          {
+            "name": "conservative",
+            "annual_return_pct": 2.0,
+            "monthly_saving_usd": 758,
+            "monthly_saving_to_keep_todays_buying_power_usd": 885,
+            "total_you_contribute_usd": 45502,
+            "growth_from_returns_usd": 2498,
+            "current_savings_alone_reach_the_goal": false
+          },
+          {
+            "name": "expected",
+            "annual_return_pct": 5.0,
+            "monthly_saving_usd": 700,
+            "monthly_saving_to_keep_todays_buying_power_usd": 817,
+            "total_you_contribute_usd": 41980,
+            "growth_from_returns_usd": 6020,
+            "current_savings_alone_reach_the_goal": false
+          },
+          {
+            "name": "optimistic",
+            "annual_return_pct": 8.0,
+            "monthly_saving_usd": 645,
+            "monthly_saving_to_keep_todays_buying_power_usd": 754,
+            "total_you_contribute_usd": 38710,
+            "growth_from_returns_usd": 9290,
+            "current_savings_alone_reach_the_goal": false
+          }
+        ],
+        "flags": []
+      },
+      "extraction_cost_usd": 7.604999999999999e-05,
+      "extraction_model": "gpt-4o-mini-2024-07-18",
+      "extraction_seconds": 0.9303512089973083,
+      "extracted": {
+        "goal_amount_usd": 50000.0,
+        "years": 5.0,
+        "current_savings_usd": 2000.0,
+        "risk_profile": "medium"
+      },
+      "state": {
+        "goal_amount_usd": 50000.0,
+        "years": 5.0,
+        "current_savings_usd": 2000.0,
+        "risk_profile": "medium"
+      },
+      "extraction_in_tokens": 399
+    }
+  },
+  {
+    "title": "B. VAGUE REQUEST, completed over turns",
+    "user": "I want to retire comfortably.",
+    "kind": "FOLLOW-UP QUESTION",
+    "text": "To build a plan I still need a few details:\n- How much money do you want to have at the end, in dollars?\n- How many years (or months) do you have to reach it?\n- How much have you already saved toward it? (Say 0 if you're starting from scratch.)\n- How comfortable are you with your savings going up and down: low (prefer stability), medium (a mix), or high (accept bigger swings for higher potential growth)?",
+    "metadata": {
+      "model": "none (follow-up question)",
+      "cost_usd": 7.17e-05,
+      "latency_s": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "output_flagged": false,
+      "advice_requested": false,
+      "state": {
+        "goal_amount_usd": null,
+        "years": null,
+        "current_savings_usd": null,
+        "risk_profile": null
+      },
+      "extraction_cost_usd": 7.17e-05,
+      "extraction_model": "gpt-4o-mini-2024-07-18",
+      "extraction_seconds": 0.6839811669997289,
+      "extracted": {
+        "goal_amount_usd": null,
+        "years": null,
+        "current_savings_usd": null,
+        "risk_profile": null
+      }
+    }
+  },
+  {
+    "title": "B. VAGUE REQUEST, completed over turns",
+    "user": "about 1.5 million, in 30 years",
+    "kind": "FOLLOW-UP QUESTION",
+    "text": "So far I have: a goal of $1,500,000, 30 year(s).\nTo build a plan I still need a few details:\n- How much have you already saved toward it? (Say 0 if you're starting from scratch.)\n- How comfortable are you with your savings going up and down: low (prefer stability), medium (a mix), or high (accept bigger swings for higher potential growth)?",
+    "metadata": {
+      "model": "none (follow-up question)",
+      "cost_usd": 7.364999999999999e-05,
+      "latency_s": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "output_flagged": false,
+      "advice_requested": false,
+      "state": {
+        "goal_amount_usd": 1500000.0,
+        "years": 30.0,
+        "current_savings_usd": null,
+        "risk_profile": null
+      },
+      "extraction_cost_usd": 7.364999999999999e-05,
+      "extraction_model": "gpt-4o-mini-2024-07-18",
+      "extraction_seconds": 0.9795847499990487,
+      "extracted": {
+        "goal_amount_usd": 1500000.0,
+        "years": 30.0,
+        "current_savings_usd": null,
+        "risk_profile": null
+      }
+    }
+  },
+  {
+    "title": "B. VAGUE REQUEST, completed over turns",
+    "user": "I've got 20k saved so far",
+    "kind": "FOLLOW-UP QUESTION",
+    "text": "So far I have: a goal of $1,500,000, 30 year(s), $20,000 already saved.\nTo build a plan I still need a few details:\n- How comfortable are you with your savings going up and down: low (prefer stability), medium (a mix), or high (accept bigger swings for higher potential growth)?",
+    "metadata": {
+      "model": "none (follow-up question)",
+      "cost_usd": 7.95e-05,
+      "latency_s": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "output_flagged": false,
+      "advice_requested": false,
+      "state": {
+        "goal_amount_usd": 1500000.0,
+        "years": 30.0,
+        "current_savings_usd": 20000.0,
+        "risk_profile": null
+      },
+      "extraction_cost_usd": 7.95e-05,
+      "extraction_model": "gpt-4o-mini-2024-07-18",
+      "extraction_seconds": 0.7749577089998638,
+      "extracted": {
+        "goal_amount_usd": 1500000.0,
+        "years": 30.0,
+        "current_savings_usd": 20000.0,
+        "risk_profile": null
+      }
+    }
+  },
+  {
+    "title": "B. VAGUE REQUEST, completed over turns",
+    "user": "balanced I guess",
+    "kind": "PLAN",
+    "text": "- **Inputs Understood**: You want to save $1,500,000 over 30 years, starting with $20,000, and you have a medium risk profile.\n\n- **Scenarios**: \n  - **Conservative**: Assumes a 2.0% annual return. You'd need to save $2,980 monthly. To keep today's buying power, save $7,338 monthly. Your contributions would total $1,072,659, with $407,341 from returns.\n  - **Expected**: Assumes a 5.0% annual return. You'd need to save $1,734 monthly. To keep today's buying power, save $4,359 monthly. Your contributions would total $624,107, with $855,893 from returns.\n  - **Optimistic**: Assumes an 8.0% annual return. You'd need to save $922 monthly. To keep today's buying power, save $2,442 monthly. Your contributions would total $331,936, with $1,148,064 from returns.\n\n- **Inflation**: Assumed at 3.0%. Your goal in today's dollars is $3,640,894.\n\n- **Important Note**: These are illustrative assumptions, not predictions. Real returns can vary and may be negative.\n\nConsider adjusting your plan by saving more, extending the time, or changing your goal amount.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 2.0327813749972847,
+      "input_tokens": 739,
+      "output_tokens": 290,
+      "cost_usd": 0.0048264,
+      "metrics": {
+        "inputs_understood": {
+          "goal_usd": 1500000,
+          "years": 30.0,
+          "current_savings_usd": 20000,
+          "risk_profile": "medium"
+        },
+        "assumptions": {
+          "inflation_pct": 3.0,
+          "annual_return_pct": {
+            "conservative": 2.0,
+            "expected": 5.0,
+            "optimistic": 8.0
+          },
+          "note": "illustrative assumptions chosen for teaching, not forecasts; monthly savings are flat and made at the end of each month; no taxes or fees"
+        },
+        "inflation_adjusted_goal_usd": 3640894,
+        "scenarios": [
+          {
+            "name": "conservative",
+            "annual_return_pct": 2.0,
+            "monthly_saving_usd": 2980,
+            "monthly_saving_to_keep_todays_buying_power_usd": 7338,
+            "total_you_contribute_usd": 1072659,
+            "growth_from_returns_usd": 407341,
+            "current_savings_alone_reach_the_goal": false
+          },
+          {
+            "name": "expected",
+            "annual_return_pct": 5.0,
+            "monthly_saving_usd": 1734,
+            "monthly_saving_to_keep_todays_buying_power_usd": 4359,
+            "total_you_contribute_usd": 624107,
+            "growth_from_returns_usd": 855893,
+            "current_savings_alone_reach_the_goal": false
+          },
+          {
+            "name": "optimistic",
+            "annual_return_pct": 8.0,
+            "monthly_saving_usd": 922,
+            "monthly_saving_to_keep_todays_buying_power_usd": 2442,
+            "total_you_contribute_usd": 331936,
+            "growth_from_returns_usd": 1148064,
+            "current_savings_alone_reach_the_goal": false
+          }
+        ],
+        "flags": []
+      },
+      "extraction_cost_usd": 7.89e-05,
+      "extraction_model": "gpt-4o-mini-2024-07-18",
+      "extraction_seconds": 0.7852365409999038,
+      "extracted": {
+        "goal_amount_usd": 1500000.0,
+        "years": 30.0,
+        "current_savings_usd": 20000.0,
+        "risk_profile": "medium"
+      },
+      "state": {
+        "goal_amount_usd": 1500000.0,
+        "years": 30.0,
+        "current_savings_usd": 20000.0,
+        "risk_profile": "medium"
+      },
+      "extraction_in_tokens": 414
+    }
+  },
+  {
+    "title": "C. UNREALISTIC REQUEST",
+    "user": "I want to turn my $1,000 into $1,000,000 in one year. High risk is fine.",
+    "kind": "PLAN",
+    "text": "- **Inputs Understood**: You want to grow $1,000 to $1,000,000 in 1 year, and you're okay with high risk.\n\n- **Scenarios**: \n  - **Conservative**: 0.0% return, save $83,250/month.\n  - **Expected**: 7.0% return, save $80,687/month.\n  - **Optimistic**: 11.0% return, save $79,317/month.\n\n- **Assumptions**: These returns are assumptions, not predictions. Real returns can vary and may be negative. Inflation is assumed at 3.0%, making the inflation-adjusted goal $1,030,000.\n\n- **Flag**: The expected scenario requires saving $80,687 a month, which is a very large commitment. Consider a longer time, a smaller goal, or a bigger starting amount to lower it.\n\nRemember, these are illustrative numbers for learning. Real-life investing involves risks and uncertainties.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.5388963330005936,
+      "input_tokens": 797,
+      "output_tokens": 208,
+      "cost_usd": 0.00414885,
+      "metrics": {
+        "inputs_understood": {
+          "goal_usd": 1000000,
+          "years": 1.0,
+          "current_savings_usd": 1000,
+          "risk_profile": "high"
+        },
+        "assumptions": {
+          "inflation_pct": 3.0,
+          "annual_return_pct": {
+            "conservative": 0.0,
+            "expected": 7.0,
+            "optimistic": 11.0
+          },
+          "note": "illustrative assumptions chosen for teaching, not forecasts; monthly savings are flat and made at the end of each month; no taxes or fees"
+        },
+        "inflation_adjusted_goal_usd": 1030000,
+        "scenarios": [
+          {
+            "name": "conservative",
+            "annual_return_pct": 0.0,
+            "monthly_saving_usd": 83250,
+            "monthly_saving_to_keep_todays_buying_power_usd": 85750,
+            "total_you_contribute_usd": 999000,
+            "growth_from_returns_usd": 0,
+            "current_savings_alone_reach_the_goal": false
+          },
+          {
+            "name": "expected",
+            "annual_return_pct": 7.0,
+            "monthly_saving_usd": 80687,
+            "monthly_saving_to_keep_todays_buying_power_usd": 83110,
+            "total_you_contribute_usd": 968245,
+            "growth_from_returns_usd": 30755,
+            "current_savings_alone_reach_the_goal": false
+          },
+          {
+            "name": "optimistic",
+            "annual_return_pct": 11.0,
+            "monthly_saving_usd": 79317,
+            "monthly_saving_to_keep_todays_buying_power_usd": 81699,
+            "total_you_contribute_usd": 951807,
+            "growth_from_returns_usd": 47193,
+            "current_savings_alone_reach_the_goal": false
+          }
+        ],
+        "flags": [
+          "The expected scenario needs $80,687 a month, which is a very large commitment. A longer time horizon, a smaller goal or a bigger starting amount would lower it."
+        ]
+      },
+      "extraction_cost_usd": 7.635e-05,
+      "extraction_model": "gpt-4o-mini-2024-07-18",
+      "extraction_seconds": 0.6690175420008018,
+      "extracted": {
+        "goal_amount_usd": 1000000.0,
+        "years": 1.0,
+        "current_savings_usd": 1000.0,
+        "risk_profile": "high"
+      },
+      "state": {
+        "goal_amount_usd": 1000000.0,
+        "years": 1.0,
+        "current_savings_usd": 1000.0,
+        "risk_profile": "high"
+      },
+      "extraction_in_tokens": 397
+    }
+  },
+  {
+    "title": "D. ADVICE-SEEKING REQUEST",
+    "user": "Should I put my $2,000 into stocks to reach $50,000 in 5 years? I'm medium risk.",
+    "kind": "PLAN",
+    "text": "- **Inputs Understood**: You want to reach a goal of $50,000 in 5 years, starting with $2,000 in savings, and you have a medium risk profile.\n\n- **Scenarios**:\n  - **Conservative**: Assumes a 2.0% annual return. You'd need to save $758 monthly, with $2,498 growth from returns.\n  - **Expected**: Assumes a 5.0% annual return. You'd need to save $700 monthly, with $6,020 growth from returns.\n  - **Optimistic**: Assumes an 8.0% annual return. You'd need to save $645 monthly, with $9,290 growth from returns.\n\n- **Inflation**: Assumed at 3.0%. Your goal adjusted for inflation is $57,964.\n\n- **Considerations**:\n  - These returns are assumptions, not predictions. Real returns can vary and may be negative.\n  - Your current savings alone won't reach the goal in any scenario.\n  - Think about how much you can save monthly, the time you have, and your comfort with risk.\n  - Consider speaking with a licensed financial advisor for personalized advice.",
+    "metadata": {
+      "advice_requested": true,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 1.980076249998092,
+      "input_tokens": 815,
+      "output_tokens": 252,
+      "cost_usd": 0.00463325,
+      "metrics": {
+        "inputs_understood": {
+          "goal_usd": 50000,
+          "years": 5.0,
+          "current_savings_usd": 2000,
+          "risk_profile": "medium"
+        },
+        "assumptions": {
+          "inflation_pct": 3.0,
+          "annual_return_pct": {
+            "conservative": 2.0,
+            "expected": 5.0,
+            "optimistic": 8.0
+          },
+          "note": "illustrative assumptions chosen for teaching, not forecasts; monthly savings are flat and made at the end of each month; no taxes or fees"
+        },
+        "inflation_adjusted_goal_usd": 57964,
+        "scenarios": [
+          {
+            "name": "conservative",
+            "annual_return_pct": 2.0,
+            "monthly_saving_usd": 758,
+            "monthly_saving_to_keep_todays_buying_power_usd": 885,
+            "total_you_contribute_usd": 45502,
+            "growth_from_returns_usd": 2498,
+            "current_savings_alone_reach_the_goal": false
+          },
+          {
+            "name": "expected",
+            "annual_return_pct": 5.0,
+            "monthly_saving_usd": 700,
+            "monthly_saving_to_keep_todays_buying_power_usd": 817,
+            "total_you_contribute_usd": 41980,
+            "growth_from_returns_usd": 6020,
+            "current_savings_alone_reach_the_goal": false
+          },
+          {
+            "name": "optimistic",
+            "annual_return_pct": 8.0,
+            "monthly_saving_usd": 645,
+            "monthly_saving_to_keep_todays_buying_power_usd": 754,
+            "total_you_contribute_usd": 38710,
+            "growth_from_returns_usd": 9290,
+            "current_savings_alone_reach_the_goal": false
+          }
+        ],
+        "flags": []
+      },
+      "extraction_cost_usd": 7.575e-05,
+      "extraction_model": "gpt-4o-mini-2024-07-18",
+      "extraction_seconds": 1.0854563329994562,
+      "extracted": {
+        "goal_amount_usd": 50000.0,
+        "years": 5.0,
+        "current_savings_usd": 2000.0,
+        "risk_profile": "medium"
+      },
+      "state": {
+        "goal_amount_usd": 50000.0,
+        "years": 5.0,
+        "current_savings_usd": 2000.0,
+        "risk_profile": "medium"
+      },
+      "extraction_in_tokens": 397
+    }
+  }
+]

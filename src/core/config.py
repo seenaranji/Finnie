@@ -91,6 +91,7 @@ class ScenarioReturns(BaseModel):
 
 class GoalPlanningConfig(BaseModel):
     inflation_pct: float                          # assumed average yearly inflation
+    large_monthly_usd: float = 5000               # ASSUMPTION: a monthly saving above this is flagged as a large commitment
     risk_profiles: dict[str, ScenarioReturns]     # profile name -> assumed returns
 
 

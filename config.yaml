@@ -56,6 +56,7 @@ alpha_vantage:
 # A risk profile changes the assumed return range; it guarantees nothing. Percent per year, before inflation and fees.
 goal_planning:
   inflation_pct: 3.0
+  large_monthly_usd: 5000   # assumption: monthly savings above this are flagged as a large commitment (income is unknown to us)
   risk_profiles:
     low:      {conservative: 1.0, expected: 3.0, optimistic: 5.0}    # mostly cash and bonds
     medium:   {conservative: 2.0, expected: 5.0, optimistic: 8.0}    # a mix of stocks and bonds

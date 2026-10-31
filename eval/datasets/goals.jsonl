@@ -1,0 +1,20 @@
+{"id": 1, "text": "I want to save $50,000 in 5 years. I have $2,000 saved and I'm comfortable with medium risk.", "goal_amount_usd": 50000, "years": 5, "current_savings_usd": 2000, "risk_profile": "medium"}
+{"id": 2, "text": "Need 25k for a house down payment in 3 years, starting from zero, low risk please", "goal_amount_usd": 25000, "years": 3, "current_savings_usd": 0, "risk_profile": "low"}
+{"id": 3, "text": "How much per month to reach $1.2 million in 30 years? I have $15,000 and I'm an aggressive investor", "goal_amount_usd": 1200000, "years": 30, "current_savings_usd": 15000, "risk_profile": "high"}
+{"id": 4, "text": "Goal: ten thousand dollars within 18 months. I've got $500 and want to play it safe.", "goal_amount_usd": 10000, "years": 1.5, "current_savings_usd": 500, "risk_profile": "low"}
+{"id": 5, "text": "I'd like $100,000 in a decade, balanced approach, $10k already saved", "goal_amount_usd": 100000, "years": 10, "current_savings_usd": 10000, "risk_profile": "medium"}
+{"id": 6, "text": "I want to retire comfortably.", "goal_amount_usd": null, "years": null, "current_savings_usd": null, "risk_profile": null}
+{"id": 7, "text": "I want to save for my kid's college, about $80,000 in 15 years", "goal_amount_usd": 80000, "years": 15, "current_savings_usd": null, "risk_profile": null}
+{"id": 8, "text": "Can I get to 40000 in 2 years? Moderate risk.", "goal_amount_usd": 40000, "years": 2, "current_savings_usd": null, "risk_profile": "medium"}
+{"id": 9, "text": "I have $5,000 saved and a high risk tolerance. What should I aim for?", "goal_amount_usd": null, "years": null, "current_savings_usd": 5000, "risk_profile": "high"}
+{"id": 10, "text": "Save $250,000 over 20 years. I'm conservative, current savings $30,000.", "goal_amount_usd": 250000, "years": 20, "current_savings_usd": 30000, "risk_profile": "low"}
+{"id": 11, "text": "I need $15,000 for a car in 6 months, nothing saved yet, I'm cautious.", "goal_amount_usd": 15000, "years": 0.5, "current_savings_usd": 0, "risk_profile": "low"}
+{"id": 12, "text": "Planning a wedding: $30k in 2.5 years. I have 3,000 in savings. Medium risk.", "goal_amount_usd": 30000, "years": 2.5, "current_savings_usd": 3000, "risk_profile": "medium"}
+{"id": 13, "text": "I want a million dollars.", "goal_amount_usd": 1000000, "years": null, "current_savings_usd": null, "risk_profile": null}
+{"id": 14, "text": "In 12 years I want $500,000. I'm aggressive and have $60,000 invested.", "goal_amount_usd": 500000, "years": 12, "current_savings_usd": 60000, "risk_profile": "high"}
+{"id": 15, "text": "Retire in 25 years with $2 million. I'm moderate and have $100k saved.", "goal_amount_usd": 2000000, "years": 25, "current_savings_usd": 100000, "risk_profile": "medium"}
+{"id": 16, "text": "Save $20,000 in 4 years. I have $500 saved.", "goal_amount_usd": 20000, "years": 4, "current_savings_usd": 500, "risk_profile": null}
+{"id": 17, "text": "I want to turn my $1,000 into $1,000,000 in one year. High risk is fine.", "goal_amount_usd": 1000000, "years": 1, "current_savings_usd": 1000, "risk_profile": "high"}
+{"id": 18, "text": "Hmm, 60k in 7 years, balanced, start with nothing. Actually make it 10 years.", "goal_amount_usd": 60000, "years": 10, "current_savings_usd": 0, "risk_profile": "medium"}
+{"id": 19, "text": "Emergency fund of $5,000 in 1 year. I have $1,200 and can't afford to lose any of it.", "goal_amount_usd": 5000, "years": 1, "current_savings_usd": 1200, "risk_profile": "low"}
+{"id": 20, "text": "What's a good ETF to start with?", "goal_amount_usd": null, "years": null, "current_savings_usd": null, "risk_profile": null}

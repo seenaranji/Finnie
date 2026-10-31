@@ -83,12 +83,13 @@ class LLMClient:
         model_key: str = "answer_model",   # "answer_model" or "router_model"
         temperature: float | None = None,  # None = let the model use its default
         max_output_tokens: int | None = None,
+        response_format: dict | None = None,   # e.g. {"type": "json_schema", "json_schema": {...}}: the reply must match the schema
     ) -> LLMResult:
         messages = []
         if system:
             messages.append({"role": "system", "content": system})
         messages.append({"role": "user", "content": prompt})
-        return self._complete(messages, model_key, temperature, max_output_tokens)[1]
+        return self._complete(messages, model_key, temperature, max_output_tokens, response_format=response_format)[1]
 
     def complete(
         self,
@@ -114,13 +115,15 @@ class LLMClient:
             assistant_message["tool_calls"] = [{"id": c.id, "type": "function", "function": {"name": c.name, "arguments": c.raw_arguments}} for c in calls]
         return LLMTurn(**vars(result), tool_calls=calls, assistant_message=assistant_message)
 
-    def _complete(self, messages, model_key, temperature, max_output_tokens, tools=None):
+    def _complete(self, messages, model_key, temperature, max_output_tokens, tools=None, response_format=None):
         cfg = self.settings.llm
         model = getattr(cfg, model_key)
 
         kwargs = {"model": model, "messages": messages}
         if tools:
             kwargs["tools"] = tools
+        if response_format:
+            kwargs["response_format"] = response_format
         if temperature is not None:
             kwargs["temperature"] = temperature
         if max_output_tokens is not None:

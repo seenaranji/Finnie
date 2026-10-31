@@ -127,6 +127,20 @@ def plan_goal(goal: float, years: float, current_savings: float, risk_profile: s
     return GoalPlan(goal, years, current_savings, risk_profile.lower().strip(), config.inflation_pct, adjusted_goal, scenarios, assumptions)
 
 
+def assess(plan: GoalPlan, large_monthly_usd: float) -> list[str]:
+    """Plain-English flags about the plan itself, from the math only (we do not know the user's income or situation)."""
+    flags = []
+    expected = plan.scenarios[1]
+    if all(s.already_reached for s in plan.scenarios):
+        flags.append("Current savings alone are projected to reach this goal in all three scenarios, so no extra monthly saving is needed.")
+    elif expected.monthly_needed > large_monthly_usd:
+        flags.append(f"The expected scenario needs ${expected.monthly_needed:,.0f} a month, which is a very large commitment. "
+                     f"A longer time horizon, a smaller goal or a bigger starting amount would lower it.")
+    if plan.years < 1:
+        flags.append("With less than a year to go, investment returns are very uncertain, so the real result could be far from these scenarios.")
+    return flags
+
+
 def sensitivity_table(goal: float, current_savings: float, years_list: list[float], returns_pct: list[float]) -> dict[float, dict[float, float]]:
     """Monthly amount needed for each (years, annual return) pair."""
     return {y: {r: required_monthly(goal, current_savings, r, y) for r in returns_pct} for y in years_list}
