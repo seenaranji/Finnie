@@ -1,0 +1,348 @@
+[
+  {
+    "portfolio": "diversified",
+    "question": null,
+    "text": "Let's break down your portfolio using the numbers provided as of October 30, 2026.\n\n- **Total Value**: Your portfolio is worth $42,094. This is the total amount of money you have invested across all your holdings.\n\n- **Total Gain**: You've seen a 43.1% increase in your portfolio's value since you started investing.\n\n- **Holdings**: You have 5 different investments. The largest is VTI, making up 53.0% of your portfolio, valued at $22,294, with a gain of 68.9%. The smallest is VNQ, at 4.5%, valued at $1,879, with a gain of 10.5%.\n\n- **Asset Classes**: Your investments are spread across different types: 62.9% in US stocks, 17.0% in bonds, 15.7% in international stocks, and 4.5% in real estate.\n\n- **Concentration**: The Herfindahl-Hirschman Index (HHI) is 0.346. This measures how concentrated your portfolio is. A lower number suggests more diversification.\n\n- **Volatility**: The annualized volatility is 11.3%. This shows how much your portfolio's value has fluctuated in the past. It's not a prediction of future changes.\n\n- **Correlation**: The average correlation is 0.47. Correlation measures how investments move in relation to each other. A correlation of 0.84 between VTI and VXUS means they often move in the same direction.\n\n- **Diversification Score**: Your score is 44.1 out of 100. This considers concentration, asset-class spread, and correlation. A higher score suggests better diversification.\n\nUnderstanding these metrics can help you learn about diversification and risk in investing.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 5.297938583003997,
+      "input_tokens": 880,
+      "output_tokens": 376,
+      "cost_usd": 0.00596,
+      "metrics": {
+        "prices_as_of": "2026-10-30",
+        "holding_count": 5,
+        "total_value_usd": 42094,
+        "total_gain_pct": 43.1,
+        "holdings": [
+          {
+            "ticker": "VTI",
+            "weight_pct": 53.0,
+            "value_usd": 22294,
+            "gain_pct": 68.9
+          },
+          {
+            "ticker": "BND",
+            "weight_pct": 17.0,
+            "value_usd": 7156,
+            "gain_pct": -3.3
+          },
+          {
+            "ticker": "VXUS",
+            "weight_pct": 15.7,
+            "value_usd": 6590,
+            "gain_pct": 42.0
+          },
+          {
+            "ticker": "MSFT",
+            "weight_pct": 9.9,
+            "value_usd": 4175,
+            "gain_pct": 68.4
+          },
+          {
+            "ticker": "VNQ",
+            "weight_pct": 4.5,
+            "value_usd": 1879,
+            "gain_pct": 10.5
+          }
+        ],
+        "asset_class_pct": {
+          "US stock": 62.9,
+          "Bond": 17.0,
+          "International stock": 15.7,
+          "Real estate": 4.5
+        },
+        "sector_pct": {
+          "Broad market": 68.6,
+          "Aggregate bonds": 17.0,
+          "Technology": 9.9,
+          "Real estate": 4.5
+        },
+        "largest_position": {
+          "ticker": "VTI",
+          "weight_pct": 53.0
+        },
+        "hhi_concentration_0_to_1": 0.346,
+        "effective_number_of_holdings": 2.9,
+        "annualized_volatility_pct": 11.3,
+        "average_correlation": 0.47,
+        "days_of_price_history": 250,
+        "highly_correlated_pairs": [
+          {
+            "a": "VTI",
+            "b": "VXUS",
+            "correlation": 0.84
+          }
+        ],
+        "diversification_score_out_of_100": {
+          "score": 44.1,
+          "built_from": "40% holdings concentration, 30% asset-class spread, 30% low correlation; a simple heuristic, not an industry standard",
+          "points_earned_pct_of_full_marks": {
+            "concentration": 29,
+            "asset_class_spread": 56,
+            "low_correlation": 53
+          }
+        },
+        "notes": []
+      },
+      "llm_seconds": 3.963424165998731,
+      "data_seconds": 1.3335238750005374,
+      "calc_seconds": 0.0009905420047289226
+    }
+  },
+  {
+    "portfolio": "concentrated_single_stock",
+    "question": null,
+    "text": "Let's break down your portfolio using the numbers provided as of October 30, 2026.\n\n- **Total Value**: Your portfolio is worth $176,388.\n\n- **Total Gain**: You've seen a gain of 127.4% on your investments.\n\n- **Holdings**: You have 3 different investments. The largest is AAPL, making up 97.7% of your portfolio, valued at $172,315, with a gain of 129.8%. VTI is 2.1% of your portfolio, valued at $3,716, with a gain of 68.9%. BND is 0.2%, valued at $358, with a loss of 3.3%.\n\n- **Asset Classes**: 99.8% of your portfolio is in US stocks, and 0.2% is in bonds.\n\n- **Sectors**: 97.7% is in Technology, 2.1% in the Broad market, and 0.2% in Aggregate bonds.\n\n- **Concentration**: The Herfindahl-Hirschman Index (HHI) is 0.955, indicating high concentration. This means most of your investment is in one area, which can increase risk.\n\n- **Volatility**: The annualized volatility is 23.7%. Volatility measures how much the value of your investments goes up and down based on past prices.\n\n- **Correlation**: The average correlation is 0.29. Correlation shows how investments move in relation to each other. A lower number suggests they don't move together much.\n\n- **Diversification Score**: Your score is 33 out of 100, suggesting limited diversification. Diversification spreads risk by investing in different areas.\n\nUnderstanding concentration, diversification, and risk can help manage your portfolio's stability and growth.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 5.662683291000576,
+      "input_tokens": 734,
+      "output_tokens": 378,
+      "cost_usd": 0.005615,
+      "metrics": {
+        "prices_as_of": "2026-10-30",
+        "holding_count": 3,
+        "total_value_usd": 176388,
+        "total_gain_pct": 127.4,
+        "holdings": [
+          {
+            "ticker": "AAPL",
+            "weight_pct": 97.7,
+            "value_usd": 172315,
+            "gain_pct": 129.8
+          },
+          {
+            "ticker": "VTI",
+            "weight_pct": 2.1,
+            "value_usd": 3716,
+            "gain_pct": 68.9
+          },
+          {
+            "ticker": "BND",
+            "weight_pct": 0.2,
+            "value_usd": 358,
+            "gain_pct": -3.3
+          }
+        ],
+        "asset_class_pct": {
+          "US stock": 99.8,
+          "Bond": 0.2
+        },
+        "sector_pct": {
+          "Technology": 97.7,
+          "Broad market": 2.1,
+          "Aggregate bonds": 0.2
+        },
+        "largest_position": {
+          "ticker": "AAPL",
+          "weight_pct": 97.7
+        },
+        "hhi_concentration_0_to_1": 0.955,
+        "effective_number_of_holdings": 1.0,
+        "annualized_volatility_pct": 23.7,
+        "average_correlation": 0.29,
+        "days_of_price_history": 250,
+        "highly_correlated_pairs": [],
+        "diversification_score_out_of_100": {
+          "score": 33.0,
+          "built_from": "40% holdings concentration, 30% asset-class spread, 30% low correlation; a simple heuristic, not an industry standard",
+          "points_earned_pct_of_full_marks": {
+            "concentration": 10,
+            "asset_class_spread": 25,
+            "low_correlation": 71
+          }
+        },
+        "notes": []
+      },
+      "llm_seconds": 5.211849499999516,
+      "data_seconds": 0.45013200000175857,
+      "calc_seconds": 0.0007017909993010107
+    }
+  },
+  {
+    "portfolio": "bond_heavy",
+    "question": null,
+    "text": "Let's break down your portfolio using the numbers provided as of October 30, 2026.\n\n- **Total Value**: Your portfolio is worth $53,222. This is the total amount of money you have invested across all your holdings.\n\n- **Total Gain**: You've seen a 4.5% increase in your portfolio's value since you started investing.\n\n- **Holdings**: You have 5 different investments. The largest is BND, making up 40.3% of your portfolio. This means a significant portion of your money is in this one investment.\n\n- **Asset Classes**: 82.5% of your portfolio is in bonds, and 17.5% is in US stocks. Asset classes are categories of investments, like stocks or bonds, that behave similarly in the market.\n\n- **Sector Breakdown**: Most of your investments are in aggregate bonds (67.5%), with smaller portions in broad market stocks (17.5%), long-term Treasuries (7.7%), and inflation-protected bonds (7.4%).\n\n- **Concentration**: The HHI concentration score is 0.278. This measures how spread out your investments are. A lower score generally means more diversification.\n\n- **Volatility**: Your portfolio's annualized volatility is 4.8%. Volatility shows how much the value of your investments goes up and down. This is based on past prices and isn't a prediction.\n\n- **Correlation**: The average correlation is 0.65. Correlation measures how investments move in relation to each other. A higher number means they move more similarly. BND and AGG are highly correlated at 0.99, meaning they tend to move together.\n\n- **Diversification Score**: Your score is 35.4 out of 100. This suggests there's room for more diversification, which can help manage risk.\n\nUnderstanding these metrics can help you learn about how your investments are spread out and how they might react to market changes.",
+    "metadata": {
+      "advice_requested": false,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 3.715851624001516,
+      "input_tokens": 927,
+      "output_tokens": 407,
+      "cost_usd": 0.0063875,
+      "metrics": {
+        "prices_as_of": "2026-10-30",
+        "holding_count": 5,
+        "total_value_usd": 53222,
+        "total_gain_pct": 4.5,
+        "holdings": [
+          {
+            "ticker": "BND",
+            "weight_pct": 40.3,
+            "value_usd": 21468,
+            "gain_pct": -3.3
+          },
+          {
+            "ticker": "AGG",
+            "weight_pct": 27.2,
+            "value_usd": 14454,
+            "gain_pct": -1.7
+          },
+          {
+            "ticker": "VTI",
+            "weight_pct": 17.5,
+            "value_usd": 9289,
+            "gain_pct": 68.9
+          },
+          {
+            "ticker": "TLT",
+            "weight_pct": 7.7,
+            "value_usd": 4092,
+            "gain_pct": -11.0
+          },
+          {
+            "ticker": "VTIP",
+            "weight_pct": 7.4,
+            "value_usd": 3919,
+            "gain_pct": -0.0
+          }
+        ],
+        "asset_class_pct": {
+          "Bond": 82.5,
+          "US stock": 17.5
+        },
+        "sector_pct": {
+          "Aggregate bonds": 67.5,
+          "Broad market": 17.5,
+          "Long-term Treasuries": 7.7,
+          "Inflation-protected bonds": 7.4
+        },
+        "largest_position": {
+          "ticker": "BND",
+          "weight_pct": 40.3
+        },
+        "hhi_concentration_0_to_1": 0.278,
+        "effective_number_of_holdings": 3.6,
+        "annualized_volatility_pct": 4.8,
+        "average_correlation": 0.65,
+        "days_of_price_history": 250,
+        "highly_correlated_pairs": [
+          {
+            "a": "BND",
+            "b": "AGG",
+            "correlation": 0.99
+          },
+          {
+            "a": "BND",
+            "b": "TLT",
+            "correlation": 0.92
+          },
+          {
+            "a": "AGG",
+            "b": "TLT",
+            "correlation": 0.92
+          }
+        ],
+        "diversification_score_out_of_100": {
+          "score": 35.4,
+          "built_from": "40% holdings concentration, 30% asset-class spread, 30% low correlation; a simple heuristic, not an industry standard",
+          "points_earned_pct_of_full_marks": {
+            "concentration": 36,
+            "asset_class_spread": 35,
+            "low_correlation": 35
+          }
+        },
+        "notes": []
+      },
+      "llm_seconds": 3.1530210000018997,
+      "data_seconds": 0.5621601659986482,
+      "calc_seconds": 0.0006704580009682104
+    }
+  },
+  {
+    "portfolio": "concentrated_single_stock",
+    "question": "Should I sell some of my Apple stock?",
+    "text": "Let's look at the numbers in your portfolio to understand some key concepts.\n\nYour portfolio has a total value of $176,388 as of October 30, 2026. You have three holdings: AAPL, VTI, and BND. AAPL makes up 97.7% of your portfolio, which means it's a very large part of your investments. This is called concentration. High concentration in one stock can increase risk because your portfolio's performance heavily depends on that single stock.\n\nThe Herfindahl-Hirschman Index (HHI) is a measure of concentration, and your portfolio's HHI is 0.955. This indicates a very high concentration. The effective number of holdings is 1.0, suggesting that despite having three holdings, your portfolio behaves as if it has only one due to the dominance of AAPL.\n\nYour portfolio's annualized volatility is 23.7%. Volatility measures how much the value of your investments goes up and down over time. Higher volatility means more risk.\n\nThe diversification score is 33 out of 100, which suggests limited diversification. Diversification is spreading investments across different assets to reduce risk.\n\nPeople often consider diversification to manage risk. They might think about spreading investments across different sectors or asset classes. It's helpful to talk to a licensed financial advisor to understand how these concepts apply to your personal situation.",
+    "metadata": {
+      "advice_requested": true,
+      "output_flagged": false,
+      "flagged_phrases": [],
+      "original_text": null,
+      "model": "gpt-4o-2024-08-06",
+      "latency_s": 2.3654684989996895,
+      "input_tokens": 798,
+      "output_tokens": 276,
+      "cost_usd": 0.004755,
+      "metrics": {
+        "prices_as_of": "2026-10-30",
+        "holding_count": 3,
+        "total_value_usd": 176388,
+        "total_gain_pct": 127.4,
+        "holdings": [
+          {
+            "ticker": "AAPL",
+            "weight_pct": 97.7,
+            "value_usd": 172315,
+            "gain_pct": 129.8
+          },
+          {
+            "ticker": "VTI",
+            "weight_pct": 2.1,
+            "value_usd": 3716,
+            "gain_pct": 68.9
+          },
+          {
+            "ticker": "BND",
+            "weight_pct": 0.2,
+            "value_usd": 358,
+            "gain_pct": -3.3
+          }
+        ],
+        "asset_class_pct": {
+          "US stock": 99.8,
+          "Bond": 0.2
+        },
+        "sector_pct": {
+          "Technology": 97.7,
+          "Broad market": 2.1,
+          "Aggregate bonds": 0.2
+        },
+        "largest_position": {
+          "ticker": "AAPL",
+          "weight_pct": 97.7
+        },
+        "hhi_concentration_0_to_1": 0.955,
+        "effective_number_of_holdings": 1.0,
+        "annualized_volatility_pct": 23.7,
+        "average_correlation": 0.29,
+        "days_of_price_history": 250,
+        "highly_correlated_pairs": [],
+        "diversification_score_out_of_100": {
+          "score": 33.0,
+          "built_from": "40% holdings concentration, 30% asset-class spread, 30% low correlation; a simple heuristic, not an industry standard",
+          "points_earned_pct_of_full_marks": {
+            "concentration": 10,
+            "asset_class_spread": 25,
+            "low_correlation": 71
+          }
+        },
+        "notes": []
+      },
+      "llm_seconds": 2.364548082998226,
+      "data_seconds": 0.00024487500195391476,
+      "calc_seconds": 0.0006755409995093942
+    }
+  }
+]
