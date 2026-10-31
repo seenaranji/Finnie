@@ -1,0 +1,3719 @@
+{
+  "split": "test",
+  "git_commit": "4fd7ee2",
+  "dataset": "eval/datasets/retrieval.jsonl",
+  "embedding_model": "text-embedding-3-small",
+  "chunk_size": 500,
+  "configs": {
+    "dense": {
+      "kind": "ranking",
+      "mode": "dense",
+      "threshold": 0.0,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.8125,
+      "hit5": 0.875,
+      "mrr": 0.828125,
+      "recall5": 0.75,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.875
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.7777777777777778
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "glossary#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#1"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": 4,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#0",
+            "dividend-taxes#2"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "bonds-basics#0",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "solo-401k#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "roth-iras#0"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "treasury-bonds#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#3",
+            "diversification#1",
+            "stocks-basics#4"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "etf-vs-mutual-fund#2",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "simple-ira#3",
+            "simple-ira#2",
+            "sep-ira#5"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0",
+            "stocks-basics#1",
+            "dividend-taxes#1"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "what-is-investing#2",
+            "inflation#4",
+            "tips-inflation-protected-securities#4"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "diversification#6",
+            "etf-basics#3"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "traditional-iras#3",
+            "rollovers#1",
+            "roth-iras#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "i-bonds#3",
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "retirement-accounts-overview#4"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#3",
+            "tips-inflation-protected-securities#0",
+            "stocks-basics#2"
+          ]
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "savers-credit#1",
+            "retirement-contribution-limits#1",
+            "simple-ira#2"
+          ]
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "consumer-price-index#3",
+            "net-investment-income-tax#0",
+            "savers-credit#2"
+          ]
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-plans-for-self-employed#2",
+            "sep-ira#4",
+            "savers-credit#0"
+          ]
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "discount-window#1",
+            "bonds-basics#0",
+            "credit-scores#3"
+          ]
+        }
+      ]
+    },
+    "bm25": {
+      "kind": "ranking",
+      "mode": "bm25",
+      "threshold": 0.0,
+      "bm25_min_score": 0.0,
+      "rrf_k": 60,
+      "hit3": 0.75,
+      "hit5": 0.875,
+      "mrr": 0.68125,
+      "recall5": 0.8125,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 0.2,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.5666666666666668
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.7222222222222222
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "glossary#1",
+            "etf-vs-mutual-fund#1",
+            "etf-basics#2"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": 5,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "dividend-taxes#2",
+            "dividend-taxes#1",
+            "dividend-taxes#3"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "glossary#6",
+            "treasury-bonds#3"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "solo-401k#0",
+            "roth-vs-pretax-401k-comparison#1",
+            "roth-vs-pretax-401k-comparison#2"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 5,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "roth-vs-pretax-401k-comparison#1",
+            "roth-vs-pretax-401k-comparison#2",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "net-investment-income-tax#2",
+            "fdic-deposit-insurance#3"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0",
+            "diversification#1",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "mutual-funds-basics#1",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "simple-ira#0",
+            "retirement-accounts-overview#1",
+            "sep-ira#1"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#3",
+            "diversification#6",
+            "retirement-accounts-overview#4"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "risk-and-return#2",
+            "what-is-investing#0",
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "etf-basics#3",
+            "mutual-funds-basics#4"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "traditional-iras#3",
+            "retirement-accounts-overview#3",
+            "roth-iras#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "treasury-bonds#2"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "roth-iras#0",
+            "retirement-accounts-overview#3",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "mutual-funds-basics#2",
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "gross-domestic-product#4"
+          ]
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "avoiding-scams-warning-signs#1",
+            "unemployment-rate#3",
+            "sep-ira#2"
+          ]
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "simple-ira#0",
+            "sep-ira#4",
+            "fed-two-percent-inflation-goal#2"
+          ]
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#3",
+            "credit-scores#3",
+            "bonds-basics#1"
+          ]
+        }
+      ]
+    },
+    "hybrid rrf_k=20": {
+      "kind": "ranking",
+      "mode": "hybrid",
+      "threshold": 0.0,
+      "bm25_min_score": 0.0,
+      "rrf_k": 20,
+      "hit3": 0.875,
+      "hit5": 0.9375,
+      "mrr": 0.828125,
+      "recall5": 0.875,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.75
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.8611111111111112
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "glossary#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#1"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#2",
+            "dividend-taxes#3"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "glossary#6",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "solo-401k#0",
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "roth-vs-pretax-401k-comparison#1",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "treasury-bonds#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#1",
+            "stocks-basics#3",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "mutual-funds-basics#1",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "sep-ira#1",
+            "retirement-accounts-overview#1",
+            "simple-ira#0"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0",
+            "stocks-basics#2",
+            "what-is-investing#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "what-is-investing#2",
+            "risk-and-return#2",
+            "emergency-fund#4"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "etf-basics#3",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": 4,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "traditional-iras#3",
+            "roth-iras#1",
+            "rollovers#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "i-bonds#3"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "gross-domestic-product#4",
+            "compound-interest#3",
+            "tips-inflation-protected-securities#0"
+          ]
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "unemployment-rate#3",
+            "savers-credit#1",
+            "simple-ira#1"
+          ]
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "consumer-price-index#3",
+            "net-investment-income-tax#0",
+            "savers-credit#2"
+          ]
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "sep-ira#4",
+            "simple-ira#0",
+            "savers-credit#0"
+          ]
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "credit-scores#3",
+            "bonds-basics#0",
+            "cost-basis#2"
+          ]
+        }
+      ]
+    },
+    "hybrid rrf_k=60": {
+      "kind": "ranking",
+      "mode": "hybrid",
+      "threshold": 0.0,
+      "bm25_min_score": 0.0,
+      "rrf_k": 60,
+      "hit3": 0.875,
+      "hit5": 0.9375,
+      "mrr": 0.828125,
+      "recall5": 0.875,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.75
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.8611111111111112
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "glossary#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#1"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#2",
+            "dividend-taxes#3"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "glossary#6",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "solo-401k#0",
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "roth-vs-pretax-401k-comparison#1",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "treasury-bonds#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#1",
+            "stocks-basics#3",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "mutual-funds-basics#1",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "sep-ira#1",
+            "retirement-accounts-overview#1",
+            "simple-ira#0"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0",
+            "stocks-basics#2",
+            "what-is-investing#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "what-is-investing#2",
+            "risk-and-return#2",
+            "emergency-fund#4"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "etf-basics#3",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": 4,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "traditional-iras#3",
+            "roth-iras#1",
+            "rollovers#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "i-bonds#3"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "gross-domestic-product#4",
+            "compound-interest#3",
+            "tips-inflation-protected-securities#0"
+          ]
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "unemployment-rate#3",
+            "savers-credit#1",
+            "simple-ira#1"
+          ]
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "consumer-price-index#3",
+            "net-investment-income-tax#0",
+            "savers-credit#2"
+          ]
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "sep-ira#4",
+            "simple-ira#0",
+            "savers-credit#0"
+          ]
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "credit-scores#3",
+            "bonds-basics#0",
+            "cost-basis#2"
+          ]
+        }
+      ]
+    },
+    "hybrid rrf_k=100": {
+      "kind": "ranking",
+      "mode": "hybrid",
+      "threshold": 0.0,
+      "bm25_min_score": 0.0,
+      "rrf_k": 100,
+      "hit3": 0.875,
+      "hit5": 0.9375,
+      "mrr": 0.828125,
+      "recall5": 0.875,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.75
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.8611111111111112
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "glossary#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#1"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#2",
+            "dividend-taxes#3"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "glossary#6",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "solo-401k#0",
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "roth-vs-pretax-401k-comparison#1",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "treasury-bonds#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#1",
+            "stocks-basics#3",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "mutual-funds-basics#1",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "sep-ira#1",
+            "retirement-accounts-overview#1",
+            "simple-ira#0"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0",
+            "stocks-basics#2",
+            "what-is-investing#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "what-is-investing#2",
+            "risk-and-return#2",
+            "emergency-fund#4"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "etf-basics#3",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": 4,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "traditional-iras#3",
+            "roth-iras#1",
+            "rollovers#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "i-bonds#3"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "gross-domestic-product#4",
+            "compound-interest#3",
+            "tips-inflation-protected-securities#0"
+          ]
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "unemployment-rate#3",
+            "savers-credit#1",
+            "simple-ira#1"
+          ]
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "consumer-price-index#3",
+            "net-investment-income-tax#0",
+            "savers-credit#2"
+          ]
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "sep-ira#4",
+            "simple-ira#0",
+            "savers-credit#0"
+          ]
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "credit-scores#3",
+            "bonds-basics#0",
+            "cost-basis#2"
+          ]
+        }
+      ]
+    },
+    "dense thr=0.40": {
+      "kind": "gate",
+      "mode": "dense",
+      "threshold": 0.4,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.8125,
+      "hit5": 0.875,
+      "mrr": 0.828125,
+      "recall5": 0.75,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 0.8,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.875
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.7777777777777778
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "glossary#1",
+            "etf-basics#2"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": 4,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#0",
+            "dividend-taxes#2"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "bonds-basics#0",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "solo-401k#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "roth-iras#0"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "treasury-bonds#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#3",
+            "diversification#1",
+            "stocks-basics#4"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "etf-vs-mutual-fund#2",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "simple-ira#3",
+            "simple-ira#2",
+            "sep-ira#5"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0",
+            "stocks-basics#1",
+            "dividend-taxes#1"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "diversification#6",
+            "etf-basics#3"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "traditional-iras#3",
+            "rollovers#1",
+            "roth-iras#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "i-bonds#3",
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "retirement-accounts-overview#4"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-plans-for-self-employed#2",
+            "sep-ira#4",
+            "savers-credit#0"
+          ]
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "dense thr=0.465": {
+      "kind": "gate",
+      "mode": "dense",
+      "threshold": 0.465,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.8125,
+      "hit5": 0.8125,
+      "mrr": 0.8125,
+      "recall5": 0.6875,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.8333333333333334
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.7777777777777778
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "glossary#1"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#0",
+            "dividend-taxes#2"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "bonds-basics#0",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "solo-401k#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "roth-iras#0"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#3",
+            "diversification#1",
+            "stocks-basics#4"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "etf-vs-mutual-fund#2",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "simple-ira#3",
+            "simple-ira#2",
+            "sep-ira#5"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "traditional-iras#3",
+            "rollovers#1",
+            "roth-iras#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "i-bonds#3",
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "retirement-accounts-overview#4"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 4,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "dense thr=0.50": {
+      "kind": "gate",
+      "mode": "dense",
+      "threshold": 0.5,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.75,
+      "hit5": 0.75,
+      "mrr": 0.75,
+      "recall5": 0.59375,
+      "wrongly_refused": 1,
+      "n_answerable": 16,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.6666666666666666
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.7777777777777778
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "glossary#1"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#1"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "bonds-basics#1"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "solo-401k#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "roth-iras#0"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#3",
+            "diversification#1",
+            "stocks-basics#4"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "etf-vs-mutual-fund#2",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "simple-ira#3",
+            "simple-ira#2"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "traditional-iras#3",
+            "rollovers#1",
+            "roth-iras#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "i-bonds#3"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "retirement-accounts-overview#4"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "hybrid thr=.465 bm25=off": {
+      "kind": "gate",
+      "mode": "hybrid",
+      "threshold": 0.465,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.8125,
+      "hit5": 0.8125,
+      "mrr": 0.8125,
+      "recall5": 0.6875,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.8333333333333334
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.7777777777777778
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "glossary#1"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#0",
+            "dividend-taxes#2"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "bonds-basics#0",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "solo-401k#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "roth-iras#0"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#3",
+            "diversification#1",
+            "stocks-basics#4"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "etf-vs-mutual-fund#2",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "simple-ira#3",
+            "simple-ira#2",
+            "sep-ira#5"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "traditional-iras#3",
+            "rollovers#1",
+            "roth-iras#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "i-bonds#3",
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "retirement-accounts-overview#4"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 4,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "hybrid thr=.465 bm25>=2.5": {
+      "kind": "gate",
+      "mode": "hybrid",
+      "threshold": 0.465,
+      "bm25_min_score": 2.5,
+      "rrf_k": 60,
+      "hit3": 0.875,
+      "hit5": 0.9375,
+      "mrr": 0.859375,
+      "recall5": 0.875,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 0.8,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.8333333333333334
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.8611111111111112
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "glossary#1",
+            "etf-vs-mutual-fund#1",
+            "etf-basics#2"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#2",
+            "dividend-taxes#1",
+            "dividend-taxes#0"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "bonds-basics#0",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "solo-401k#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "roth-vs-pretax-401k-comparison#1",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "net-investment-income-tax#2"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#1",
+            "stocks-basics#3",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "mutual-funds-basics#1",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "sep-ira#1",
+            "retirement-accounts-overview#1",
+            "simple-ira#3"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "what-is-investing#2",
+            "risk-and-return#2",
+            "what-is-investing#0"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "diversification#6",
+            "etf-basics#3"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": 4,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "traditional-iras#3",
+            "roth-iras#1",
+            "rollovers#1"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "i-bonds#3"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "simple-ira#0",
+            "sep-ira#4"
+          ]
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "hybrid thr=.465 bm25>=3.3": {
+      "kind": "gate",
+      "mode": "hybrid",
+      "threshold": 0.465,
+      "bm25_min_score": 3.3,
+      "rrf_k": 60,
+      "hit3": 0.9375,
+      "hit5": 0.9375,
+      "mrr": 0.8333333333333334,
+      "recall5": 0.875,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.75
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.8703703703703703
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "glossary#1",
+            "etf-vs-mutual-fund#1",
+            "etf-basics#2"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#0",
+            "dividend-taxes#2"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "bonds-basics#0",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "solo-401k#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "roth-vs-pretax-401k-comparison#1",
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#3",
+            "stocks-basics#0",
+            "diversification#1"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "mutual-funds-basics#1",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": 2,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "sep-ira#1",
+            "retirement-accounts-overview#1",
+            "simple-ira#3"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 4,
+          "recall5": 1.0,
+          "top": [
+            "what-is-investing#2",
+            "risk-and-return#2",
+            "what-is-investing#0"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": 3,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "traditional-iras#3",
+            "roth-iras#1",
+            "retirement-accounts-overview#3"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "i-bonds#3"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "401k-plans-irs-overview#1"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "hybrid thr=.465 bm25>=4.0": {
+      "kind": "gate",
+      "mode": "hybrid",
+      "threshold": 0.465,
+      "bm25_min_score": 4.0,
+      "rrf_k": 60,
+      "hit3": 0.875,
+      "hit5": 0.875,
+      "mrr": 0.8333333333333334,
+      "recall5": 0.78125,
+      "wrongly_refused": 0,
+      "n_answerable": 16,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 5,
+      "mrr_by_type": {
+        "exact": {
+          "n": 6,
+          "mrr": 0.8333333333333334
+        },
+        "paraphrase": {
+          "n": 9,
+          "mrr": 0.8148148148148148
+        },
+        "partial": {
+          "n": 1,
+          "mrr": 1.0
+        }
+      },
+      "items": [
+        {
+          "id": "q22",
+          "qtype": "exact",
+          "query": "what is a bid-ask spread",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 0.5,
+          "top": [
+            "glossary#1"
+          ]
+        },
+        {
+          "id": "q23",
+          "qtype": "exact",
+          "query": "what is a dividend",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "dividend-taxes#1",
+            "dividend-taxes#0",
+            "dividend-taxes#2"
+          ]
+        },
+        {
+          "id": "q24",
+          "qtype": "exact",
+          "query": "what is the yield on a bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 3,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#1",
+            "bonds-basics#0",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "q25",
+          "qtype": "exact",
+          "query": "what is a 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "solo-401k#0"
+          ]
+        },
+        {
+          "id": "q26",
+          "qtype": "exact",
+          "query": "what is a Roth 401(k)",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 0.5,
+          "top": [
+            "retirement-accounts-overview#1",
+            "401k-plans-irs-overview#0",
+            "roth-iras#0"
+          ]
+        },
+        {
+          "id": "q27",
+          "qtype": "exact",
+          "query": "what is a municipal bond",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "q28",
+          "qtype": "paraphrase",
+          "query": "is it risky to own shares of just one company",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#3",
+            "stocks-basics#0",
+            "diversification#1"
+          ]
+        },
+        {
+          "id": "q29",
+          "qtype": "paraphrase",
+          "query": "which one is priced only once a day, a mutual fund or an ETF",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#0",
+            "mutual-funds-basics#1",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "q30",
+          "qtype": "paraphrase",
+          "query": "how can my employer add money to my retirement savings",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "simple-ira#3",
+            "simple-ira#0",
+            "simple-ira#2"
+          ]
+        },
+        {
+          "id": "q31",
+          "qtype": "paraphrase",
+          "query": "what does owning a stock actually mean",
+          "answerable": true,
+          "rank": 1,
+          "returned": 1,
+          "recall5": 1.0,
+          "top": [
+            "stocks-basics#0"
+          ]
+        },
+        {
+          "id": "q32",
+          "qtype": "paraphrase",
+          "query": "why does cash lose buying power over time",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "what-is-investing#2",
+            "risk-and-return#2"
+          ]
+        },
+        {
+          "id": "q33",
+          "qtype": "paraphrase",
+          "query": "why do ten tech stocks not count as spread out",
+          "answerable": true,
+          "rank": 1,
+          "returned": 2,
+          "recall5": 1.0,
+          "top": [
+            "diversification#3",
+            "diversification#6"
+          ]
+        },
+        {
+          "id": "q34",
+          "qtype": "paraphrase",
+          "query": "do I pay tax when I take money out of a Roth",
+          "answerable": true,
+          "rank": 3,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "traditional-iras#3",
+            "roth-iras#1",
+            "retirement-accounts-overview#3"
+          ]
+        },
+        {
+          "id": "q35",
+          "qtype": "paraphrase",
+          "query": "what does a bond issuer owe me when the bond matures",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "q36",
+          "qtype": "paraphrase",
+          "query": "what is the difference between a traditional and a Roth account",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "roth-iras#0",
+            "retirement-accounts-overview#4"
+          ]
+        },
+        {
+          "id": "q37",
+          "qtype": "partial",
+          "query": "are index funds cheaper than actively managed funds",
+          "answerable": true,
+          "rank": 1,
+          "returned": 5,
+          "recall5": 1.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#2",
+            "mutual-funds-basics#3"
+          ]
+        },
+        {
+          "id": "q38",
+          "qtype": "unanswerable",
+          "query": "what is the weather in Paris tomorrow",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q39",
+          "qtype": "unanswerable",
+          "query": "who won the soccer world cup in 2018",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q40",
+          "qtype": "unanswerable",
+          "query": "what is HHI",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q41",
+          "qtype": "unanswerable",
+          "query": "how does a 529 college savings plan work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "q42",
+          "qtype": "unanswerable",
+          "query": "how do I get a mortgage to buy a house",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    }
+  }
+}

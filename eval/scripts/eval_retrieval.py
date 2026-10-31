@@ -77,7 +77,7 @@ def run_config(retriever: HybridRetriever, items: list[dict], mode: str, thresho
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--split", choices=["dev", "test"], default="dev")
+    parser.add_argument("--split", choices=["dev", "test", "expansion"], default="dev")
     args = parser.parse_args()
     setup_logging("WARNING")
     items = [json.loads(line) for line in DATASET.read_text().splitlines() if line]

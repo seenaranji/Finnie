@@ -27,7 +27,10 @@ def read_document(path: Path) -> tuple[dict, str, list[str]]:
            same name: guide.pdf + guide.meta.yaml. The text is extracted with pypdf.
     """
     if path.suffix == ".md":
-        post = frontmatter.load(path)
+        try:
+            post = frontmatter.load(path)
+        except Exception as error:   # malformed front matter (e.g. an unquoted colon in the title) must not crash indexing
+            return {}, "", [f"could not parse front matter: {type(error).__name__}: {str(error).splitlines()[0]}"]
         return post.metadata, post.content, []
 
     problems = []

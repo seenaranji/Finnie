@@ -20,18 +20,18 @@
 {"id": "q20", "split": "dev", "qtype": "unanswerable", "query": "how do I file my income tax return", "expected_ids": [], "answerable": false}
 {"id": "q21", "split": "dev", "qtype": "unanswerable", "query": "what is the current price of Apple stock", "expected_ids": [], "answerable": false}
 {"id": "q22", "split": "test", "qtype": "exact", "query": "what is a bid-ask spread", "expected_ids": ["etf-basics", "glossary"], "answerable": true}
-{"id": "q23", "split": "test", "qtype": "exact", "query": "what is a dividend", "expected_ids": ["stocks-basics", "glossary"], "answerable": true}
+{"id": "q23", "split": "test", "qtype": "exact", "query": "what is a dividend", "expected_ids": ["stocks-basics", "glossary", "dividend-taxes"], "answerable": true}
 {"id": "q24", "split": "test", "qtype": "exact", "query": "what is the yield on a bond", "expected_ids": ["bonds-basics", "glossary"], "answerable": true}
-{"id": "q25", "split": "test", "qtype": "exact", "query": "what is a 401(k)", "expected_ids": ["retirement-accounts-overview", "glossary"], "answerable": true}
+{"id": "q25", "split": "test", "qtype": "exact", "query": "what is a 401(k)", "expected_ids": ["retirement-accounts-overview", "glossary", "401k-plans-irs-overview"], "answerable": true}
 {"id": "q26", "split": "test", "qtype": "exact", "query": "what is a Roth 401(k)", "expected_ids": ["retirement-accounts-overview", "glossary"], "answerable": true}
 {"id": "q27", "split": "test", "qtype": "exact", "query": "what is a municipal bond", "expected_ids": ["bonds-basics"], "answerable": true}
 {"id": "q28", "split": "test", "qtype": "paraphrase", "query": "is it risky to own shares of just one company", "expected_ids": ["stocks-basics", "diversification"], "answerable": true}
 {"id": "q29", "split": "test", "qtype": "paraphrase", "query": "which one is priced only once a day, a mutual fund or an ETF", "expected_ids": ["etf-vs-mutual-fund", "mutual-funds-basics"], "answerable": true}
-{"id": "q30", "split": "test", "qtype": "paraphrase", "query": "how can my employer add money to my retirement savings", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
+{"id": "q30", "split": "test", "qtype": "paraphrase", "query": "how can my employer add money to my retirement savings", "expected_ids": ["retirement-accounts-overview", "simple-ira", "sep-ira"], "answerable": true}
 {"id": "q31", "split": "test", "qtype": "paraphrase", "query": "what does owning a stock actually mean", "expected_ids": ["stocks-basics"], "answerable": true}
 {"id": "q32", "split": "test", "qtype": "paraphrase", "query": "why does cash lose buying power over time", "expected_ids": ["what-is-investing", "risk-and-return"], "answerable": true}
 {"id": "q33", "split": "test", "qtype": "paraphrase", "query": "why do ten tech stocks not count as spread out", "expected_ids": ["diversification"], "answerable": true}
-{"id": "q34", "split": "test", "qtype": "paraphrase", "query": "do I pay tax when I take money out of a Roth", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
+{"id": "q34", "split": "test", "qtype": "paraphrase", "query": "do I pay tax when I take money out of a Roth", "expected_ids": ["retirement-accounts-overview", "roth-iras", "roth-vs-pretax-401k-comparison"], "answerable": true}
 {"id": "q35", "split": "test", "qtype": "paraphrase", "query": "what does a bond issuer owe me when the bond matures", "expected_ids": ["bonds-basics"], "answerable": true}
 {"id": "q36", "split": "test", "qtype": "paraphrase", "query": "what is the difference between a traditional and a Roth account", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
 {"id": "q37", "split": "test", "qtype": "partial", "query": "are index funds cheaper than actively managed funds", "expected_ids": ["mutual-funds-basics", "etf-vs-mutual-fund"], "answerable": true}
@@ -40,3 +40,35 @@
 {"id": "q40", "split": "test", "qtype": "unanswerable", "query": "what is HHI", "expected_ids": [], "answerable": false}
 {"id": "q41", "split": "test", "qtype": "unanswerable", "query": "how does a 529 college savings plan work", "expected_ids": [], "answerable": false}
 {"id": "q42", "split": "test", "qtype": "unanswerable", "query": "how do I get a mortgage to buy a house", "expected_ids": [], "answerable": false}
+{"id": "x01", "split": "expansion", "qtype": "exact", "query": "what is a Treasury bill", "expected_ids": ["treasury-bills", "treasury-securities-overview"], "answerable": true}
+{"id": "x02", "split": "expansion", "qtype": "exact", "query": "what does TIPS stand for", "expected_ids": ["tips-inflation-protected-securities"], "answerable": true}
+{"id": "x03", "split": "expansion", "qtype": "exact", "query": "what is a SIMPLE IRA", "expected_ids": ["simple-ira"], "answerable": true}
+{"id": "x04", "split": "expansion", "qtype": "exact", "query": "what is a SEP IRA", "expected_ids": ["sep-ira"], "answerable": true}
+{"id": "x05", "split": "expansion", "qtype": "exact", "query": "what is the net investment income tax", "expected_ids": ["net-investment-income-tax"], "answerable": true}
+{"id": "x06", "split": "expansion", "qtype": "exact", "query": "what is FDIC insurance", "expected_ids": ["fdic-deposit-insurance"], "answerable": true}
+{"id": "x07", "split": "expansion", "qtype": "exact", "query": "what is cost basis", "expected_ids": ["cost-basis"], "answerable": true}
+{"id": "x08", "split": "expansion", "qtype": "exact", "query": "what is the consumer price index", "expected_ids": ["consumer-price-index"], "answerable": true}
+{"id": "x09", "split": "expansion", "qtype": "exact", "query": "what is the FOMC", "expected_ids": ["federal-open-market-committee"], "answerable": true}
+{"id": "x10", "split": "expansion", "qtype": "exact", "query": "what is a solo 401(k)", "expected_ids": ["solo-401k"], "answerable": true}
+{"id": "x11", "split": "expansion", "qtype": "paraphrase", "query": "how long do I have to move money from my old 401(k) into a new account", "expected_ids": ["rollovers"], "answerable": true}
+{"id": "x12", "split": "expansion", "qtype": "paraphrase", "query": "what happens if I take money out of my IRA before I reach retirement age", "expected_ids": ["early-withdrawal-tax-ira"], "answerable": true}
+{"id": "x13", "split": "expansion", "qtype": "paraphrase", "query": "a government bond whose value goes up when prices rise", "expected_ids": ["tips-inflation-protected-securities", "i-bonds"], "answerable": true}
+{"id": "x14", "split": "expansion", "qtype": "paraphrase", "query": "how can I protect my savings from losing value to rising prices", "expected_ids": ["i-bonds", "tips-inflation-protected-securities", "inflation"], "answerable": true}
+{"id": "x15", "split": "expansion", "qtype": "paraphrase", "query": "how much cash should I keep aside for unexpected bills", "expected_ids": ["emergency-fund"], "answerable": true}
+{"id": "x16", "split": "expansion", "qtype": "paraphrase", "query": "what goes into my credit score", "expected_ids": ["credit-scores"], "answerable": true}
+{"id": "x17", "split": "expansion", "qtype": "paraphrase", "query": "how is the unemployment number worked out", "expected_ids": ["unemployment-rate"], "answerable": true}
+{"id": "x18", "split": "expansion", "qtype": "paraphrase", "query": "how does the Fed move interest rates", "expected_ids": ["open-market-operations", "federal-open-market-committee", "interest-on-reserve-balances", "discount-window", "monetary-policy-goals"], "answerable": true}
+{"id": "x19", "split": "expansion", "qtype": "paraphrase", "query": "what is the tax on dividends from my stocks", "expected_ids": ["dividend-taxes"], "answerable": true}
+{"id": "x20", "split": "expansion", "qtype": "paraphrase", "query": "is the interest on my savings account taxable", "expected_ids": ["interest-income-taxes"], "answerable": true}
+{"id": "x21", "split": "expansion", "qtype": "paraphrase", "query": "does bank insurance cover my mutual funds", "expected_ids": ["fdic-deposit-insurance"], "answerable": true}
+{"id": "x22", "split": "expansion", "qtype": "paraphrase", "query": "how do I spot a scam", "expected_ids": ["avoiding-scams-warning-signs"], "answerable": true}
+{"id": "x23", "split": "expansion", "qtype": "paraphrase", "query": "which retirement plan can a freelancer with no employees use", "expected_ids": ["solo-401k", "retirement-plans-for-self-employed", "sep-ira"], "answerable": true}
+{"id": "x24", "split": "expansion", "qtype": "paraphrase", "query": "a tax credit for saving into my IRA if my income is low", "expected_ids": ["savers-credit"], "answerable": true}
+{"id": "x25", "split": "expansion", "qtype": "partial", "query": "what is the difference between a Roth 401(k) and a Roth IRA", "expected_ids": ["roth-vs-pretax-401k-comparison", "roth-iras"], "answerable": true}
+{"id": "x26", "split": "expansion", "qtype": "partial", "query": "a savings bond that pays more when inflation rises", "expected_ids": ["i-bonds"], "answerable": true}
+{"id": "x27", "split": "expansion", "qtype": "unanswerable", "query": "how do stock options work for employees", "expected_ids": [], "answerable": false}
+{"id": "x28", "split": "expansion", "qtype": "unanswerable", "query": "how do I buy bitcoin", "expected_ids": [], "answerable": false}
+{"id": "x29", "split": "expansion", "qtype": "unanswerable", "query": "which credit card has the best rewards", "expected_ids": [], "answerable": false}
+{"id": "x30", "split": "expansion", "qtype": "unanswerable", "query": "how does a reverse mortgage work", "expected_ids": [], "answerable": false}
+{"id": "x31", "split": "expansion", "qtype": "unanswerable", "query": "what is the best way to pay off student loans", "expected_ids": [], "answerable": false}
+{"id": "x32", "split": "expansion", "qtype": "unanswerable", "query": "how do covered call options work", "expected_ids": [], "answerable": false}

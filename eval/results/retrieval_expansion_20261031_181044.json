@@ -1,0 +1,5064 @@
+{
+  "split": "expansion",
+  "git_commit": "4fd7ee2",
+  "dataset": "eval/datasets/retrieval.jsonl",
+  "embedding_model": "text-embedding-3-small",
+  "chunk_size": 500,
+  "configs": {
+    "dense": {
+      "kind": "ranking",
+      "mode": "dense",
+      "threshold": 0.0,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 0,
+      "n_answerable": 26,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "etf-basics#0"
+          ]
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "investment-taxes-basics#0",
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#0",
+            "investment-taxes-basics#5",
+            "investment-taxes-basics#4"
+          ]
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#2",
+            "diversification#0",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#1"
+          ]
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#3",
+            "etf-vs-mutual-fund#1",
+            "retirement-contribution-limits#2"
+          ]
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "glossary#3",
+            "glossary#2"
+          ]
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-contribution-limits#1",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#1",
+            "retirement-accounts-overview#0",
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5",
+            "retirement-accounts-overview#0",
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "what-is-investing#2",
+            "what-is-investing#4"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#4",
+            "investment-taxes-basics#4",
+            "what-is-investing#1"
+          ]
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "what-is-investing#3",
+            "glossary#2"
+          ]
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#6",
+            "compound-interest#5",
+            "compound-interest#6"
+          ]
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "etf-vs-mutual-fund#0",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#0",
+            "stocks-basics#1",
+            "investment-taxes-basics#3"
+          ]
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#5",
+            "investment-taxes-basics#0",
+            "investment-taxes-basics#3"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "diversification#4",
+            "glossary#4"
+          ]
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#5",
+            "etf-vs-mutual-fund#3",
+            "risk-and-return#1"
+          ]
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-accounts-overview#0",
+            "retirement-contribution-limits#0"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "glossary#5",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#2",
+            "bonds-basics#3",
+            "compound-interest#2"
+          ]
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "stocks-basics#0",
+            "stocks-basics#1",
+            "etf-basics#1"
+          ]
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#2",
+            "etf-vs-mutual-fund#4",
+            "mutual-funds-basics#1"
+          ]
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-vs-mutual-fund#4",
+            "compound-interest#6",
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "compound-interest#5",
+            "mutual-funds-basics#1"
+          ]
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "etf-vs-mutual-fund#4",
+            "compound-interest#2"
+          ]
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-basics#1",
+            "mutual-funds-basics#1",
+            "compound-interest#6"
+          ]
+        }
+      ]
+    },
+    "bm25": {
+      "kind": "ranking",
+      "mode": "bm25",
+      "threshold": 0.0,
+      "bm25_min_score": 0.0,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 4,
+      "n_answerable": 26,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#2",
+            "retirement-accounts-overview#2",
+            "compound-interest#1"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "investment-taxes-basics#5",
+            "retirement-contribution-limits#5"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#6",
+            "retirement-accounts-overview#3",
+            "investment-taxes-basics#3"
+          ]
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#2"
+          ]
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-vs-mutual-fund#1",
+            "glossary#3",
+            "etf-basics#1"
+          ]
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-contribution-limits#1",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "investment-taxes-basics#5",
+            "retirement-accounts-overview#5"
+          ]
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5",
+            "retirement-contribution-limits#1",
+            "retirement-accounts-overview#3"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "glossary#3",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "bonds-basics#1",
+            "risk-and-return#0"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-vs-mutual-fund#4",
+            "what-is-investing#1",
+            "glossary#0"
+          ]
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "stocks-basics#0",
+            "stocks-basics#3",
+            "what-is-investing#0"
+          ]
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#7",
+            "compound-interest#3",
+            "diversification#1"
+          ]
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "compound-interest#1",
+            "risk-and-return#2"
+          ]
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "stocks-basics#1",
+            "investment-taxes-basics#0",
+            "retirement-contribution-limits#7"
+          ]
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "compound-interest#1",
+            "retirement-accounts-overview#3"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-vs-mutual-fund#2",
+            "mutual-funds-basics#0",
+            "etf-vs-mutual-fund#0"
+          ]
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#4",
+            "etf-vs-mutual-fund#4",
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "retirement-contribution-limits#5",
+            "retirement-contribution-limits#7"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "retirement-contribution-limits#3",
+            "investment-taxes-basics#5"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "bonds-basics#0",
+            "glossary#3"
+          ]
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "etf-basics#1",
+            "compound-interest#6"
+          ]
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "etf-basics#0",
+            "etf-vs-mutual-fund#4"
+          ]
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "compound-interest#0",
+            "etf-basics#1"
+          ]
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 4,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "bonds-basics#3",
+            "mutual-funds-basics#1"
+          ]
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "what-is-investing#3",
+            "etf-basics#3"
+          ]
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-contribution-limits#6",
+            "retirement-contribution-limits#5"
+          ]
+        }
+      ]
+    },
+    "hybrid rrf_k=20": {
+      "kind": "ranking",
+      "mode": "hybrid",
+      "threshold": 0.0,
+      "bm25_min_score": 0.0,
+      "rrf_k": 20,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 0,
+      "n_answerable": 26,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "etf-basics#0"
+          ]
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "investment-taxes-basics#0",
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#6",
+            "investment-taxes-basics#3",
+            "investment-taxes-basics#4"
+          ]
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#2",
+            "diversification#0",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#1"
+          ]
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#3",
+            "etf-vs-mutual-fund#1",
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "glossary#3",
+            "glossary#2"
+          ]
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-contribution-limits#1",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-accounts-overview#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5",
+            "retirement-accounts-overview#0",
+            "retirement-contribution-limits#1"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#3",
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "risk-and-return#2",
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "what-is-investing#4",
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "risk-and-return#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#3",
+            "retirement-contribution-limits#7",
+            "retirement-contribution-limits#0"
+          ]
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "compound-interest#1",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#0",
+            "stocks-basics#1",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "investment-taxes-basics#5",
+            "compound-interest#1"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "diversification#4",
+            "etf-vs-mutual-fund#2"
+          ]
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#5",
+            "etf-vs-mutual-fund#3",
+            "risk-and-return#1"
+          ]
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "mutual-funds-basics#4",
+            "retirement-contribution-limits#5"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-contribution-limits#3",
+            "retirement-accounts-overview#3"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "retirement-accounts-overview#3",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "what-is-investing#2",
+            "glossary#3"
+          ]
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-basics#1",
+            "stocks-basics#0",
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-vs-mutual-fund#4",
+            "what-is-investing#2",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "compound-interest#0",
+            "etf-vs-mutual-fund#4"
+          ]
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "mutual-funds-basics#1",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "compound-interest#1",
+            "compound-interest#6"
+          ]
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "etf-basics#1",
+            "mutual-funds-basics#1"
+          ]
+        }
+      ]
+    },
+    "hybrid rrf_k=60": {
+      "kind": "ranking",
+      "mode": "hybrid",
+      "threshold": 0.0,
+      "bm25_min_score": 0.0,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 0,
+      "n_answerable": 26,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "etf-basics#0"
+          ]
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "investment-taxes-basics#0",
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#6",
+            "investment-taxes-basics#3",
+            "investment-taxes-basics#4"
+          ]
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#2",
+            "diversification#0",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#1"
+          ]
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#3",
+            "etf-vs-mutual-fund#1",
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "glossary#3",
+            "glossary#2"
+          ]
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-contribution-limits#1",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-accounts-overview#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5",
+            "retirement-accounts-overview#0",
+            "retirement-contribution-limits#1"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#3",
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "risk-and-return#2",
+            "etf-basics#4"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "what-is-investing#2",
+            "what-is-investing#4"
+          ]
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "risk-and-return#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#3",
+            "retirement-contribution-limits#7",
+            "retirement-contribution-limits#0"
+          ]
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "compound-interest#1",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#0",
+            "stocks-basics#1",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "investment-taxes-basics#5",
+            "compound-interest#1"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "diversification#4",
+            "etf-vs-mutual-fund#2"
+          ]
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#5",
+            "etf-vs-mutual-fund#3",
+            "risk-and-return#1"
+          ]
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "mutual-funds-basics#4",
+            "retirement-contribution-limits#5"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-contribution-limits#3",
+            "retirement-contribution-limits#7"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "retirement-accounts-overview#3",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "what-is-investing#2",
+            "glossary#3"
+          ]
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-basics#1",
+            "stocks-basics#0",
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-vs-mutual-fund#4",
+            "what-is-investing#2",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "compound-interest#0",
+            "etf-vs-mutual-fund#4"
+          ]
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "mutual-funds-basics#1",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "compound-interest#1",
+            "compound-interest#6"
+          ]
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "etf-basics#1",
+            "mutual-funds-basics#1"
+          ]
+        }
+      ]
+    },
+    "hybrid rrf_k=100": {
+      "kind": "ranking",
+      "mode": "hybrid",
+      "threshold": 0.0,
+      "bm25_min_score": 0.0,
+      "rrf_k": 100,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 0,
+      "n_answerable": 26,
+      "no_answer_accuracy": 0.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#2",
+            "bonds-basics#0",
+            "etf-basics#0"
+          ]
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "investment-taxes-basics#0",
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#6",
+            "investment-taxes-basics#3",
+            "investment-taxes-basics#4"
+          ]
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#2",
+            "diversification#0",
+            "diversification#4"
+          ]
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#1",
+            "etf-basics#2",
+            "etf-vs-mutual-fund#1"
+          ]
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#3",
+            "etf-vs-mutual-fund#1",
+            "what-is-investing#2"
+          ]
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "glossary#3",
+            "glossary#2"
+          ]
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-contribution-limits#1",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-accounts-overview#5",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5",
+            "retirement-accounts-overview#0",
+            "retirement-contribution-limits#1"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#3",
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "risk-and-return#2",
+            "etf-basics#4"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "what-is-investing#2",
+            "what-is-investing#4"
+          ]
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "risk-and-return#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#3",
+            "retirement-contribution-limits#7",
+            "retirement-contribution-limits#0"
+          ]
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "compound-interest#1",
+            "glossary#6"
+          ]
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#0",
+            "stocks-basics#1",
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "investment-taxes-basics#5",
+            "compound-interest#1"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "diversification#4",
+            "etf-vs-mutual-fund#2"
+          ]
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#5",
+            "etf-vs-mutual-fund#3",
+            "risk-and-return#1"
+          ]
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "mutual-funds-basics#4",
+            "retirement-contribution-limits#5"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-contribution-limits#3",
+            "retirement-contribution-limits#7"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "retirement-accounts-overview#3",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "what-is-investing#2",
+            "glossary#3"
+          ]
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-basics#1",
+            "stocks-basics#0",
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "etf-vs-mutual-fund#4",
+            "what-is-investing#2",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "compound-interest#0",
+            "etf-vs-mutual-fund#4"
+          ]
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6",
+            "mutual-funds-basics#1",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "compound-interest#1",
+            "compound-interest#6"
+          ]
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "etf-basics#1",
+            "mutual-funds-basics#1"
+          ]
+        }
+      ]
+    },
+    "dense thr=0.40": {
+      "kind": "gate",
+      "mode": "dense",
+      "threshold": 0.4,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 10,
+      "n_answerable": 26,
+      "no_answer_accuracy": 0.8333333333333334,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 4,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#0"
+          ]
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#1"
+          ]
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-contribution-limits#1",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#1"
+          ]
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5",
+            "retirement-accounts-overview#0",
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "what-is-investing#2",
+            "what-is-investing#4"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#0",
+            "stocks-basics#1",
+            "investment-taxes-basics#3"
+          ]
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#5",
+            "investment-taxes-basics#0"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 4,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#0",
+            "diversification#4",
+            "glossary#4"
+          ]
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "glossary#5",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "stocks-basics#0"
+          ]
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "dense thr=0.465": {
+      "kind": "gate",
+      "mode": "dense",
+      "threshold": 0.465,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 17,
+      "n_answerable": 26,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#5"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "glossary#5",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "dense thr=0.50": {
+      "kind": "gate",
+      "mode": "dense",
+      "threshold": 0.5,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 21,
+      "n_answerable": 26,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 4,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "glossary#5",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "hybrid thr=.465 bm25=off": {
+      "kind": "gate",
+      "mode": "hybrid",
+      "threshold": 0.465,
+      "bm25_min_score": null,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 17,
+      "n_answerable": 26,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#5"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#3",
+            "glossary#5",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "hybrid thr=.465 bm25>=2.5": {
+      "kind": "gate",
+      "mode": "hybrid",
+      "threshold": 0.465,
+      "bm25_min_score": 2.5,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 12,
+      "n_answerable": 26,
+      "no_answer_accuracy": 0.6666666666666666,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#6"
+          ]
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 4,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "investment-taxes-basics#5",
+            "retirement-accounts-overview#5"
+          ]
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5",
+            "retirement-contribution-limits#1",
+            "retirement-accounts-overview#3"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#3",
+            "bonds-basics#2"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 4,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1",
+            "bonds-basics#1",
+            "risk-and-return#0"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "stocks-basics#1"
+          ]
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#5",
+            "what-is-investing#1"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#4",
+            "etf-vs-mutual-fund#4"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#3",
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "retirement-accounts-overview#3",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "bonds-basics#0",
+            "glossary#3"
+          ]
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "compound-interest#6"
+          ]
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "hybrid thr=.465 bm25>=3.3": {
+      "kind": "gate",
+      "mode": "hybrid",
+      "threshold": 0.465,
+      "bm25_min_score": 3.3,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 14,
+      "n_answerable": 26,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5"
+          ]
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#5",
+            "what-is-investing#1"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#4"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "retirement-contribution-limits#3",
+            "retirement-accounts-overview#3"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 2,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#3",
+            "bonds-basics#0"
+          ]
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    },
+    "hybrid thr=.465 bm25>=4.0": {
+      "kind": "gate",
+      "mode": "hybrid",
+      "threshold": 0.465,
+      "bm25_min_score": 4.0,
+      "rrf_k": 60,
+      "hit3": 0.0,
+      "hit5": 0.0,
+      "mrr": 0.0,
+      "recall5": 0.0,
+      "wrongly_refused": 16,
+      "n_answerable": 26,
+      "no_answer_accuracy": 1.0,
+      "n_unanswerable": 6,
+      "mrr_by_type": {
+        "exact": {
+          "n": 10,
+          "mrr": 0.0
+        },
+        "paraphrase": {
+          "n": 14,
+          "mrr": 0.0
+        },
+        "partial": {
+          "n": 2,
+          "mrr": 0.0
+        }
+      },
+      "items": [
+        {
+          "id": "x01",
+          "qtype": "exact",
+          "query": "what is a Treasury bill",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x02",
+          "qtype": "exact",
+          "query": "what does TIPS stand for",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x03",
+          "qtype": "exact",
+          "query": "what is a SIMPLE IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x04",
+          "qtype": "exact",
+          "query": "what is a SEP IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#2"
+          ]
+        },
+        {
+          "id": "x05",
+          "qtype": "exact",
+          "query": "what is the net investment income tax",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x06",
+          "qtype": "exact",
+          "query": "what is FDIC insurance",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x07",
+          "qtype": "exact",
+          "query": "what is cost basis",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x08",
+          "qtype": "exact",
+          "query": "what is the consumer price index",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x09",
+          "qtype": "exact",
+          "query": "what is the FOMC",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x10",
+          "qtype": "exact",
+          "query": "what is a solo 401(k)",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#1"
+          ]
+        },
+        {
+          "id": "x11",
+          "qtype": "paraphrase",
+          "query": "how long do I have to move money from my old 401(k) into a new account",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x12",
+          "qtype": "paraphrase",
+          "query": "what happens if I take money out of my IRA before I reach retirement age",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "retirement-accounts-overview#5"
+          ]
+        },
+        {
+          "id": "x13",
+          "qtype": "paraphrase",
+          "query": "a government bond whose value goes up when prices rise",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "bonds-basics#0",
+            "bonds-basics#2",
+            "bonds-basics#3"
+          ]
+        },
+        {
+          "id": "x14",
+          "qtype": "paraphrase",
+          "query": "how can I protect my savings from losing value to rising prices",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "what-is-investing#1"
+          ]
+        },
+        {
+          "id": "x15",
+          "qtype": "paraphrase",
+          "query": "how much cash should I keep aside for unexpected bills",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x16",
+          "qtype": "paraphrase",
+          "query": "what goes into my credit score",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x17",
+          "qtype": "paraphrase",
+          "query": "how is the unemployment number worked out",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x18",
+          "qtype": "paraphrase",
+          "query": "how does the Fed move interest rates",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x19",
+          "qtype": "paraphrase",
+          "query": "what is the tax on dividends from my stocks",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x20",
+          "qtype": "paraphrase",
+          "query": "is the interest on my savings account taxable",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "investment-taxes-basics#5"
+          ]
+        },
+        {
+          "id": "x21",
+          "qtype": "paraphrase",
+          "query": "does bank insurance cover my mutual funds",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x22",
+          "qtype": "paraphrase",
+          "query": "how do I spot a scam",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x23",
+          "qtype": "paraphrase",
+          "query": "which retirement plan can a freelancer with no employees use",
+          "answerable": true,
+          "rank": null,
+          "returned": 1,
+          "recall5": 0.0,
+          "top": [
+            "mutual-funds-basics#4"
+          ]
+        },
+        {
+          "id": "x24",
+          "qtype": "paraphrase",
+          "query": "a tax credit for saving into my IRA if my income is low",
+          "answerable": true,
+          "rank": null,
+          "returned": 3,
+          "recall5": 0.0,
+          "top": [
+            "retirement-contribution-limits#5",
+            "retirement-accounts-overview#2",
+            "retirement-contribution-limits#3"
+          ]
+        },
+        {
+          "id": "x25",
+          "qtype": "partial",
+          "query": "what is the difference between a Roth 401(k) and a Roth IRA",
+          "answerable": true,
+          "rank": null,
+          "returned": 5,
+          "recall5": 0.0,
+          "top": [
+            "glossary#5",
+            "retirement-accounts-overview#3",
+            "retirement-accounts-overview#0"
+          ]
+        },
+        {
+          "id": "x26",
+          "qtype": "partial",
+          "query": "a savings bond that pays more when inflation rises",
+          "answerable": true,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x27",
+          "qtype": "unanswerable",
+          "query": "how do stock options work for employees",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x28",
+          "qtype": "unanswerable",
+          "query": "how do I buy bitcoin",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x29",
+          "qtype": "unanswerable",
+          "query": "which credit card has the best rewards",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x30",
+          "qtype": "unanswerable",
+          "query": "how does a reverse mortgage work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x31",
+          "qtype": "unanswerable",
+          "query": "what is the best way to pay off student loans",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        },
+        {
+          "id": "x32",
+          "qtype": "unanswerable",
+          "query": "how do covered call options work",
+          "answerable": false,
+          "rank": null,
+          "returned": 0,
+          "recall5": 0.0,
+          "top": []
+        }
+      ]
+    }
+  }
+}

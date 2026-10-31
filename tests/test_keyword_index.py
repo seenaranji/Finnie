@@ -58,3 +58,12 @@ def test_keyword_search_filters_by_one_or_several_categories():
     assert found(None) == ["a#0", "b#0", "c#0"]
     assert found("taxes") == ["b#0"]
     assert found(["taxes", "retirement_accounts"]) == ["a#0", "b#0"]   # the new multi-category filter; "stocks" stays out
+
+
+def test_a_markdown_file_with_broken_front_matter_is_reported_not_a_crash(tmp_path):
+    from src.rag.loader import load_documents, read_document
+    (tmp_path / "bad.md").write_text("---\ntitle: Roth vs. Pre-Tax: A Comparison\ncategory: taxes\n---\nBody text.\n")   # unquoted colon: invalid YAML
+    (tmp_path / "good.md").write_text("---\ntitle: Good\ncategory: taxes\n---\nBody text.\n")
+    metadata, text, problems = read_document(tmp_path / "bad.md")
+    assert text == "" and problems and "front matter" in problems[0]
+    assert [d.id for d in load_documents(tmp_path)] == ["good"]   # the bad file is skipped, the good one still loads
