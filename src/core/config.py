@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 from dotenv import load_dotenv
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -74,6 +74,26 @@ class AlphaVantageConfig(BaseModel):
     usage_file: str = ".alpha_usage.json"   # remembers today's count across restarts (git-ignored)
 
 
+class ScenarioReturns(BaseModel):
+    """Assumed ANNUAL returns in percent for one risk profile. Illustrative assumptions, not forecasts."""
+    conservative: float
+    expected: float
+    optimistic: float
+
+    @model_validator(mode="after")
+    def _ordered_and_sane(self):
+        if not (self.conservative <= self.expected <= self.optimistic):
+            raise ValueError("scenario returns must satisfy conservative <= expected <= optimistic")
+        if not all(-50 <= x <= 30 for x in (self.conservative, self.expected, self.optimistic)):
+            raise ValueError("scenario returns must be between -50 and 30 percent a year")
+        return self
+
+
+class GoalPlanningConfig(BaseModel):
+    inflation_pct: float                          # assumed average yearly inflation
+    risk_profiles: dict[str, ScenarioReturns]     # profile name -> assumed returns
+
+
 class Secrets(BaseSettings):
     """Read from environment variables / .env. Missing is allowed here (None);
     code that actually needs a key calls the require_* method for a clear error."""
@@ -97,6 +117,7 @@ class Settings(BaseModel):
     cache: CacheConfig
     market_data: MarketDataConfig = MarketDataConfig()
     alpha_vantage: AlphaVantageConfig = AlphaVantageConfig()
+    goal_planning: GoalPlanningConfig
     secrets: Secrets
 
     def masked(self) -> dict:

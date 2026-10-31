@@ -50,3 +50,13 @@ alpha_vantage:
   max_calls_per_day: 20      # free key allows 25; margin kept on purpose
   min_interval_seconds: 1.1  # free key allows 1 request per second
   usage_file: .alpha_usage.json
+
+# Goal planning (Step 16). ASSUMPTIONS, NOT FORECASTS. These numbers were chosen by the project author for illustration;
+# they are not fetched from any data source. Real returns vary a lot year to year and can be negative.
+# A risk profile changes the assumed return range; it guarantees nothing. Percent per year, before inflation and fees.
+goal_planning:
+  inflation_pct: 3.0
+  risk_profiles:
+    low:      {conservative: 1.0, expected: 3.0, optimistic: 5.0}    # mostly cash and bonds
+    medium:   {conservative: 2.0, expected: 5.0, optimistic: 8.0}    # a mix of stocks and bonds
+    high:     {conservative: 0.0, expected: 7.0, optimistic: 11.0}   # mostly stocks
