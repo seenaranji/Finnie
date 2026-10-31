@@ -94,7 +94,7 @@ class LLMClient:
             reraise=True,   # after the last attempt, raise the real error
         )
 
-        with timer() as t:
+        with timer() as timing:
             response = retrying(self._client.chat.completions.create, **kwargs)
 
         usage = response.usage
@@ -103,7 +103,7 @@ class LLMClient:
             model=response.model,
             input_tokens=usage.prompt_tokens,
             output_tokens=usage.completion_tokens,
-            latency_s=t["seconds"],
+            latency_s=timing["seconds"],
             cost_usd=self._cost(model_key, usage.prompt_tokens, usage.completion_tokens),
             attempts=retrying.statistics.get("attempt_number", 1),
         )

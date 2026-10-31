@@ -1,0 +1,68 @@
+[
+  {
+    "size": 200,
+    "overlap": 50,
+    "chunks": 124,
+    "avg_len": 194.4,
+    "min_len": 59,
+    "max_len": 200,
+    "chunks_ending_mid_sentence": 105,
+    "pct_ending_mid_sentence": 84.7,
+    "pct_sentences_whole": 86.9
+  },
+  {
+    "size": 200,
+    "overlap": 0,
+    "chunks": 96,
+    "avg_len": 192.3,
+    "min_len": 7,
+    "max_len": 200,
+    "chunks_ending_mid_sentence": 84,
+    "pct_ending_mid_sentence": 87.5,
+    "pct_sentences_whole": 69.8
+  },
+  {
+    "size": 500,
+    "overlap": 50,
+    "chunks": 45,
+    "avg_len": 448.0,
+    "min_len": 80,
+    "max_len": 500,
+    "chunks_ending_mid_sentence": 31,
+    "pct_ending_mid_sentence": 68.9,
+    "pct_sentences_whole": 96.7
+  },
+  {
+    "size": 500,
+    "overlap": 0,
+    "chunks": 43,
+    "avg_len": 429.3,
+    "min_len": 13,
+    "max_len": 500,
+    "chunks_ending_mid_sentence": 30,
+    "pct_ending_mid_sentence": 69.8,
+    "pct_sentences_whole": 89.1
+  },
+  {
+    "size": 1000,
+    "overlap": 50,
+    "chunks": 23,
+    "avg_len": 828.6,
+    "min_len": 408,
+    "max_len": 1000,
+    "chunks_ending_mid_sentence": 12,
+    "pct_ending_mid_sentence": 52.2,
+    "pct_sentences_whole": 97.8
+  },
+  {
+    "size": 1000,
+    "overlap": 0,
+    "chunks": 23,
+    "avg_len": 802.5,
+    "min_len": 358,
+    "max_len": 1000,
+    "chunks_ending_mid_sentence": 11,
+    "pct_ending_mid_sentence": 47.8,
+    "pct_sentences_whole": 96.0
+  }
+]

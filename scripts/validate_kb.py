@@ -13,44 +13,13 @@ from collections import Counter
 from datetime import date
 from pathlib import Path
 
-import frontmatter
-import yaml
-from pypdf import PdfReader
+from src.rag.loader import read_document
 
 CATEGORIES = ["basics", "stocks", "bonds", "etfs", "mutual_funds", "retirement_accounts",
               "taxes", "risk", "portfolio", "planning", "markets"]
 DIFFICULTIES = ["beginner", "intermediate", "advanced"]
 REQUIRED = ["title", "category", "difficulty", "source_name", "source_url", "last_updated"]
 MIN_BODY_CHARS = 300
-
-
-def read_document(path: Path) -> tuple[dict, str, list[str]]:
-    """Return (metadata, text, problems found while reading) for a .md or .pdf file.
-
-    .md  : metadata is the front matter at the top of the file.
-    .pdf : PDFs have built-in metadata (Title, Author, Subject, Keywords, dates) but not
-           our custom fields (category, difficulty, source_url), and in practice those
-           built-ins are often blank or wrong. So ours live in a sidecar file with the
-           same name: guide.pdf + guide.meta.yaml. The text is extracted with pypdf.
-    """
-    if path.suffix == ".md":
-        post = frontmatter.load(path)
-        return post.metadata, post.content, []
-
-    problems = []
-    sidecar = path.with_suffix(".meta.yaml")
-    meta = {}
-    if sidecar.exists():
-        meta = yaml.safe_load(sidecar.read_text()) or {}
-    else:
-        problems.append(f"missing sidecar metadata file: {sidecar.name}")
-    try:
-        text = "\n".join(page.extract_text() or "" for page in PdfReader(path).pages).strip()
-    except Exception as e:  # corrupt or encrypted PDF
-        return meta, "", problems + [f"could not read PDF: {type(e).__name__}: {e}"]
-    if not text:
-        problems.append("no extractable text (scanned/image-only PDF? needs OCR)")
-    return meta, text, problems
 
 
 def check(path: Path) -> tuple[list[str], int, str | None]:

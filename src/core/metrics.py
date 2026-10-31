@@ -12,7 +12,7 @@ import numpy as np
 
 @contextmanager
 def timer():
-    """Usage:  with timer() as t: do_work()   then   t['seconds']"""
+    """Usage:  with timer() as timing: do_work()   then   timing['seconds']"""
     result = {"seconds": 0.0}
     start = time.perf_counter()
     try:

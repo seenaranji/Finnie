@@ -46,14 +46,14 @@ _OUTPUT_PATTERNS = [
     r"\bi('d| would) (buy|sell|invest|put)\b",
 ]
 
-_REQUEST_RE = [re.compile(p, re.IGNORECASE) for p in _REQUEST_PATTERNS]
-_OUTPUT_RE = [re.compile(p, re.IGNORECASE) for p in _OUTPUT_PATTERNS]
+_REQUEST_REGEXES = [re.compile(pattern, re.IGNORECASE) for pattern in _REQUEST_PATTERNS]
+_OUTPUT_REGEXES = [re.compile(pattern, re.IGNORECASE) for pattern in _OUTPUT_PATTERNS]
 
 
 def is_advice_request(user_message: str) -> bool:
-    return any(rx.search(user_message) for rx in _REQUEST_RE)
+    return any(regex.search(user_message) for regex in _REQUEST_REGEXES)
 
 
 def find_advice_phrases(model_output: str) -> list[str]:
     """Return the matched snippets (empty list = nothing suspicious found)."""
-    return [m.group(0) for rx in _OUTPUT_RE if (m := rx.search(model_output))]
+    return [match.group(0) for regex in _OUTPUT_REGEXES if (match := regex.search(model_output))]

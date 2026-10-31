@@ -6,6 +6,7 @@ openai==3.41.0            # OpenAI SDK: chat + embeddings
 langchain==1.4.7          # LLM app building blocks
 langchain-openai==1.7.3   # LangChain <-> OpenAI glue
 langgraph==1.2.18         # graph workflow: router, state, memory
+langchain-text-splitters==1.1.3  # ready-made chunkers (LangGraph itself has none)
 tiktoken==0.14.0          # count tokens locally
 
 # --- RAG ---

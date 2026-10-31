@@ -1,0 +1,71 @@
+{
+  "model": "text-embedding-3-small",
+  "dimensions": 1536,
+  "sentences": [
+    "An ETF is a fund that holds many stocks and trades on an exchange all day.",
+    "Exchange-traded funds let you buy a whole basket of investments in a single trade.",
+    "A mutual fund pools money from many investors and is priced once a day.",
+    "A bond is a loan to a company or government that pays you interest.",
+    "Margherita pizza needs fresh mozzarella, tomatoes, and basil.",
+    "A basket of stocks I can trade."
+  ],
+  "cosine_matrix": [
+    [
+      1.0,
+      0.6876000165939331,
+      0.5250999927520752,
+      0.29330000281333923,
+      -0.06870000064373016,
+      0.43650001287460327
+    ],
+    [
+      0.6876000165939331,
+      1.0,
+      0.4569000005722046,
+      0.22020000219345093,
+      -0.030899999663233757,
+      0.5351999998092651
+    ],
+    [
+      0.5250999927520752,
+      0.4569000005722046,
+      1.0,
+      0.2287999987602234,
+      -0.017000000923871994,
+      0.29649999737739563
+    ],
+    [
+      0.29330000281333923,
+      0.22020000219345093,
+      0.2287999987602234,
+      1.0,
+      0.024000000208616257,
+      0.16220000386238098
+    ],
+    [
+      -0.06870000064373016,
+      -0.030899999663233757,
+      -0.017000000923871994,
+      0.024000000208616257,
+      1.0,
+      0.11569999903440475
+    ],
+    [
+      0.43650001287460327,
+      0.5351999998092651,
+      0.29649999737739563,
+      0.16220000386238098,
+      0.11569999903440475,
+      1.0
+    ]
+  ],
+  "chunks_100": {
+    "tokens": 3198,
+    "cost_usd": 6.396e-05,
+    "latency_s": [
+      0.7624101670007803,
+      0.6846176250001008,
+      0.7990723330003675
+    ]
+  }
+}
