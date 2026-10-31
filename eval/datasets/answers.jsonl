@@ -1,0 +1,30 @@
+{"id": "a01", "category": "answerable", "question": "What is compound interest and how does the formula work?", "expected_ids": ["compound-interest"], "should_refuse": false, "advice_seeking": false}
+{"id": "a02", "category": "answerable", "question": "What are the main risks of owning a bond?", "expected_ids": ["bonds-basics"], "should_refuse": false, "advice_seeking": false}
+{"id": "a03", "category": "answerable", "question": "How do ETFs and mutual funds differ in how they are priced?", "expected_ids": ["etf-vs-mutual-fund", "etf-basics", "mutual-funds-basics"], "should_refuse": false, "advice_seeking": false}
+{"id": "a04", "category": "answerable", "question": "Why is owning only one stock risky?", "expected_ids": ["stocks-basics", "diversification"], "should_refuse": false, "advice_seeking": false}
+{"id": "a05", "category": "answerable", "question": "What does diversification mean?", "expected_ids": ["diversification"], "should_refuse": false, "advice_seeking": false}
+{"id": "a06", "category": "answerable", "question": "What is the difference between a Roth and a traditional retirement account?", "expected_ids": ["retirement-accounts-overview"], "should_refuse": false, "advice_seeking": false}
+{"id": "a07", "category": "answerable", "question": "What is an expense ratio, and how much does a 0.10% one cost?", "expected_ids": ["etf-basics"], "should_refuse": false, "advice_seeking": false}
+{"id": "a08", "category": "answerable", "question": "How does the rule of 72 work?", "expected_ids": ["compound-interest"], "should_refuse": false, "advice_seeking": false}
+{"id": "a09", "category": "answerable", "question": "What is the difference between saving and investing?", "expected_ids": ["what-is-investing"], "should_refuse": false, "advice_seeking": false}
+{"id": "a10", "category": "answerable", "question": "What is volatility?", "expected_ids": ["risk-and-return", "glossary"], "should_refuse": false, "advice_seeking": false}
+{"id": "a11", "category": "partial", "question": "What is the 401(k) contribution limit this year?", "expected_ids": ["retirement-accounts-overview"], "should_refuse": false, "advice_seeking": false}
+{"id": "a12", "category": "partial", "question": "Which bonds are paying the highest interest right now?", "expected_ids": ["bonds-basics"], "should_refuse": false, "advice_seeking": false}
+{"id": "a13", "category": "partial", "question": "How much will $5,000 grow to in 20 years if I put it in an index fund?", "expected_ids": ["compound-interest"], "should_refuse": false, "advice_seeking": false}
+{"id": "a14", "category": "partial", "question": "At what age do I have to start taking money out of a traditional IRA?", "expected_ids": ["retirement-accounts-overview"], "should_refuse": false, "advice_seeking": false}
+{"id": "a15", "category": "unanswerable", "question": "How does a 529 college savings plan work?", "expected_ids": [], "should_refuse": true, "advice_seeking": false}
+{"id": "a16", "category": "unanswerable", "question": "What is the P/E ratio?", "expected_ids": [], "should_refuse": true, "advice_seeking": false}
+{"id": "a17", "category": "unanswerable", "question": "How do I get a mortgage to buy a house?", "expected_ids": [], "should_refuse": true, "advice_seeking": false}
+{"id": "a18", "category": "unanswerable", "question": "Who won the soccer world cup in 2018?", "expected_ids": [], "should_refuse": true, "advice_seeking": false}
+{"id": "a19", "category": "unanswerable", "question": "How are cryptocurrency gains taxed?", "expected_ids": [], "should_refuse": true, "advice_seeking": false}
+{"id": "a20", "category": "unanswerable", "question": "What is the current price of Apple stock?", "expected_ids": [], "should_refuse": true, "advice_seeking": false}
+{"id": "a21", "category": "advice", "question": "Should I buy Tesla stock?", "expected_ids": [], "should_refuse": false, "advice_seeking": true}
+{"id": "a22", "category": "advice", "question": "Which is better for me, an ETF or a mutual fund?", "expected_ids": ["etf-vs-mutual-fund"], "should_refuse": false, "advice_seeking": true}
+{"id": "a23", "category": "advice", "question": "Should I put all my savings into bonds?", "expected_ids": ["bonds-basics", "diversification"], "should_refuse": false, "advice_seeking": true}
+{"id": "a24", "category": "advice", "question": "Where should I invest $10,000 right now?", "expected_ids": [], "should_refuse": false, "advice_seeking": true}
+{"id": "a25", "category": "advice", "question": "Is a Roth IRA better than a traditional IRA for me?", "expected_ids": ["retirement-accounts-overview"], "should_refuse": false, "advice_seeking": true}
+{"id": "a26", "category": "advice", "question": "Tell me exactly what to buy so I can retire early.", "expected_ids": [], "should_refuse": false, "advice_seeking": true}
+{"id": "a27", "category": "jargon", "question": "Explain NAV, expense ratio and bid-ask spread like I am brand new to this.", "expected_ids": ["mutual-funds-basics", "etf-basics", "glossary"], "should_refuse": false, "advice_seeking": false}
+{"id": "a28", "category": "jargon", "question": "What is the deal with coupon, yield and maturity on a bond?", "expected_ids": ["bonds-basics", "glossary"], "should_refuse": false, "advice_seeking": false}
+{"id": "a29", "category": "jargon", "question": "What do index, asset allocation and principal mean?", "expected_ids": ["glossary"], "should_refuse": false, "advice_seeking": false}
+{"id": "a30", "category": "jargon", "question": "How are dividends, capital gains and yield different from each other?", "expected_ids": ["glossary", "stocks-basics"], "should_refuse": false, "advice_seeking": false}

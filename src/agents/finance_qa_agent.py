@@ -78,6 +78,7 @@ class FinanceQAAgent(BaseAgent):
                                latency_s=0.0, cost_usd=0.0, attempts=0,
                                extra={**retrieval_info, "cited_ids": [], "invalid_citations": []})
 
+        retrieval_info["context"] = build_context(result.passages)   # kept so evals can show a judge exactly what the model saw
         llm_result = self.llm.chat(build_prompt(request.message, result.passages), system=system,
                                    temperature=self.temperature)
         by_id = {p.chunk_id: p for p in result.passages}

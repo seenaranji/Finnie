@@ -1,0 +1,184 @@
+n,question,context_the_tutor_saw,tutor_answer,human_faithful (Y/N: every claim is in the context),human_relevant (Y/N: addresses the question),human_refused (Y/N: gives no real answer),human_gives_advice (Y/N: tells the user what to buy/sell/hold)
+1,Should I put all my savings into bonds?,"[bonds-basics#3] Bonds Basics > Main risks
+## Main risks
+- **Interest rate risk:** when market interest rates rise, existing bonds with lower rates become less attractive, so their prices tend to fall (and the reverse is also true). This matters if you sell before maturity.
+- **Credit risk:** the issuer might fail to make payments. This is higher for weaker issuers.
+- **Inflation risk:** fixed payments buy less if prices rise quickly.
+
+Bonds are often less volatile than stocks, but they are not risk-free.","I can't tell you what to do with your savings. However, I can explain some things to consider about bonds. Bonds have risks like interest rate risk, where bond prices fall if market interest rates rise. There's also credit risk, which is the chance the issuer won't make payments, and inflation risk, where fixed payments lose buying power if prices rise quickly [bonds-basics#3]. Bonds are generally less volatile than stocks, but they are not risk-free [bonds-basics#3]. It's important to think about these risks and your financial goals. You might want to talk to a licensed financial professional for personalized advice.",,,,
+2,What does diversification mean?,"[diversification#0] Diversification > Diversification
+# Diversification
+
+Diversification means spreading your money across different investments so that one bad result does not hurt you too much. The common saying is ""don't put all your eggs in one basket.""
+
+[stocks-basics#4] Stocks Basics > Main risks
+Many people spread their money across many companies, often through funds, to reduce company-specific risk. That idea is called diversification.
+
+This article is general education, not advice about what you personally should do.
+
+[diversification#5] Diversification > Limits of diversification
+## Limits of diversification
+It reduces the risk tied to individual companies. It does not remove market risk: in a broad downturn, many investments fall at the same time. It also cannot guarantee a profit or prevent loss.
+
+[diversification#2] Diversification > Ways to diversify
+## Ways to diversify
+- **Across companies:** own many stocks instead of one or two.
+- **Across asset types:** mix stocks, bonds, and cash, which tend to behave differently.
+- **Across industries and regions:** avoid having everything in one sector or one country.
+
+[diversification#6] Diversification > Spotting a lack of diversification
+## Spotting a lack of diversification
+A very large share of a portfolio in one stock, one sector, or one type of asset is called concentration, and it means results depend heavily on that one thing.
+
+This article is general education, not advice about what you personally should do.","Diversification means spreading your money across different investments so that one bad result does not hurt you too much. The common saying is ""don't put all your eggs in one basket"" [diversification#0].",,,,
+3,At what age do I have to start taking money out of a traditional IRA?,"[retirement-accounts-overview#5] Retirement Accounts Overview (401(k), IRA, Roth) > Other points to know
+## Other points to know
+- **Rules and limits:** accounts have yearly contribution limits, and Roth IRAs have income-based eligibility rules.
+- **Early withdrawals:** taking money out before retirement age (generally 59 and a half) can bring taxes and penalties, with some exceptions.
+- **Required withdrawals:** traditional accounts generally require withdrawals starting at a certain age.",The context does not specify the exact age at which you must start taking money out of a traditional IRA. It only mentions that traditional accounts generally require withdrawals starting at a certain age [retirement-accounts-overview#5].,,,,
+4,"Explain NAV, expense ratio and bid-ask spread like I am brand new to this.","[etf-vs-mutual-fund#1] ETFs vs. Mutual Funds > ETFs vs. Mutual Funds
+| Price you get | The market price when you trade | That day's NAV (net asset value) |
+| Minimum to start | Often the price of one share | Sometimes a set minimum amount |
+| Typical management | Often tracks an index | Either index-tracking or actively managed |
+| Main costs | Expense ratio, bid-ask spread | Expense ratio, and sometimes sales loads |
+
+[etf-basics#2] ETF Basics > Costs to know about
+## Costs to know about
+- **Expense ratio:** a yearly fee taken from the fund, stated as a percentage of what you have invested. A 0.10% expense ratio costs about $1 a year per $1,000 invested.
+- **Bid-ask spread:** a small gap between the price buyers will pay and sellers will accept. It is a cost every time you trade.
+- Your brokerage may also charge fees. These vary by provider.
+
+[glossary#4] Beginner Finance Glossary > Beginner Finance Glossary
+**Mutual fund:** a pool of investors' money used to buy a collection of investments, priced once a day.
+
+**NAV (net asset value):** the per-share value of a fund, calculated after markets close.
+
+**Portfolio:** all the investments a person holds together.
+
+**Principal:** the original amount of money invested or borrowed.
+
+**Risk tolerance:** how much ups and downs in value a person is comfortable with.
+
+[glossary#1] Beginner Finance Glossary > Beginner Finance Glossary
+**Bid-ask spread:** the small gap between the price buyers offer and the price sellers ask. A cost of trading.
+
+**Bond:** a loan you make to a government or company in return for interest and repayment on a set date.
+
+**Capital gain:** the profit when you sell an investment for more than you paid.
+
+**Compound interest:** interest earned on both your original money and on interest already added.","Sure! Let's break these down:
+
+1. **NAV (Net Asset Value):** This is the per-share value of a mutual fund. It's calculated after the markets close each day. Think of it as the price of one share of the fund at the end of the day [glossary#4].
+
+2. **Expense Ratio:** This is a yearly fee that a fund charges, expressed as a percentage of your investment. For example, a 0.10% expense ratio means you pay about $1 per year for every $1,000 you have invested in the fund [etf-basics#2].
+
+3. **Bid-Ask Spread:** This is the small difference between the price buyers are willing to pay for an investment and the price sellers want to receive. It's a cost you incur every time you trade [etf-basics#2; glossary#1].",,,,
+5,"What do index, asset allocation and principal mean?","[glossary#0] Beginner Finance Glossary > Beginner Finance Glossary
+# Beginner Finance Glossary
+
+Short, plain-language definitions written for Finnie. For official definitions, see the source link.
+
+**401(k):** a retirement plan offered through an employer, funded by paycheck contributions.
+
+**Asset:** anything of value you own, such as cash, stocks, bonds, or property.
+
+**Asset allocation:** how your money is divided among types of assets, such as stocks, bonds, and cash.
+
+[glossary#4] Beginner Finance Glossary > Beginner Finance Glossary
+**Mutual fund:** a pool of investors' money used to buy a collection of investments, priced once a day.
+
+**NAV (net asset value):** the per-share value of a fund, calculated after markets close.
+
+**Portfolio:** all the investments a person holds together.
+
+**Principal:** the original amount of money invested or borrowed.
+
+**Risk tolerance:** how much ups and downs in value a person is comfortable with.","I can define ""asset allocation"" and ""principal"" from the context, but not ""index.""
+
+- **Asset allocation:** how your money is divided among types of assets, such as stocks, bonds, and cash [glossary#0].
+- **Principal:** the original amount of money invested or borrowed [glossary#4].
+
+The context does not provide a definition for ""index.""",,,,
+6,"What is the deal with coupon, yield and maturity on a bond?","[bonds-basics#1] Bonds Basics > Key terms
+## Key terms
+- **Face value (par):** the amount you get back at the end, often $1,000 per bond.
+- **Coupon:** the interest the bond pays, usually stated as a percentage of the face value each year.
+- **Maturity date:** the date the issuer repays the face value.
+- **Yield:** the return you earn from a bond given the price you pay. It can differ from the coupon if you buy at a price above or below face value.
+
+[glossary#2] Beginner Finance Glossary > Beginner Finance Glossary
+**Coupon:** the regular interest payment a bond makes, usually quoted as a yearly percentage of face value.
+
+**Diversification:** spreading money across different investments to reduce the impact of any single one doing badly.
+
+**Dividend:** a payment some companies make to shareholders out of profits.
+
+**ETF (exchange-traded fund):** a basket of investments that trades on an exchange like a stock.
+
+**Expense ratio:** the yearly fee a fund charges, as a percentage of the amount invested.","A bond's **coupon** is the regular interest payment it makes, usually quoted as a yearly percentage of the bond's face value, which is often $1,000 per bond [bonds-basics#1] [glossary#2]. The **yield** is the return you earn from a bond based on the price you pay for it. The yield can be different from the coupon rate if you buy the bond at a price above or below its face value [bonds-basics#1]. The **maturity date** is when the bond issuer repays the face value to the bondholder [bonds-basics#1].",,,,
+7,"How are dividends, capital gains and yield different from each other?","[glossary#6] Beginner Finance Glossary > Beginner Finance Glossary
+**Volatility:** how much and how fast an investment's price moves up and down.
+
+**Yield:** the income an investment earns, expressed as a percentage of its price.
+
+[glossary#2] Beginner Finance Glossary > Beginner Finance Glossary
+**Coupon:** the regular interest payment a bond makes, usually quoted as a yearly percentage of face value.
+
+**Diversification:** spreading money across different investments to reduce the impact of any single one doing badly.
+
+**Dividend:** a payment some companies make to shareholders out of profits.
+
+**ETF (exchange-traded fund):** a basket of investments that trades on an exchange like a stock.
+
+**Expense ratio:** the yearly fee a fund charges, as a percentage of the amount invested.","I can't fully answer this question from the provided context. However, I can explain what a dividend and yield are:
+
+- **Dividend:** A payment some companies make to shareholders out of profits [glossary#2].
+- **Yield:** The income an investment earns, expressed as a percentage of its price [glossary#6].
+
+The context does not provide information about capital gains or how they differ from dividends and yield.",,,,
+8,Is a Roth IRA better than a traditional IRA for me?,"[retirement-accounts-overview#3] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply
+## Traditional vs. Roth: the core difference is when taxes apply
+| | Traditional | Roth |
+|---|---|---|
+| Money going in | Often pre-tax (may lower taxable income now, subject to rules) | After-tax (no deduction now) |
+| Growth | Grows without yearly tax on gains inside the account | Same |
+| Money coming out in retirement | Generally taxed as income | Generally tax-free if the rules are met |
+
+[retirement-accounts-overview#4] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply
+The idea: traditional means a possible tax benefit now and taxes later; Roth means taxes now and potentially tax-free withdrawals later.
+
+[glossary#5] Beginner Finance Glossary > Beginner Finance Glossary
+**Roth IRA / Roth 401(k):** retirement accounts funded with after-tax money, where qualified withdrawals are generally tax-free.
+
+**Stock (share):** a small piece of ownership in a company.
+
+**Ticker symbol:** a short code that identifies a stock or fund, such as AAPL.
+
+**Time horizon:** how long until you need the money.
+
+**Traditional IRA / 401(k):** retirement accounts funded with pre-tax money in many cases, where withdrawals are generally taxed as income.","I can't determine which is better for you. However, I can explain the differences. A Roth IRA is funded with after-tax money, and qualified withdrawals are generally tax-free [glossary#5]. In contrast, a traditional IRA is often funded with pre-tax money, which may lower your taxable income now, but withdrawals are generally taxed as income in retirement [retirement-accounts-overview#3]. The choice depends on when you prefer to pay taxes: now or later [retirement-accounts-overview#4].",,,,
+9,"What is an expense ratio, and how much does a 0.10% one cost?","[etf-basics#2] ETF Basics > Costs to know about
+## Costs to know about
+- **Expense ratio:** a yearly fee taken from the fund, stated as a percentage of what you have invested. A 0.10% expense ratio costs about $1 a year per $1,000 invested.
+- **Bid-ask spread:** a small gap between the price buyers will pay and sellers will accept. It is a cost every time you trade.
+- Your brokerage may also charge fees. These vary by provider.
+
+[mutual-funds-basics#3] Mutual Funds Basics > Costs to know about
+## Costs to know about
+- **Expense ratio:** a yearly fee, shown as a percentage of your investment. Actively managed funds often charge more than index funds.
+- **Sales charges (loads):** some funds charge a fee when you buy or sell. Many funds charge none.
+- **Minimum investment:** some funds require a minimum amount to get started.
+
+[etf-vs-mutual-fund#1] ETFs vs. Mutual Funds > ETFs vs. Mutual Funds
+| Price you get | The market price when you trade | That day's NAV (net asset value) |
+| Minimum to start | Often the price of one share | Sometimes a set minimum amount |
+| Typical management | Often tracks an index | Either index-tracking or actively managed |
+| Main costs | Expense ratio, bid-ask spread | Expense ratio, and sometimes sales loads |","An expense ratio is a yearly fee taken from a fund, expressed as a percentage of your investment. For a 0.10% expense ratio, it costs about $1 a year for every $1,000 invested [etf-basics#2].",,,,
+10,What is volatility?,"[risk-and-return#3] Risk and Return > Volatility
+## Volatility
+Volatility describes how much an investment's price swings up and down. A volatile investment can gain a lot or lose a lot in a short time. It is a common way to measure risk, but it is not the only kind.
+
+[glossary#6] Beginner Finance Glossary > Beginner Finance Glossary
+**Volatility:** how much and how fast an investment's price moves up and down.
+
+**Yield:** the income an investment earns, expressed as a percentage of its price.","Volatility describes how much and how fast an investment's price moves up and down. It indicates how much an investment's price swings up and down, and a volatile investment can gain a lot or lose a lot in a short time [risk-and-return#3] [glossary#6].",,,,

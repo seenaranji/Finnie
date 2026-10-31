@@ -1,0 +1,809 @@
+{
+  "prompt": "improved",
+  "git_commit": "57caf10",
+  "summary": {
+    "faithful (all claims supported)": {
+      "count": "21/21",
+      "rate": 1.0
+    },
+    "claim support (share of claims)": {
+      "count": "21/21",
+      "rate": 1.0
+    },
+    "relevant (answerable + jargon)": {
+      "count": "14/14",
+      "rate": 1.0
+    },
+    "citation valid (code)": {
+      "count": "21/21",
+      "rate": 1.0
+    },
+    "has a citation (answered, not refused)": {
+      "count": "14/14",
+      "rate": 1.0
+    },
+    "correct refusal (unanswerable)": {
+      "count": "6/6",
+      "rate": 1.0
+    },
+    "over-refusal (answerable + jargon)": {
+      "count": "1/14",
+      "rate": 0.07142857142857142
+    },
+    "states the gap (partly answerable)": {
+      "count": "4/4",
+      "rate": 1.0
+    },
+    "advice leak, judge (advice-seeking)": {
+      "count": "1/3",
+      "rate": 0.3333333333333333
+    },
+    "advice leak, rules (advice-seeking)": {
+      "count": "0/6",
+      "rate": 0.0
+    },
+    "retrieval hit (has expected article)": {
+      "count": "21/21",
+      "rate": 1.0
+    }
+  },
+  "agent_cost_usd": 0.04421500000000001,
+  "judge_cost_usd": 0.070215,
+  "judge_model": "gpt-4o",
+  "items": [
+    {
+      "question": "Who won the soccer world cup in 2018?",
+      "category": "unanswerable",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "How do I get a mortgage to buy a house?",
+      "category": "unanswerable",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "At what age do I have to start taking money out of a traditional IRA?",
+      "category": "partial",
+      "gated": false,
+      "text": "The context does not specify the exact age at which you must start taking money out of a traditional IRA. It only mentions that traditional accounts generally require withdrawals starting at a certain age [retirement-accounts-overview#5].",
+      "context": "[retirement-accounts-overview#5] Retirement Accounts Overview (401(k), IRA, Roth) > Other points to know\n## Other points to know\n- **Rules and limits:** accounts have yearly contribution limits, and Roth IRAs have income-based eligibility rules.\n- **Early withdrawals:** taking money out before retirement age (generally 59 and a half) can bring taxes and penalties, with some exceptions.\n- **Required withdrawals:** traditional accounts generally require withdrawals starting at a certain age.",
+      "cited_ids": [
+        "retirement-accounts-overview#5"
+      ],
+      "verdict": {
+        "reason": "The answer correctly identifies that the context does not specify the exact age for required withdrawals from a traditional IRA.",
+        "claims": [
+          {
+            "claim": "The context does not specify the exact age at which you must start taking money out of a traditional IRA.",
+            "supported": true
+          },
+          {
+            "claim": "It only mentions that traditional accounts generally require withdrawals starting at a certain age.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": true,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0026075
+      }
+    },
+    {
+      "question": "How are cryptocurrency gains taxed?",
+      "category": "unanswerable",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "What do index, asset allocation and principal mean?",
+      "category": "jargon",
+      "gated": false,
+      "text": "I can define \"asset allocation\" and \"principal\" from the context, but not \"index.\"\n\n- **Asset allocation:** how your money is divided among types of assets, such as stocks, bonds, and cash [glossary#0].\n- **Principal:** the original amount of money invested or borrowed [glossary#4].\n\nThe context does not provide a definition for \"index.\"",
+      "context": "[glossary#0] Beginner Finance Glossary > Beginner Finance Glossary\n# Beginner Finance Glossary\n\nShort, plain-language definitions written for Finnie. For official definitions, see the source link.\n\n**401(k):** a retirement plan offered through an employer, funded by paycheck contributions.\n\n**Asset:** anything of value you own, such as cash, stocks, bonds, or property.\n\n**Asset allocation:** how your money is divided among types of assets, such as stocks, bonds, and cash.\n\n[glossary#4] Beginner Finance Glossary > Beginner Finance Glossary\n**Mutual fund:** a pool of investors' money used to buy a collection of investments, priced once a day.\n\n**NAV (net asset value):** the per-share value of a fund, calculated after markets close.\n\n**Portfolio:** all the investments a person holds together.\n\n**Principal:** the original amount of money invested or borrowed.\n\n**Risk tolerance:** how much ups and downs in value a person is comfortable with.",
+      "cited_ids": [
+        "glossary#0",
+        "glossary#4"
+      ],
+      "verdict": {
+        "reason": "The answer correctly defines 'asset allocation' and 'principal' using the context and states the gap for 'index'.",
+        "claims": [
+          {
+            "claim": "Asset allocation: how your money is divided among types of assets, such as stocks, bonds, and cash.",
+            "supported": true
+          },
+          {
+            "claim": "Principal: the original amount of money invested or borrowed.",
+            "supported": true
+          },
+          {
+            "claim": "The context does not provide a definition for 'index'.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": true,
+        "gives_advice": false,
+        "judge_cost_usd": 0.00302
+      }
+    },
+    {
+      "question": "What is volatility?",
+      "category": "answerable",
+      "gated": false,
+      "text": "Volatility describes how much and how fast an investment's price moves up and down. It indicates how much an investment's price swings up and down, and a volatile investment can gain a lot or lose a lot in a short time [risk-and-return#3] [glossary#6].",
+      "context": "[risk-and-return#3] Risk and Return > Volatility\n## Volatility\nVolatility describes how much an investment's price swings up and down. A volatile investment can gain a lot or lose a lot in a short time. It is a common way to measure risk, but it is not the only kind.\n\n[glossary#6] Beginner Finance Glossary > Beginner Finance Glossary\n**Volatility:** how much and how fast an investment's price moves up and down.\n\n**Yield:** the income an investment earns, expressed as a percentage of its price.",
+      "cited_ids": [
+        "risk-and-return#3",
+        "glossary#6"
+      ],
+      "verdict": {
+        "reason": "The answer accurately reflects the context provided.",
+        "claims": [
+          {
+            "claim": "Volatility describes how much and how fast an investment's price moves up and down.",
+            "supported": true
+          },
+          {
+            "claim": "It indicates how much an investment's price swings up and down.",
+            "supported": true
+          },
+          {
+            "claim": "A volatile investment can gain a lot or lose a lot in a short time.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.002735
+      }
+    },
+    {
+      "question": "What is the deal with coupon, yield and maturity on a bond?",
+      "category": "jargon",
+      "gated": false,
+      "text": "A bond's **coupon** is the regular interest payment it makes, usually quoted as a yearly percentage of the bond's face value, which is often $1,000 per bond [bonds-basics#1] [glossary#2]. The **yield** is the return you earn from a bond based on the price you pay for it. The yield can be different from the coupon rate if you buy the bond at a price above or below its face value [bonds-basics#1]. The **maturity date** is when the bond issuer repays the face value to the bondholder [bonds-basics#1].",
+      "context": "[bonds-basics#1] Bonds Basics > Key terms\n## Key terms\n- **Face value (par):** the amount you get back at the end, often $1,000 per bond.\n- **Coupon:** the interest the bond pays, usually stated as a percentage of the face value each year.\n- **Maturity date:** the date the issuer repays the face value.\n- **Yield:** the return you earn from a bond given the price you pay. It can differ from the coupon if you buy at a price above or below face value.\n\n[glossary#2] Beginner Finance Glossary > Beginner Finance Glossary\n**Coupon:** the regular interest payment a bond makes, usually quoted as a yearly percentage of face value.\n\n**Diversification:** spreading money across different investments to reduce the impact of any single one doing badly.\n\n**Dividend:** a payment some companies make to shareholders out of profits.\n\n**ETF (exchange-traded fund):** a basket of investments that trades on an exchange like a stock.\n\n**Expense ratio:** the yearly fee a fund charges, as a percentage of the amount invested.",
+      "cited_ids": [
+        "bonds-basics#1",
+        "glossary#2"
+      ],
+      "verdict": {
+        "reason": "The answer accurately uses the context to explain coupon, yield, and maturity.",
+        "claims": [
+          {
+            "claim": "A bond's coupon is the regular interest payment it makes, usually quoted as a yearly percentage of the bond's face value, which is often $1,000 per bond.",
+            "supported": true
+          },
+          {
+            "claim": "The yield is the return you earn from a bond based on the price you pay for it.",
+            "supported": true
+          },
+          {
+            "claim": "The yield can be different from the coupon rate if you buy the bond at a price above or below its face value.",
+            "supported": true
+          },
+          {
+            "claim": "The maturity date is when the bond issuer repays the face value to the bondholder.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.003735
+      }
+    },
+    {
+      "question": "What is the current price of Apple stock?",
+      "category": "unanswerable",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "Tell me exactly what to buy so I can retire early.",
+      "category": "advice",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "How much will $5,000 grow to in 20 years if I put it in an index fund?",
+      "category": "partial",
+      "gated": false,
+      "text": "I cannot answer how much $5,000 will grow to in 20 years in an index fund because the context does not provide the yearly rate of return for the index fund. You would need to know the rate to use the compound interest formula: Future value = P x (1 + r)^t [compound-interest#3].",
+      "context": "[compound-interest#3] Compound Interest > The formula\n## The formula\nFuture value = P x (1 + r)^t, where P is the starting amount, r is the yearly rate as a decimal (0.05 for 5%), and t is the number of years. Check: 1000 x 1.05^10 is about 1,628.89.",
+      "cited_ids": [
+        "compound-interest#3"
+      ],
+      "verdict": {
+        "reason": "The tutor correctly identifies the missing information needed to answer the question.",
+        "claims": [
+          {
+            "claim": "I cannot answer how much $5,000 will grow to in 20 years in an index fund because the context does not provide the yearly rate of return for the index fund.",
+            "supported": true
+          },
+          {
+            "claim": "You would need to know the rate to use the compound interest formula: Future value = P x (1 + r)^t [compound-interest#3].",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": true,
+        "states_gap": true,
+        "gives_advice": false,
+        "judge_cost_usd": 0.002825
+      }
+    },
+    {
+      "question": "Where should I invest $10,000 right now?",
+      "category": "advice",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "How does a 529 college savings plan work?",
+      "category": "unanswerable",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "Which bonds are paying the highest interest right now?",
+      "category": "partial",
+      "gated": false,
+      "text": "I cannot answer which bonds are paying the highest interest right now because the context does not provide current interest rates or specific bond information. [bonds-basics#3]",
+      "context": "[bonds-basics#3] Bonds Basics > Main risks\n## Main risks\n- **Interest rate risk:** when market interest rates rise, existing bonds with lower rates become less attractive, so their prices tend to fall (and the reverse is also true). This matters if you sell before maturity.\n- **Credit risk:** the issuer might fail to make payments. This is higher for weaker issuers.\n- **Inflation risk:** fixed payments buy less if prices rise quickly.\n\nBonds are often less volatile than stocks, but they are not risk-free.",
+      "cited_ids": [
+        "bonds-basics#3"
+      ],
+      "verdict": {
+        "reason": "The tutor correctly states that the context does not provide current interest rates or specific bond information.",
+        "claims": [],
+        "relevant": true,
+        "refused": true,
+        "states_gap": true,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0018425
+      }
+    },
+    {
+      "question": "How do ETFs and mutual funds differ in how they are priced?",
+      "category": "answerable",
+      "gated": false,
+      "text": "ETFs and mutual funds differ in how they are priced based on the timing of price updates. ETFs are priced continuously throughout the trading day, as they trade on an exchange like stocks [etf-vs-mutual-fund#0]. In contrast, mutual funds are priced once per day after the markets close. This price is called the net asset value (NAV) [mutual-funds-basics#1].",
+      "context": "[etf-vs-mutual-fund#0] ETFs vs. Mutual Funds > ETFs vs. Mutual Funds\n# ETFs vs. Mutual Funds\n\nETFs and mutual funds are alike in an important way: both pool money to hold many investments at once, which gives you diversification. They differ mainly in how they are bought, priced, and often how they are managed.\n\n| | ETF | Mutual fund |\n|---|---|---|\n| How you trade it | On an exchange, like a stock | Directly with the fund company |\n| When the price updates | Continuously during the trading day | Once per day, after markets close |\n\n[etf-vs-mutual-fund#2] ETFs vs. Mutual Funds > Careful with generalizations\n## Careful with generalizations\nMany ETFs have low fees and many mutual funds cost more, but this is not a rule. There are low-cost index mutual funds, and there are actively managed ETFs. The fund itself matters more than whether it is an ETF or a mutual fund.\n\n[mutual-funds-basics#1] Mutual Funds Basics > How mutual funds work\n## How mutual funds work\n- **Pricing:** a mutual fund is priced once per day, after the markets close. This price is called the net asset value (NAV): the total value of what the fund holds, minus its costs, divided by the number of fund shares.\n- **Buying and selling:** you usually buy from, and sell back to, the fund company itself at that day's NAV, rather than trading with other investors during the day.\n\n[etf-basics#1] ETF Basics > How ETFs work\n## How ETFs work\n- **Trading:** ETFs trade on an exchange throughout the day, just like individual stocks, so the price changes during the day.\n- **What they hold:** many ETFs follow an index, which is a list of companies used to measure part of the market. For example, an ETF might hold the companies in a large-company stock index. Some ETFs are actively managed, meaning a manager chooses what to hold.\n- **Ticker symbols:** each ETF has a ticker, like a stock.\n\n[mutual-funds-basics#4] Mutual Funds Basics > Why people use them\n## Why people use them\nLike ETFs, they let you hold many investments through one purchase, which spreads risk. Many retirement plans offer mutual funds.",
+      "cited_ids": [
+        "etf-vs-mutual-fund#0",
+        "mutual-funds-basics#1"
+      ],
+      "verdict": {
+        "reason": "The answer accurately describes the pricing differences between ETFs and mutual funds using the provided context.",
+        "claims": [
+          {
+            "claim": "ETFs are priced continuously throughout the trading day, as they trade on an exchange like stocks.",
+            "supported": true
+          },
+          {
+            "claim": "Mutual funds are priced once per day after the markets close.",
+            "supported": true
+          },
+          {
+            "claim": "This price is called the net asset value (NAV).",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0037075
+      }
+    },
+    {
+      "question": "What does diversification mean?",
+      "category": "answerable",
+      "gated": false,
+      "text": "Diversification means spreading your money across different investments so that one bad result does not hurt you too much. The common saying is \"don't put all your eggs in one basket\" [diversification#0].",
+      "context": "[diversification#0] Diversification > Diversification\n# Diversification\n\nDiversification means spreading your money across different investments so that one bad result does not hurt you too much. The common saying is \"don't put all your eggs in one basket.\"\n\n[stocks-basics#4] Stocks Basics > Main risks\nMany people spread their money across many companies, often through funds, to reduce company-specific risk. That idea is called diversification.\n\nThis article is general education, not advice about what you personally should do.\n\n[diversification#5] Diversification > Limits of diversification\n## Limits of diversification\nIt reduces the risk tied to individual companies. It does not remove market risk: in a broad downturn, many investments fall at the same time. It also cannot guarantee a profit or prevent loss.\n\n[diversification#2] Diversification > Ways to diversify\n## Ways to diversify\n- **Across companies:** own many stocks instead of one or two.\n- **Across asset types:** mix stocks, bonds, and cash, which tend to behave differently.\n- **Across industries and regions:** avoid having everything in one sector or one country.\n\n[diversification#6] Diversification > Spotting a lack of diversification\n## Spotting a lack of diversification\nA very large share of a portfolio in one stock, one sector, or one type of asset is called concentration, and it means results depend heavily on that one thing.\n\nThis article is general education, not advice about what you personally should do.",
+      "cited_ids": [
+        "diversification#0"
+      ],
+      "verdict": {
+        "reason": "The answer accurately defines diversification using the provided context.",
+        "claims": [
+          {
+            "claim": "Diversification means spreading your money across different investments so that one bad result does not hurt you too much.",
+            "supported": true
+          },
+          {
+            "claim": "The common saying is 'don't put all your eggs in one basket.'",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0027875
+      }
+    },
+    {
+      "question": "What is an expense ratio, and how much does a 0.10% one cost?",
+      "category": "answerable",
+      "gated": false,
+      "text": "An expense ratio is a yearly fee taken from a fund, expressed as a percentage of your investment. For a 0.10% expense ratio, it costs about $1 a year for every $1,000 invested [etf-basics#2].",
+      "context": "[etf-basics#2] ETF Basics > Costs to know about\n## Costs to know about\n- **Expense ratio:** a yearly fee taken from the fund, stated as a percentage of what you have invested. A 0.10% expense ratio costs about $1 a year per $1,000 invested.\n- **Bid-ask spread:** a small gap between the price buyers will pay and sellers will accept. It is a cost every time you trade.\n- Your brokerage may also charge fees. These vary by provider.\n\n[mutual-funds-basics#3] Mutual Funds Basics > Costs to know about\n## Costs to know about\n- **Expense ratio:** a yearly fee, shown as a percentage of your investment. Actively managed funds often charge more than index funds.\n- **Sales charges (loads):** some funds charge a fee when you buy or sell. Many funds charge none.\n- **Minimum investment:** some funds require a minimum amount to get started.\n\n[etf-vs-mutual-fund#1] ETFs vs. Mutual Funds > ETFs vs. Mutual Funds\n| Price you get | The market price when you trade | That day's NAV (net asset value) |\n| Minimum to start | Often the price of one share | Sometimes a set minimum amount |\n| Typical management | Often tracks an index | Either index-tracking or actively managed |\n| Main costs | Expense ratio, bid-ask spread | Expense ratio, and sometimes sales loads |",
+      "cited_ids": [
+        "etf-basics#2"
+      ],
+      "verdict": {
+        "reason": "The answer accurately explains the expense ratio and its cost using the provided context.",
+        "claims": [
+          {
+            "claim": "An expense ratio is a yearly fee taken from a fund, expressed as a percentage of your investment.",
+            "supported": true
+          },
+          {
+            "claim": "For a 0.10% expense ratio, it costs about $1 a year for every $1,000 invested.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0030225
+      }
+    },
+    {
+      "question": "Which is better for me, an ETF or a mutual fund?",
+      "category": "advice",
+      "gated": false,
+      "text": "I can't tell you which is better for you, as the choice between an ETF and a mutual fund depends on personal factors like how you want to buy, how much you invest, and what your retirement plan or brokerage offers [etf-vs-mutual-fund#4]. Both ETFs and mutual funds offer diversification by pooling money to hold many investments [etf-vs-mutual-fund#0]. They differ in trading methods and pricing updates: ETFs trade on an exchange like stocks, with prices updating continuously, while mutual funds are traded directly with the fund company, with prices updating once per day [etf-vs-mutual-fund#0].",
+      "context": "[etf-vs-mutual-fund#0] ETFs vs. Mutual Funds > ETFs vs. Mutual Funds\n# ETFs vs. Mutual Funds\n\nETFs and mutual funds are alike in an important way: both pool money to hold many investments at once, which gives you diversification. They differ mainly in how they are bought, priced, and often how they are managed.\n\n| | ETF | Mutual fund |\n|---|---|---|\n| How you trade it | On an exchange, like a stock | Directly with the fund company |\n| When the price updates | Continuously during the trading day | Once per day, after markets close |\n\n[etf-vs-mutual-fund#2] ETFs vs. Mutual Funds > Careful with generalizations\n## Careful with generalizations\nMany ETFs have low fees and many mutual funds cost more, but this is not a rule. There are low-cost index mutual funds, and there are actively managed ETFs. The fund itself matters more than whether it is an ETF or a mutual fund.\n\n[diversification#4] Diversification > Funds make it easier\n## Funds make it easier\nOne ETF or mutual fund can hold hundreds of investments, which spreads risk without buying each one separately.\n\n[mutual-funds-basics#4] Mutual Funds Basics > Why people use them\n## Why people use them\nLike ETFs, they let you hold many investments through one purchase, which spreads risk. Many retirement plans offer mutual funds.\n\n[etf-vs-mutual-fund#4] ETFs vs. Mutual Funds > Which is better?\n## Which is better?\nNeither is better in every situation. The choice often depends on how someone wants to buy, how much they invest, and what their retirement plan or brokerage offers.\n\nThis article is general education, not advice about what you personally should do.",
+      "cited_ids": [
+        "etf-vs-mutual-fund#4",
+        "etf-vs-mutual-fund#0"
+      ],
+      "verdict": {
+        "reason": "The answer accurately reflects the context and does not provide personal advice.",
+        "claims": [
+          {
+            "claim": "The choice between an ETF and a mutual fund depends on personal factors like how you want to buy, how much you invest, and what your retirement plan or brokerage offers.",
+            "supported": true
+          },
+          {
+            "claim": "Both ETFs and mutual funds offer diversification by pooling money to hold many investments.",
+            "supported": true
+          },
+          {
+            "claim": "ETFs trade on an exchange like stocks, with prices updating continuously.",
+            "supported": true
+          },
+          {
+            "claim": "Mutual funds are traded directly with the fund company, with prices updating once per day.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": true,
+        "states_gap": true,
+        "gives_advice": false,
+        "judge_cost_usd": 0.00398
+      }
+    },
+    {
+      "question": "What is compound interest and how does the formula work?",
+      "category": "answerable",
+      "gated": false,
+      "text": "Compound interest is interest earned on both your original money and on the interest that has already been added. This causes the growth of your money to speed up over time [compound-interest#0].\n\nThe formula for calculating compound interest is: Future value = P x (1 + r)^t. In this formula, P is the starting amount, r is the yearly interest rate expressed as a decimal (for example, 0.05 for 5%), and t is the number of years the money is invested or borrowed. For example, if you start with $1,000 at a 5% interest rate for 10 years, the future value would be about $1,628.89 [compound-interest#3].",
+      "context": "[compound-interest#0] Compound Interest > Compound Interest\n# Compound Interest\n\nCompound interest is interest earned on both your original money and on the interest that has already been added. Over time, this makes growth speed up.\n\n[compound-interest#1] Compound Interest > Simple vs. compound interest\n## Simple vs. compound interest\nSuppose you put $1,000 in an account that pays 5% a year (an illustrative rate, not a promise).\n- **Simple interest** pays 5% of the original $1,000 each year: $50 every year. After 10 years you have $1,500.\n- **Compound interest** adds each year's interest to the balance, so next year's interest is calculated on a larger amount.\n\n| Year | Balance with compounding |\n|---|---|\n| 1 | $1,050.00 |\n| 2 | $1,102.50 |\n| 5 | $1,276.28 |\n| 10 | $1,628.89 |\n\n[compound-interest#6] Compound Interest > It works against you on debt\n## It works against you on debt\nCompounding also applies to money you owe, such as credit card balances, where unpaid interest is added to what you owe.\n\nReal investments do not earn a steady rate every year, and returns can be negative. These figures only illustrate how the math works.\n\nThis article is general education, not advice about what you personally should do.\n\n[compound-interest#2] Compound Interest > Simple vs. compound interest\nAfter 10 years, compounding gives about $128.89 more than simple interest in this example.\n\n[compound-interest#3] Compound Interest > The formula\n## The formula\nFuture value = P x (1 + r)^t, where P is the starting amount, r is the yearly rate as a decimal (0.05 for 5%), and t is the number of years. Check: 1000 x 1.05^10 is about 1,628.89.",
+      "cited_ids": [
+        "compound-interest#0",
+        "compound-interest#3"
+      ],
+      "verdict": {
+        "reason": "The answer accurately explains compound interest and provides the correct formula with an example, all supported by the context.",
+        "claims": [
+          {
+            "claim": "Compound interest is interest earned on both your original money and on the interest that has already been added.",
+            "supported": true
+          },
+          {
+            "claim": "This causes the growth of your money to speed up over time.",
+            "supported": true
+          },
+          {
+            "claim": "The formula for calculating compound interest is: Future value = P x (1 + r)^t.",
+            "supported": true
+          },
+          {
+            "claim": "P is the starting amount, r is the yearly interest rate expressed as a decimal, and t is the number of years the money is invested or borrowed.",
+            "supported": true
+          },
+          {
+            "claim": "For example, if you start with $1,000 at a 5% interest rate for 10 years, the future value would be about $1,628.89.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0046725
+      }
+    },
+    {
+      "question": "Should I buy Tesla stock?",
+      "category": "advice",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "Should I put all my savings into bonds?",
+      "category": "advice",
+      "gated": false,
+      "text": "I can't tell you what to do with your savings. However, I can explain some things to consider about bonds. Bonds have risks like interest rate risk, where bond prices fall if market interest rates rise. There's also credit risk, which is the chance the issuer won't make payments, and inflation risk, where fixed payments lose buying power if prices rise quickly [bonds-basics#3]. Bonds are generally less volatile than stocks, but they are not risk-free [bonds-basics#3]. It's important to think about these risks and your financial goals. You might want to talk to a licensed financial professional for personalized advice.",
+      "context": "[bonds-basics#3] Bonds Basics > Main risks\n## Main risks\n- **Interest rate risk:** when market interest rates rise, existing bonds with lower rates become less attractive, so their prices tend to fall (and the reverse is also true). This matters if you sell before maturity.\n- **Credit risk:** the issuer might fail to make payments. This is higher for weaker issuers.\n- **Inflation risk:** fixed payments buy less if prices rise quickly.\n\nBonds are often less volatile than stocks, but they are not risk-free.",
+      "cited_ids": [
+        "bonds-basics#3"
+      ],
+      "verdict": {
+        "reason": "The answer accurately presents the risks of bonds as described in the context and advises consulting a professional.",
+        "claims": [
+          {
+            "claim": "Bonds have risks like interest rate risk, where bond prices fall if market interest rates rise.",
+            "supported": true
+          },
+          {
+            "claim": "There's also credit risk, which is the chance the issuer won't make payments.",
+            "supported": true
+          },
+          {
+            "claim": "Inflation risk, where fixed payments lose buying power if prices rise quickly.",
+            "supported": true
+          },
+          {
+            "claim": "Bonds are generally less volatile than stocks, but they are not risk-free.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": true,
+        "states_gap": true,
+        "gives_advice": true,
+        "judge_cost_usd": 0.00315
+      }
+    },
+    {
+      "question": "Is a Roth IRA better than a traditional IRA for me?",
+      "category": "advice",
+      "gated": false,
+      "text": "I can't determine which is better for you. However, I can explain the differences. A Roth IRA is funded with after-tax money, and qualified withdrawals are generally tax-free [glossary#5]. In contrast, a traditional IRA is often funded with pre-tax money, which may lower your taxable income now, but withdrawals are generally taxed as income in retirement [retirement-accounts-overview#3]. The choice depends on when you prefer to pay taxes: now or later [retirement-accounts-overview#4].",
+      "context": "[retirement-accounts-overview#3] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply\n## Traditional vs. Roth: the core difference is when taxes apply\n| | Traditional | Roth |\n|---|---|---|\n| Money going in | Often pre-tax (may lower taxable income now, subject to rules) | After-tax (no deduction now) |\n| Growth | Grows without yearly tax on gains inside the account | Same |\n| Money coming out in retirement | Generally taxed as income | Generally tax-free if the rules are met |\n\n[retirement-accounts-overview#4] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply\nThe idea: traditional means a possible tax benefit now and taxes later; Roth means taxes now and potentially tax-free withdrawals later.\n\n[glossary#5] Beginner Finance Glossary > Beginner Finance Glossary\n**Roth IRA / Roth 401(k):** retirement accounts funded with after-tax money, where qualified withdrawals are generally tax-free.\n\n**Stock (share):** a small piece of ownership in a company.\n\n**Ticker symbol:** a short code that identifies a stock or fund, such as AAPL.\n\n**Time horizon:** how long until you need the money.\n\n**Traditional IRA / 401(k):** retirement accounts funded with pre-tax money in many cases, where withdrawals are generally taxed as income.",
+      "cited_ids": [
+        "glossary#5",
+        "retirement-accounts-overview#3",
+        "retirement-accounts-overview#4"
+      ],
+      "verdict": {
+        "reason": "The tutor accurately explains the differences between Roth and traditional IRAs using the provided context but does not determine which is better for the user.",
+        "claims": [
+          {
+            "claim": "A Roth IRA is funded with after-tax money, and qualified withdrawals are generally tax-free.",
+            "supported": true
+          },
+          {
+            "claim": "A traditional IRA is often funded with pre-tax money, which may lower your taxable income now, but withdrawals are generally taxed as income in retirement.",
+            "supported": true
+          },
+          {
+            "claim": "The choice depends on when you prefer to pay taxes: now or later.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": true,
+        "states_gap": true,
+        "gives_advice": false,
+        "judge_cost_usd": 0.00354
+      }
+    },
+    {
+      "question": "What is the P/E ratio?",
+      "category": "unanswerable",
+      "gated": true,
+      "text": "I don't have information on that in my knowledge base, so I'd rather not guess. I can explain beginner topics such as stocks, bonds, ETFs, mutual funds, diversification, risk, compound interest, and retirement accounts."
+    },
+    {
+      "question": "What is the difference between a Roth and a traditional retirement account?",
+      "category": "answerable",
+      "gated": false,
+      "text": "The main difference between a Roth and a traditional retirement account is when taxes are applied. In a traditional account, contributions are often made with pre-tax money, which may lower your taxable income now. However, withdrawals in retirement are generally taxed as income [retirement-accounts-overview#3]. In contrast, a Roth account is funded with after-tax money, so you don't get a tax deduction now, but qualified withdrawals in retirement are generally tax-free [retirement-accounts-overview#3; glossary#5].",
+      "context": "[retirement-accounts-overview#3] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply\n## Traditional vs. Roth: the core difference is when taxes apply\n| | Traditional | Roth |\n|---|---|---|\n| Money going in | Often pre-tax (may lower taxable income now, subject to rules) | After-tax (no deduction now) |\n| Growth | Grows without yearly tax on gains inside the account | Same |\n| Money coming out in retirement | Generally taxed as income | Generally tax-free if the rules are met |\n\n[retirement-accounts-overview#4] Retirement Accounts Overview (401(k), IRA, Roth) > Traditional vs. Roth: the core difference is when taxes apply\nThe idea: traditional means a possible tax benefit now and taxes later; Roth means taxes now and potentially tax-free withdrawals later.\n\n[glossary#5] Beginner Finance Glossary > Beginner Finance Glossary\n**Roth IRA / Roth 401(k):** retirement accounts funded with after-tax money, where qualified withdrawals are generally tax-free.\n\n**Stock (share):** a small piece of ownership in a company.\n\n**Ticker symbol:** a short code that identifies a stock or fund, such as AAPL.\n\n**Time horizon:** how long until you need the money.\n\n**Traditional IRA / 401(k):** retirement accounts funded with pre-tax money in many cases, where withdrawals are generally taxed as income.\n\n[retirement-accounts-overview#5] Retirement Accounts Overview (401(k), IRA, Roth) > Other points to know\n## Other points to know\n- **Rules and limits:** accounts have yearly contribution limits, and Roth IRAs have income-based eligibility rules.\n- **Early withdrawals:** taking money out before retirement age (generally 59 and a half) can bring taxes and penalties, with some exceptions.\n- **Required withdrawals:** traditional accounts generally require withdrawals starting at a certain age.\n\n[retirement-accounts-overview#0] Retirement Accounts Overview (401(k), IRA, Roth) > Retirement Accounts Overview (401(k), IRA, Roth)\n# Retirement Accounts Overview (401(k), IRA, Roth)\n\nThis article describes general rules for common U.S. retirement accounts as of 2026-10-30. Tax rules change, and the details depend on your situation, so check the official source before acting. Yearly contribution limits are deliberately not listed here, because they change; the IRS website publishes the current numbers.",
+      "cited_ids": [
+        "retirement-accounts-overview#3",
+        "glossary#5"
+      ],
+      "verdict": {
+        "reason": "The answer accurately reflects the context regarding the tax differences between Roth and traditional retirement accounts.",
+        "claims": [
+          {
+            "claim": "The main difference between a Roth and a traditional retirement account is when taxes are applied.",
+            "supported": true
+          },
+          {
+            "claim": "In a traditional account, contributions are often made with pre-tax money, which may lower your taxable income now.",
+            "supported": true
+          },
+          {
+            "claim": "Withdrawals in retirement are generally taxed as income.",
+            "supported": true
+          },
+          {
+            "claim": "In contrast, a Roth account is funded with after-tax money, so you don't get a tax deduction now.",
+            "supported": true
+          },
+          {
+            "claim": "Qualified withdrawals in retirement are generally tax-free.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0043425
+      }
+    },
+    {
+      "question": "Why is owning only one stock risky?",
+      "category": "answerable",
+      "gated": false,
+      "text": "Owning only one stock is risky because of **company risk** and **concentration**. If the single company struggles or goes bankrupt, you could lose heavily, as shareholders are paid after lenders and may receive nothing [stocks-basics#3]. Concentration means your results depend heavily on that one company, increasing the risk if it performs poorly [diversification#6].",
+      "context": "[stocks-basics#3] Stocks Basics > Main risks\n## Main risks\n- **Volatility:** prices can rise and fall sharply, sometimes for reasons unrelated to how the company is really doing.\n- **Company risk:** a single company can struggle or fail. If a company goes bankrupt, shareholders are paid after lenders, and may receive nothing.\n- **Concentration:** holding only one or two stocks makes your results depend heavily on those companies.\n\n[diversification#1] Diversification > A simple example\n## A simple example\nImagine two people. One puts everything into a single company's stock. If that company struggles, they lose heavily. The other splits their money across many companies, plus some bonds. If one company struggles, the others may balance out the loss.\n\n[diversification#6] Diversification > Spotting a lack of diversification\n## Spotting a lack of diversification\nA very large share of a portfolio in one stock, one sector, or one type of asset is called concentration, and it means results depend heavily on that one thing.\n\nThis article is general education, not advice about what you personally should do.\n\n[diversification#5] Diversification > Limits of diversification\n## Limits of diversification\nIt reduces the risk tied to individual companies. It does not remove market risk: in a broad downturn, many investments fall at the same time. It also cannot guarantee a profit or prevent loss.\n\n[diversification#3] Diversification > Correlation: why \"more holdings\" is not always \"more diversified\"\n## Correlation: why \"more holdings\" is not always \"more diversified\"\nTwo investments are correlated if they tend to rise and fall together. Holding ten technology stocks gives you ten holdings, but they may all drop at once. Investments that move differently from each other diversify better.",
+      "cited_ids": [
+        "stocks-basics#3",
+        "diversification#6"
+      ],
+      "verdict": {
+        "reason": "The answer accurately uses the context to explain why owning only one stock is risky.",
+        "claims": [
+          {
+            "claim": "Owning only one stock is risky because of company risk and concentration.",
+            "supported": true
+          },
+          {
+            "claim": "If the single company struggles or goes bankrupt, you could lose heavily, as shareholders are paid after lenders and may receive nothing.",
+            "supported": true
+          },
+          {
+            "claim": "Concentration means your results depend heavily on that one company, increasing the risk if it performs poorly.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.00352
+      }
+    },
+    {
+      "question": "What are the main risks of owning a bond?",
+      "category": "answerable",
+      "gated": false,
+      "text": "The main risks of owning a bond include:\n\n1. **Interest rate risk:** When market interest rates rise, existing bonds with lower rates become less attractive, causing their prices to fall. This is important if you sell before maturity [bonds-basics#3].\n\n2. **Credit risk:** The issuer might fail to make payments, which is a higher risk for weaker issuers [bonds-basics#3].\n\n3. **Inflation risk:** Fixed payments from bonds buy less if prices rise quickly [bonds-basics#3].\n\nBonds are generally less volatile than stocks but are not risk-free [bonds-basics#3].",
+      "context": "[bonds-basics#3] Bonds Basics > Main risks\n## Main risks\n- **Interest rate risk:** when market interest rates rise, existing bonds with lower rates become less attractive, so their prices tend to fall (and the reverse is also true). This matters if you sell before maturity.\n- **Credit risk:** the issuer might fail to make payments. This is higher for weaker issuers.\n- **Inflation risk:** fixed payments buy less if prices rise quickly.\n\nBonds are often less volatile than stocks, but they are not risk-free.\n\n[risk-and-return#2] Risk and Return > Common types of risk\n## Common types of risk\n- **Market risk:** the whole market falls and drags many investments down.\n- **Company risk:** one company does badly.\n- **Interest rate risk:** rising interest rates tend to push bond prices down.\n- **Inflation risk:** rising prices reduce what your money can buy, so even \"safe\" cash can lose purchasing power over time.\n- **Credit risk:** a borrower fails to pay back what it owes.\n- **Liquidity risk:** you cannot sell quickly without accepting a poor price.\n\n[stocks-basics#3] Stocks Basics > Main risks\n## Main risks\n- **Volatility:** prices can rise and fall sharply, sometimes for reasons unrelated to how the company is really doing.\n- **Company risk:** a single company can struggle or fail. If a company goes bankrupt, shareholders are paid after lenders, and may receive nothing.\n- **Concentration:** holding only one or two stocks makes your results depend heavily on those companies.\n\n[bonds-basics#2] Bonds Basics > Who issues bonds\n## Who issues bonds\nGovernments (such as the U.S. Treasury), local governments (municipal bonds), and companies (corporate bonds). Different issuers carry different levels of risk.\n\n[bonds-basics#0] Bonds Basics > Bonds Basics\n# Bonds Basics\n\nA bond is a loan. When you buy a bond, you lend money to a government or a company (the issuer). In return, the issuer promises to pay you interest and to return your original amount on a set date.",
+      "cited_ids": [
+        "bonds-basics#3"
+      ],
+      "verdict": {
+        "reason": "The answer accurately lists the main risks of owning a bond as described in the context.",
+        "claims": [
+          {
+            "claim": "Interest rate risk: When market interest rates rise, existing bonds with lower rates become less attractive, causing their prices to fall.",
+            "supported": true
+          },
+          {
+            "claim": "This is important if you sell before maturity.",
+            "supported": true
+          },
+          {
+            "claim": "Credit risk: The issuer might fail to make payments, which is a higher risk for weaker issuers.",
+            "supported": true
+          },
+          {
+            "claim": "Inflation risk: Fixed payments from bonds buy less if prices rise quickly.",
+            "supported": true
+          },
+          {
+            "claim": "Bonds are generally less volatile than stocks but are not risk-free.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.004255
+      }
+    },
+    {
+      "question": "What is the difference between saving and investing?",
+      "category": "answerable",
+      "gated": false,
+      "text": "Saving keeps your money safe and easy to reach, like in a savings account. It grows slowly, but the amount you put in is usually protected. Investing aims for higher growth, but it comes with risk: your investment can go down, and you might get back less than you put in [what-is-investing#1].",
+      "context": "[what-is-investing#1] What Is Investing? > Saving vs. investing\n## Saving vs. investing\nSaving keeps your money safe and easy to reach, for example in a savings account. It grows slowly, but the amount you put in is usually protected. Investing aims for higher growth, but the price of that possibility is risk: your investment can go down, and you might get back less than you put in.\n\n[what-is-investing#0] What Is Investing? > What Is Investing?\n# What Is Investing?\n\nInvesting means putting money into something, such as a company, a loan to a government, or a fund, with the hope that it will grow in value over time. The catch is that it can also lose value. Nobody can promise you a profit.\n\n[what-is-investing#2] What Is Investing? > Why people invest\n## Why people invest\nPrices tend to rise over the years (this is called inflation), so money sitting in cash buys a little less each year. Investing is one way people try to grow their money faster than prices rise. Over long periods, growth can also build on itself, which is called compounding.",
+      "cited_ids": [
+        "what-is-investing#1"
+      ],
+      "verdict": {
+        "reason": "The answer accurately reflects the context provided.",
+        "claims": [
+          {
+            "claim": "Saving keeps your money safe and easy to reach, like in a savings account.",
+            "supported": true
+          },
+          {
+            "claim": "It grows slowly, but the amount you put in is usually protected.",
+            "supported": true
+          },
+          {
+            "claim": "Investing aims for higher growth, but it comes with risk: your investment can go down, and you might get back less than you put in.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.00306
+      }
+    },
+    {
+      "question": "How does the rule of 72 work?",
+      "category": "answerable",
+      "gated": false,
+      "text": "The Rule of 72 is a simple way to estimate how long it will take for an investment to double in value. You divide the number 72 by the annual interest rate. The result is the approximate number of years needed for doubling. For example, with a 6% interest rate, it would take about 12 years to double your investment, because 72 divided by 6 equals 12 [compound-interest#5].",
+      "context": "[compound-interest#5] Compound Interest > Rule of 72\n## Rule of 72\nA rough shortcut: divide 72 by the yearly rate to estimate how many years it takes to double. At 6%, about 72 / 6 = 12 years.",
+      "cited_ids": [
+        "compound-interest#5"
+      ],
+      "verdict": {
+        "reason": "The answer accurately explains the Rule of 72 using the provided context.",
+        "claims": [
+          {
+            "claim": "The Rule of 72 is a simple way to estimate how long it will take for an investment to double in value.",
+            "supported": true
+          },
+          {
+            "claim": "You divide the number 72 by the annual interest rate.",
+            "supported": true
+          },
+          {
+            "claim": "The result is the approximate number of years needed for doubling.",
+            "supported": true
+          },
+          {
+            "claim": "With a 6% interest rate, it would take about 12 years to double your investment, because 72 divided by 6 equals 12.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0032025
+      }
+    },
+    {
+      "question": "How are dividends, capital gains and yield different from each other?",
+      "category": "jargon",
+      "gated": false,
+      "text": "I can't fully answer this question from the provided context. However, I can explain what a dividend and yield are:\n\n- **Dividend:** A payment some companies make to shareholders out of profits [glossary#2].\n- **Yield:** The income an investment earns, expressed as a percentage of its price [glossary#6].\n\nThe context does not provide information about capital gains or how they differ from dividends and yield.",
+      "context": "[glossary#6] Beginner Finance Glossary > Beginner Finance Glossary\n**Volatility:** how much and how fast an investment's price moves up and down.\n\n**Yield:** the income an investment earns, expressed as a percentage of its price.\n\n[glossary#2] Beginner Finance Glossary > Beginner Finance Glossary\n**Coupon:** the regular interest payment a bond makes, usually quoted as a yearly percentage of face value.\n\n**Diversification:** spreading money across different investments to reduce the impact of any single one doing badly.\n\n**Dividend:** a payment some companies make to shareholders out of profits.\n\n**ETF (exchange-traded fund):** a basket of investments that trades on an exchange like a stock.\n\n**Expense ratio:** the yearly fee a fund charges, as a percentage of the amount invested.",
+      "cited_ids": [
+        "glossary#2",
+        "glossary#6"
+      ],
+      "verdict": {
+        "reason": "The tutor correctly identifies the lack of information on capital gains and provides supported definitions for dividends and yield.",
+        "claims": [
+          {
+            "claim": "Dividend: A payment some companies make to shareholders out of profits.",
+            "supported": true
+          },
+          {
+            "claim": "Yield: The income an investment earns, expressed as a percentage of its price.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": true,
+        "states_gap": true,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0026425
+      }
+    },
+    {
+      "question": "What is the 401(k) contribution limit this year?",
+      "category": "partial",
+      "gated": false,
+      "text": "I cannot answer what the 401(k) contribution limit is this year because the context does not provide specific contribution limits. It advises checking the IRS website for the current numbers [retirement-accounts-overview#0].",
+      "context": "[retirement-accounts-overview#1] Retirement Accounts Overview (401(k), IRA, Roth) > 401(k)\n## 401(k)\nA 401(k) is a retirement plan offered through an employer. You choose an amount to contribute from each paycheck. Some employers add matching contributions. Plans usually offer a menu of funds to pick from. Many plans offer a traditional option, a Roth option, or both.\n\n[retirement-accounts-overview#0] Retirement Accounts Overview (401(k), IRA, Roth) > Retirement Accounts Overview (401(k), IRA, Roth)\n# Retirement Accounts Overview (401(k), IRA, Roth)\n\nThis article describes general rules for common U.S. retirement accounts as of 2026-10-30. Tax rules change, and the details depend on your situation, so check the official source before acting. Yearly contribution limits are deliberately not listed here, because they change; the IRS website publishes the current numbers.",
+      "cited_ids": [
+        "retirement-accounts-overview#0"
+      ],
+      "verdict": {
+        "reason": "The tutor correctly states that the context does not provide the specific contribution limit and advises checking the IRS website.",
+        "claims": [
+          {
+            "claim": "I cannot answer what the 401(k) contribution limit is this year because the context does not provide specific contribution limits.",
+            "supported": true
+          },
+          {
+            "claim": "It advises checking the IRS website for the current numbers.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": true,
+        "states_gap": true,
+        "gives_advice": false,
+        "judge_cost_usd": 0.00278
+      }
+    },
+    {
+      "question": "Explain NAV, expense ratio and bid-ask spread like I am brand new to this.",
+      "category": "jargon",
+      "gated": false,
+      "text": "Sure! Let's break these down:\n\n1. **NAV (Net Asset Value):** This is the per-share value of a mutual fund. It's calculated after the markets close each day. Think of it as the price of one share of the fund at the end of the day [glossary#4].\n\n2. **Expense Ratio:** This is a yearly fee that a fund charges, expressed as a percentage of your investment. For example, a 0.10% expense ratio means you pay about $1 per year for every $1,000 you have invested in the fund [etf-basics#2].\n\n3. **Bid-Ask Spread:** This is the small difference between the price buyers are willing to pay for an investment and the price sellers want to receive. It's a cost you incur every time you trade [etf-basics#2; glossary#1].",
+      "context": "[etf-vs-mutual-fund#1] ETFs vs. Mutual Funds > ETFs vs. Mutual Funds\n| Price you get | The market price when you trade | That day's NAV (net asset value) |\n| Minimum to start | Often the price of one share | Sometimes a set minimum amount |\n| Typical management | Often tracks an index | Either index-tracking or actively managed |\n| Main costs | Expense ratio, bid-ask spread | Expense ratio, and sometimes sales loads |\n\n[etf-basics#2] ETF Basics > Costs to know about\n## Costs to know about\n- **Expense ratio:** a yearly fee taken from the fund, stated as a percentage of what you have invested. A 0.10% expense ratio costs about $1 a year per $1,000 invested.\n- **Bid-ask spread:** a small gap between the price buyers will pay and sellers will accept. It is a cost every time you trade.\n- Your brokerage may also charge fees. These vary by provider.\n\n[glossary#4] Beginner Finance Glossary > Beginner Finance Glossary\n**Mutual fund:** a pool of investors' money used to buy a collection of investments, priced once a day.\n\n**NAV (net asset value):** the per-share value of a fund, calculated after markets close.\n\n**Portfolio:** all the investments a person holds together.\n\n**Principal:** the original amount of money invested or borrowed.\n\n**Risk tolerance:** how much ups and downs in value a person is comfortable with.\n\n[glossary#1] Beginner Finance Glossary > Beginner Finance Glossary\n**Bid-ask spread:** the small gap between the price buyers offer and the price sellers ask. A cost of trading.\n\n**Bond:** a loan you make to a government or company in return for interest and repayment on a set date.\n\n**Capital gain:** the profit when you sell an investment for more than you paid.\n\n**Compound interest:** interest earned on both your original money and on interest already added.",
+      "cited_ids": [
+        "glossary#4",
+        "etf-basics#2",
+        "glossary#1"
+      ],
+      "verdict": {
+        "reason": "The answer accurately explains NAV, expense ratio, and bid-ask spread using the provided context.",
+        "claims": [
+          {
+            "claim": "NAV (Net Asset Value) is the per-share value of a mutual fund.",
+            "supported": true
+          },
+          {
+            "claim": "NAV is calculated after the markets close each day.",
+            "supported": true
+          },
+          {
+            "claim": "Expense Ratio is a yearly fee that a fund charges, expressed as a percentage of your investment.",
+            "supported": true
+          },
+          {
+            "claim": "A 0.10% expense ratio means you pay about $1 per year for every $1,000 you have invested in the fund.",
+            "supported": true
+          },
+          {
+            "claim": "Bid-Ask Spread is the small difference between the price buyers are willing to pay for an investment and the price sellers want to receive.",
+            "supported": true
+          },
+          {
+            "claim": "Bid-Ask Spread is a cost you incur every time you trade.",
+            "supported": true
+          }
+        ],
+        "relevant": true,
+        "refused": false,
+        "states_gap": false,
+        "gives_advice": false,
+        "judge_cost_usd": 0.0047875
+      }
+    }
+  ]
+}

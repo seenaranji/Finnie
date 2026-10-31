@@ -1,0 +1,52 @@
+[
+  {
+    "n": 1,
+    "question": "Should I put all my savings into bonds?",
+    "kind": "disputed"
+  },
+  {
+    "n": 2,
+    "question": "What does diversification mean?",
+    "kind": "random"
+  },
+  {
+    "n": 3,
+    "question": "At what age do I have to start taking money out of a traditional IRA?",
+    "kind": "random"
+  },
+  {
+    "n": 4,
+    "question": "Explain NAV, expense ratio and bid-ask spread like I am brand new to this.",
+    "kind": "random"
+  },
+  {
+    "n": 5,
+    "question": "What do index, asset allocation and principal mean?",
+    "kind": "random"
+  },
+  {
+    "n": 6,
+    "question": "What is the deal with coupon, yield and maturity on a bond?",
+    "kind": "random"
+  },
+  {
+    "n": 7,
+    "question": "How are dividends, capital gains and yield different from each other?",
+    "kind": "disputed"
+  },
+  {
+    "n": 8,
+    "question": "Is a Roth IRA better than a traditional IRA for me?",
+    "kind": "random"
+  },
+  {
+    "n": 9,
+    "question": "What is an expense ratio, and how much does a 0.10% one cost?",
+    "kind": "random"
+  },
+  {
+    "n": 10,
+    "question": "What is volatility?",
+    "kind": "random"
+  }
+]
