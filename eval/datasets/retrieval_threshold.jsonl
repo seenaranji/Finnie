@@ -1,0 +1,24 @@
+{"id": "a01", "label": "answerable", "expected_article": "diversification", "question": "how do I keep from putting all my money in one place"}
+{"id": "a02", "label": "answerable", "expected_article": "etf-basics", "question": "a basket of stocks I can trade like a single share"}
+{"id": "a03", "label": "answerable", "expected_article": "compound-interest", "question": "why does my savings grow faster the longer I leave it alone"}
+{"id": "a04", "label": "answerable", "expected_article": "bonds-basics", "question": "what happens when I lend money to the government"}
+{"id": "a05", "label": "answerable", "expected_article": "stocks-basics", "question": "what does it mean to own a piece of a company"}
+{"id": "a06", "label": "answerable", "expected_article": "mutual-funds-basics", "question": "a fund where lots of people pool their money and a manager picks the investments"}
+{"id": "a07", "label": "answerable", "expected_article": "retirement-accounts-overview", "question": "what accounts can I use to save for retirement"}
+{"id": "a08", "label": "answerable", "expected_article": "risk-and-return", "question": "why do investments with bigger possible gains also have bigger possible losses"}
+{"id": "a09", "label": "answerable", "expected_article": "etf-vs-mutual-fund", "question": "what is the difference between an ETF and a mutual fund"}
+{"id": "a10", "label": "answerable", "expected_article": "what-is-investing", "question": "I am a complete beginner, what does investing even mean"}
+{"id": "a11", "label": "answerable", "expected_article": "glossary", "question": "what does expense ratio mean"}
+{"id": "a12", "label": "answerable", "expected_article": "bonds-basics", "question": "what is a coupon payment on a bond"}
+{"id": "u01", "label": "unanswerable", "kind": "off-topic", "question": "What is the best pizza topping?"}
+{"id": "u02", "label": "unanswerable", "kind": "off-topic", "question": "What is the weather like in Paris in spring?"}
+{"id": "u03", "label": "unanswerable", "kind": "off-topic", "question": "Who won the football world cup in 2018?"}
+{"id": "u04", "label": "unanswerable", "kind": "off-topic", "question": "How do I fix a flat bicycle tire?"}
+{"id": "u05", "label": "unanswerable", "kind": "off-topic", "question": "Write me a poem about the ocean"}
+{"id": "u06", "label": "unanswerable", "kind": "off-topic", "question": "How many calories are in an apple?"}
+{"id": "u07", "label": "unanswerable", "kind": "missing-topic", "question": "How are capital gains taxed?"}
+{"id": "u08", "label": "unanswerable", "kind": "missing-topic", "question": "What are the federal income tax brackets?"}
+{"id": "u09", "label": "unanswerable", "kind": "missing-topic", "question": "What time does the stock market open and close?"}
+{"id": "u10", "label": "unanswerable", "kind": "missing-topic", "question": "What is the current price of Apple stock?"}
+{"id": "u11", "label": "unanswerable", "kind": "missing-topic", "question": "What is cryptocurrency and how does mining work?"}
+{"id": "u12", "label": "unanswerable", "kind": "missing-topic", "question": "How do I file my tax return?"}

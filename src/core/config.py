@@ -44,6 +44,9 @@ class RAGConfig(BaseModel):
     similarity_threshold: float = 0.0
     chroma_path: str = "chroma_db"           # folder where Chroma saves vectors (git-ignored)
     collection_name: str = "finnie_knowledge_base"
+    candidate_k: int = 20                    # chunks fetched from the store before filtering and reranking
+    rerank: bool = False                     # second-stage re-ordering by an LLM (off until Step 8 shows it helps)
+    dedupe_overlap: float = 0.8              # drop a chunk if this share of its words appears in a better chunk
 
 
 class CacheConfig(BaseModel):

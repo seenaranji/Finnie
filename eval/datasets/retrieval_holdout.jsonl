@@ -1,0 +1,12 @@
+{"id": "h01", "label": "answerable", "expected_article": "stocks-basics", "question": "is it a good idea to hold shares of only one company"}
+{"id": "h02", "label": "answerable", "expected_article": "bonds-basics", "question": "how do bonds pay me interest"}
+{"id": "h03", "label": "answerable", "expected_article": "etf-basics", "question": "what is an index fund"}
+{"id": "h04", "label": "answerable", "expected_article": "retirement-accounts-overview", "question": "difference between a 401(k) and an IRA"}
+{"id": "h05", "label": "answerable", "expected_article": "glossary", "question": "what does NAV stand for"}
+{"id": "h06", "label": "answerable", "expected_article": "compound-interest", "question": "how much will 1000 dollars grow in 20 years with interest"}
+{"id": "u01", "label": "unanswerable", "kind": "missing-topic", "question": "how does a home mortgage work"}
+{"id": "u02", "label": "unanswerable", "kind": "missing-topic", "question": "what is inflation"}
+{"id": "u03", "label": "unanswerable", "kind": "missing-topic", "question": "how do I open a brokerage account"}
+{"id": "u04", "label": "unanswerable", "kind": "off-topic", "question": "what is the best credit card for travel rewards"}
+{"id": "u05", "label": "unanswerable", "kind": "off-topic", "question": "how do I learn to play the guitar"}
+{"id": "u06", "label": "unanswerable", "kind": "missing-topic", "question": "what is a stock split"}

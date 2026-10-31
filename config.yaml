@@ -23,9 +23,12 @@ rag:
   chunk_size: 500            # characters; a guess, compared with 200/1000 in Step 8
   chunk_overlap: 50
   top_k: 5
-  similarity_threshold: 0.0  # 0.0 = off; chosen from data in Step 7
+  similarity_threshold: 0.465  # midpoint of the gap between answerable (min 0.482) and unanswerable (max 0.448) scores, Step 7
   chroma_path: chroma_db     # where the vector database is saved on disk
   collection_name: finnie_knowledge_base
+  candidate_k: 20            # fetch this many, then threshold -> dedupe -> (rerank) -> keep top_k
+  rerank: false              # LLM re-ordering of candidates; off until Step 8 measures it
+  dedupe_overlap: 0.8        # drop a chunk if 80% of its words already appear in a better-ranked chunk
 
 cache:
   quote_ttl_seconds: 60

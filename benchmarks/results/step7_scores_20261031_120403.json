@@ -1,0 +1,214 @@
+{
+  "rows": [
+    {
+      "id": "a01",
+      "label": "answerable",
+      "expected_article": "diversification",
+      "question": "how do I keep from putting all my money in one place",
+      "top_score": 0.545,
+      "top_chunk": "diversification#0"
+    },
+    {
+      "id": "a02",
+      "label": "answerable",
+      "expected_article": "etf-basics",
+      "question": "a basket of stocks I can trade like a single share",
+      "top_score": 0.511,
+      "top_chunk": "stocks-basics#0"
+    },
+    {
+      "id": "a03",
+      "label": "answerable",
+      "expected_article": "compound-interest",
+      "question": "why does my savings grow faster the longer I leave it alone",
+      "top_score": 0.555,
+      "top_chunk": "compound-interest#4"
+    },
+    {
+      "id": "a04",
+      "label": "answerable",
+      "expected_article": "bonds-basics",
+      "question": "what happens when I lend money to the government",
+      "top_score": 0.482,
+      "top_chunk": "bonds-basics#0"
+    },
+    {
+      "id": "a05",
+      "label": "answerable",
+      "expected_article": "stocks-basics",
+      "question": "what does it mean to own a piece of a company",
+      "top_score": 0.487,
+      "top_chunk": "stocks-basics#0"
+    },
+    {
+      "id": "a06",
+      "label": "answerable",
+      "expected_article": "mutual-funds-basics",
+      "question": "a fund where lots of people pool their money and a manager picks the investments",
+      "top_score": 0.573,
+      "top_chunk": "mutual-funds-basics#0"
+    },
+    {
+      "id": "a07",
+      "label": "answerable",
+      "expected_article": "retirement-accounts-overview",
+      "question": "what accounts can I use to save for retirement",
+      "top_score": 0.565,
+      "top_chunk": "retirement-accounts-overview#0"
+    },
+    {
+      "id": "a08",
+      "label": "answerable",
+      "expected_article": "risk-and-return",
+      "question": "why do investments with bigger possible gains also have bigger possible losses",
+      "top_score": 0.633,
+      "top_chunk": "risk-and-return#1"
+    },
+    {
+      "id": "a09",
+      "label": "answerable",
+      "expected_article": "etf-vs-mutual-fund",
+      "question": "what is the difference between an ETF and a mutual fund",
+      "top_score": 0.781,
+      "top_chunk": "etf-vs-mutual-fund#0"
+    },
+    {
+      "id": "a10",
+      "label": "answerable",
+      "expected_article": "what-is-investing",
+      "question": "I am a complete beginner, what does investing even mean",
+      "top_score": 0.595,
+      "top_chunk": "what-is-investing#0"
+    },
+    {
+      "id": "a11",
+      "label": "answerable",
+      "expected_article": "glossary",
+      "question": "what does expense ratio mean",
+      "top_score": 0.512,
+      "top_chunk": "etf-basics#2"
+    },
+    {
+      "id": "a12",
+      "label": "answerable",
+      "expected_article": "bonds-basics",
+      "question": "what is a coupon payment on a bond",
+      "top_score": 0.55,
+      "top_chunk": "glossary#2"
+    },
+    {
+      "id": "u01",
+      "label": "unanswerable",
+      "kind": "off-topic",
+      "question": "What is the best pizza topping?",
+      "top_score": 0.121,
+      "top_chunk": "compound-interest#4"
+    },
+    {
+      "id": "u02",
+      "label": "unanswerable",
+      "kind": "off-topic",
+      "question": "What is the weather like in Paris in spring?",
+      "top_score": 0.094,
+      "top_chunk": "compound-interest#3"
+    },
+    {
+      "id": "u03",
+      "label": "unanswerable",
+      "kind": "off-topic",
+      "question": "Who won the football world cup in 2018?",
+      "top_score": 0.083,
+      "top_chunk": "retirement-accounts-overview#0"
+    },
+    {
+      "id": "u04",
+      "label": "unanswerable",
+      "kind": "off-topic",
+      "question": "How do I fix a flat bicycle tire?",
+      "top_score": 0.094,
+      "top_chunk": "compound-interest#3"
+    },
+    {
+      "id": "u05",
+      "label": "unanswerable",
+      "kind": "off-topic",
+      "question": "Write me a poem about the ocean",
+      "top_score": 0.099,
+      "top_chunk": "compound-interest#1"
+    },
+    {
+      "id": "u06",
+      "label": "unanswerable",
+      "kind": "off-topic",
+      "question": "How many calories are in an apple?",
+      "top_score": 0.117,
+      "top_chunk": "stocks-basics#2"
+    },
+    {
+      "id": "u07",
+      "label": "unanswerable",
+      "kind": "missing-topic",
+      "question": "How are capital gains taxed?",
+      "top_score": 0.377,
+      "top_chunk": "retirement-accounts-overview#6"
+    },
+    {
+      "id": "u08",
+      "label": "unanswerable",
+      "kind": "missing-topic",
+      "question": "What are the federal income tax brackets?",
+      "top_score": 0.38,
+      "top_chunk": "retirement-accounts-overview#6"
+    },
+    {
+      "id": "u09",
+      "label": "unanswerable",
+      "kind": "missing-topic",
+      "question": "What time does the stock market open and close?",
+      "top_score": 0.437,
+      "top_chunk": "stocks-basics#2"
+    },
+    {
+      "id": "u10",
+      "label": "unanswerable",
+      "kind": "missing-topic",
+      "question": "What is the current price of Apple stock?",
+      "top_score": 0.448,
+      "top_chunk": "stocks-basics#2"
+    },
+    {
+      "id": "u11",
+      "label": "unanswerable",
+      "kind": "missing-topic",
+      "question": "What is cryptocurrency and how does mining work?",
+      "top_score": 0.267,
+      "top_chunk": "mutual-funds-basics#1"
+    },
+    {
+      "id": "u12",
+      "label": "unanswerable",
+      "kind": "missing-topic",
+      "question": "How do I file my tax return?",
+      "top_score": 0.389,
+      "top_chunk": "retirement-accounts-overview#6"
+    }
+  ],
+  "summary": {
+    "answerable": {
+      "count": 12,
+      "mean": 0.566,
+      "p50": 0.552,
+      "p95": 0.7,
+      "min": 0.482,
+      "max": 0.781
+    },
+    "unanswerable": {
+      "count": 12,
+      "mean": 0.242,
+      "p50": 0.194,
+      "p95": 0.442,
+      "min": 0.083,
+      "max": 0.448
+    }
+  }
+}
