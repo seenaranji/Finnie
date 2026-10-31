@@ -1,0 +1,42 @@
+{"id": "q01", "split": "dev", "qtype": "exact", "query": "401(k) match", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
+{"id": "q02", "split": "dev", "qtype": "exact", "query": "what does NAV stand for", "expected_ids": ["mutual-funds-basics", "etf-vs-mutual-fund", "glossary"], "answerable": true}
+{"id": "q03", "split": "dev", "qtype": "exact", "query": "what is the rule of 72", "expected_ids": ["compound-interest"], "answerable": true}
+{"id": "q04", "split": "dev", "qtype": "exact", "query": "what is a coupon on a bond", "expected_ids": ["bonds-basics", "glossary"], "answerable": true}
+{"id": "q05", "split": "dev", "qtype": "exact", "query": "what does the AAPL ticker symbol mean", "expected_ids": ["stocks-basics", "glossary"], "answerable": true}
+{"id": "q06", "split": "dev", "qtype": "exact", "query": "what is an IRA", "expected_ids": ["retirement-accounts-overview", "glossary"], "answerable": true}
+{"id": "q07", "split": "dev", "qtype": "paraphrase", "query": "how do I keep from putting all my money in one place", "expected_ids": ["diversification"], "answerable": true}
+{"id": "q08", "split": "dev", "qtype": "paraphrase", "query": "a basket of stocks I can trade like a single share", "expected_ids": ["etf-basics"], "answerable": true}
+{"id": "q09", "split": "dev", "qtype": "paraphrase", "query": "why does my savings grow faster the longer I leave it alone", "expected_ids": ["compound-interest"], "answerable": true}
+{"id": "q10", "split": "dev", "qtype": "paraphrase", "query": "what happens to my bond if interest rates go up", "expected_ids": ["bonds-basics"], "answerable": true}
+{"id": "q11", "split": "dev", "qtype": "paraphrase", "query": "how much could I lose if the market drops", "expected_ids": ["risk-and-return"], "answerable": true}
+{"id": "q12", "split": "dev", "qtype": "paraphrase", "query": "what is the difference between saving and investing", "expected_ids": ["what-is-investing"], "answerable": true}
+{"id": "q13", "split": "dev", "qtype": "paraphrase", "query": "how long until my money doubles", "expected_ids": ["compound-interest"], "answerable": true}
+{"id": "q14", "split": "dev", "qtype": "paraphrase", "query": "what is an index fund", "expected_ids": ["glossary", "mutual-funds-basics", "etf-basics"], "answerable": true}
+{"id": "q15", "split": "dev", "qtype": "paraphrase", "query": "what happens to my shares if the company goes bankrupt", "expected_ids": ["stocks-basics"], "answerable": true}
+{"id": "q16", "split": "dev", "qtype": "partial", "query": "what is the 401(k) contribution limit this year", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
+{"id": "q17", "split": "dev", "qtype": "unanswerable", "query": "best pizza in Rome", "expected_ids": [], "answerable": false}
+{"id": "q18", "split": "dev", "qtype": "unanswerable", "query": "how do I fix a flat bike tire", "expected_ids": [], "answerable": false}
+{"id": "q19", "split": "dev", "qtype": "unanswerable", "query": "what is the P/E ratio", "expected_ids": [], "answerable": false}
+{"id": "q20", "split": "dev", "qtype": "unanswerable", "query": "how do I file my income tax return", "expected_ids": [], "answerable": false}
+{"id": "q21", "split": "dev", "qtype": "unanswerable", "query": "what is the current price of Apple stock", "expected_ids": [], "answerable": false}
+{"id": "q22", "split": "test", "qtype": "exact", "query": "what is a bid-ask spread", "expected_ids": ["etf-basics", "glossary"], "answerable": true}
+{"id": "q23", "split": "test", "qtype": "exact", "query": "what is a dividend", "expected_ids": ["stocks-basics", "glossary"], "answerable": true}
+{"id": "q24", "split": "test", "qtype": "exact", "query": "what is the yield on a bond", "expected_ids": ["bonds-basics", "glossary"], "answerable": true}
+{"id": "q25", "split": "test", "qtype": "exact", "query": "what is a 401(k)", "expected_ids": ["retirement-accounts-overview", "glossary"], "answerable": true}
+{"id": "q26", "split": "test", "qtype": "exact", "query": "what is a Roth 401(k)", "expected_ids": ["retirement-accounts-overview", "glossary"], "answerable": true}
+{"id": "q27", "split": "test", "qtype": "exact", "query": "what is a municipal bond", "expected_ids": ["bonds-basics"], "answerable": true}
+{"id": "q28", "split": "test", "qtype": "paraphrase", "query": "is it risky to own shares of just one company", "expected_ids": ["stocks-basics", "diversification"], "answerable": true}
+{"id": "q29", "split": "test", "qtype": "paraphrase", "query": "which one is priced only once a day, a mutual fund or an ETF", "expected_ids": ["etf-vs-mutual-fund", "mutual-funds-basics"], "answerable": true}
+{"id": "q30", "split": "test", "qtype": "paraphrase", "query": "how can my employer add money to my retirement savings", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
+{"id": "q31", "split": "test", "qtype": "paraphrase", "query": "what does owning a stock actually mean", "expected_ids": ["stocks-basics"], "answerable": true}
+{"id": "q32", "split": "test", "qtype": "paraphrase", "query": "why does cash lose buying power over time", "expected_ids": ["what-is-investing", "risk-and-return"], "answerable": true}
+{"id": "q33", "split": "test", "qtype": "paraphrase", "query": "why do ten tech stocks not count as spread out", "expected_ids": ["diversification"], "answerable": true}
+{"id": "q34", "split": "test", "qtype": "paraphrase", "query": "do I pay tax when I take money out of a Roth", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
+{"id": "q35", "split": "test", "qtype": "paraphrase", "query": "what does a bond issuer owe me when the bond matures", "expected_ids": ["bonds-basics"], "answerable": true}
+{"id": "q36", "split": "test", "qtype": "paraphrase", "query": "what is the difference between a traditional and a Roth account", "expected_ids": ["retirement-accounts-overview"], "answerable": true}
+{"id": "q37", "split": "test", "qtype": "partial", "query": "are index funds cheaper than actively managed funds", "expected_ids": ["mutual-funds-basics", "etf-vs-mutual-fund"], "answerable": true}
+{"id": "q38", "split": "test", "qtype": "unanswerable", "query": "what is the weather in Paris tomorrow", "expected_ids": [], "answerable": false}
+{"id": "q39", "split": "test", "qtype": "unanswerable", "query": "who won the soccer world cup in 2018", "expected_ids": [], "answerable": false}
+{"id": "q40", "split": "test", "qtype": "unanswerable", "query": "what is HHI", "expected_ids": [], "answerable": false}
+{"id": "q41", "split": "test", "qtype": "unanswerable", "query": "how does a 529 college savings plan work", "expected_ids": [], "answerable": false}
+{"id": "q42", "split": "test", "qtype": "unanswerable", "query": "how do I get a mortgage to buy a house", "expected_ids": [], "answerable": false}

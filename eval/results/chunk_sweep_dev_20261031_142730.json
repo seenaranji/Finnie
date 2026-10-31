@@ -1,0 +1,3511 @@
+{
+  "split": "dev",
+  "sizes": {
+    "200": {
+      "chunks": 126,
+      "avg_chars": 145,
+      "dense": {
+        "hit3": 1.0,
+        "hit5": 1.0,
+        "mrr": 0.90625,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "glossary#1",
+              "glossary#17"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "mutual-funds-basics#3",
+              "glossary#12",
+              "etf-vs-mutual-fund#3"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#7",
+              "what-is-investing#7",
+              "compound-interest#5"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#6",
+              "bonds-basics#1",
+              "bonds-basics#3"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#16",
+              "stocks-basics#3",
+              "etf-basics#4"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#5",
+              "glossary#11",
+              "glossary#17"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "stocks-basics#7",
+              "diversification#2"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#1",
+              "stocks-basics#0",
+              "diversification#6"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#2",
+              "compound-interest#6",
+              "what-is-investing#4"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#4",
+              "bonds-basics#5",
+              "bonds-basics#7"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "risk-and-return#3",
+              "stocks-basics#4"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#2",
+              "what-is-investing#0",
+              "what-is-investing#5"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#7",
+              "risk-and-return#10",
+              "compound-interest#4"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#10",
+              "mutual-funds-basics#5",
+              "diversification#7"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#5",
+              "diversification#2",
+              "diversification#1"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "retirement-accounts-overview#2",
+              "glossary#1"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "risk-and-return#2",
+              "diversification#4",
+              "retirement-accounts-overview#4"
+            ]
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "etf-basics#8",
+              "compound-interest#5",
+              "compound-interest#3"
+            ]
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "etf-basics#5",
+              "compound-interest#5",
+              "glossary#8"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#13",
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#8"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#3",
+              "glossary#16",
+              "etf-vs-mutual-fund#3"
+            ]
+          }
+        ]
+      },
+      "bm25": {
+        "hit3": 0.9375,
+        "hit5": 1.0,
+        "mrr": 0.828125,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.4,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "glossary#17",
+              "glossary#1"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 4,
+            "recall5": 1.0,
+            "top": [
+              "mutual-funds-basics#3",
+              "mutual-funds-basics#4",
+              "etf-vs-mutual-fund#3"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#7",
+              "retirement-accounts-overview#10",
+              "retirement-accounts-overview#1"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#6",
+              "bonds-basics#3",
+              "bonds-basics#1"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#16",
+              "etf-basics#4",
+              "stocks-basics#3"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#5",
+              "glossary#11",
+              "glossary#17"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "risk-and-return#0",
+              "what-is-investing#0"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#8",
+              "etf-basics#0",
+              "etf-basics#2"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#2",
+              "compound-interest#6",
+              "what-is-investing#5"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#4",
+              "bonds-basics#5",
+              "compound-interest#0"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#9",
+              "stocks-basics#1",
+              "risk-and-return#7"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#2",
+              "retirement-accounts-overview#6",
+              "what-is-investing#0"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 4,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#16",
+              "what-is-investing#7",
+              "risk-and-return#10"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "etf-vs-mutual-fund#7",
+              "glossary#10",
+              "mutual-funds-basics#5"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#5",
+              "stocks-basics#0",
+              "stocks-basics#1"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#10",
+              "retirement-accounts-overview#3",
+              "retirement-accounts-overview#2"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#5",
+              "etf-vs-mutual-fund#4",
+              "etf-basics#5"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#7",
+              "retirement-accounts-overview#8",
+              "retirement-accounts-overview#13"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#3",
+              "retirement-accounts-overview#2",
+              "etf-basics#2"
+            ]
+          }
+        ]
+      },
+      "hybrid": {
+        "hit3": 1.0,
+        "hit5": 1.0,
+        "mrr": 0.90625,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "glossary#1",
+              "glossary#17"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "mutual-funds-basics#3",
+              "glossary#12",
+              "mutual-funds-basics#4"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#7",
+              "retirement-accounts-overview#10",
+              "retirement-accounts-overview#1"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#6",
+              "bonds-basics#1",
+              "bonds-basics#3"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#16",
+              "stocks-basics#3",
+              "etf-basics#4"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#5",
+              "glossary#11",
+              "glossary#17"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "what-is-investing#2",
+              "diversification#6"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#1",
+              "stocks-basics#0",
+              "etf-basics#0"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#2",
+              "compound-interest#6",
+              "what-is-investing#5"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#4",
+              "bonds-basics#5",
+              "bonds-basics#0"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "risk-and-return#3",
+              "stocks-basics#1"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#2",
+              "what-is-investing#0",
+              "what-is-investing#5"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#7",
+              "risk-and-return#10",
+              "what-is-investing#7"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#10",
+              "mutual-funds-basics#5",
+              "etf-vs-mutual-fund#7"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#5",
+              "stocks-basics#0",
+              "diversification#2"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#10"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "risk-and-return#2",
+              "diversification#4",
+              "retirement-accounts-overview#4"
+            ]
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "etf-basics#8",
+              "compound-interest#5",
+              "compound-interest#3"
+            ]
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#5",
+              "etf-basics#5",
+              "glossary#8"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#13",
+              "retirement-accounts-overview#8",
+              "glossary#17"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#3",
+              "stocks-basics#1",
+              "etf-vs-mutual-fund#3"
+            ]
+          }
+        ]
+      },
+      "hybrid+gate": {
+        "hit3": 0.9375,
+        "hit5": 0.9375,
+        "mrr": 0.875,
+        "wrongly_refused": 1,
+        "no_answer_accuracy": 1.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "glossary#1"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "mutual-funds-basics#3",
+              "glossary#12"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#7"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 4,
+            "recall5": 1.0,
+            "top": [
+              "glossary#6",
+              "bonds-basics#1",
+              "bonds-basics#3"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "glossary#16",
+              "stocks-basics#3",
+              "etf-basics#4"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 4,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#5",
+              "glossary#11",
+              "glossary#17"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "stocks-basics#7",
+              "diversification#2"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#1",
+              "glossary#8",
+              "stocks-basics#0"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 2,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#2",
+              "compound-interest#6",
+              "what-is-investing#4"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 2,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#4",
+              "bonds-basics#5",
+              "bonds-basics#7"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#2",
+              "what-is-investing#0"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#7",
+              "glossary#16",
+              "what-is-investing#7"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "glossary#10",
+              "mutual-funds-basics#5",
+              "diversification#7"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#5",
+              "diversification#2",
+              "stocks-basics#0"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 4,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "retirement-accounts-overview#10",
+              "retirement-accounts-overview#2"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          }
+        ]
+      }
+    },
+    "500": {
+      "chunks": 65,
+      "avg_chars": 282,
+      "dense": {
+        "hit3": 0.9375,
+        "hit5": 1.0,
+        "mrr": 0.953125,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0",
+              "glossary#5"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#4",
+              "etf-vs-mutual-fund#1",
+              "mutual-funds-basics#1"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#5",
+              "what-is-investing#4",
+              "compound-interest#3"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#1",
+              "glossary#2",
+              "bonds-basics#0"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#2",
+              "glossary#5",
+              "glossary#0"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0",
+              "glossary#5"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "stocks-basics#4",
+              "diversification#2"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 4,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#0",
+              "stocks-basics#2",
+              "what-is-investing#3"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#4",
+              "what-is-investing#1",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#3",
+              "bonds-basics#0",
+              "glossary#1"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#2",
+              "stocks-basics#3",
+              "diversification#5"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#0",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#5",
+              "compound-interest#2",
+              "what-is-investing#4"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 0.3333333333333333,
+            "top": [
+              "mutual-funds-basics#2",
+              "diversification#4",
+              "mutual-funds-basics#4"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#3",
+              "diversification#1",
+              "stocks-basics#0"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#5"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#3"
+            ]
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#3",
+              "etf-basics#4",
+              "diversification#4"
+            ]
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#3",
+              "etf-basics#2",
+              "compound-interest#5"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#6",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#2"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#2",
+              "stocks-basics#0",
+              "stocks-basics#1"
+            ]
+          }
+        ]
+      },
+      "bm25": {
+        "hit3": 0.9375,
+        "hit5": 1.0,
+        "mrr": 0.8489583333333333,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.4,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 4,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "glossary#5",
+              "glossary#0"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "mutual-funds-basics#1",
+              "etf-vs-mutual-fund#1",
+              "glossary#4"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#5",
+              "retirement-accounts-overview#5",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#1",
+              "glossary#2",
+              "bonds-basics#2"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#2",
+              "glossary#5",
+              "etf-basics#1"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "glossary#5",
+              "retirement-accounts-overview#5"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#0",
+              "diversification#0",
+              "stocks-basics#1"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#0",
+              "glossary#2",
+              "etf-basics#1"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 3,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#2",
+              "compound-interest#4"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#3",
+              "compound-interest#0",
+              "risk-and-return#2"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#4",
+              "diversification#3",
+              "risk-and-return#3"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#0",
+              "risk-and-return#0"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 4,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#4",
+              "risk-and-return#4",
+              "glossary#5"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "etf-vs-mutual-fund#3",
+              "mutual-funds-basics#2",
+              "glossary#3"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#3",
+              "stocks-basics#0",
+              "diversification#1"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#5"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#3",
+              "etf-vs-mutual-fund#1",
+              "etf-basics#2"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "retirement-accounts-overview#6",
+              "glossary#5"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#2",
+              "retirement-accounts-overview#0",
+              "etf-basics#1"
+            ]
+          }
+        ]
+      },
+      "hybrid": {
+        "hit3": 1.0,
+        "hit5": 1.0,
+        "mrr": 0.9375,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "glossary#5",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "glossary#4",
+              "mutual-funds-basics#1",
+              "etf-vs-mutual-fund#1"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#5",
+              "retirement-accounts-overview#5",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#1",
+              "glossary#2",
+              "bonds-basics#0"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#2",
+              "glossary#5",
+              "etf-basics#1"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "glossary#5",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "what-is-investing#1",
+              "what-is-investing#4"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#0",
+              "stocks-basics#0",
+              "stocks-basics#2"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "compound-interest#4",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#3",
+              "bonds-basics#0",
+              "risk-and-return#2"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#2",
+              "diversification#1",
+              "risk-and-return#4"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#0",
+              "risk-and-return#0"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#4",
+              "compound-interest#5",
+              "compound-interest#0"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "mutual-funds-basics#2",
+              "etf-vs-mutual-fund#3",
+              "etf-vs-mutual-fund#2"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#3",
+              "diversification#1",
+              "stocks-basics#0"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#5"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#3"
+            ]
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#3",
+              "etf-basics#4",
+              "diversification#4"
+            ]
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#3",
+              "etf-basics#2",
+              "etf-vs-mutual-fund#1"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#6",
+              "retirement-accounts-overview#3",
+              "glossary#5"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#2",
+              "stocks-basics#1",
+              "stocks-basics#0"
+            ]
+          }
+        ]
+      },
+      "hybrid+gate": {
+        "hit3": 0.875,
+        "hit5": 0.875,
+        "mrr": 0.84375,
+        "wrongly_refused": 2,
+        "no_answer_accuracy": 1.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#5"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#1",
+              "glossary#2",
+              "bonds-basics#0"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 0.5,
+            "top": [
+              "stocks-basics#2"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0",
+              "glossary#5"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 4,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "stocks-basics#4",
+              "diversification#2"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#0",
+              "stocks-basics#0",
+              "stocks-basics#2"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 2,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "compound-interest#4",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#3"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#0"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#5"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 0.3333333333333333,
+            "top": [
+              "mutual-funds-basics#2",
+              "diversification#4"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#3"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          }
+        ]
+      }
+    },
+    "1000": {
+      "chunks": 54,
+      "avg_chars": 340,
+      "dense": {
+        "hit3": 0.9375,
+        "hit5": 1.0,
+        "mrr": 0.890625,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#2"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "glossary#2",
+              "mutual-funds-basics#1",
+              "glossary#0"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#4",
+              "what-is-investing#4",
+              "compound-interest#2"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#1",
+              "bonds-basics#0",
+              "bonds-basics#3"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#2",
+              "glossary#2",
+              "stocks-basics#0"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#4"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "diversification#2",
+              "diversification#1"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 4,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#0",
+              "stocks-basics#2",
+              "what-is-investing#3"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#3",
+              "what-is-investing#1",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#3",
+              "bonds-basics#0",
+              "bonds-basics#2"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#2",
+              "diversification#5",
+              "stocks-basics#3"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#0",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#4",
+              "what-is-investing#4",
+              "compound-interest#0"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "diversification#4",
+              "glossary#1",
+              "mutual-funds-basics#3"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#1",
+              "stocks-basics#0",
+              "stocks-basics#3"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#4"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0",
+              "compound-interest#2"
+            ]
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#2",
+              "etf-basics#4",
+              "diversification#4"
+            ]
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#2",
+              "etf-basics#2",
+              "compound-interest#4"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#4",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#2"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#2",
+              "stocks-basics#0",
+              "stocks-basics#1"
+            ]
+          }
+        ]
+      },
+      "bm25": {
+        "hit3": 1.0,
+        "hit5": 1.0,
+        "mrr": 0.8541666666666666,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.4,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 4,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "glossary#2",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "mutual-funds-basics#1",
+              "etf-vs-mutual-fund#0",
+              "glossary#2"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#4",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#4"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#1",
+              "glossary#0",
+              "bonds-basics#2"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#2",
+              "etf-basics#1",
+              "glossary#2"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "glossary#2",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#0",
+              "diversification#0",
+              "what-is-investing#0"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#0",
+              "etf-basics#1",
+              "stocks-basics#2"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 3,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#2",
+              "compound-interest#3"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#3",
+              "compound-interest#0",
+              "risk-and-return#2"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#4",
+              "diversification#3",
+              "risk-and-return#3"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#0",
+              "stocks-basics#1"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 3,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#4",
+              "risk-and-return#4",
+              "compound-interest#4"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "etf-vs-mutual-fund#2",
+              "mutual-funds-basics#1",
+              "etf-vs-mutual-fund#1"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#3",
+              "stocks-basics#0",
+              "diversification#1"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#4"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#2",
+              "etf-basics#2",
+              "etf-vs-mutual-fund#2"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#3",
+              "retirement-accounts-overview#4",
+              "glossary#2"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#2",
+              "retirement-accounts-overview#0",
+              "etf-basics#1"
+            ]
+          }
+        ]
+      },
+      "hybrid": {
+        "hit3": 1.0,
+        "hit5": 1.0,
+        "mrr": 0.875,
+        "wrongly_refused": 0,
+        "no_answer_accuracy": 0.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0",
+              "glossary#0"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "mutual-funds-basics#1",
+              "glossary#2",
+              "etf-vs-mutual-fund#0"
+            ]
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#4",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#4"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#1",
+              "bonds-basics#0",
+              "glossary#0"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#2",
+              "glossary#2",
+              "etf-basics#1"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0",
+              "glossary#2"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "diversification#1",
+              "what-is-investing#1"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#0",
+              "stocks-basics#2",
+              "stocks-basics#0"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "compound-interest#3",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#3",
+              "bonds-basics#0",
+              "risk-and-return#2"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "risk-and-return#2",
+              "risk-and-return#4",
+              "diversification#1"
+            ]
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#0",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#4",
+              "compound-interest#4",
+              "compound-interest#0"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 0.6666666666666666,
+            "top": [
+              "etf-vs-mutual-fund#2",
+              "glossary#1",
+              "etf-vs-mutual-fund#1"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 2,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "diversification#1",
+              "stocks-basics#3",
+              "stocks-basics#0"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0",
+              "retirement-accounts-overview#4"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0",
+              "compound-interest#2"
+            ]
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#2",
+              "etf-basics#4",
+              "diversification#4"
+            ]
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "compound-interest#2",
+              "etf-basics#2",
+              "etf-vs-mutual-fund#2"
+            ]
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "retirement-accounts-overview#4",
+              "retirement-accounts-overview#3",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 5,
+            "recall5": 0.0,
+            "top": [
+              "stocks-basics#2",
+              "stocks-basics#1",
+              "stocks-basics#0"
+            ]
+          }
+        ]
+      },
+      "hybrid+gate": {
+        "hit3": 0.8125,
+        "hit5": 0.8125,
+        "mrr": 0.78125,
+        "wrongly_refused": 2,
+        "no_answer_accuracy": 1.0,
+        "items": [
+          {
+            "id": "q01",
+            "qtype": "exact",
+            "query": "401(k) match",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1"
+            ]
+          },
+          {
+            "id": "q02",
+            "qtype": "exact",
+            "query": "what does NAV stand for",
+            "answerable": true,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q03",
+            "qtype": "exact",
+            "query": "what is the rule of 72",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#4"
+            ]
+          },
+          {
+            "id": "q04",
+            "qtype": "exact",
+            "query": "what is a coupon on a bond",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 0.5,
+            "top": [
+              "bonds-basics#1",
+              "bonds-basics#0"
+            ]
+          },
+          {
+            "id": "q05",
+            "qtype": "exact",
+            "query": "what does the AAPL ticker symbol mean",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 0.5,
+            "top": [
+              "stocks-basics#2"
+            ]
+          },
+          {
+            "id": "q06",
+            "qtype": "exact",
+            "query": "what is an IRA",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 0.5,
+            "top": [
+              "retirement-accounts-overview#2",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q07",
+            "qtype": "paraphrase",
+            "query": "how do I keep from putting all my money in one place",
+            "answerable": true,
+            "rank": 1,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "diversification#0",
+              "diversification#2",
+              "diversification#1"
+            ]
+          },
+          {
+            "id": "q08",
+            "qtype": "paraphrase",
+            "query": "a basket of stocks I can trade like a single share",
+            "answerable": true,
+            "rank": 1,
+            "returned": 5,
+            "recall5": 1.0,
+            "top": [
+              "etf-basics#0",
+              "stocks-basics#0",
+              "stocks-basics#2"
+            ]
+          },
+          {
+            "id": "q09",
+            "qtype": "paraphrase",
+            "query": "why does my savings grow faster the longer I leave it alone",
+            "answerable": true,
+            "rank": 2,
+            "returned": 3,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "compound-interest#3",
+              "what-is-investing#2"
+            ]
+          },
+          {
+            "id": "q10",
+            "qtype": "paraphrase",
+            "query": "what happens to my bond if interest rates go up",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "bonds-basics#3"
+            ]
+          },
+          {
+            "id": "q11",
+            "qtype": "paraphrase",
+            "query": "how much could I lose if the market drops",
+            "answerable": true,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q12",
+            "qtype": "paraphrase",
+            "query": "what is the difference between saving and investing",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 1.0,
+            "top": [
+              "what-is-investing#1",
+              "what-is-investing#0"
+            ]
+          },
+          {
+            "id": "q13",
+            "qtype": "paraphrase",
+            "query": "how long until my money doubles",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "compound-interest#4"
+            ]
+          },
+          {
+            "id": "q14",
+            "qtype": "paraphrase",
+            "query": "what is an index fund",
+            "answerable": true,
+            "rank": null,
+            "returned": 1,
+            "recall5": 0.0,
+            "top": [
+              "diversification#4"
+            ]
+          },
+          {
+            "id": "q15",
+            "qtype": "paraphrase",
+            "query": "what happens to my shares if the company goes bankrupt",
+            "answerable": true,
+            "rank": 1,
+            "returned": 1,
+            "recall5": 1.0,
+            "top": [
+              "stocks-basics#3"
+            ]
+          },
+          {
+            "id": "q16",
+            "qtype": "partial",
+            "query": "what is the 401(k) contribution limit this year",
+            "answerable": true,
+            "rank": 1,
+            "returned": 2,
+            "recall5": 1.0,
+            "top": [
+              "retirement-accounts-overview#1",
+              "retirement-accounts-overview#0"
+            ]
+          },
+          {
+            "id": "q17",
+            "qtype": "unanswerable",
+            "query": "best pizza in Rome",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q18",
+            "qtype": "unanswerable",
+            "query": "how do I fix a flat bike tire",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q19",
+            "qtype": "unanswerable",
+            "query": "what is the P/E ratio",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q20",
+            "qtype": "unanswerable",
+            "query": "how do I file my income tax return",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          },
+          {
+            "id": "q21",
+            "qtype": "unanswerable",
+            "query": "what is the current price of Apple stock",
+            "answerable": false,
+            "rank": null,
+            "returned": 0,
+            "recall5": 0.0,
+            "top": []
+          }
+        ]
+      }
+    }
+  }
+}
