@@ -15,6 +15,7 @@ class Quote(BaseModel):
     change_pct: float | None = None
     currency: str = "USD"
     source: str
+    as_of: str | None = None                                # the market date of the price when the provider says (Alpha Vantage free quotes are end-of-day)
     fetched_at: datetime = Field(default_factory=utc_now)   # when WE got it from the provider, not when it was cached
     is_stale: bool = False                                  # True = the provider failed and this is an older saved value
     age_seconds: float = 0.0                                # how old fetched_at is at the moment we hand it out

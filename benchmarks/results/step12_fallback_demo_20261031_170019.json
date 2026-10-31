@@ -1,0 +1,187 @@
+{
+  "live": {
+    "normal_s": [
+      0.3480899580026744,
+      0.1168897499992454,
+      0.10063266599900089
+    ],
+    "fallback_s": [
+      0.12696845900063636,
+      1.1336786249994475,
+      1.0544677910002065
+    ],
+    "served_by": {
+      "alpha_vantage": 4
+    }
+  },
+  "fault_injection": {
+    "rate": 1.0,
+    "outcomes": [
+      {
+        "yfinance": "timeout",
+        "alpha": "healthy",
+        "good": true,
+        "result": "served by alpha_vantage",
+        "alpha_calls": 1,
+        "seconds": 0.0002539999986765906
+      },
+      {
+        "yfinance": "timeout",
+        "alpha": "rate limited",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.2092936249973718
+      },
+      {
+        "yfinance": "timeout",
+        "alpha": "malformed",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.22100254199904157
+      },
+      {
+        "yfinance": "timeout",
+        "alpha": "network down",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.21933216599791194
+      },
+      {
+        "yfinance": "429",
+        "alpha": "healthy",
+        "good": true,
+        "result": "served by alpha_vantage",
+        "alpha_calls": 1,
+        "seconds": 0.00018204200023319572
+      },
+      {
+        "yfinance": "429",
+        "alpha": "rate limited",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.20775974999924074
+      },
+      {
+        "yfinance": "429",
+        "alpha": "malformed",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.21655249999821535
+      },
+      {
+        "yfinance": "429",
+        "alpha": "network down",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.2005434589991637
+      },
+      {
+        "yfinance": "offline",
+        "alpha": "healthy",
+        "good": true,
+        "result": "served by alpha_vantage",
+        "alpha_calls": 1,
+        "seconds": 0.0005801660008728504
+      },
+      {
+        "yfinance": "offline",
+        "alpha": "rate limited",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.1685353329994541
+      },
+      {
+        "yfinance": "offline",
+        "alpha": "malformed",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.25208916699921247
+      },
+      {
+        "yfinance": "offline",
+        "alpha": "network down",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.22583354200105532
+      },
+      {
+        "yfinance": "malformed",
+        "alpha": "healthy",
+        "good": true,
+        "result": "served by alpha_vantage",
+        "alpha_calls": 1,
+        "seconds": 0.0022613750006712507
+      },
+      {
+        "yfinance": "malformed",
+        "alpha": "rate limited",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.17976183299833792
+      },
+      {
+        "yfinance": "malformed",
+        "alpha": "malformed",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.21774525000000722
+      },
+      {
+        "yfinance": "malformed",
+        "alpha": "network down",
+        "good": true,
+        "result": "clean ProviderUnavailable: 'Market data is not available right now.'",
+        "alpha_calls": 3,
+        "seconds": 0.20768312500149477
+      },
+      {
+        "yfinance": "unknown ticker",
+        "alpha": "healthy",
+        "good": true,
+        "result": "clean TickerNotFound: \"I couldn't find a ticker called AAPL.\"",
+        "alpha_calls": 0,
+        "seconds": 0.0002573749989096541
+      },
+      {
+        "yfinance": "unknown ticker",
+        "alpha": "rate limited",
+        "good": true,
+        "result": "clean TickerNotFound: \"I couldn't find a ticker called AAPL.\"",
+        "alpha_calls": 0,
+        "seconds": 0.00015745799828437157
+      },
+      {
+        "yfinance": "unknown ticker",
+        "alpha": "malformed",
+        "good": true,
+        "result": "clean TickerNotFound: \"I couldn't find a ticker called AAPL.\"",
+        "alpha_calls": 0,
+        "seconds": 0.00043987500248476863
+      },
+      {
+        "yfinance": "unknown ticker",
+        "alpha": "network down",
+        "good": true,
+        "result": "clean TickerNotFound: \"I couldn't find a ticker called AAPL.\"",
+        "alpha_calls": 0,
+        "seconds": 0.00014145900058792904
+      }
+    ]
+  },
+  "alpha_budget": {
+    "last_minute": 4,
+    "used_today": 4,
+    "cap": 20
+  }
+}

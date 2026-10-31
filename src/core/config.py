@@ -64,6 +64,14 @@ class MarketDataConfig(BaseModel):
     timeout_seconds: float = 10       # per provider call
     max_attempts: int = 3             # 1 try + 2 retries, transient errors only
     retry_base_seconds: float = 0.5   # first wait; doubles each retry, with random jitter
+    provider_order: list[str] = ["yfinance", "alpha_vantage"]   # tried left to right
+
+
+class AlphaVantageConfig(BaseModel):
+    base_url: str = "https://www.alphavantage.co/query"
+    max_calls_per_day: int = 20       # free key allows 25; keep a margin for manual checks
+    min_interval_seconds: float = 1.1   # free key allows 1 request per second
+    usage_file: str = ".alpha_usage.json"   # remembers today's count across restarts (git-ignored)
 
 
 class Secrets(BaseSettings):
@@ -88,6 +96,7 @@ class Settings(BaseModel):
     rag: RAGConfig
     cache: CacheConfig
     market_data: MarketDataConfig = MarketDataConfig()
+    alpha_vantage: AlphaVantageConfig = AlphaVantageConfig()
     secrets: Secrets
 
     def masked(self) -> dict:

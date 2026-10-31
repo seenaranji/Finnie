@@ -21,3 +21,4 @@ chroma_db/
 keyword_index/
 *.log
 .DS_Store
+.alpha_usage.json

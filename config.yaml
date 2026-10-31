@@ -44,3 +44,9 @@ market_data:
   timeout_seconds: 10
   max_attempts: 3            # 1 try + 2 retries, transient errors only
   retry_base_seconds: 0.5    # doubles each retry, with jitter
+  provider_order: [yfinance, alpha_vantage]   # tried left to right
+
+alpha_vantage:
+  max_calls_per_day: 20      # free key allows 25; margin kept on purpose
+  min_interval_seconds: 1.1  # free key allows 1 request per second
+  usage_file: .alpha_usage.json
