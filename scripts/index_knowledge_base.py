@@ -13,6 +13,7 @@ from src.core.logging import get_logger, setup_logging
 from src.core.metrics import timer
 from src.rag.chunker import chunk_structured
 from src.rag.embedder import OpenAIEmbedder
+from src.rag.keyword_index import KeywordIndex
 from src.rag.loader import load_documents
 from src.rag.vector_store import ChromaStore
 
@@ -31,6 +32,9 @@ with timer() as total_timing:
     store = ChromaStore.from_settings(settings)
     store.reset()   # full rebuild: never leave old chunks of edited articles behind
     store.add(chunks, embedding.vectors)
+
+    # Step 7c: rebuild the BM25 index from the same chunks, so the two indexes never disagree.
+    KeywordIndex.build(chunks).save(settings.rag.keyword_index_path)
 
 summary = {
     "articles": len(documents), "chunks": len(chunks), "stored": store.count(),

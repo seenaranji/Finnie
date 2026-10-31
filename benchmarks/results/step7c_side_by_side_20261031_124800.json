@@ -1,0 +1,251 @@
+{
+  "rrf_k": 60,
+  "bm25_top_scores_tuning": {
+    "answerable": [
+      2.461013078689575,
+      4.314295291900635,
+      3.4180057048797607,
+      4.492234230041504,
+      2.762491464614868,
+      5.468184471130371,
+      2.209031820297241,
+      3.2924907207489014,
+      3.3804028034210205,
+      2.867124557495117,
+      2.584602117538452,
+      2.891766309738159
+    ],
+    "unanswerable": [
+      0.0,
+      1.261978268623352,
+      1.8078032732009888,
+      0.0,
+      0.9192572832107544,
+      1.6463963985443115,
+      2.203000068664551,
+      2.869497299194336,
+      2.3232202529907227,
+      3.2224841117858887,
+      1.5550202131271362,
+      1.6617861986160278
+    ]
+  },
+  "rank_table": [
+    {
+      "query": "VOO expense ratio",
+      "kind": "exact (VOO not in KB)",
+      "expected": [
+        "etf-basics",
+        "etf-vs-mutual-fund"
+      ],
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "401(k) match",
+      "kind": "exact",
+      "expected": [
+        "retirement-accounts-overview"
+      ],
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "what is HHI",
+      "kind": "exact (HHI not in KB)",
+      "expected": [],
+      "dense": null,
+      "bm25": null,
+      "hybrid": null,
+      "top_dense_similarity": 0.17261308431625366,
+      "bm25_hits": 0
+    },
+    {
+      "query": "a basket of stocks I can trade",
+      "kind": "paraphrase",
+      "expected": [
+        "etf-basics"
+      ],
+      "dense": 4,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "spreading my money around",
+      "kind": "paraphrase",
+      "expected": [
+        "diversification"
+      ],
+      "dense": 2,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "best pizza in Rome",
+      "kind": "off-topic",
+      "expected": [],
+      "dense": null,
+      "bm25": null,
+      "hybrid": null,
+      "top_dense_similarity": 0.04779917001724243,
+      "bm25_hits": 0
+    },
+    {
+      "query": "what is a Roth IRA",
+      "kind": "exact",
+      "expected": [
+        "glossary",
+        "retirement-accounts-overview"
+      ],
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "expense ratio",
+      "kind": "exact",
+      "expected": [
+        "etf-basics",
+        "etf-vs-mutual-fund",
+        "glossary",
+        "mutual-funds-basics"
+      ],
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "what does NAV stand for",
+      "kind": "exact",
+      "expected": [
+        "etf-vs-mutual-fund",
+        "glossary",
+        "mutual-funds-basics"
+      ],
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "IRA vs 401(k)",
+      "kind": "exact",
+      "expected": [
+        "retirement-accounts-overview"
+      ],
+      "dense": 1,
+      "bm25": 2,
+      "hybrid": 1
+    },
+    {
+      "query": "why does my savings grow faster the longer I leave it",
+      "kind": "paraphrase",
+      "expected": [
+        "compound-interest"
+      ],
+      "dense": 1,
+      "bm25": 3,
+      "hybrid": 2
+    },
+    {
+      "query": "loans I make to a company",
+      "kind": "paraphrase",
+      "expected": [
+        "bonds-basics"
+      ],
+      "dense": 1,
+      "bm25": 2,
+      "hybrid": 1
+    },
+    {
+      "query": "how much could I lose if the market drops",
+      "kind": "paraphrase",
+      "expected": [
+        "risk-and-return"
+      ],
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "what do I own when I buy a company's shares",
+      "kind": "paraphrase",
+      "expected": [
+        "stocks-basics"
+      ],
+      "dense": 1,
+      "bm25": 1,
+      "hybrid": 1
+    },
+    {
+      "query": "S&P 500 index fund",
+      "kind": "exact (S&P not in KB)",
+      "expected": [
+        "etf-basics",
+        "etf-vs-mutual-fund"
+      ],
+      "dense": 4,
+      "bm25": 1,
+      "hybrid": 2
+    }
+  ],
+  "latency_ms": {
+    "embed (API)": {
+      "count": 15,
+      "mean": 202.98291119991822,
+      "p50": 197.04387499950826,
+      "p95": 276.25630860129604,
+      "min": 150.79754199905437,
+      "max": 278.7100410005223
+    },
+    "dense search": {
+      "count": 300,
+      "mean": 1.966345009914221,
+      "p50": 1.7724584995448822,
+      "p95": 3.0466246509604393,
+      "min": 1.1469169985502958,
+      "max": 4.783624999618041
+    },
+    "bm25 search": {
+      "count": 300,
+      "mean": 0.06415181332461846,
+      "p50": 0.05237499954091618,
+      "p95": 0.12686250011029193,
+      "min": 0.018957998690893874,
+      "max": 0.26612500005285256
+    },
+    "RRF fusion": {
+      "count": 300,
+      "mean": 0.03746916339878226,
+      "p50": 0.03408350039535435,
+      "p95": 0.06783569979234018,
+      "min": 0.014334000297822058,
+      "max": 0.10108400056196842
+    },
+    "retrieve_dense": {
+      "count": 15,
+      "mean": 196.41099453365314,
+      "p50": 184.71458299973165,
+      "p95": 261.63783370084275,
+      "min": 153.9024169996992,
+      "max": 266.7434579998371
+    },
+    "retrieve_bm25": {
+      "count": 15,
+      "mean": 0.08743346649377297,
+      "p50": 0.07812499825377017,
+      "p95": 0.14964199963287667,
+      "min": 0.04508399979386013,
+      "max": 0.26654199973563664
+    },
+    "retrieve_hybrid": {
+      "count": 15,
+      "mean": 226.28709453347255,
+      "p50": 219.2639999993844,
+      "p95": 297.6149036998322,
+      "min": 157.7057499998773,
+      "max": 304.1064999997616
+    }
+  }
+}

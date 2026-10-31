@@ -47,6 +47,12 @@ class RAGConfig(BaseModel):
     candidate_k: int = 20                    # chunks fetched from the store before filtering and reranking
     rerank: bool = False                     # second-stage re-ordering by an LLM (off until Step 8 shows it helps)
     dedupe_overlap: float = 0.8              # drop a chunk if this share of its words appears in a better chunk
+    # --- Step 7c: hybrid search. Default stays "dense" so Step 7 behaviour is unchanged until Step 8 measures. ---
+    retrieval_mode: str = "dense"            # dense | bm25 | hybrid
+    keyword_index_path: str = "keyword_index"   # where the BM25 index is saved (git-ignored)
+    rrf_k: int = 60                          # RRF damping constant
+    candidates_per_retriever: int = 20       # how many chunks each retriever contributes to the fusion
+    bm25_min_score: float | None = None      # a BM25 score at/above this lets a chunk in even if its cosine is below the threshold; None = BM25 cannot open the gate
 
 
 class CacheConfig(BaseModel):

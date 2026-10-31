@@ -11,6 +11,7 @@ tiktoken==0.14.0          # count tokens locally
 
 # --- RAG ---
 chromadb==1.5.9           # vector database (Step 6)
+bm25s==0.3.16             # BM25 keyword search for hybrid retrieval (Step 7c)
 
 # --- Config + validation ---
 pydantic==2.14.1          # typed data models
@@ -36,6 +37,7 @@ pypdf==6.21.4             # extract text from PDF knowledge-base files (Step 3)
 tenacity==9.2.1           # retry with backoff
 
 # --- Measurement + testing ---
+langsmith==0.14.15        # evaluation datasets and experiments (Step 8); also pulled in by langchain
 psutil==7.2.2             # memory use
 pytest==9.2.0
 pytest-cov==7.1.0

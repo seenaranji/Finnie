@@ -26,6 +26,11 @@ class Passage:
     similarity: float                  # embedding cosine similarity; NOT a probability
     citation: Citation
     rerank_score: float | None = None  # 0-10 from the reranker, if one ran
+    # Filled only by hybrid search (Step 7c). `similarity` is 0.0 for a chunk dense search did not return.
+    bm25_score: float | None = None
+    dense_rank: int | None = None      # 1 = best; None = not in the dense candidates
+    bm25_rank: int | None = None       # 1 = best; None = not in the BM25 candidates
+    fused_score: float | None = None   # RRF score: tiny rank-based number, not a similarity
 
 
 def passage_from_hit(hit: SearchHit) -> Passage:

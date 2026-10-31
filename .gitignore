@@ -18,5 +18,6 @@ htmlcov/
 
 # Generated data (rebuilt by scripts)
 chroma_db/
+keyword_index/
 *.log
 .DS_Store

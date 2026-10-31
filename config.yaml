@@ -29,6 +29,12 @@ rag:
   candidate_k: 20            # fetch this many, then threshold -> dedupe -> (rerank) -> keep top_k
   rerank: false              # LLM re-ordering of candidates; off until Step 8 measures it
   dedupe_overlap: 0.8        # drop a chunk if 80% of its words already appear in a better-ranked chunk
+  # Step 7c: hybrid search (spec calls these retrieval.*; kept under rag: next to the other retrieval settings)
+  retrieval_mode: dense      # dense | bm25 | hybrid. Stays dense until Step 8 measures hybrid
+  keyword_index_path: keyword_index   # BM25 index folder, rebuilt with the vector index
+  rrf_k: 60                  # RRF constant from the original paper; compared with 20/100 in Step 8
+  candidates_per_retriever: 20   # each retriever contributes its top 20 to the fusion
+  bm25_min_score:            # empty = BM25 cannot open the gate on its own; chosen with data below
 
 cache:
   quote_ttl_seconds: 60
