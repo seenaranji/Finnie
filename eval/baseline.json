@@ -1,0 +1,16 @@
+{
+  "recorded": "2026-11-01",
+  "git_commit": "be074f0",
+  "tolerance": {
+    "retrieval_hit3_dev": 0.01,
+    "retrieval_hit3_test": 0.01,
+    "router_accuracy_test": 0.025,
+    "router_accuracy_test2": 0.025
+  },
+  "metrics": {
+    "retrieval_hit3_dev": 0.75,
+    "retrieval_hit3_test": 1.0,
+    "router_accuracy_test": 0.9792,
+    "router_accuracy_test2": 1.0
+  }
+}
