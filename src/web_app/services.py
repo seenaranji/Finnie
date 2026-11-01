@@ -10,9 +10,10 @@ from src.data.factory import build_market_data_service
 
 
 class Services:
-    def __init__(self, settings: Settings | None = None, market=None, retriever=None, graph=None, llm=None, articles=None) -> None:
+    def __init__(self, settings: Settings | None = None, market=None, retriever=None, graph=None, llm=None, articles=None, news=None, portfolios=None) -> None:
         self.settings = settings or load_settings()
         self._market, self._retriever, self._graph, self._llm, self._metadata, self._articles = market, retriever, graph, llm, None, articles
+        self._news, self._portfolios = news, portfolios
         self._lock = threading.Lock()
         self._session_locks: dict[str, threading.Lock] = {}
 
@@ -21,6 +22,23 @@ class Services:
         with self._lock:
             self._market = self._market or build_market_data_service(self.settings)
             return self._market
+
+    @property
+    def news(self):
+        with self._lock:
+            if self._news is None:
+                from src.data.news import NewsService
+                self._news = NewsService(self.settings.news)
+            return self._news
+
+    @property
+    def portfolios(self):
+        """The saved-portfolio repository (PostgreSQL). Built on first use, so the API starts and serves everything else even if the database is down."""
+        with self._lock:
+            if self._portfolios is None:
+                from src.data.portfolio_repository import PortfolioRepository
+                self._portfolios = PortfolioRepository.from_settings(self.settings)
+            return self._portfolios
 
     @property
     def retriever(self):
@@ -43,7 +61,7 @@ class Services:
         with self._lock:
             if self._graph is None:
                 from src.workflow.factory import build_default_graph
-                self._graph = build_default_graph(settings=self.settings, llm=self._llm, retriever=self._retriever, market_service=self._market)
+                self._graph = build_default_graph(settings=self.settings, llm=self._llm, retriever=self._retriever, market_service=self._market, news_service=self._news)
             return self._graph
 
     @property

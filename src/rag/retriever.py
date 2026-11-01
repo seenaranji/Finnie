@@ -13,7 +13,8 @@ from src.core.config import Settings, load_settings
 from src.rag.embedder import Embedder, OpenAIEmbedder
 from src.rag.passages import Passage, dedupe_passages, passage_from_hit
 from src.rag.reranker import LLMReranker, Reranker
-from src.rag.vector_store import ChromaStore, VectorStore, category_filter
+from src.rag.factory import build_vector_store
+from src.rag.vector_store import VectorStore, category_filter
 
 
 @dataclass
@@ -34,7 +35,7 @@ class Retriever:
     def __init__(self, store: VectorStore | None = None, embedder: Embedder | None = None,
                  reranker: Reranker | None = None, settings: Settings | None = None) -> None:
         self.settings = settings or load_settings()
-        self.store = store or ChromaStore.from_settings(self.settings)
+        self.store = store or build_vector_store(self.settings)
         self.embedder = embedder or OpenAIEmbedder(self.settings)
         self._reranker = reranker
 

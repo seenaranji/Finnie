@@ -19,8 +19,10 @@ from dataclasses import dataclass, replace
 from src.core.config import Settings, load_settings
 from src.rag.embedder import Embedder
 from src.rag.fusion import reciprocal_rank_fusion
+from src.rag.factory import load_keyword_index
 from src.rag.keyword_index import KeywordHit, KeywordIndex
 from src.rag.passages import Passage, dedupe_passages, passage_from_hit
+from src.rag.pg_keyword_index import PgKeywordIndex
 from src.rag.reranker import Reranker
 from src.rag.retriever import RetrievalResult, Retriever
 from src.rag.vector_store import SearchHit, VectorStore, category_filter
@@ -41,7 +43,7 @@ class Candidates:
 
 
 class HybridRetriever:
-    def __init__(self, dense: Retriever | None = None, keyword_index: KeywordIndex | None = None,
+    def __init__(self, dense: Retriever | None = None, keyword_index: "KeywordIndex | PgKeywordIndex | None" = None,
                  store: VectorStore | None = None, embedder: Embedder | None = None,
                  reranker: Reranker | None = None, settings: Settings | None = None) -> None:
         self.settings = settings or load_settings()
@@ -49,9 +51,9 @@ class HybridRetriever:
         self._keyword_index = keyword_index
 
     @property
-    def keyword_index(self) -> KeywordIndex:
+    def keyword_index(self):
         if self._keyword_index is None:   # loaded only when a mode that needs it is used
-            index = KeywordIndex.load(self.settings.rag.keyword_index_path)
+            index = load_keyword_index(self.settings)   # PostgreSQL full-text search
             stored = self.dense.store.count()
             if len(index) != stored:
                 raise StaleKeywordIndexError(

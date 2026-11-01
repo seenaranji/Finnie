@@ -1,0 +1,850 @@
+{
+  "queries": 50,
+  "top_k": 5,
+  "dense": {
+    "mean_top5_overlap": 5.0,
+    "min_overlap": 5,
+    "queries_with_overlap_below_5": 0,
+    "top1_agree": "50/50",
+    "max_abs_score_difference": 1.2855804417677419e-06,
+    "mean_abs_score_difference": 2.5866111718864106e-07,
+    "queries_with_different_lists": [],
+    "filtered_search_same_chunks": "60/60 (category x query cases with identical top-5 sets)"
+  },
+  "dense_latency_ms": {
+    "chroma": {
+      "count": 100,
+      "mean": 1.2771337298181606,
+      "p50": 1.2581459977809573,
+      "p95": 1.3690996996956528,
+      "min": 1.108707998355385,
+      "max": 2.8612079986487515
+    },
+    "pgvector": {
+      "count": 100,
+      "mean": 3.9224725199164823,
+      "p50": 3.6526665007841075,
+      "p95": 5.113579198223305,
+      "min": 3.0836249970889185,
+      "max": 9.70512500134646
+    }
+  },
+  "keyword": {
+    "queries_with_no_hit": {
+      "bm25": 3,
+      "postgres_fts": 2
+    },
+    "mean_top5_overlap_when_both_hit": 2.6808510638297873,
+    "top1_agree_when_both_hit": "28/47",
+    "rows": [
+      {
+        "query": "401(k) match",
+        "bm25": [
+          "solo-401k#0",
+          "simple-ira#2",
+          "roth-vs-pretax-401k-comparison#1",
+          "roth-vs-pretax-401k-comparison#2",
+          "401k-plans-irs-overview#3"
+        ],
+        "fts": [
+          "solo-401k#0",
+          "retirement-contribution-limits#1",
+          "retirement-accounts-overview#1",
+          "retirement-plans-for-self-employed#2",
+          "401k-plans-irs-overview#0"
+        ]
+      },
+      {
+        "query": "what does NAV stand for",
+        "bm25": [
+          "treasury-strips#0",
+          "mutual-funds-basics#1",
+          "etf-vs-mutual-fund#1",
+          "glossary#4",
+          "simple-ira#0"
+        ],
+        "fts": [
+          "mutual-funds-basics#1",
+          "consumer-price-index#2",
+          "etf-vs-mutual-fund#1",
+          "glossary#4",
+          "open-market-operations#5"
+        ]
+      },
+      {
+        "query": "what is the rule of 72",
+        "bm25": [
+          "compound-interest#5",
+          "rollovers#2",
+          "roth-vs-pretax-401k-comparison#4",
+          "retirement-accounts-overview#5",
+          "retirement-accounts-overview#0"
+        ],
+        "fts": [
+          "compound-interest#5",
+          "investment-taxes-basics#0",
+          "retirement-accounts-overview#0",
+          "retirement-accounts-overview#3",
+          "retirement-accounts-overview#5"
+        ]
+      },
+      {
+        "query": "what is a coupon on a bond",
+        "bm25": [
+          "bonds-basics#1",
+          "glossary#2",
+          "treasury-strips#1",
+          "treasury-bonds#3",
+          "bonds-basics#2"
+        ],
+        "fts": [
+          "bonds-basics#1",
+          "ee-bonds#1",
+          "i-bonds#0",
+          "bonds-basics#0",
+          "bonds-basics#2"
+        ]
+      },
+      {
+        "query": "what does the AAPL ticker symbol mean",
+        "bm25": [
+          "stocks-basics#2",
+          "glossary#5",
+          "etf-basics#1",
+          "retirement-accounts-overview#4",
+          "diversification#0"
+        ],
+        "fts": [
+          "etf-basics#1",
+          "glossary#5",
+          "stocks-basics#2",
+          "retirement-accounts-overview#4",
+          "diversification#0"
+        ]
+      },
+      {
+        "query": "what is an IRA",
+        "bm25": [
+          "roth-iras#0",
+          "retirement-accounts-overview#2",
+          "traditional-iras#0",
+          "sep-ira#0",
+          "simple-ira#0"
+        ],
+        "fts": [
+          "early-withdrawal-tax-ira#2",
+          "roth-iras#0",
+          "sep-ira#0",
+          "simple-ira#0",
+          "traditional-iras#3"
+        ]
+      },
+      {
+        "query": "how do I keep from putting all my money in one place",
+        "bm25": [
+          "diversification#0",
+          "what-is-investing#0",
+          "risk-and-return#0",
+          "stocks-basics#1",
+          "rollovers#0"
+        ],
+        "fts": [
+          "diversification#0",
+          "diversification#1",
+          "diversification#6",
+          "what-is-investing#1",
+          "diversification#2"
+        ]
+      },
+      {
+        "query": "a basket of stocks I can trade like a single share",
+        "bm25": [
+          "etf-basics#0",
+          "glossary#2",
+          "etf-basics#1",
+          "stocks-basics#2",
+          "stocks-basics#0"
+        ],
+        "fts": [
+          "etf-basics#0",
+          "etf-basics#1",
+          "glossary#2",
+          "stocks-basics#2",
+          "etf-vs-mutual-fund#0"
+        ]
+      },
+      {
+        "query": "why does my savings grow faster the longer I leave it alone",
+        "bm25": [
+          "compound-interest#4",
+          "what-is-investing#2",
+          "emergency-fund#2",
+          "what-is-investing#1",
+          "inflation#3"
+        ],
+        "fts": [
+          "ee-bonds#0",
+          "what-is-investing#1",
+          "i-bonds#0",
+          "compound-interest#4",
+          "emergency-fund#2"
+        ]
+      },
+      {
+        "query": "what happens to my bond if interest rates go up",
+        "bm25": [
+          "i-bonds#0",
+          "i-bonds#2",
+          "bonds-basics#3",
+          "i-bonds#1",
+          "ee-bonds#2"
+        ],
+        "fts": [
+          "i-bonds#0",
+          "ee-bonds#1",
+          "i-bonds#1",
+          "interest-income-taxes#1",
+          "bonds-basics#3"
+        ]
+      },
+      {
+        "query": "how much could I lose if the market drops",
+        "bm25": [
+          "risk-and-return#4",
+          "risk-and-return#3",
+          "diversification#3",
+          "diversification#1",
+          "stocks-basics#1"
+        ],
+        "fts": [
+          "consumer-price-index#2",
+          "risk-and-return#2",
+          "risk-and-return#4",
+          "credit-scores#2",
+          "discount-window#4"
+        ]
+      },
+      {
+        "query": "what is the difference between saving and investing",
+        "bm25": [
+          "what-is-investing#1",
+          "what-is-investing#0",
+          "investment-taxes-basics#1",
+          "treasury-bills#1",
+          "retirement-contribution-limits#4"
+        ],
+        "fts": [
+          "what-is-investing#1",
+          "ee-bonds#0",
+          "glossary#2",
+          "consumer-price-index#4",
+          "diversification#3"
+        ]
+      },
+      {
+        "query": "how long until my money doubles",
+        "bm25": [
+          "what-is-investing#4",
+          "risk-and-return#4",
+          "glossary#5",
+          "compound-interest#5",
+          "i-bonds#5"
+        ],
+        "fts": [
+          "glossary#5",
+          "what-is-investing#4",
+          "investment-taxes-basics#2",
+          "what-is-investing#2",
+          "credit-scores#2"
+        ]
+      },
+      {
+        "query": "what is an index fund",
+        "bm25": [
+          "etf-vs-mutual-fund#3",
+          "mutual-funds-basics#2",
+          "glossary#3",
+          "etf-vs-mutual-fund#2",
+          "mutual-funds-basics#3"
+        ],
+        "fts": [
+          "mutual-funds-basics#3",
+          "etf-vs-mutual-fund#2",
+          "etf-vs-mutual-fund#3",
+          "glossary#3",
+          "mutual-funds-basics#1"
+        ]
+      },
+      {
+        "query": "what happens to my shares if the company goes bankrupt",
+        "bm25": [
+          "stocks-basics#3",
+          "stocks-basics#0",
+          "avoiding-scams-warning-signs#3",
+          "diversification#1",
+          "stocks-basics#2"
+        ],
+        "fts": [
+          "stocks-basics#3",
+          "diversification#1",
+          "stocks-basics#0",
+          "avoiding-scams-warning-signs#3",
+          "etf-basics#1"
+        ]
+      },
+      {
+        "query": "what is the 401(k) contribution limit this year",
+        "bm25": [
+          "retirement-contribution-limits#1",
+          "roth-vs-pretax-401k-comparison#2",
+          "401k-plans-irs-overview#2",
+          "roth-iras#2",
+          "solo-401k#2"
+        ],
+        "fts": [
+          "roth-iras#2",
+          "retirement-contribution-limits#1",
+          "solo-401k#0",
+          "roth-vs-pretax-401k-comparison#2",
+          "savers-credit#3"
+        ]
+      },
+      {
+        "query": "best pizza in Rome",
+        "bm25": [],
+        "fts": []
+      },
+      {
+        "query": "how do I fix a flat bike tire",
+        "bm25": [],
+        "fts": [
+          "bonds-basics#3",
+          "consumer-price-index#2",
+          "ee-bonds#1",
+          "i-bonds#1",
+          "retirement-plans-for-self-employed#2"
+        ]
+      },
+      {
+        "query": "what is the P/E ratio",
+        "bm25": [
+          "compound-interest#3",
+          "etf-vs-mutual-fund#1",
+          "etf-basics#2",
+          "etf-vs-mutual-fund#3",
+          "interest-on-reserve-balances#3"
+        ],
+        "fts": [
+          "etf-basics#2",
+          "etf-vs-mutual-fund#1",
+          "etf-vs-mutual-fund#3",
+          "glossary#2",
+          "mutual-funds-basics#3"
+        ]
+      },
+      {
+        "query": "how do I file my income tax return",
+        "bm25": [
+          "solo-401k#4",
+          "net-investment-income-tax#2",
+          "rollovers#1",
+          "net-investment-income-tax#0",
+          "i-bonds#4"
+        ],
+        "fts": [
+          "investment-taxes-basics#3",
+          "retirement-accounts-overview#3",
+          "net-investment-income-tax#0",
+          "traditional-iras#1",
+          "traditional-iras#3"
+        ]
+      },
+      {
+        "query": "what is the current price of Apple stock",
+        "bm25": [
+          "stocks-basics#2",
+          "etf-basics#1",
+          "cost-basis#2",
+          "stocks-basics#1",
+          "gross-domestic-product#2"
+        ],
+        "fts": [
+          "stocks-basics#2",
+          "etf-basics#1",
+          "inflation#2",
+          "bonds-basics#3",
+          "etf-vs-mutual-fund#0"
+        ]
+      },
+      {
+        "query": "what is a bid-ask spread",
+        "bm25": [
+          "glossary#1",
+          "etf-vs-mutual-fund#1",
+          "etf-basics#2",
+          "treasury-floating-rate-notes#2",
+          "treasury-bills#2"
+        ],
+        "fts": [
+          "etf-basics#2",
+          "etf-vs-mutual-fund#1",
+          "glossary#1",
+          "diversification#0",
+          "diversification#4"
+        ]
+      },
+      {
+        "query": "what is a dividend",
+        "bm25": [
+          "dividend-taxes#2",
+          "dividend-taxes#1",
+          "dividend-taxes#3",
+          "dividend-taxes#4",
+          "stocks-basics#1"
+        ],
+        "fts": [
+          "dividend-taxes#2",
+          "dividend-taxes#1",
+          "dividend-taxes#3",
+          "dividend-taxes#4",
+          "cost-basis#5"
+        ]
+      },
+      {
+        "query": "what is the yield on a bond",
+        "bm25": [
+          "bonds-basics#1",
+          "glossary#6",
+          "treasury-bonds#3",
+          "bonds-basics#2",
+          "bonds-basics#0"
+        ],
+        "fts": [
+          "bonds-basics#1",
+          "ee-bonds#1",
+          "i-bonds#0",
+          "bonds-basics#0",
+          "bonds-basics#2"
+        ]
+      },
+      {
+        "query": "what is a 401(k)",
+        "bm25": [
+          "solo-401k#0",
+          "roth-vs-pretax-401k-comparison#1",
+          "roth-vs-pretax-401k-comparison#2",
+          "401k-plans-irs-overview#3",
+          "401k-plans-irs-overview#0"
+        ],
+        "fts": [
+          "solo-401k#0",
+          "retirement-contribution-limits#1",
+          "401k-plans-irs-overview#0",
+          "401k-plans-irs-overview#1",
+          "401k-plans-irs-overview#3"
+        ]
+      },
+      {
+        "query": "what is a Roth 401(k)",
+        "bm25": [
+          "roth-vs-pretax-401k-comparison#1",
+          "roth-vs-pretax-401k-comparison#2",
+          "401k-plans-irs-overview#1",
+          "roth-vs-pretax-401k-comparison#0",
+          "retirement-accounts-overview#1"
+        ],
+        "fts": [
+          "solo-401k#0",
+          "401k-plans-irs-overview#1",
+          "retirement-contribution-limits#1",
+          "roth-vs-pretax-401k-comparison#0",
+          "glossary#5"
+        ]
+      },
+      {
+        "query": "what is a municipal bond",
+        "bm25": [
+          "bonds-basics#2",
+          "net-investment-income-tax#2",
+          "fdic-deposit-insurance#3",
+          "treasury-bonds#3",
+          "bonds-basics#0"
+        ],
+        "fts": [
+          "bonds-basics#2",
+          "ee-bonds#1",
+          "i-bonds#0",
+          "bonds-basics#0",
+          "bonds-basics#1"
+        ]
+      },
+      {
+        "query": "is it risky to own shares of just one company",
+        "bm25": [
+          "stocks-basics#0",
+          "diversification#1",
+          "diversification#6",
+          "stocks-basics#3",
+          "mutual-funds-basics#0"
+        ],
+        "fts": [
+          "diversification#1",
+          "stocks-basics#0",
+          "stocks-basics#3",
+          "diversification#6",
+          "diversification#2"
+        ]
+      },
+      {
+        "query": "which one is priced only once a day, a mutual fund or an ETF",
+        "bm25": [
+          "etf-vs-mutual-fund#0",
+          "mutual-funds-basics#1",
+          "diversification#4",
+          "glossary#4",
+          "mutual-funds-basics#4"
+        ],
+        "fts": [
+          "etf-vs-mutual-fund#0",
+          "mutual-funds-basics#1",
+          "etf-vs-mutual-fund#2",
+          "etf-basics#1",
+          "diversification#4"
+        ]
+      },
+      {
+        "query": "how can my employer add money to my retirement savings",
+        "bm25": [
+          "simple-ira#0",
+          "retirement-accounts-overview#1",
+          "sep-ira#1",
+          "savers-credit#0",
+          "401k-plans-irs-overview#1"
+        ],
+        "fts": [
+          "simple-ira#0",
+          "ee-bonds#0",
+          "glossary#5",
+          "retirement-plans-for-self-employed#0",
+          "401k-plans-irs-overview#1"
+        ]
+      },
+      {
+        "query": "what does owning a stock actually mean",
+        "bm25": [
+          "dividend-taxes#3",
+          "diversification#6",
+          "retirement-accounts-overview#4",
+          "mutual-funds-basics#5",
+          "diversification#0"
+        ],
+        "fts": [
+          "etf-basics#1",
+          "diversification#2",
+          "diversification#6",
+          "dividend-taxes#1",
+          "dividend-taxes#3"
+        ]
+      },
+      {
+        "query": "why does cash lose buying power over time",
+        "bm25": [
+          "risk-and-return#2",
+          "what-is-investing#0",
+          "what-is-investing#2",
+          "i-bonds#2",
+          "risk-and-return#3"
+        ],
+        "fts": [
+          "i-bonds#2",
+          "ee-bonds#2",
+          "risk-and-return#2",
+          "risk-and-return#4",
+          "avoiding-scams-warning-signs#3"
+        ]
+      },
+      {
+        "query": "why do ten tech stocks not count as spread out",
+        "bm25": [
+          "diversification#3",
+          "etf-basics#3",
+          "mutual-funds-basics#4",
+          "retirement-contribution-limits#7",
+          "unemployment-rate#2"
+        ],
+        "fts": [
+          "diversification#3",
+          "etf-basics#1",
+          "unemployment-rate#2",
+          "diversification#2",
+          "dividend-taxes#1"
+        ]
+      },
+      {
+        "query": "do I pay tax when I take money out of a Roth",
+        "bm25": [
+          "traditional-iras#3",
+          "retirement-accounts-overview#3",
+          "roth-iras#1",
+          "roth-vs-pretax-401k-comparison#0",
+          "bonds-basics#0"
+        ],
+        "fts": [
+          "traditional-iras#3",
+          "retirement-accounts-overview#3",
+          "glossary#5",
+          "roth-iras#1",
+          "roth-vs-pretax-401k-comparison#1"
+        ]
+      },
+      {
+        "query": "what does a bond issuer owe me when the bond matures",
+        "bm25": [
+          "bonds-basics#0",
+          "bonds-basics#2",
+          "treasury-bonds#2",
+          "bonds-basics#3",
+          "i-bonds#3"
+        ],
+        "fts": [
+          "bonds-basics#0",
+          "bonds-basics#1",
+          "bonds-basics#3",
+          "bonds-basics#2",
+          "ee-bonds#1"
+        ]
+      },
+      {
+        "query": "what is the difference between a traditional and a Roth account",
+        "bm25": [
+          "roth-iras#0",
+          "retirement-accounts-overview#3",
+          "401k-plans-irs-overview#1",
+          "investment-taxes-basics#5",
+          "glossary#5"
+        ],
+        "fts": [
+          "401k-plans-irs-overview#1",
+          "investment-taxes-basics#5",
+          "retirement-accounts-overview#3",
+          "fdic-deposit-insurance#2",
+          "glossary#5"
+        ]
+      },
+      {
+        "query": "are index funds cheaper than actively managed funds",
+        "bm25": [
+          "mutual-funds-basics#2",
+          "etf-vs-mutual-fund#2",
+          "mutual-funds-basics#3",
+          "etf-vs-mutual-fund#3",
+          "etf-vs-mutual-fund#1"
+        ],
+        "fts": [
+          "mutual-funds-basics#2",
+          "mutual-funds-basics#3",
+          "etf-vs-mutual-fund#2",
+          "etf-basics#1",
+          "etf-vs-mutual-fund#0"
+        ]
+      },
+      {
+        "query": "what is the weather in Paris tomorrow",
+        "bm25": [
+          "gross-domestic-product#4"
+        ],
+        "fts": [
+          "gross-domestic-product#4"
+        ]
+      },
+      {
+        "query": "who won the soccer world cup in 2018",
+        "bm25": [
+          "avoiding-scams-warning-signs#1",
+          "unemployment-rate#3",
+          "sep-ira#2",
+          "federal-open-market-committee#2",
+          "simple-ira#1"
+        ],
+        "fts": [
+          "avoiding-scams-warning-signs#1"
+        ]
+      },
+      {
+        "query": "what is HHI",
+        "bm25": [],
+        "fts": []
+      },
+      {
+        "query": "how does a 529 college savings plan work",
+        "bm25": [
+          "simple-ira#0",
+          "sep-ira#4",
+          "fed-two-percent-inflation-goal#2",
+          "treasury-bonds#3",
+          "what-is-investing#1"
+        ],
+        "fts": [
+          "simple-ira#0",
+          "ee-bonds#0",
+          "retirement-plans-for-self-employed#3",
+          "savers-credit#3",
+          "sep-ira#4"
+        ]
+      },
+      {
+        "query": "how do I get a mortgage to buy a house",
+        "bm25": [
+          "mutual-funds-basics#3",
+          "credit-scores#3",
+          "bonds-basics#1",
+          "risk-and-return#0",
+          "tips-inflation-protected-securities#2"
+        ],
+        "fts": [
+          "bonds-basics#1",
+          "consumer-price-index#2",
+          "ee-bonds#2",
+          "etf-basics#0",
+          "i-bonds#2"
+        ]
+      },
+      {
+        "query": "what is a Treasury bill",
+        "bm25": [
+          "treasury-bills#0",
+          "treasury-securities-overview#2",
+          "interest-income-taxes#1",
+          "treasury-securities-overview#1",
+          "treasury-bills#2"
+        ],
+        "fts": [
+          "treasury-bills#0",
+          "treasury-bills#2",
+          "treasury-bills#1",
+          "treasury-securities-overview#1",
+          "interest-income-taxes#1"
+        ]
+      },
+      {
+        "query": "what does TIPS stand for",
+        "bm25": [
+          "tips-inflation-protected-securities#0",
+          "treasury-strips#0",
+          "inflation#4",
+          "tips-inflation-protected-securities#2",
+          "simple-ira#0"
+        ],
+        "fts": [
+          "tips-inflation-protected-securities#0",
+          "consumer-price-index#2",
+          "inflation#4",
+          "open-market-operations#5",
+          "simple-ira#0"
+        ]
+      },
+      {
+        "query": "what is a SIMPLE IRA",
+        "bm25": [
+          "simple-ira#0",
+          "savers-credit#3",
+          "compound-interest#2",
+          "retirement-plans-for-self-employed#2",
+          "compound-interest#1"
+        ],
+        "fts": [
+          "simple-ira#0",
+          "early-withdrawal-tax-ira#2",
+          "roth-iras#0",
+          "savers-credit#3",
+          "sep-ira#0"
+        ]
+      },
+      {
+        "query": "what is a SEP IRA",
+        "bm25": [
+          "sep-ira#0",
+          "retirement-plans-for-self-employed#1",
+          "sep-ira#4",
+          "sep-ira#1",
+          "roth-iras#0"
+        ],
+        "fts": [
+          "sep-ira#0",
+          "early-withdrawal-tax-ira#2",
+          "retirement-plans-for-self-employed#1",
+          "roth-iras#0",
+          "sep-ira#4"
+        ]
+      },
+      {
+        "query": "what is the net investment income tax",
+        "bm25": [
+          "net-investment-income-tax#0",
+          "dividend-taxes#4",
+          "net-investment-income-tax#3",
+          "net-investment-income-tax#1",
+          "solo-401k#3"
+        ],
+        "fts": [
+          "net-investment-income-tax#0",
+          "investment-taxes-basics#3",
+          "retirement-accounts-overview#3",
+          "traditional-iras#3",
+          "dividend-taxes#4"
+        ]
+      },
+      {
+        "query": "what is FDIC insurance",
+        "bm25": [
+          "fdic-deposit-insurance#0",
+          "fdic-deposit-insurance#1",
+          "fdic-deposit-insurance#3",
+          "fdic-deposit-insurance#4",
+          "cost-basis#4"
+        ],
+        "fts": [
+          "fdic-deposit-insurance#1",
+          "fdic-deposit-insurance#0",
+          "fdic-deposit-insurance#3",
+          "fdic-deposit-insurance#4",
+          "consumer-price-index#4"
+        ]
+      },
+      {
+        "query": "what is cost basis",
+        "bm25": [
+          "cost-basis#2",
+          "cost-basis#0",
+          "cost-basis#4",
+          "dividend-taxes#3",
+          "cost-basis#1"
+        ],
+        "fts": [
+          "cost-basis#2",
+          "cost-basis#0",
+          "cost-basis#4",
+          "cost-basis#5",
+          "dividend-taxes#3"
+        ]
+      },
+      {
+        "query": "what is the consumer price index",
+        "bm25": [
+          "consumer-price-index#1",
+          "consumer-price-index#0",
+          "inflation#2",
+          "etf-vs-mutual-fund#1",
+          "tips-inflation-protected-securities#1"
+        ],
+        "fts": [
+          "inflation#2",
+          "consumer-price-index#1",
+          "etf-vs-mutual-fund#1",
+          "glossary#3",
+          "consumer-price-index#0"
+        ]
+      }
+    ]
+  }
+}

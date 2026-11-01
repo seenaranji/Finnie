@@ -142,8 +142,8 @@ def main() -> None:
 
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True).stdout.strip()
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    output_file = RESULTS_DIR / f"retrieval_{args.split}_{datetime.now():%Y%m%d_%H%M%S}.json"
-    output_file.write_text(json.dumps({"split": args.split, "git_commit": commit, "dataset": str(DATASET),
+    output_file = RESULTS_DIR / f"retrieval_{args.split}_{retriever.settings.rag.vector_store}_{datetime.now():%Y%m%d_%H%M%S}.json"
+    output_file.write_text(json.dumps({"split": args.split, "vector_store": retriever.settings.rag.vector_store, "git_commit": commit, "dataset": str(DATASET),
                                        "embedding_model": retriever.settings.rag.embedding_model,
                                        "chunk_size": retriever.settings.rag.chunk_size, "configs": results}, indent=2))
     print(f"\nembedding API calls: {retriever.dense.embedder.calls}")

@@ -12,13 +12,13 @@ from src.core.config import load_settings
 from src.core.logging import setup_logging
 from src.core.metrics import summarize
 from src.rag.embedder import OpenAIEmbedder
-from src.rag.vector_store import ChromaStore
+from src.rag.factory import build_vector_store
 
 settings = load_settings()
 setup_logging("WARNING")
 questions = [json.loads(line) for line in Path("eval/datasets/retrieval_threshold.jsonl").read_text().splitlines() if line]
 
-store = ChromaStore.from_settings(settings)
+store = build_vector_store(settings)
 embedding = OpenAIEmbedder(settings).embed([item["question"] for item in questions])   # one batch for all
 
 rows = []

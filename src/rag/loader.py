@@ -57,6 +57,6 @@ def load_documents(directory: str | Path = "knowledge_base") -> list[Document]:
             continue
         metadata, text, problems = read_document(path)
         if text and not problems:
-            # YAML parses dates into date objects; store plain strings so metadata is JSON/Chroma friendly
+            # YAML parses dates into date objects; store plain strings so metadata is JSON friendly
             docs.append(Document(path.stem, text, {key: str(value) for key, value in metadata.items()}))
     return docs

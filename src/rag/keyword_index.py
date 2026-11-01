@@ -63,7 +63,7 @@ class KeywordHit:
 
 
 def _matches(actual, wanted) -> bool:
-    """Exact match, or membership when `wanted` is {"$in": [...]} (the same operator Chroma uses)."""
+    """Exact match, or membership when `wanted` is {"$in": [...]} (the same operator the vector store filters use)."""
     return actual in wanted["$in"] if isinstance(wanted, dict) and "$in" in wanted else actual == wanted
 
 

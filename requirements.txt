@@ -10,8 +10,12 @@ langchain-text-splitters==1.1.3  # ready-made chunkers (LangGraph itself has non
 tiktoken==0.14.0          # count tokens locally
 
 # --- RAG ---
-chromadb==1.5.9           # vector database (Step 6)
-bm25s==0.3.16             # BM25 keyword search for hybrid retrieval (Step 7c)
+bm25s==0.3.16             # in-memory BM25 (tokenizer for the eval checks; optional keyword comparison, Step 7c)
+
+# --- Database (Steps 6, 7c, 15b; Step 23b) ---
+psycopg[binary,pool]==3.3.6   # PostgreSQL driver + connection pool
+pgvector==0.5.1               # pgvector type adapters for psycopg
+alembic==1.20.1               # versioned schema migrations (pulls in SQLAlchemy)
 
 # --- Config + validation ---
 pydantic==2.14.1          # typed data models

@@ -69,9 +69,9 @@ class PortfolioAnalysisAgent(BaseAgent):
     default_disclaimer = DISCLAIMER_STRONG
     temperature = 0
 
-    def __init__(self, llm: LLMClient, service: MarketDataService, metadata: dict | None = None) -> None:
+    def __init__(self, llm: LLMClient, service: MarketDataService, metadata: dict | None = None, repository=None) -> None:
         super().__init__(llm)
-        self.service, self.metadata = service, metadata or {}
+        self.service, self.metadata, self.repository = service, metadata or {}, repository   # repository: PortfolioRepository, only needed by run_by_id
         self._current: dict | None = None   # the metrics for the call in progress (set by run(); kept per thread by BaseAgent)
 
     def _canned(self, text: str, reason: str) -> AgentResponse:
@@ -86,6 +86,19 @@ class PortfolioAnalysisAgent(BaseAgent):
             except pc.PortfolioInputError as error:
                 return self._canned("I couldn't read your portfolio file:\n- " + "\n- ".join(error.problems)
                                     + "\nPlease fix these and send it again. It needs the columns: ticker, shares, avg_cost.", "bad input")
+        return self._analyze(holdings, question, parse_time["seconds"])
+
+    def run_by_id(self, portfolio_id, question: str = "Please explain my portfolio in simple terms.") -> AgentResponse:
+        """Explain a SAVED portfolio: load its holdings from the database, then run exactly the same math and explanation as run().
+        Raises PortfolioNotFound for an unknown id (the caller decides what to tell the user)."""
+        if self.repository is None:
+            raise RuntimeError("this agent was built without a PortfolioRepository")
+        with timer() as load_time:
+            stored = self.repository.get(portfolio_id)
+            holdings = [pc.Holding(h.ticker, float(h.shares), float(h.avg_cost)) for h in stored.holdings]   # NUMERIC -> float only here, for the math
+        return self._analyze(holdings, question, load_time["seconds"])
+
+    def _analyze(self, holdings: list[pc.Holding], question: str, parse_seconds: float) -> AgentResponse:
         prices, closes, as_of, sources, failed = {}, {}, [], {}, []
         with timer() as fetch_time:
             for holding in holdings:
@@ -109,7 +122,7 @@ class PortfolioAnalysisAgent(BaseAgent):
             payload["notes"] = payload["notes"] + [f"could not fetch data for: {'; '.join(failed)}"]
         correlation = ({"tickers": list(result["correlation_tickers"]), "matrix": [[round(float(x), 2) for x in row] for row in result["correlation"]]}
                        if result.get("correlation") is not None else None)   # for the UI heatmap; deliberately NOT in the payload the model sees
-        self._current = {"payload": payload, "correlation": correlation, "sources": sources, "seconds": {"parse": parse_time["seconds"], "fetch": fetch_time["seconds"], "calc": calc_time["seconds"]}}
+        self._current = {"payload": payload, "correlation": correlation, "sources": sources, "seconds": {"parse": parse_seconds, "fetch": fetch_time["seconds"], "calc": calc_time["seconds"]}}
         try:
             return self.handle(AgentRequest(message=question))
         finally:

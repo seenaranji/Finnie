@@ -1,6 +1,6 @@
 """Step 6: build the vector index from the knowledge base (full rebuild).
 
-Pipeline:  load articles -> chunk -> embed -> save in Chroma.
+Pipeline:  load articles -> chunk -> embed -> save in PostgreSQL + pgvector. There is no separate keyword index to build: the database generates it.
 
 Run:  .venv/bin/python -m scripts.index_knowledge_base
 """
@@ -13,9 +13,8 @@ from src.core.logging import get_logger, setup_logging
 from src.core.metrics import timer
 from src.rag.chunker import chunk_structured
 from src.rag.embedder import OpenAIEmbedder
-from src.rag.keyword_index import KeywordIndex
 from src.rag.loader import load_documents
-from src.rag.vector_store import ChromaStore
+from src.rag.factory import build_vector_store
 
 settings = load_settings()
 setup_logging(settings.app.log_level)
@@ -29,15 +28,13 @@ with timer() as total_timing:
 
     embedding = OpenAIEmbedder(settings).embed([chunk.text for chunk in chunks])
 
-    store = ChromaStore.from_settings(settings)
+    store = build_vector_store(settings)
     store.reset()   # full rebuild: never leave old chunks of edited articles behind
     store.add(chunks, embedding.vectors)
 
-    # Step 7c: rebuild the BM25 index from the same chunks, so the two indexes never disagree.
-    KeywordIndex.build(chunks).save(settings.rag.keyword_index_path)
 
 summary = {
-    "articles": len(documents), "chunks": len(chunks), "stored": store.count(),
+    "vector_store": settings.rag.vector_store, "articles": len(documents), "chunks": len(chunks), "stored": store.count(),
     "chunk_size": settings.rag.chunk_size, "embedding_model": embedding.model,
     "dimensions": int(embedding.vectors.shape[1]), "input_tokens": embedding.input_tokens,
     "embedding_cost_usd": round(embedding.cost_usd, 8),

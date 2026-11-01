@@ -1,5 +1,7 @@
 """Request and response shapes for the API. FastAPI validates every request against these before any of our code runs; a bad one becomes a 422."""
+from datetime import datetime
 from typing import Literal
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -87,6 +89,10 @@ class PortfolioRequest(BaseModel):
     question: str = Field("Please explain my portfolio in simple terms.", min_length=1, max_length=500)
 
 
+class PortfolioSaved(BaseModel):
+    id: UUID
+
+
 class PortfolioResponse(BaseModel):
     text: str
     disclaimer: str
@@ -129,3 +135,20 @@ class ArticleSummary(BaseModel):
 class Article(ArticleSummary):
     source_url: str | None = None
     text: str                      # markdown body
+
+
+class NewsItemOut(BaseModel):
+    id: int
+    title: str
+    summary: str
+    link: str
+    source: str
+    published: datetime | None = None
+
+
+class NewsResponse(BaseModel):
+    topic: str
+    items: list[NewsItemOut]
+    fetched_at: datetime
+    withheld: int = 0              # items left out because their text looked like instructions to an AI (same quarantine as the news agent)
+    feed_errors: list[str] = Field(default_factory=list)

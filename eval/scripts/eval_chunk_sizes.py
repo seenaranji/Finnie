@@ -1,7 +1,6 @@
 """Step 8: does chunk size change retrieval quality? Evaluate 200 / 500 / 1000 on the DEV split.
 
-Each size gets its own throwaway Chroma + BM25 index in a temp folder, so the real chroma_db/ and
-keyword_index/ are never touched. Costs a few thousandths of a cent in embeddings.
+Each size gets its own throwaway in-memory vector store + BM25 index, so the real database is never touched. Costs a few thousandths of a cent in embeddings.
 
 Caveats printed with the results: (1) the 0.465 threshold and the BM25 cutoff were tuned at size 500, and
 similarity/BM25 scores shift with chunk length, so the GATE columns are not a fair comparison across sizes;
@@ -10,9 +9,7 @@ RANKING (gate off) is. (2) top-5 chunks cover very different amounts of text at 
 Run:  .venv/bin/python -m eval.scripts.eval_chunk_sizes
 """
 import json
-import tempfile
 from datetime import datetime
-from pathlib import Path
 
 from eval.scripts.eval_retrieval import CachingEmbedder, DATASET, RESULTS_DIR, run_config
 from src.core.config import load_settings
@@ -22,7 +19,7 @@ from src.rag.embedder import OpenAIEmbedder
 from src.rag.hybrid_retriever import HybridRetriever
 from src.rag.keyword_index import KeywordIndex
 from src.rag.loader import load_documents
-from src.rag.vector_store import ChromaStore
+from src.rag.memory_store import MemoryStore
 
 SIZES = [200, 500, 1000]
 setup_logging("WARNING")
@@ -30,14 +27,13 @@ settings = load_settings()
 items = [r for r in map(json.loads, DATASET.read_text().splitlines()) if r["split"] == "dev"]
 documents = load_documents()
 embedder = CachingEmbedder(OpenAIEmbedder(settings))
-temp_dir = tempfile.mkdtemp(prefix="finnie_chunk_sweep_")
-print(f"dev questions: {len(items)}; throwaway indexes in {temp_dir}\n")
+print(f"dev questions: {len(items)}\n")
 
 rows = {}
 for size in SIZES:
     chunks = [c for d in documents for c in chunk_structured(d, size)]
     vectors = OpenAIEmbedder(settings).embed([c.text for c in chunks]).vectors
-    store = ChromaStore(settings.rag.embedding_model, Path(temp_dir) / f"chroma_{size}", f"sweep_{size}")
+    store = MemoryStore()
     store.add(chunks, vectors)
     retriever = HybridRetriever(store=store, embedder=embedder, keyword_index=KeywordIndex.build(chunks), settings=settings)
     avg_len = sum(len(c.text) for c in chunks) / len(chunks)

@@ -1,0 +1,24 @@
+# Finnie's database: PostgreSQL with the pgvector extension (Steps 6, 7c, 15b; migrated in 23b).
+# Start:  docker compose up -d      Check:  docker compose ps   (wait for "healthy")
+# Credentials come from .env (git-ignored). The data lives in the named volume below, so it survives
+# `docker compose down` but NOT `docker compose down -v` (that deletes the volume and every saved row).
+services:
+  db:
+    image: pgvector/pgvector:pg17   # official pgvector build on PostgreSQL 17 (verified 2026-11-01)
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"   # localhost only; 5433 so it never clashes with a Homebrew PostgreSQL on 5432
+    volumes:
+      - finnie_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  finnie_pgdata:

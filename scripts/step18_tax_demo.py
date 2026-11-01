@@ -32,7 +32,7 @@ for question in CASES:
     print(f"  disclaimer: {response.disclaimer[:90]}...")
     rows.append({"question": question, "text": response.text, "metadata": meta})
 
-print("\n" + "=" * 100, "\nCATEGORY FILTER CHECK (real Chroma + BM25): which categories come back for the same question?\n" + "=" * 100)
+print("\n" + "=" * 100, "\nCATEGORY FILTER CHECK (real pgvector + PostgreSQL full-text): which categories come back for the same question?\n" + "=" * 100)
 q = "What is a Roth IRA?"
 for label, category in (("no filter", None), ("taxes only", "taxes"), ("taxes + retirement_accounts", ["taxes", "retirement_accounts"])):
     for mode in ("dense", "hybrid"):

@@ -227,8 +227,8 @@ def main() -> None:
                 print(f"   [{category}] {question}\n      {'; '.join(problems)}   ({where})")
 
         rows_out = [{"question": q, "category": category_of[q], **log} for q, log in JUDGE_LOG.items()]
-        output_file = RESULTS_DIR / f"answers_{name}{suffix}_{datetime.now():%Y%m%d_%H%M%S}.json"
-        output_file.write_text(json.dumps({"prompt": name, "git_commit": commit, "summary": summary, "agent_cost_usd": agent_cost,
+        output_file = RESULTS_DIR / f"answers_{name}{suffix}_{settings.rag.vector_store}_{datetime.now():%Y%m%d_%H%M%S}.json"
+        output_file.write_text(json.dumps({"prompt": name, "vector_store": settings.rag.vector_store, "git_commit": commit, "summary": summary, "agent_cost_usd": agent_cost,
                                            "judge_cost_usd": judge_cost, "judge_model": settings.llm.answer_model,
                                            "items": rows_out}, indent=2, default=str))
         print(f"\n  saved: {output_file}")

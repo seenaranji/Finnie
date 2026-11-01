@@ -6,7 +6,7 @@ import argparse
 
 from src.core.config import load_settings
 from src.rag.embedder import OpenAIEmbedder
-from src.rag.vector_store import ChromaStore
+from src.rag.factory import build_vector_store
 
 parser = argparse.ArgumentParser()
 parser.add_argument("question")
@@ -15,7 +15,7 @@ parser.add_argument("--category", default=None, help="only search articles in th
 arguments = parser.parse_args()
 
 settings = load_settings()
-store = ChromaStore.from_settings(settings)
+store = build_vector_store(settings)
 if store.count() == 0:
     raise SystemExit("The index is empty. Run: .venv/bin/python -m scripts.index_knowledge_base")
 

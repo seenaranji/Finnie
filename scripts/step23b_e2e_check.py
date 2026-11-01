@@ -1,0 +1,71 @@
+"""Step 23b: use the running API end to end against PostgreSQL: save a portfolio, load it by id, analyze it by id and from CSV (the metrics must match),
+edit it, delete it, and try the error paths. Costs two portfolio explanations (about $0.01) and uses live market prices.
+
+Start the server first:  .venv/bin/uvicorn src.web_app.api:app --port 8766
+Run:  .venv/bin/python -m scripts.step23b_e2e_check [http://127.0.0.1:8766]
+"""
+import json
+import sys
+import time
+
+import httpx
+
+from src.core.config import PROJECT_ROOT
+
+base = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8766"
+CSV = (PROJECT_ROOT / "src/data/sample_portfolios/diversified.csv").read_text()
+HOLDINGS = [{"ticker": t, "shares": s, "avg_cost": c} for t, s, c in (line.split(",") for line in CSV.strip().splitlines()[1:])]
+failures = []
+
+
+def check(label, ok, detail=""):
+    print(f"[{'ok' if ok else 'FAIL'}] {label} {detail}")
+    if not ok:
+        failures.append(label)
+
+
+with httpx.Client(base_url=base, timeout=60) as client:
+    health = client.get("/health").json()
+    print("health:", health)
+
+    created = client.post("/portfolios", json={"name": "e2e diversified", "holdings": HOLDINGS})
+    pid = created.json()["id"]
+    check("POST /portfolios -> 201 with an id", created.status_code == 201 and len(pid) == 36, f"id={pid}")
+
+    got = client.get(f"/portfolios/{pid}").json()
+    check("GET /portfolios/{id} returns the same holdings", [(h["ticker"], float(h["shares"]), float(h["avg_cost"])) for h in got["holdings"]]
+          == [(h["ticker"], float(h["shares"]), float(h["avg_cost"])) for h in HOLDINGS])
+    check("the saved portfolio is in the list", pid in [p["id"] for p in client.get("/portfolios").json()])
+
+    start = time.perf_counter()
+    by_id = client.get(f"/portfolios/{pid}/analysis")
+    by_id_s = time.perf_counter() - start
+    start = time.perf_counter()
+    by_csv = client.post("/portfolio/analyze", json={"csv_text": CSV})
+    by_csv_s = time.perf_counter() - start
+    check("analysis by id = 200", by_id.status_code == 200, f"({by_id_s:.2f} s; CSV route {by_csv_s:.2f} s)")
+    a, b = by_id.json()["metrics"], by_csv.json()["metrics"]
+    check("metrics by id == metrics from the CSV (same prices_as_of, weights, HHI, volatility ...)", a == b,
+          "" if a == b else f"differs in: {[k for k in a if a[k] != b.get(k)]}")
+    print("   holdings:", [(h["ticker"], h["weight_pct"]) for h in a["holdings"]], "HHI", a["hhi_concentration_0_to_1"], "prices as of", a["prices_as_of"])
+
+    check("PUT replaces holdings", client.put(f"/portfolios/{pid}", json={"name": "e2e edited", "holdings": HOLDINGS[:2]}).status_code == 204
+          and len(client.get(f"/portfolios/{pid}").json()["holdings"]) == 2 and client.get(f"/portfolios/{pid}").json()["name"] == "e2e edited")
+
+    missing = "00000000-0000-4000-8000-000000000000"
+    r = client.get(f"/portfolios/{missing}")
+    check("missing id -> 404 portfolio_not_found", r.status_code == 404 and r.json()["code"] == "portfolio_not_found", json.dumps(r.json()))
+    r = client.get(f"/portfolios/{missing}/analysis")
+    check("analysis of a missing id -> 404", r.status_code == 404)
+    r = client.post("/portfolios", json={"name": "bad", "holdings": [{"ticker": "", "shares": "-3", "avg_cost": "1"}]})
+    check("negative shares and empty ticker -> 422 naming the fields", r.status_code == 422 and {"holdings.0.ticker", "holdings.0.shares"} <= {d["field"] for d in r.json()["details"]},
+          json.dumps(r.json()["details"]))
+    check("malformed id -> 422", client.get("/portfolios/not-a-uuid").status_code == 422)
+
+    check("DELETE -> 204, then 404", client.delete(f"/portfolios/{pid}").status_code == 204 and client.get(f"/portfolios/{pid}").status_code == 404)
+
+    chat = client.post("/chat", json={"message": "What is an expense ratio?"}).json()
+    check("chat answers from the knowledge base (retrieval on PostgreSQL)", chat["answered_by"] == "finance_qa" and bool(chat["sources"]), f"sources={[s['id'] for s in chat['sources']]}")
+
+print("\nfailures:", failures or "none")
+print("\n*** E2E CHECK FINISHED ***")

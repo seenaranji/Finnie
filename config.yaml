@@ -24,17 +24,23 @@ rag:
   chunk_overlap: 50
   top_k: 5
   similarity_threshold: 0.465  # midpoint of the gap between answerable (min 0.482) and unanswerable (max 0.448) scores, Step 7
-  chroma_path: chroma_db     # where the vector database is saved on disk
-  collection_name: finnie_knowledge_base
+  vector_store: pgvector     # PostgreSQL + pgvector (Chroma was removed after Step 23b). The keyword search is PostgreSQL full-text
   candidate_k: 20            # fetch this many, then threshold -> dedupe -> (rerank) -> keep top_k
   rerank: false              # LLM re-ordering of candidates; off until Step 8 measures it
   dedupe_overlap: 0.8        # drop a chunk if 80% of its words already appear in a better-ranked chunk
   # Step 7c: hybrid search (spec calls these retrieval.*; kept under rag: next to the other retrieval settings)
   retrieval_mode: dense      # dense | bm25 | hybrid. Stays dense until Step 8 measures hybrid
-  keyword_index_path: keyword_index   # BM25 index folder, rebuilt with the vector index
   rrf_k: 60                  # RRF constant from the original paper; compared with 20/100 in Step 8
   candidates_per_retriever: 20   # each retriever contributes its top 20 to the fusion
   bm25_min_score:            # empty = BM25 cannot open the gate on its own; chosen with data below
+
+# PostgreSQL + pgvector (Steps 6, 7c, 15b). The connection URL is the DATABASE_URL environment variable (.env), because it holds the password.
+database:
+  pool_min_size: 1
+  pool_max_size: 10
+  pool_timeout_seconds: 10
+  max_holdings_per_portfolio: 500
+  keyword_match: any          # any | all (see src/rag/pg_keyword_index.py)
 
 cache:
   quote_ttl_seconds: 60

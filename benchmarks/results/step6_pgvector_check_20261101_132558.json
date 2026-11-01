@@ -1,0 +1,168 @@
+{
+  "sizes": {
+    "chunks_rows": 272,
+    "table_heap": "584 kB",
+    "toast_for_long_values": "4480 kB",
+    "indexes": {
+      "chunks_article_id": "16 kB",
+      "chunks_category": "16 kB",
+      "chunks_embedding_hnsw": "2184 kB",
+      "chunks_pkey": "40 kB",
+      "chunks_tsv_gin": "408 kB"
+    },
+    "total": "7752 kB"
+  },
+  "explain": {
+    "planner_default": "Limit  (cost=82.28..82.29 rows=5 width=37) (actual time=5.024..5.026 rows=5 loops=1)\n  ->  Sort  (cost=82.28..82.96 rows=272 width=37) (actual time=5.023..5.024 rows=5 loops=1)\n        Sort Key: ((embedding <=> '[1536 numbers]'::vector))\n        Sort Method: top-N heapsort  Memory: 25kB\n        ->  Seq Scan on chunks  (cost=0.00..77.76 rows=272 width=37) (actual time=0.147..4.940 rows=272 loops=1)\nPlanning Time: 0.164 ms\nExecution Time: 5.055 ms",
+    "hnsw_forced": "Limit  (cost=1094.04..1099.50 rows=5 width=37) (actual time=0.572..0.609 rows=5 loops=1)\n  ->  Index Scan using chunks_embedding_hnsw on chunks  (cost=1094.04..1390.80 rows=272 width=37) (actual time=0.571..0.608 rows=5 loops=1)\n        Order By: (embedding <=> '[1536 numbers]'::vector)\nPlanning Time: 0.051 ms\nExecution Time: 0.619 ms",
+    "no_index_exact": "Limit  (cost=82.28..82.29 rows=5 width=37) (actual time=3.922..3.924 rows=5 loops=1)\n  ->  Sort  (cost=82.28..82.96 rows=272 width=37) (actual time=3.921..3.921 rows=5 loops=1)\n        Sort Key: ((embedding <=> '[1536 numbers]'::vector))\n        Sort Method: top-N heapsort  Memory: 25kB\n        ->  Seq Scan on chunks  (cost=0.00..77.76 rows=272 width=37) (actual time=0.048..3.859 rows=272 loops=1)\nPlanning Time: 0.116 ms\nExecution Time: 3.941 ms"
+  },
+  "latency_ms_top10": {
+    "planner_default": {
+      "count": 100,
+      "mean": 3.104617460157897,
+      "p50": 2.758833499683533,
+      "p95": 4.4439809513278306,
+      "min": 2.197957997850608,
+      "max": 12.11820800017449
+    },
+    "hnsw_forced": {
+      "count": 100,
+      "mean": 1.3540466398990247,
+      "p50": 0.9933955006999895,
+      "p95": 2.4972542028990574,
+      "min": 0.7377080000878777,
+      "max": 7.058666997181717
+    },
+    "no_index_exact": {
+      "count": 100,
+      "mean": 3.0304479199185153,
+      "p50": 2.743104500041227,
+      "p95": 4.8381354010416535,
+      "min": 2.245624997158302,
+      "max": 6.778250000934349
+    }
+  },
+  "recall_at_10_ef_search_40": {
+    "mean": 0.996,
+    "min": 0.8,
+    "queries_below_1": 1
+  },
+  "recall_at_10_ef_search_10": {
+    "mean": 0.9640000000000001,
+    "min": 0.5,
+    "queries_below_1": 7
+  },
+  "category_sizes": {
+    "stocks": 5,
+    "risk": 6,
+    "mutual_funds": 6,
+    "portfolio": 7,
+    "etfs": 10,
+    "planning": 17,
+    "basics": 23,
+    "taxes": 29,
+    "bonds": 45,
+    "markets": 53,
+    "retirement_accounts": 71
+  },
+  "filtered_search_gotcha": {
+    "stocks": {
+      "chunks_in_category": 5,
+      "rows_wanted": 5,
+      "planner_default": {
+        "mean_rows_returned": 5.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "hnsw_iterative_off": {
+        "mean_rows_returned": 1.16,
+        "queries_returning_fewer_than_wanted": 45
+      },
+      "hnsw_iterative_relaxed": {
+        "mean_rows_returned": 5.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "hnsw_iterative_strict": {
+        "mean_rows_returned": 5.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "exact_scan": {
+        "mean_rows_returned": 5.0,
+        "queries_returning_fewer_than_wanted": 0
+      }
+    },
+    "risk": {
+      "chunks_in_category": 6,
+      "rows_wanted": 6,
+      "planner_default": {
+        "mean_rows_returned": 6.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "hnsw_iterative_off": {
+        "mean_rows_returned": 0.76,
+        "queries_returning_fewer_than_wanted": 49
+      },
+      "hnsw_iterative_relaxed": {
+        "mean_rows_returned": 6.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "hnsw_iterative_strict": {
+        "mean_rows_returned": 6.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "exact_scan": {
+        "mean_rows_returned": 6.0,
+        "queries_returning_fewer_than_wanted": 0
+      }
+    },
+    "mutual_funds": {
+      "chunks_in_category": 6,
+      "rows_wanted": 6,
+      "planner_default": {
+        "mean_rows_returned": 6.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "hnsw_iterative_off": {
+        "mean_rows_returned": 1.1,
+        "queries_returning_fewer_than_wanted": 47
+      },
+      "hnsw_iterative_relaxed": {
+        "mean_rows_returned": 6.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "hnsw_iterative_strict": {
+        "mean_rows_returned": 6.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "exact_scan": {
+        "mean_rows_returned": 6.0,
+        "queries_returning_fewer_than_wanted": 0
+      }
+    },
+    "portfolio": {
+      "chunks_in_category": 7,
+      "rows_wanted": 7,
+      "planner_default": {
+        "mean_rows_returned": 7.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "hnsw_iterative_off": {
+        "mean_rows_returned": 1.28,
+        "queries_returning_fewer_than_wanted": 46
+      },
+      "hnsw_iterative_relaxed": {
+        "mean_rows_returned": 7.0,
+        "queries_returning_fewer_than_wanted": 0
+      },
+      "hnsw_iterative_strict": {
+        "mean_rows_returned": 6.98,
+        "queries_returning_fewer_than_wanted": 1
+      },
+      "exact_scan": {
+        "mean_rows_returned": 7.0,
+        "queries_returning_fewer_than_wanted": 0
+      }
+    }
+  },
+  "filtered_plan_without_btree": "Limit  (cost=1094.04..1389.48 rows=5 width=37)\n  ->  Index Scan using chunks_embedding_hnsw on chunks  (cost=1094.04..1389.48 rows=5 width=37)\n        Order By: (embedding <=> '[1536 numbers]'::vector)\n        Filter: (category = 'stocks'::text)"
+}

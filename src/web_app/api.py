@@ -12,7 +12,10 @@ import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from typing import Literal
+from uuid import UUID
 
+from psycopg import OperationalError
+from psycopg_pool import PoolTimeout
 from fastapi import FastAPI, Path, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,10 +29,12 @@ from src.agents.portfolio_agent import PortfolioAnalysisAgent
 from src.core.guardrails import DISCLAIMER_STRONG
 from src.data.errors import MarketDataError, ProviderUnavailable, TickerNotFound
 from src.data.models import PriceHistory, Quote
+from src.data.news import NewsUnavailable
+from src.data.portfolio_repository import PortfolioIn, PortfolioNotFound, PortfolioSummary, StoredPortfolio
 from src.rag.hybrid_retriever import StaleKeywordIndexError
 from src.workflow.factory import config_for
-from src.web_app.models import (Article, ArticleSummary, ChatRequest, ChatResponse, ErrorBody, GoalRequest, GoalResponse, HealthResponse, IndexQuote, KnowledgeResponse, MarketOverview, PassageOut,
-                                PortfolioRequest, PortfolioResponse)
+from src.web_app.models import (Article, ArticleSummary, ChatRequest, ChatResponse, ErrorBody, GoalRequest, GoalResponse, HealthResponse, IndexQuote, KnowledgeResponse, MarketOverview, NewsItemOut, NewsResponse, PassageOut,
+                                PortfolioRequest, PortfolioResponse, PortfolioSaved)
 from src.web_app.services import Services
 
 log = get_logger("finnie.api")
@@ -52,7 +57,7 @@ def _summary(doc) -> ArticleSummary:
 def create_app(services: Services | None = None) -> FastAPI:
     app = FastAPI(title="Finnie API", version="0.1.0", description="Educational finance tutor. Not financial advice.")
     app.state.services = services or Services()
-    app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["GET", "POST"], allow_headers=["Content-Type", "X-Request-ID"],
+    app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["GET", "POST", "PUT", "DELETE"], allow_headers=["Content-Type", "X-Request-ID"],
                        expose_headers=["X-Request-ID"])
 
     @app.middleware("http")
@@ -91,6 +96,19 @@ def create_app(services: Services | None = None) -> FastAPI:
         return _error(422, "invalid_portfolio", "Your portfolio file could not be read. It needs the columns ticker, shares and avg_cost.", request,
                       [{"problem": p} for p in error.problems])
 
+    @app.exception_handler(PortfolioNotFound)
+    async def portfolio_not_found(request: Request, error: PortfolioNotFound):
+        return _error(404, "portfolio_not_found", "No saved portfolio has that id.", request)
+
+    @app.exception_handler(PoolTimeout)
+    async def database_busy(request: Request, error: PoolTimeout):
+        return _error(503, "database_busy", "The database is busy. Please try again in a moment.", request)
+
+    @app.exception_handler(OperationalError)
+    async def database_down(request: Request, error: OperationalError):
+        log.error("req=%s database unavailable: %s", request.state.request_id, str(error)[:200])
+        return _error(503, "database_unavailable", "The database is not reachable right now. Please try again shortly.", request)
+
     @app.exception_handler(StaleKeywordIndexError)
     async def index_stale(request: Request, error: StaleKeywordIndexError):
         return _error(503, "knowledge_index_unavailable", "The knowledge search index is being rebuilt. Please try again shortly.", request)
@@ -106,6 +124,10 @@ def create_app(services: Services | None = None) -> FastAPI:
     @app.exception_handler(MarketDataError)
     async def market_error(request: Request, error: MarketDataError):
         return _error(502, "market_data_error", error.user_message, request)
+
+    @app.exception_handler(NewsUnavailable)
+    async def news_down(request: Request, error: NewsUnavailable):
+        return _error(502, "news_unavailable", error.user_message, request)
 
     @app.exception_handler(Exception)
     async def unexpected(request: Request, error: Exception):
@@ -141,6 +163,21 @@ def create_app(services: Services | None = None) -> FastAPI:
         with ThreadPoolExecutor(max_workers=len(INDICES)) as pool:
             results = list(pool.map(fetch, INDICES))
         return MarketOverview(indices=[r for r in results if isinstance(r, IndexQuote)], unavailable=[r for r in results if isinstance(r, str)])
+
+    def _news_response(batch) -> NewsResponse:
+        clean = [i for i in batch.items if not i.injection_markers]
+        return NewsResponse(topic=batch.topic, items=[NewsItemOut(**i.model_dump(exclude={"injection_markers"})) for i in clean],
+                            fetched_at=batch.fetched_at, withheld=len(batch.items) - len(clean), feed_errors=batch.feed_errors)
+
+    @app.get("/news/market", response_model=NewsResponse, tags=["news"])
+    def market_news(request: Request):
+        """Recent general market headlines from the configured feeds, newest first. Headlines only; the Chat tab summarizes them."""
+        return _news_response(request.app.state.services.news.get_market_news())
+
+    @app.get("/news/ticker/{ticker}", response_model=NewsResponse, tags=["news"])
+    def ticker_news(request: Request, ticker: str = TICKER):
+        """Recent headlines about one ticker."""
+        return _news_response(request.app.state.services.news.get_ticker_news(ticker))
 
     @app.post("/goals/plan", response_model=GoalResponse, tags=["goals"])
     def plan_goal(body: GoalRequest, request: Request):
@@ -182,12 +219,44 @@ def create_app(services: Services | None = None) -> FastAPI:
         services = request.app.state.services
         portfolio_calc.parse_portfolio_csv(body.csv_text)   # raises PortfolioInputError -> 422 with every problem, before any market call or model call
         agent = PortfolioAnalysisAgent(services.llm, services.market, services.metadata)   # one per request: the agent keeps per-call scratch state, so sharing one across threads is unsafe
-        result = agent.run(body.csv_text, body.question)
+        return _portfolio_reply(agent.run(body.csv_text, body.question))
+
+    def _portfolio_reply(result) -> PortfolioResponse:
         metrics = result.metadata.get("metrics")
         if metrics is None:
             raise ProviderUnavailable("I couldn't get prices for your holdings right now. Please try again in a few minutes.")
         return PortfolioResponse(text=result.text, disclaimer=result.disclaimer or DISCLAIMER_STRONG, sources=result.sources, metrics=metrics,
                                  correlation=result.metadata.get("correlation"), cost_usd=result.metadata.get("cost_usd", 0.0), latency_s=result.metadata.get("latency_s", 0.0))
+
+    # ---- saved portfolios (PostgreSQL). The UI never touches the database: it calls these. A missing id is 404, invalid holdings are 422. ----
+    @app.post("/portfolios", response_model=PortfolioSaved, status_code=201, tags=["portfolio"])
+    def save_portfolio(body: PortfolioIn, request: Request):
+        """Save a portfolio (name + holdings) and get back its id. Duplicate tickers are merged."""
+        return PortfolioSaved(id=request.app.state.services.portfolios.create(body.name, body.holdings))
+
+    @app.get("/portfolios", response_model=list[PortfolioSummary], tags=["portfolio"])
+    def list_portfolios(request: Request):
+        return request.app.state.services.portfolios.list()
+
+    @app.get("/portfolios/{portfolio_id}", response_model=StoredPortfolio, tags=["portfolio"])
+    def get_portfolio(request: Request, portfolio_id: UUID):
+        return request.app.state.services.portfolios.get(portfolio_id)
+
+    @app.get("/portfolios/{portfolio_id}/analysis", response_model=PortfolioResponse, tags=["portfolio"])
+    def analyze_saved_portfolio(request: Request, portfolio_id: UUID, question: str = Query("Please explain my portfolio in simple terms.", min_length=1, max_length=500)):
+        """Explain a SAVED portfolio: holdings come from the database, prices and metrics are computed now."""
+        services = request.app.state.services
+        agent = PortfolioAnalysisAgent(services.llm, services.market, services.metadata, repository=services.portfolios)
+        return _portfolio_reply(agent.run_by_id(portfolio_id, question))
+
+    @app.put("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
+    def replace_portfolio(body: PortfolioIn, request: Request, portfolio_id: UUID):
+        """Replace the name and all holdings in one transaction."""
+        request.app.state.services.portfolios.update(portfolio_id, body.holdings, body.name)
+
+    @app.delete("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
+    def delete_portfolio(request: Request, portfolio_id: UUID):
+        request.app.state.services.portfolios.delete(portfolio_id)
 
     @app.post("/chat", response_model=ChatResponse, tags=["chat"])
     def chat(body: ChatRequest, request: Request):

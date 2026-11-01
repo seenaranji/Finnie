@@ -3,6 +3,7 @@
 Why two sources? config.yaml is committed to git and safe to share. API keys must
 never be, so they come from environment variables that python-dotenv loads from .env.
 """
+import os
 from pathlib import Path
 
 import yaml
@@ -42,17 +43,24 @@ class RAGConfig(BaseModel):
     chunk_overlap: int = 50
     top_k: int = 5
     similarity_threshold: float = 0.0
-    chroma_path: str = "chroma_db"           # folder where Chroma saves vectors (git-ignored)
-    collection_name: str = "finnie_knowledge_base"
+    vector_store: str = "pgvector"           # only pgvector exists now (Chroma removed after Step 23b); the keyword search is PostgreSQL full-text
     candidate_k: int = 20                    # chunks fetched from the store before filtering and reranking
     rerank: bool = False                     # second-stage re-ordering by an LLM (off until Step 8 shows it helps)
     dedupe_overlap: float = 0.8              # drop a chunk if this share of its words appears in a better chunk
     # --- Step 7c: hybrid search. Default stays "dense" so Step 7 behaviour is unchanged until Step 8 measures. ---
     retrieval_mode: str = "dense"            # dense | bm25 | hybrid
-    keyword_index_path: str = "keyword_index"   # where the BM25 index is saved (git-ignored)
     rrf_k: int = 60                          # RRF damping constant
     candidates_per_retriever: int = 20       # how many chunks each retriever contributes to the fusion
     bm25_min_score: float | None = None      # a BM25 score at/above this lets a chunk in even if its cosine is below the threshold; None = BM25 cannot open the gate
+
+
+class DatabaseConfig(BaseModel):
+    """PostgreSQL settings. The URL (it holds the password) comes from the DATABASE_URL environment variable, never from this file."""
+    pool_min_size: int = 1
+    pool_max_size: int = 10
+    pool_timeout_seconds: float = 10     # how long a request waits for a free connection before failing
+    max_holdings_per_portfolio: int = 500
+    keyword_match: str = "any"           # any = a chunk matching ANY query word qualifies (like BM25) | all = it must match every word (websearch_to_tsquery default)
 
 
 class CacheConfig(BaseModel):
@@ -133,6 +141,13 @@ class Secrets(BaseSettings):
 
     openai_api_key: str | None = None
     alpha_vantage_api_key: str | None = None
+    database_url: str | None = None
+
+    def require_database_url(self) -> str:
+        if not self.database_url:
+            raise MissingSecretError(
+                "DATABASE_URL is not set. Add it to .env (see .env.example) and start the database with: docker compose up -d")
+        return self.database_url
 
     def require_openai_key(self) -> str:
         if not self.openai_api_key:
@@ -146,6 +161,7 @@ class Settings(BaseModel):
     app: AppConfig
     llm: LLMConfig
     rag: RAGConfig
+    database: DatabaseConfig = DatabaseConfig()
     cache: CacheConfig
     market_data: MarketDataConfig = MarketDataConfig()
     alpha_vantage: AlphaVantageConfig = AlphaVantageConfig()
@@ -168,4 +184,6 @@ def load_settings(path: Path = CONFIG_PATH) -> Settings:
     load_dotenv(PROJECT_ROOT / ".env")
     with open(path) as config_file:
         raw = yaml.safe_load(config_file)
+    if os.environ.get("FINNIE_VECTOR_STORE"):   # run one command against the other store without editing config.yaml (Step 23b side-by-side runs)
+        raw["rag"]["vector_store"] = os.environ["FINNIE_VECTOR_STORE"]
     return Settings(**raw, secrets=Secrets())

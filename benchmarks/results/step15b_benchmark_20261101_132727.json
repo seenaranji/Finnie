@@ -1,0 +1,108 @@
+{
+  "lookup": {
+    "10": {
+      "holdings_rows": 50,
+      "with_index": {
+        "count": 300,
+        "mean": 1.8589355598548234,
+        "p50": 1.6511875001015142,
+        "p95": 2.940066649171059,
+        "min": 1.2736669996229466,
+        "max": 5.485249999765074
+      },
+      "plan_with_index": "Sort  (cost=1.68..1.70 rows=5 width=22) (actual time=0.017..0.018 rows=5 loops=1)\n  Sort Key: id\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on holdings  (cost=0.00..1.62 rows=5 width=22) (actual time=0.008..0.010 rows=5 loops=1)\n        Filter: (portfolio_id = '24fa2b3a-4961-4de3-9706-ec25462ff7d1'::uuid)\n        Rows Removed by Filter: 45\nPlanning Time: 0.054 ms\nExecution Time: 0.039 ms",
+      "without_index": {
+        "count": 300,
+        "mean": 1.9227002699456837,
+        "p50": 1.6927915003179805,
+        "p95": 3.2569211505688145,
+        "min": 1.0684580011002254,
+        "max": 6.121124999481253
+      },
+      "plan_without_index": "Sort  (cost=1.68..1.70 rows=5 width=22) (actual time=0.015..0.015 rows=5 loops=1)\n  Sort Key: id\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on holdings  (cost=0.00..1.62 rows=5 width=22) (actual time=0.003..0.004 rows=5 loops=1)\n        Filter: (portfolio_id = '24fa2b3a-4961-4de3-9706-ec25462ff7d1'::uuid)\n        Rows Removed by Filter: 45\nPlanning Time: 0.042 ms\nExecution Time: 0.019 ms"
+    },
+    "1000": {
+      "holdings_rows": 5000,
+      "with_index": {
+        "count": 300,
+        "mean": 2.174500956692403,
+        "p50": 1.8746454989013728,
+        "p95": 3.935300601915515,
+        "min": 1.3161249989934731,
+        "max": 11.159874997247243
+      },
+      "plan_with_index": "Sort  (cost=19.27..19.28 rows=5 width=22) (actual time=0.034..0.035 rows=5 loops=1)\n  Sort Key: id\n  Sort Method: quicksort  Memory: 25kB\n  ->  Bitmap Heap Scan on holdings  (cost=4.32..19.21 rows=5 width=22) (actual time=0.006..0.007 rows=5 loops=1)\n        Recheck Cond: (portfolio_id = '24fa2b3a-4961-4de3-9706-ec25462ff7d1'::uuid)\n        Heap Blocks: exact=1\n        ->  Bitmap Index Scan on holdings_portfolio_id_ticker_key  (cost=0.00..4.32 rows=5 width=0) (actual time=0.003..0.003 rows=5 loops=1)\n              Index Cond: (portfolio_id = '24fa2b3a-4961-4de3-9706-ec25462ff7d1'::uuid)\nPlanning Time: 0.054 ms\nExecution Time: 0.041 ms",
+      "without_index": {
+        "count": 300,
+        "mean": 2.3826695366127146,
+        "p50": 2.0474164994084276,
+        "p95": 4.3492166501891925,
+        "min": 1.522374997875886,
+        "max": 6.573999999091029
+      },
+      "plan_without_index": "Sort  (cost=104.56..104.57 rows=5 width=22) (actual time=0.176..0.176 rows=5 loops=1)\n  Sort Key: id\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on holdings  (cost=0.00..104.50 rows=5 width=22) (actual time=0.003..0.147 rows=5 loops=1)\n        Filter: (portfolio_id = '24fa2b3a-4961-4de3-9706-ec25462ff7d1'::uuid)\n        Rows Removed by Filter: 4995\nPlanning Time: 0.044 ms\nExecution Time: 0.180 ms"
+    },
+    "10000": {
+      "holdings_rows": 50000,
+      "with_index": {
+        "count": 300,
+        "mean": 1.9139250066776488,
+        "p50": 1.6649584995320765,
+        "p95": 2.9126336477929726,
+        "min": 1.2315420026425272,
+        "max": 18.002333003096282
+      },
+      "plan_with_index": "Sort  (cost=22.93..22.94 rows=5 width=22) (actual time=0.011..0.011 rows=5 loops=1)\n  Sort Key: id\n  Sort Method: quicksort  Memory: 25kB\n  ->  Bitmap Heap Scan on holdings  (cost=4.45..22.87 rows=5 width=22) (actual time=0.009..0.009 rows=5 loops=1)\n        Recheck Cond: (portfolio_id = '24fa2b3a-4961-4de3-9706-ec25462ff7d1'::uuid)\n        Heap Blocks: exact=1\n        ->  Bitmap Index Scan on holdings_portfolio_id_ticker_key  (cost=0.00..4.45 rows=5 width=0) (actual time=0.004..0.004 rows=5 loops=1)\n              Index Cond: (portfolio_id = '24fa2b3a-4961-4de3-9706-ec25462ff7d1'::uuid)\nPlanning Time: 0.047 ms\nExecution Time: 0.016 ms",
+      "without_index": {
+        "count": 300,
+        "mean": 4.516527226757414,
+        "p50": 4.0598955001769355,
+        "p95": 7.3547229012547195,
+        "min": 3.1243330013239756,
+        "max": 9.027791002154117
+      },
+      "plan_without_index": "Sort  (cost=1042.06..1042.07 rows=5 width=22) (actual time=1.461..1.462 rows=5 loops=1)\n  Sort Key: id\n  Sort Method: quicksort  Memory: 25kB\n  ->  Seq Scan on holdings  (cost=0.00..1042.00 rows=5 width=22) (actual time=0.003..1.460 rows=5 loops=1)\n        Filter: (portfolio_id = '24fa2b3a-4961-4de3-9706-ec25462ff7d1'::uuid)\n        Rows Removed by Filter: 49995\nPlanning Time: 0.042 ms\nExecution Time: 1.466 ms"
+    }
+  },
+  "create_ms": {
+    "10": {
+      "count": 40,
+      "mean": 3.119738574605435,
+      "p50": 2.820562498527579,
+      "p95": 5.899219048478699,
+      "min": 1.5487499986193143,
+      "max": 7.463458998245187
+    },
+    "500": {
+      "count": 40,
+      "mean": 11.228298949845339,
+      "p50": 10.934374498901889,
+      "p95": 12.438399647908222,
+      "min": 10.133167001185939,
+      "max": 18.172292002418544
+    }
+  },
+  "concurrency_50": {
+    "errors": [],
+    "wall_ms": 58.16341699755867,
+    "request_ms": {
+      "count": 50,
+      "mean": 33.97962662027567,
+      "p50": 36.78435399888258,
+      "p95": 51.762128649534134,
+      "min": 3.285375001723878,
+      "max": 52.206500000465894
+    },
+    "pool_size": 10
+  },
+  "pool_exhaustion": {
+    "pool_size": 2,
+    "wait_timeout_s": 1.5,
+    "requests": 8,
+    "outcomes": {
+      "PoolTimeout": 4,
+      "ok": 4
+    },
+    "wall_s": 2.0295612919981068
+  }
+}
