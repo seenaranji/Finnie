@@ -67,6 +67,10 @@ def build_payload(result: dict, as_of: str | None) -> dict:
     }
 
 
+class NothingToAnalyze(Exception):
+    """A saved portfolio with no market holdings (only properties): there is nothing for this agent to explain."""
+
+
 class PortfolioAnalysisAgent(BaseAgent):
     name = "portfolio_analysis"
     system_prompt = SYSTEM_PROMPT
@@ -98,7 +102,9 @@ class PortfolioAnalysisAgent(BaseAgent):
         if self.repository is None:
             raise RuntimeError("this agent was built without a PortfolioRepository")
         with timer() as load_time:
-            stored = self.repository.get(portfolio_id, owner_id=owner_id)   # someone else's portfolio is PortfolioNotFound
+            stored = self.repository.get(portfolio_id, owner_id=owner_id)
+            if not stored.holdings:
+                raise NothingToAnalyze()   # real estate only: the explanation is about market holdings   # someone else's portfolio is PortfolioNotFound
             holdings = [pc.Holding(h.ticker, float(h.shares), float(h.avg_cost)) for h in stored.holdings]   # NUMERIC -> float only here, for the math
         # What the user said each holding IS wins over the hand-written ticker list (which only knows 16 tickers): a typed-in 'MSFT = stock' is a stock.
         # 'other' is the default and means "not specified", so it leaves the ticker list's answer (or 'Unknown') alone.

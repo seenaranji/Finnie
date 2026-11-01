@@ -60,8 +60,8 @@ class FinnieClient:
     def login(self, email: str, password: str) -> dict:
         return self._call("POST", "/auth/login", json={"email": email, "password": password})
 
-    def save_portfolio(self, name: str, holdings: list[dict]) -> dict:
-        return self._call("POST", "/portfolios", json={"name": name, "holdings": holdings})
+    def save_portfolio(self, name: str, holdings: list[dict], properties: list[dict] | None = None) -> dict:
+        return self._call("POST", "/portfolios", json={"name": name, "holdings": holdings, **({"properties": properties} if properties else {})})
 
     def list_portfolios(self) -> list[dict]:
         return self._call("GET", "/portfolios")

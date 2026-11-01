@@ -58,3 +58,33 @@ def group_by_type(holdings: list[StoredHolding], prices: dict[str, Decimal | flo
     return {
         "total_cost": _money(sum((r["cost"] for r in rows), Decimal(0))), "total_value": _money(total_value), "gain_pct": _gain_pct(total_value, priced_cost),
         "holding_count": len(rows), "unpriced": sorted(r["holding"].ticker for r in rows if r["value"] is None), "groups": groups}
+
+
+def summarize_portfolio(holdings: list[StoredHolding], properties: list, prices: dict) -> dict:
+    """Market holdings (grouped by kind) AND properties in one view. Real estate becomes one more group, valued at the owner's own estimate. Totals, gain and
+    every share-of-total are recomputed over everything together. The mortgage is NOT subtracted from the group's value (the group shows what the property is
+    worth); it appears separately as `mortgage_owed`, and `net_value` is total value minus it."""
+    from src.agents.real_estate import real_estate_totals
+    base = group_by_type(holdings, prices)
+    real_estate = real_estate_totals(properties)
+    if real_estate is None:
+        return {**base, "property_count": 0, "mortgage_owed": 0.0, "net_value": base["total_value"], "real_estate": None}
+
+    market_value, re_value = Decimal(str(base["total_value"])), Decimal(str(real_estate["value"]))
+    total_value = market_value + re_value
+    priced_cost = sum((Decimal(str(h["cost"])) for g in base["groups"] for h in g["holdings"] if h["value"] is not None), Decimal(0)) + Decimal(str(real_estate["purchase_price"]))
+
+    def share(value) -> float | None:
+        return None if value is None or total_value <= 0 else float((Decimal(str(value)) / total_value * HUNDRED).quantize(CENT))
+
+    groups = []
+    for group in base["groups"]:
+        groups.append({**group, "weight_pct": share(group["value"]) if group["count"] > group["unpriced_count"] else None,
+                       "holdings": [{**h, "weight_pct": share(h["value"])} for h in group["holdings"]]})
+    groups.append({"asset_type": "real_estate", "label": "Real estate", "count": real_estate["count"], "unpriced_count": 0, "cost": real_estate["purchase_price"],
+                   "value": real_estate["value"], "gain_pct": real_estate["gain_pct"], "weight_pct": share(real_estate["value"]), "holdings": []})
+    groups.sort(key=lambda g: (-g["value"], g["asset_type"]))
+    mortgage = Decimal(str(real_estate["mortgage"]))
+    return {"total_cost": _money(Decimal(str(base["total_cost"])) + Decimal(str(real_estate["purchase_price"]))), "total_value": _money(total_value),
+            "gain_pct": _gain_pct(total_value, priced_cost), "holding_count": base["holding_count"] + real_estate["count"], "property_count": real_estate["count"],
+            "unpriced": base["unpriced"], "groups": groups, "mortgage_owed": _money(mortgage), "net_value": _money(total_value - mortgage), "real_estate": real_estate}

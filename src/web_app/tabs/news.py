@@ -3,7 +3,7 @@ Streamlit concepts: st.cache_data with a short ttl, a form for the optional tick
 import streamlit as st
 
 from src.web_app.client import ApiError, FinnieClient
-from src.web_app.ui_common import guarded, show_error
+from src.web_app.ui_common import guarded, md, show_error
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -34,7 +34,7 @@ def render(client: FinnieClient) -> None:
         st.info("No recent headlines found.")
     for item in batch["items"]:
         with st.container(border=True):
-            st.markdown(f"**[{item['title']}]({item['link']})**")
+            st.markdown(f"**[{md(item['title'])}]({item['link']})**")
             if item["summary"]:
-                st.write(item["summary"])
-            st.caption(f"{item['source']} · {item['published'][:10] if item['published'] else 'date unknown'}")
+                st.markdown(md(item["summary"]))
+            st.caption(md(f"{item['source']} · {item['published'][:10] if item['published'] else 'date unknown'}"))

@@ -31,8 +31,8 @@ from src.auth.service import BadCredentials
 from src.core.config import load_settings
 from src.core.logging import get_logger, setup_logging
 from src.agents import goal_calc, portfolio_calc
-from src.agents.portfolio_agent import PortfolioAnalysisAgent
-from src.agents.portfolio_summary import group_by_type
+from src.agents.portfolio_agent import NothingToAnalyze, PortfolioAnalysisAgent
+from src.agents.portfolio_summary import summarize_portfolio
 from src.core.guardrails import DISCLAIMER_STRONG
 from src.data.errors import MarketDataError, ProviderUnavailable, TickerNotFound
 from src.data.models import PriceHistory, Quote
@@ -48,6 +48,10 @@ log = get_logger("finnie.api")
 INDICES = {"^GSPC": "S&P 500", "^DJI": "Dow Jones Industrial Average", "^IXIC": "Nasdaq Composite"}
 TICKER = Path(pattern=r"^\^?[A-Za-z0-9][A-Za-z0-9.\-]{0,9}$", description="Ticker such as AAPL, BRK-B or ^GSPC (encode ^ as %5E in a URL)")
 CORS_ORIGINS = ["http://localhost:8501", "http://127.0.0.1:8501"]   # the Streamlit UI (Step 23); any other origin is refused by browsers
+
+
+class NothingToExplain(Exception):
+    """The portfolio holds only real estate: there are no market holdings for the explanation to work on."""
 
 
 class AuthRequired(Exception):
@@ -128,6 +132,10 @@ def create_app(services: Services | None = None) -> FastAPI:
     async def bad_portfolio(request: Request, error: portfolio_calc.PortfolioInputError):
         return _error(422, "invalid_portfolio", "Your portfolio file could not be read. It needs the columns ticker, shares and avg_cost.", request,
                       [{"problem": p} for p in error.problems])
+
+    @app.exception_handler(NothingToExplain)
+    async def nothing_to_explain(request: Request, error: NothingToExplain):
+        return _error(422, "nothing_to_explain", "This portfolio has no stocks, funds or other market holdings to explain. Its real estate is shown in the grouped view.", request)
 
     @app.exception_handler(AuthRequired)
     async def not_logged_in(request: Request, error: AuthRequired):
@@ -299,7 +307,7 @@ def create_app(services: Services | None = None) -> FastAPI:
     @protected.post("/portfolios", response_model=PortfolioSaved, status_code=201, tags=["portfolio"])
     def save_portfolio(body: PortfolioIn, request: Request, user: AuthUser = Depends(require_user)):
         """Save a portfolio (name + holdings) and get back its id. Duplicate tickers are merged."""
-        return PortfolioSaved(id=request.app.state.services.portfolios.create(body.name, body.holdings, owner_id=user.id))
+        return PortfolioSaved(id=request.app.state.services.portfolios.create(body.name, body.holdings, owner_id=user.id, properties=body.properties))
 
     @protected.get("/portfolios", response_model=list[PortfolioSummary], tags=["portfolio"])
     def list_portfolios(request: Request, user: AuthUser = Depends(require_user)):
@@ -324,12 +332,12 @@ def create_app(services: Services | None = None) -> FastAPI:
                 return holding.ticker, Decimal(str(quote.price)), quote.as_of
             except MarketDataError:
                 return holding.ticker, None, None   # shown with its cost, without a value, and listed under "unpriced"
-        with ThreadPoolExecutor(max_workers=min(8, len(stored.holdings))) as pool:
+        with ThreadPoolExecutor(max_workers=max(1, min(8, len(stored.holdings)))) as pool:
             for ticker, price, quote_date in pool.map(price_of, stored.holdings):
                 prices[ticker] = price
                 if quote_date:
                     as_of.append(quote_date)
-        summary = group_by_type(stored.holdings, prices)
+        summary = summarize_portfolio(stored.holdings, stored.properties, prices)
         return GroupedPortfolio(id=stored.id, name=stored.name, prices_as_of=max(as_of) if as_of else None, **summary)
 
     @protected.get("/portfolios/{portfolio_id}/analysis", response_model=PortfolioResponse, tags=["portfolio"])
@@ -337,12 +345,15 @@ def create_app(services: Services | None = None) -> FastAPI:
         """Explain a SAVED portfolio: holdings come from the database, prices and metrics are computed now."""
         services = request.app.state.services
         agent = PortfolioAnalysisAgent(services.llm, services.market, services.metadata, repository=services.portfolios)
-        return _portfolio_reply(agent.run_by_id(portfolio_id, user.id, question))
+        try:
+            return _portfolio_reply(agent.run_by_id(portfolio_id, user.id, question))
+        except NothingToAnalyze:
+            raise NothingToExplain() from None
 
     @protected.put("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
     def replace_portfolio(body: PortfolioIn, request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):
-        """Replace the name and all holdings in one transaction."""
-        request.app.state.services.portfolios.update(portfolio_id, body.holdings, body.name, owner_id=user.id)
+        """Replace the name, ALL holdings and ALL properties in one transaction (a full replacement: properties left out of the request are removed)."""
+        request.app.state.services.portfolios.update(portfolio_id, body.holdings, body.name, owner_id=user.id, properties=body.properties)
 
     @protected.delete("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
     def delete_portfolio(request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):

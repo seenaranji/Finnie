@@ -11,12 +11,15 @@ import streamlit as st
 # Streamlit puts this script's folder on sys.path, not the project root, so `src.*` imports need the root added.
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from src.web_app import auth_screen
+from src.web_app import auth_screen, style
 from src.web_app.client import DEFAULT_URL, ApiError, FinnieClient
 from src.web_app.tabs import chat, goals, knowledge, markets, news, portfolio
-from src.web_app.ui_common import DISCLAIMER
+from src.web_app.ui_common import md
 
-st.set_page_config(page_title="Finnie", page_icon="💬", layout="wide")
+st.set_page_config(page_title="Finnie · your finance tutor", page_icon="📈", layout="wide", initial_sidebar_state="collapsed")
+style.inject()
+
+TABS = [":material/forum: Chat", ":material/show_chart: Markets", ":material/newspaper: News", ":material/pie_chart: Portfolio", ":material/flag: Goals", ":material/menu_book: Knowledge"]
 
 
 def get_client() -> FinnieClient:
@@ -32,37 +35,39 @@ def server_status(_client: FinnieClient, url: str) -> dict:
     return _client.health()
 
 
-def sidebar(client: FinnieClient) -> None:
-    with st.sidebar:
-        st.title("Finnie")
-        st.caption("A finance tutor for beginners")
-        st.caption(f"Signed in as {st.session_state.auth['email']}")
-        if st.button("Log out", width="stretch"):
-            auth_screen.sign_out(client)
-            st.rerun()
+def header(client: FinnieClient) -> None:
+    """Brand on the left; on the right the connection state and an account menu (replaces the old sidebar, which took a third of the screen)."""
+    brand, status, account = st.columns([5, 2, 2.4], vertical_alignment="center")
+    with brand:
+        style.brand_header()
+    problem = None
+    with status:
         try:
             server_status(client, client.base_url)
-            st.success("Server connected", icon="✅")
+            style.status_pill(True)
         except ApiError as error:
-            st.error(error.message)
-        if st.button("New conversation", width="stretch"):
-            chat.new_conversation()
-            st.rerun()
-        if st.session_state.get("session_id"):
-            st.caption(f"Session `{st.session_state.session_id}`")
-        st.caption("Portfolio loaded for chat: " + ("yes" if st.session_state.get("portfolio_csv") else "no"))
+            problem = error
+            style.status_pill(False)
+    with account:
+        with st.popover(f":material/account_circle: {md(st.session_state.auth['email'])}", width="stretch"):
+            st.caption("Signed in as")
+            st.text(st.session_state.auth["email"])   # st.text: shown exactly as typed, never read as markdown or turned into a link
+            if st.button("Log out", width="stretch", icon=":material/logout:"):
+                auth_screen.sign_out(client)
+                st.rerun()
+    if problem:
+        st.error(problem.message)
+    style.disclaimer()
 
 
 client = get_client()
 if not auth_screen.signed_in():   # nobody gets past this line without an account: no tabs, no API calls
     client.token = None
-    st.info(DISCLAIMER, icon="ℹ️")
     auth_screen.render(client)
     st.stop()
 client.token = st.session_state.auth["token"]
-sidebar(client)
-st.info(DISCLAIMER, icon="ℹ️")
-chat_tab, markets_tab, news_tab, portfolio_tab, goals_tab, knowledge_tab = st.tabs(["Chat", "Markets", "News", "Portfolio", "Goals", "Knowledge"])
+header(client)
+chat_tab, markets_tab, news_tab, portfolio_tab, goals_tab, knowledge_tab = st.tabs(TABS)
 with chat_tab:
     chat.render(client)
 with markets_tab:

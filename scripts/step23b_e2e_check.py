@@ -97,6 +97,19 @@ with httpx.Client(base_url=base, timeout=60) as client:
     check("another user cannot read it", client.get(f"/portfolios/{typed_id}/summary", headers=bob).status_code == 404)
     client.delete(f"/portfolios/{typed_id}")
 
+    # real estate beside market holdings: hand-checkable numbers (equity 250,000; gross yield 42,000 / 540,000 = 7.78%; net yield 27,000 / 540,000 = 5.00%; loan-to-value 53.7%)
+    estate = client.post("/portfolios", json={"name": "e2e estate", "holdings": [{"ticker": "CASH", "asset_type": "cash", "shares": "1000", "avg_cost": "1"}], "properties": [
+        {"name": "Maple St", "property_type": "house", "purchase_price": "300000", "purchase_date": "2019-06-01", "current_value": "400000", "mortgage_balance": "200000", "monthly_rent": "2500", "monthly_expenses": "800"},
+        {"name": "Oak condo", "property_type": "condo", "purchase_price": "150000", "current_value": "140000", "mortgage_balance": "90000", "monthly_rent": "1000", "monthly_expenses": "450"}]})
+    estate_id = estate.json()["id"]
+    check("portfolio with two properties saved", estate.status_code == 201, estate_id)
+    view = client.get(f"/portfolios/{estate_id}/summary").json()
+    re = view["real_estate"]
+    check("real estate: equity, yields and loan-to-value are the hand-worked numbers", (re["equity"], re["gross_yield_pct"], re["net_yield_pct"], re["loan_to_value_pct"]) == (250000.0, 7.78, 5.0, 53.7), str(re["equity"]))
+    check("total value = 1,000 cash + 540,000 property; net value after the 290,000 mortgage", (view["total_value"], view["mortgage_owed"], view["net_value"]) == (541000.0, 290000.0, 251000.0), str((view["total_value"], view["net_value"])))
+    check("another user cannot read the properties", client.get(f"/portfolios/{estate_id}", headers=bob).status_code == 404)
+    client.delete(f"/portfolios/{estate_id}")
+
     check("DELETE -> 204, then 404", client.delete(f"/portfolios/{pid}").status_code == 204 and client.get(f"/portfolios/{pid}").status_code == 404)
 
     chat = client.post("/chat", json={"message": "What is an expense ratio?"}).json()

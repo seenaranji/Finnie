@@ -5,3 +5,22 @@ headless = true
 
 [browser]
 gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"   # hides the "Deploy" button and the developer menu that visitors do not need
+
+# Look and feel (Step 28). One calm palette: deep teal as the action colour, navy for text, soft grey page with white cards.
+# Contrast checked: text #0F172A on #FFFFFF 17:1, teal #0F766E on white 5.5:1 (WCAG AA for normal text needs 4.5:1).
+[theme]
+base = "light"
+primaryColor = "#0F766E"
+backgroundColor = "#F4F7FA"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0F172A"
+linkColor = "#0F766E"
+borderColor = "#D7DEE7"
+showWidgetBorder = true
+baseRadius = "0.6rem"
+font = "sans serif"
+headingFontWeights = [700, 650, 600]
+chartCategoricalColors = ["#0F766E", "#1D4ED8", "#B45309", "#7C3AED", "#BE185D", "#475569", "#15803D", "#0E7490"]

@@ -136,6 +136,32 @@ class HoldingGroup(BaseModel):
     holdings: list[GroupedHolding]
 
 
+class PropertyFigures(BaseModel):
+    purchase_price: float
+    value: float                       # the owner's own estimate of what it is worth today
+    mortgage: float
+    equity: float                      # value - mortgage (negative when the mortgage is bigger)
+    gain: float                        # value - purchase price, on paper
+    gain_pct: float | None = None
+    annual_rent: float
+    annual_expenses: float             # everything except the mortgage payment
+    net_operating_income: float        # annual rent - annual expenses, before the mortgage payment
+    gross_yield_pct: float | None = None
+    net_yield_pct: float | None = None
+    loan_to_value_pct: float | None = None
+
+
+class PropertyView(PropertyFigures):
+    name: str
+    property_type: str
+    purchase_date: date | None = None
+
+
+class RealEstateSummary(PropertyFigures):
+    count: int
+    properties: list[PropertyView]
+
+
 class GroupedPortfolio(BaseModel):
     id: UUID
     name: str
@@ -143,9 +169,13 @@ class GroupedPortfolio(BaseModel):
     total_cost: float
     total_value: float
     gain_pct: float | None = None
-    holding_count: int
+    holding_count: int                 # market holdings + properties
+    property_count: int = 0
+    mortgage_owed: float = 0.0
+    net_value: float = 0.0             # total value minus the mortgage
     unpriced: list[str]
     groups: list[HoldingGroup]
+    real_estate: RealEstateSummary | None = None
 
 
 class PortfolioSaved(BaseModel):

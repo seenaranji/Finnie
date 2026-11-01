@@ -158,3 +158,77 @@ def test_the_explanation_uses_the_kinds_the_user_entered(api):
     pid = save_typed(api, [{"ticker": "AAA", "asset_type": "bond", "shares": "10", "avg_cost": "50"}, {"ticker": "BBB", "asset_type": "stock", "shares": "20", "avg_cost": "40"}])
     classes = api.get(f"/portfolios/{pid}/analysis").json()["metrics"]["asset_class_pct"]
     assert set(classes) == {"Bond", "Stock"}                 # the hand-written list says AAA is a 'US stock'; the user said bond, and the user wins
+
+
+# ---------- real estate ----------
+MAPLE = {"name": "Maple St", "property_type": "house", "purchase_price": "300000", "purchase_date": "2019-06-01", "current_value": "400000",
+         "mortgage_balance": "200000", "monthly_rent": "2500", "monthly_expenses": "800"}
+OAK = {"name": "Oak condo", "property_type": "condo", "purchase_price": "150000", "current_value": "140000", "mortgage_balance": "90000", "monthly_rent": "1000", "monthly_expenses": "450"}
+
+
+def save_mixed(api, properties=(MAPLE, OAK), holdings=TYPED):
+    return api.post("/portfolios", json={"name": "everything", "holdings": list(holdings), "properties": list(properties)}).json()["id"]
+
+
+def test_properties_are_saved_with_the_portfolio_and_listed_with_their_count(api):
+    pid = save_mixed(api)
+    body = api.get(f"/portfolios/{pid}").json()
+    assert [p["name"] for p in body["properties"]] == ["Maple St", "Oak condo"] and body["properties"][0]["current_value"] == "400000"
+    [row] = api.get("/portfolios").json()
+    assert (row["holding_count"], row["property_count"]) == (3, 2)
+
+
+def test_the_summary_shows_real_estate_as_a_group_with_equity_yields_and_the_mortgage(api):
+    body = api.get(f"/portfolios/{save_mixed(api)}/summary").json()
+    # market part: AAA 1,000 + BBB 1,000 + cash 500 = 2,500 (cost 1,800); real estate: value 540,000, purchase 450,000, mortgage 290,000
+    assert (body["total_value"], body["total_cost"], body["mortgage_owed"], body["net_value"], body["property_count"], body["holding_count"]) == (542500.0, 451800.0, 290000.0, 252500.0, 2, 5)
+    groups = {g["asset_type"]: g for g in body["groups"]}
+    assert body["groups"][0]["asset_type"] == "real_estate" and groups["real_estate"]["label"] == "Real estate" and groups["real_estate"]["weight_pct"] == 99.54
+    re = body["real_estate"]
+    assert (re["equity"], re["gross_yield_pct"], re["net_yield_pct"], re["loan_to_value_pct"], re["gain_pct"]) == (250000.0, 7.78, 5.0, 53.7, 20.0)
+    assert [(p["name"], p["equity"], p["net_operating_income"]) for p in re["properties"]] == [("Maple St", 200000.0, 20400.0), ("Oak condo", 50000.0, 6600.0)]
+
+
+def test_a_portfolio_without_properties_has_no_real_estate_section(api):
+    body = api.get(f"/portfolios/{save_typed(api)}/summary").json()
+    assert body["real_estate"] is None and body["mortgage_owed"] == 0.0 and body["net_value"] == body["total_value"]
+
+
+def test_properties_need_no_market_data_so_a_down_market_still_shows_them(pg, two_users):
+    market = MarketDataService(FlakyProvider(down={"AAA", "BBB"}), TTLCache(), settings_with_secret(), sleep=lambda s: None)
+    client = TestClient(create_app(Services(settings_with_secret(), market=market, llm=ReplyLLM(), portfolios=PortfolioRepository(pg))), raise_server_exceptions=False, headers=headers_for(ALICE))
+    pid = client.post("/portfolios", json={"name": "rentals", "properties": [MAPLE]}).json()["id"]          # only properties, no holdings key at all
+    body = client.get(f"/portfolios/{pid}/summary").json()
+    assert body["total_value"] == 400000.0 and body["unpriced"] == [] and body["net_value"] == 200000.0
+
+
+def test_explaining_a_real_estate_only_portfolio_says_why_not_a_crash(api):
+    pid = api.post("/portfolios", json={"name": "rentals", "properties": [MAPLE]}).json()["id"]
+    r = api.get(f"/portfolios/{pid}/analysis")
+    assert r.status_code == 422 and r.json()["code"] == "nothing_to_explain" and "real estate" in r.json()["message"]
+
+
+def test_explaining_a_mixed_portfolio_covers_the_market_holdings(api):
+    r = api.get(f"/portfolios/{save_mixed(api)}/analysis")
+    assert r.status_code == 200 and r.json()["metrics"]["holding_count"] == 3
+
+
+def test_bad_property_figures_are_422_naming_the_field_and_nothing_is_saved(api):
+    r = api.post("/portfolios", json={"name": "x", "properties": [{**MAPLE, "monthly_rent": "-5"}, {**MAPLE, "name": "B", "property_type": "castle"}]})
+    fields = {d["field"] for d in r.json()["details"]}
+    assert r.status_code == 422 and {"properties.0.monthly_rent", "properties.1.property_type"} <= fields and api.get("/portfolios").json() == []
+    assert api.post("/portfolios", json={"name": "x"}).status_code == 422                                   # neither holdings nor properties
+
+
+def test_put_is_a_full_replacement_including_properties(api):
+    pid = save_mixed(api)
+    assert api.put(f"/portfolios/{pid}", json={"name": "everything", "holdings": TYPED[:1]}).status_code == 204     # properties left out: removed
+    assert api.get(f"/portfolios/{pid}").json()["properties"] == []
+    assert api.put(f"/portfolios/{pid}", json={"name": "x", "holdings": TYPED[:1], "properties": [OAK]}).status_code == 204
+    assert [p["name"] for p in api.get(f"/portfolios/{pid}").json()["properties"]] == ["Oak condo"]
+
+
+def test_bob_cannot_see_alices_properties(api):
+    pid = save_mixed(api)
+    bob = {"headers": headers_for(BOB)}
+    assert api.get(f"/portfolios/{pid}", **bob).status_code == 404 and api.get(f"/portfolios/{pid}/summary", **bob).status_code == 404

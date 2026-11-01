@@ -5,6 +5,15 @@ import streamlit as st
 
 from src.web_app.client import ApiError
 
+
+def md(text) -> str:
+    """Text that came from a model, a feed or a database, made safe to give to st.markdown / st.caption.
+    Streamlit reads a pair of dollar signs as a formula, so "$80,000 ... $2.2 million" turned into code-looking symbols and "$" amounts in answers broke
+    (found in the news list and the chat starters). An escaped dollar sign shows as a plain one. (This does NOT neutralise other markdown such as links or emphasis; text that must be inert
+    should go through st.text instead.)"""
+    return str(text).replace("\\", "\\\\").replace("$", "\\$")
+
+
 DISCLAIMER = "Finnie is an educational tool, not financial advice. Nothing here is a recommendation to buy or sell anything."
 
 

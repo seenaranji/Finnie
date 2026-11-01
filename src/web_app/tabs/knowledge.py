@@ -2,7 +2,7 @@
 import streamlit as st
 
 from src.web_app.client import ApiError, FinnieClient
-from src.web_app.ui_common import guarded, show_error
+from src.web_app.ui_common import guarded, md, show_error
 
 ALL = "All topics"
 
@@ -53,8 +53,8 @@ def search_section(client: FinnieClient, categories: list[str]) -> None:
         return
     for passage in found["results"]:
         with st.container(border=True):
-            st.markdown(f"**{passage['title']}** · {passage['section']}")
-            st.markdown(passage["text"])
+            st.markdown(f"**{md(passage['title'])}** · {md(passage['section'])}")
+            st.markdown(md(passage["text"]))
             st.caption(f"Source: [{passage['source_name']}]({passage['source_url']}) · updated {passage['last_updated']} · match score {passage['similarity']:.2f}")
 
 
@@ -71,7 +71,7 @@ def browse_section(client: FinnieClient, articles: list[dict], categories: list[
     except ApiError as error:
         show_error(error)
         return
-    st.markdown(article["text"])
+    st.markdown(md(article["text"]))
     source = f"[{article['source_name']}]({article['source_url']})" if article.get("source_url") else (article.get("source_name") or "not recorded")
     st.caption(f"Source: {source} · last updated {article.get('last_updated') or 'unknown'} · This article is a plain-language summary; check the source for the full, current text.")
 

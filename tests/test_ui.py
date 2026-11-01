@@ -1,4 +1,6 @@
 """UI tests with Streamlit's headless AppTest: the real script runs against a stand-in for the API, so no server, no browser and no network."""
+import re
+
 import pytest
 import streamlit as st
 from streamlit.testing.v1 import AppTest
@@ -89,8 +91,11 @@ class FakeApi:
 
     saved_id = "3f2b8c1e-5d4a-4c7e-9b1a-0a1b2c3d4e5f"
 
-    def save_portfolio(self, name, holdings):
+    saved_properties = None
+
+    def save_portfolio(self, name, holdings, properties=None):
         self.sent.append(("save", name, holdings))
+        self.saved_properties = properties
         return {"id": self.saved_id}
 
     def list_portfolios(self):
@@ -168,14 +173,24 @@ def app(api=None, timeout=10, signed_in=True):
     return at.run()
 
 
+def plain(text):
+    """What the person reads: the app writes $ as \\$ so Streamlit does not take two amounts for a formula; the screen shows a plain $."""
+    return text.replace("\\$", "$")
+
+
+def tab_names(at):
+    """The app's tab labels carry an icon (':material/forum: Chat'); the words are what matter."""
+    return [re.sub(r"^:material/\w+:\s*", "", t.label) for t in at.tabs]
+
+
 def texts(at):
-    return [m.value for m in at.markdown] + [c.value for c in at.caption] + [e.value for e in at.error] + [w.value for w in at.warning]
+    return [plain(x.value) for group in (at.markdown, at.caption, at.error, at.warning) for x in group]
 
 
 # ---------- Chat tab ----------
 def test_the_page_loads_with_a_disclaimer_and_no_exception():
     at = app()
-    assert not at.exception and any("not financial advice" in i.value for i in at.info)
+    assert not at.exception and any("not financial advice" in m.value for m in at.markdown)   # a quiet line under the header, on every page
 
 
 def test_a_chat_turn_shows_the_answer_badge_sources_and_disclaimer():
@@ -215,22 +230,23 @@ def test_an_api_failure_shows_a_friendly_error_with_the_request_id_and_no_answer
 def test_a_starter_button_sends_its_question():
     api = FakeApi()
     at = app(api)
-    at.button[0].click().run()
+    at.button(key="starter_0").click().run()
     assert api.chats and api.chats[0][0] == "What is an ETF?"
 
 
 def test_new_conversation_clears_history_and_session():
     at = app()
     at.chat_input[0].set_value("hi").run()
-    next(b for b in at.sidebar.button if b.label == "New conversation").click().run()
+    at.button(key="new_conversation").click().run()
     assert len(at.chat_message) == 0 and at.session_state["session_id"] is None
 
 
-def test_a_server_that_is_down_is_shown_in_the_sidebar():
+def test_a_server_that_is_down_is_shown_in_the_header():
     api = FakeApi()
     api.health = lambda: (_ for _ in ()).throw(ApiError("I can't reach the Finnie server at http://x. Is it running?"))
     at = app(api)
-    assert any("can't reach" in e.value for e in at.sidebar.error) and not at.exception
+    assert any("can't reach" in e.value for e in at.error) and not at.exception
+    assert any("Server unavailable" in m.value for m in at.markdown)   # and the status pill says so
 
 
 # ---------- Markets tab ----------
@@ -486,7 +502,7 @@ def test_a_goal_under_a_year_shows_no_chart_that_would_run_past_the_goal_date():
 
 def test_the_inflation_sentence_gives_todays_value_of_the_goal():
     at = plan(app(), goal=20000.0, years=5.0)
-    assert any("will buy about what $17,256 buys today" in c.value for c in at.caption)
+    assert any("will buy about what $17,256 buys today" in plain(c.value) for c in at.caption)
 
 
 # ---------- Knowledge tab ----------
@@ -656,8 +672,8 @@ def test_logging_in_shows_the_app_and_sends_the_token_with_every_later_call():
     fill(at, "login_password", "right-password-123")
     at = submit(at, "Log in")
     assert not at.exception and ("login", "Alice@Example.com") in api.sent
-    assert api.token == "token-for-Alice@Example.com" and any("alice@example.com" in c.value for c in at.sidebar.caption)
-    assert [t.label for t in at.tabs][:3] == ["Chat", "Markets", "News"]
+    assert api.token == "token-for-Alice@Example.com" and any("alice@example.com" in t.value for t in at.get("text"))   # the account menu in the header shows it as plain text, never as a link
+    assert tab_names(at)[:3] == ["Chat", "Markets", "News"]
 
 
 def test_wrong_credentials_show_the_servers_message_and_keep_the_door_shut():
@@ -684,7 +700,7 @@ def test_creating_an_account_signs_the_new_user_in():
     fill(at, "register_confirm", "a-fine-password-1")
     at = submit(at, "Create account")
     assert not at.exception and ("register", "new@example.com") in api.sent and api.token == "token-for-new@example.com"
-    assert [t.label for t in at.tabs][:2] == ["Chat", "Markets"]
+    assert tab_names(at)[:2] == ["Chat", "Markets"]
 
 
 def test_mismatched_passwords_are_caught_before_the_server_is_asked():
@@ -813,7 +829,7 @@ def test_an_empty_table_asks_for_a_holding():
 
 def test_server_complaints_are_shown_against_the_rows_the_person_sees_even_when_a_blank_row_sits_between():
     api = FakeApi()
-    api.save_portfolio = lambda name, holdings: (_ for _ in ()).throw(ApiError("The request was not valid.", 422, "invalid_request", "req-s", [
+    api.save_portfolio = lambda name, holdings, properties=None: (_ for _ in ()).throw(ApiError("The request was not valid.", 422, "invalid_request", "req-s", [
         {"field": "holdings.1.ticker", "problem": "Value error, 'N/A!' is not a valid ticker"}, {"field": "name", "problem": "String should have at most 100 characters"}]))
     at = save(fill_table(app(api), [VTI, {}, {SYMBOL: "N/A!", TYPE: "Stock", SHARES: 1.0, COST: 1.0}]))
     lines = " | ".join(c.value for c in at.caption)
@@ -853,7 +869,7 @@ def test_a_saved_portfolio_is_shown_grouped_by_kind_with_totals_and_its_id():
     assert not at.exception and ("summary", ID) in api.sent                         # the first saved portfolio is selected for them
     metrics = {m.label: m.value for m in at.metric if m.label in ("Total cost", "Current value", "Gain", "Holdings")}
     assert metrics == {"Total cost": "$1,800.00", "Current value": "$2,500.00", "Gain": "+38.9%", "Holdings": "3"}
-    headers = [e.label for e in at.expander]
+    headers = [plain(e.label) for e in at.expander if not e.label.startswith("Have a portfolio id")]   # the group sections (the first expander on the page is the load-by-id box)
     assert headers[0].startswith("ETFs (1): $2,000.00 · 80.0% of the total · gain +53.9%") and headers[1].startswith("Cash (1): $500.00 · 20.0% of the total")
     assert any(c.value == ID for c in at.get("code")) and len(at.get("plotly_chart")) >= 1
 
@@ -945,3 +961,135 @@ def test_a_row_added_with_the_plus_button_and_left_untouched_is_ignored_not_save
                                 BOUGHT: pd.Series([pd.NaT, pd.NaT], dtype="datetime64[ns]")})
     holdings, rows, problems = rows_to_holdings(blank_added)
     assert problems == [] and [h["ticker"] for h in holdings] == ["VTI"] and rows == [1]
+
+
+# ---------- real estate in the Portfolio tab ----------
+from src.web_app.tabs.portfolio import rows_to_properties  # noqa: E402
+
+PNAME, PKIND, PPRICE, PDATE, PVALUE, PMORT, PRENT, PCOSTS = ("Property (name or address)", "Kind", "Purchase price ($)", "Purchase date", "Current value ($)",
+                                                              "Mortgage owed ($)", "Monthly rent ($)", "Monthly expenses ($)")
+MAPLE_ROW = {PNAME: "Maple St", PKIND: "House", PPRICE: 300000.0, PDATE: "2019-06-01", PVALUE: 400000.0, PMORT: 200000.0, PRENT: 2500.0, PCOSTS: 800.0}
+
+
+def fill_properties(at, rows, version=0):
+    """The real estate table starts empty, so every row is an 'added row' in the editor's delta state."""
+    at.session_state[f"pf_props_{version}"] = {"edited_rows": {}, "added_rows": rows, "deleted_rows": []}
+    return at
+
+
+def test_the_real_estate_table_is_there_but_optional():
+    at = app()
+    assert any("Real estate (optional)" in m.value for m in at.markdown) and not at.exception
+
+
+def test_a_property_is_sent_with_exact_numbers_and_sensible_defaults():
+    api = FakeApi()
+    at = save(fill_properties(fill_table(app(api), [VTI]), [MAPLE_ROW, {PNAME: "Lot 7", PPRICE: 50000.0, PVALUE: 65000.0}]))
+    assert api.saved_properties == [
+        {"name": "Maple St", "property_type": "house", "purchase_price": "300000.0", "current_value": "400000.0", "mortgage_balance": "200000.0", "monthly_rent": "2500.0",
+         "monthly_expenses": "800.0", "purchase_date": "2019-06-01"},
+        {"name": "Lot 7", "property_type": "house", "purchase_price": "50000.0", "current_value": "65000.0", "mortgage_balance": "0.0", "monthly_rent": "0.0", "monthly_expenses": "0.0"}]
+    assert not at.exception and at.radio(key="portfolio_mode").value == "My saved portfolios"
+
+
+def test_a_portfolio_of_only_a_property_can_be_saved_and_the_blank_holdings_row_is_ignored():
+    api = FakeApi()
+    save(fill_properties(fill_table(app(api), [{}]), [MAPLE_ROW]))
+    (_, name, holdings), = [s for s in api.sent if isinstance(s, tuple) and s[0] == "save"]
+    assert holdings == [] and len(api.saved_properties) == 1
+
+
+def test_a_property_missing_its_price_or_value_is_named_by_row_and_nothing_is_sent():
+    api = FakeApi()
+    at = save(fill_properties(fill_table(app(api), [VTI]), [{PNAME: "Maple St", PRENT: 100.0}, {PNAME: "", PPRICE: 5.0, PVALUE: 6.0, PMORT: -1.0}]))
+    warnings = " | ".join(w.value for w in at.warning)
+    assert "Property row 1: enter what you paid" in warnings and "Property row 1: enter what you think it is worth today" in warnings
+    assert "Property row 2: enter a name or address" in warnings and "Property row 2: mortgage cannot be negative" in warnings
+    assert not [s for s in api.sent if isinstance(s, tuple) and s[0] == "save"]
+
+
+def test_nothing_at_all_still_asks_for_something_to_save():
+    api = FakeApi()
+    at = save(fill_table(app(api), [{}]))
+    assert any("Add at least one holding or property" in w.value for w in at.warning)
+
+
+def test_server_complaints_about_a_property_name_the_property_row_the_person_sees():
+    api = FakeApi()
+    api.save_portfolio = lambda name, holdings, properties=None: (_ for _ in ()).throw(ApiError("The request was not valid.", 422, "invalid_request", "r", [
+        {"field": "properties.1.monthly_rent", "problem": "Input should be greater than or equal to 0"}]))
+    at = save(fill_properties(fill_table(app(api), [VTI]), [MAPLE_ROW, {}, {**MAPLE_ROW, PNAME: "Oak"}]))   # the blank middle row is skipped: Oak is the 2nd sent, the 3rd shown
+    assert "Property row 3, monthly rent: Input should be greater than or equal to 0" in " | ".join(c.value for c in at.caption)
+
+
+def test_rows_to_properties_pure():
+    table = pd.DataFrame({PNAME: ["Maple St", None], PKIND: ["Apartment / condo", None], PPRICE: [300000.0, float("nan")], PDATE: pd.Series([pd.Timestamp("2019-06-01"), pd.NaT], dtype="datetime64[ns]"),
+                          PVALUE: [400000.5, float("nan")], PMORT: [float("nan"), float("nan")], PRENT: [2500.0, float("nan")], PCOSTS: [float("nan"), float("nan")]})
+    props, rows, problems = rows_to_properties(table)
+    assert problems == [] and rows == [1] and props == [{"name": "Maple St", "property_type": "condo", "purchase_price": "300000.0", "current_value": "400000.5",
+                                                          "mortgage_balance": "0.0", "monthly_rent": "2500.0", "monthly_expenses": "0.0", "purchase_date": "2019-06-01"}]
+
+
+# ---- the grouped view with real estate
+RE_FIGURES = {"purchase_price": 450000.0, "value": 540000.0, "mortgage": 290000.0, "equity": 250000.0, "gain": 90000.0, "gain_pct": 20.0, "annual_rent": 42000.0, "annual_expenses": 15000.0,
+              "net_operating_income": 27000.0, "gross_yield_pct": 7.78, "net_yield_pct": 5.0, "loan_to_value_pct": 53.7}
+
+
+def with_real_estate(api):
+    base = api.portfolio_summary
+
+    def summary(pid):
+        s = base(pid)
+        props = [{"name": "Maple St", "property_type": "house", "purchase_date": None, **{**RE_FIGURES, "purchase_price": 300000.0, "value": 400000.0, "mortgage": 200000.0, "equity": 200000.0,
+                                                                                         "gain": 100000.0, "gain_pct": 33.33, "annual_rent": 30000.0, "annual_expenses": 9600.0,
+                                                                                         "net_operating_income": 20400.0, "gross_yield_pct": 7.5, "net_yield_pct": 5.1, "loan_to_value_pct": 50.0}}]
+        group = {"asset_type": "real_estate", "label": "Real estate", "count": 1, "unpriced_count": 0, "cost": 300000.0, "value": 400000.0, "gain_pct": 33.33, "weight_pct": 99.4, "holdings": []}
+        return {**s, "groups": [group] + s["groups"], "property_count": 1, "holding_count": s["holding_count"] + 1, "mortgage_owed": 200000.0, "net_value": 202500.0,
+                "total_value": 402500.0, "total_cost": 301800.0, "real_estate": {"count": 1, **{**RE_FIGURES, "purchase_price": 300000.0, "value": 400000.0, "mortgage": 200000.0, "equity": 200000.0,
+                "gain": 100000.0, "gain_pct": 33.33, "annual_rent": 30000.0, "annual_expenses": 9600.0, "net_operating_income": 20400.0, "gross_yield_pct": 7.5, "net_yield_pct": 5.1,
+                "loan_to_value_pct": 50.0}, "properties": props}}
+    api.portfolio_summary = summary
+    return api
+
+
+def test_the_grouped_view_adds_mortgage_net_value_rent_and_yield_when_there_is_real_estate():
+    at = open_saved(with_real_estate(FakeApi()))
+    metrics = {m.label: m.value for m in at.metric}
+    assert metrics["Mortgage owed"] == "$200,000.00" and metrics["Net value"] == "$202,500.00" and metrics["Rent per year"] == "$30,000.00" and metrics["Net yield"] == "5.1%"
+    headers = [plain(e.label) for e in at.expander if not e.label.startswith("Have a portfolio id")]
+    assert headers[0].startswith("Real estate (1): $400,000.00 · 99.4% of the total · gain +33.3%")
+
+
+def test_the_property_table_shows_equity_income_and_yields():
+    at = open_saved(with_real_estate(FakeApi()))
+    table = next(d.value for d in at.dataframe if "Property" in d.value.columns)
+    row = table.iloc[0].to_dict()
+    assert (row["Property"], row["Kind"], row["Equity"], row["Net income / yr"], row["Gross yield"], row["Net yield"], row["Loan-to-value"]) == ("Maple St", "House", 200000.0, 20400.0, 7.5, 5.1, 50.0)
+    assert any("Values are your own estimates" in c.value for c in at.caption)
+
+
+def test_a_portfolio_without_real_estate_shows_no_mortgage_row():
+    at = open_saved(FakeApi())
+    assert "Mortgage owed" not in {m.label for m in at.metric} and not [d for d in at.dataframe if "Property" in d.value.columns]
+
+
+def test_explain_is_switched_off_for_a_portfolio_that_holds_only_real_estate():
+    api = FakeApi()
+    only_property = with_real_estate(FakeApi()).portfolio_summary(FakeApi.saved_id)
+    only_property = {**only_property, "groups": only_property["groups"][:1], "holding_count": 1}          # one group (the property) and nothing else
+    api.portfolio_summary = lambda pid: only_property
+    assert open_saved(api).button(key="pf_explain").disabled
+    assert not open_saved(FakeApi()).button(key="pf_explain").disabled                                    # with stocks or funds in it, it is available
+
+
+def test_saved_portfolios_in_the_picker_mention_their_properties():
+    api = FakeApi()
+    base = api._all_portfolios
+    api._all_portfolios = lambda: [{**p, "property_count": 2} for p in base()]
+    assert at_picker_labels(open_saved(api))[0] == "Retirement — 3 holding(s) + 2 properties — 3f2b8c1e…"
+    api._all_portfolios = lambda: [{**p, "property_count": 1} for p in base()]
+    assert "+ 1 property —" in at_picker_labels(open_saved(api))[0]                                       # singular
+
+
+def at_picker_labels(at):
+    return list(at.selectbox(key="pf_pick").options)

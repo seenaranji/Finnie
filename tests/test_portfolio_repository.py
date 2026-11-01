@@ -217,3 +217,66 @@ def test_one_ticker_listed_as_two_different_kinds_is_refused():
     with pytest.raises(ValidationError) as caught:
         PortfolioIn(name="x", holdings=[{"ticker": "VTI", "shares": "1", "avg_cost": "1", "asset_type": "etf"}, {"ticker": "VTI", "shares": "1", "avg_cost": "1", "asset_type": "stock"}])
     assert "pick one type" in str(caught.value)
+
+
+# ---------- real estate ----------
+PROPERTY = {"name": "Maple St", "property_type": "house", "purchase_price": "300000", "purchase_date": "2019-06-01", "current_value": "400000.50",
+            "mortgage_balance": "200000", "monthly_rent": "2500", "monthly_expenses": "800"}
+
+
+def test_properties_round_trip_exactly_and_sit_beside_holdings(repo):
+    pid = repo.create("mixed", HOLDINGS, owner_id=ME, properties=[PROPERTY])
+    stored = repo.get(pid, owner_id=ME)
+    assert len(stored.holdings) == 2 and len(stored.properties) == 1
+    p = stored.properties[0]
+    assert (p.name, p.property_type, p.purchase_price, p.current_value, p.mortgage_balance, p.monthly_rent, p.monthly_expenses, p.purchase_date) == \
+           ("Maple St", "house", Decimal("300000"), Decimal("400000.50"), Decimal("200000"), Decimal("2500"), Decimal("800"), date(2019, 6, 1))
+
+
+def test_a_portfolio_of_only_properties_can_be_saved_and_is_listed_with_its_count(repo):
+    pid = repo.create("rentals", [], owner_id=ME, properties=[PROPERTY])
+    [summary] = repo.list(owner_id=ME)
+    assert (summary.id, summary.holding_count, summary.property_count) == (pid, 0, 1)
+
+
+def test_updating_holdings_leaves_properties_alone_unless_new_ones_are_given(repo):
+    pid = repo.create("mixed", HOLDINGS, owner_id=ME, properties=[PROPERTY])
+    repo.update(pid, HOLDINGS[:1], owner_id=ME)                                                 # no properties argument: keep them
+    assert len(repo.get(pid, owner_id=ME).properties) == 1
+    repo.update(pid, HOLDINGS[:1], owner_id=ME, properties=[])                                  # an empty list: remove them
+    assert repo.get(pid, owner_id=ME).properties == []
+    repo.update(pid, HOLDINGS[:1], owner_id=ME, properties=[{**PROPERTY, "name": "Other"}])
+    assert [p.name for p in repo.get(pid, owner_id=ME).properties] == ["Other"]
+
+
+def test_deleting_a_portfolio_deletes_its_properties(repo, pg):
+    pid = repo.create("x", HOLDINGS, owner_id=ME, properties=[PROPERTY])
+    repo.delete(pid, owner_id=ME)
+    assert count(pg, "properties") == 0
+
+
+def test_another_users_properties_are_invisible_and_untouchable(repo):
+    pid = repo.create("mine", [], owner_id=ME, properties=[PROPERTY])
+    with pytest.raises(PortfolioNotFound):
+        repo.get(pid, owner_id=BOB.id)
+    with pytest.raises(PortfolioNotFound):
+        repo.update(pid, HOLDINGS, owner_id=BOB.id, properties=[])
+    assert len(repo.get(pid, owner_id=ME).properties) == 1
+
+
+def test_a_failed_save_leaves_neither_holdings_nor_properties_behind(repo, pg):
+    from src.data.portfolio_repository import PropertyIn
+    bad = PropertyIn.model_construct(name="x", property_type="house", purchase_price=Decimal(1), purchase_date=None, current_value=Decimal(-5),   # skips validation: the database's CHECK must refuse
+                                     mortgage_balance=Decimal(0), monthly_rent=Decimal(0), monthly_expenses=Decimal(0))
+    with pytest.raises(Exception):
+        repo.create("half", HOLDINGS, owner_id=ME, properties=[bad])
+    assert count(pg, "portfolios") == 0 and count(pg, "holdings") == 0 and count(pg, "properties") == 0
+
+
+def test_the_database_itself_refuses_an_unknown_kind_or_a_duplicate_name(repo, pg):
+    import psycopg
+    pid = repo.create("x", [], owner_id=ME, properties=[PROPERTY])
+    with pytest.raises(psycopg.errors.CheckViolation), pg.connection() as connection:
+        connection.execute("INSERT INTO properties (portfolio_id, name, property_type, purchase_price, current_value) VALUES (%s, 'x', 'castle', 1, 1)", (pid,))
+    with pytest.raises(psycopg.errors.UniqueViolation), pg.connection() as connection:
+        connection.execute("INSERT INTO properties (portfolio_id, name, purchase_price, current_value) VALUES (%s, 'Maple St', 1, 1)", (pid,))

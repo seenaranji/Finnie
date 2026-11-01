@@ -3,10 +3,11 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from src.web_app.client import ApiError, FinnieClient
-from src.web_app.ui_common import guarded, show_error
+from src.web_app import charts
+from src.web_app.ui_common import guarded, md, show_error
 
 PROFILES = {"Low risk (mostly cash and bonds)": "low", "Medium risk (a mix of stocks and bonds)": "medium", "High risk (mostly stocks)": "high"}
-COLORS = {"conservative": "#6b7280", "expected": "#2563eb", "optimistic": "#16a34a"}
+COLORS = {"conservative": "#64748B", "expected": "#0F766E", "optimistic": "#1D4ED8"}   # slate, teal, blue: the same hues as the rest of the app
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -20,11 +21,10 @@ def projection_figure(plan: dict) -> go.Figure:
         path = scenario["path_by_year"]
         figure.add_scatter(x=list(range(len(path))), y=path, mode="lines", name=f"{scenario['scenario'].title()} ({scenario['annual_return_pct']:g}% a year)",
                            line={"color": COLORS[scenario["scenario"]], "width": 2}, hovertemplate="Year %{x}<br>$%{y:,.0f}<extra></extra>")
-    figure.add_hline(y=plan["goal"], line_dash="dash", annotation_text=f"Goal ${plan['goal']:,.0f}", annotation_position="top left")
-    figure.update_layout(title="Projected balance if you save the monthly amount shown", xaxis_title="Years from now", yaxis_title="Balance (USD)",
-                         margin={"l": 10, "r": 10, "t": 50, "b": 10}, height=400, legend={"orientation": "h", "y": -0.25})
+    figure.add_hline(y=plan["goal"], line_dash="dash", line_color=charts.PALETTE[2], annotation_text=f"Goal ${plan['goal']:,.0f}", annotation_position="top left")
+    figure.update_layout(xaxis_title="Years from now", yaxis_title="Balance (USD)")
     figure.update_yaxes(tickprefix="$", tickformat=",.0f")
-    return figure
+    return charts.style(figure, "Projected balance if you save the monthly amount shown", height=400, legend_below=True)
 
 
 def scenario_rows(plan: dict) -> list[dict]:
@@ -35,7 +35,7 @@ def scenario_rows(plan: dict) -> list[dict]:
 
 def show_plan(plan: dict) -> None:
     years = f"{plan['years']:g}"
-    st.subheader(f"To reach ${plan['goal']:,.0f} in {years} years")
+    st.subheader(md(f"To reach ${plan['goal']:,.0f} in {years} years"))
     for flag in plan["flags"]:
         st.warning(flag)
     st.dataframe(scenario_rows(plan), hide_index=True, width="stretch")
@@ -44,10 +44,10 @@ def show_plan(plan: dict) -> None:
     else:
         st.caption("The growth chart needs a goal at least one year away; for a shorter goal the table above is the whole picture.")   # the path is drawn in whole years and would run past the goal date
     today_value = plan["goal"] ** 2 / plan["inflation_adjusted_goal"]   # goal / (1 + inflation)^years
-    st.caption(f"With {plan['inflation_pct']:g}% yearly inflation, ${plan['goal']:,.0f} in {years} years will buy about what ${today_value:,.0f} buys today. "
-               f"To keep today's buying power you would need about ${plan['inflation_adjusted_goal']:,.0f}.")
-    st.info(plan["assumptions"])
-    st.caption(plan["disclaimer"])
+    st.caption(md(f"With {plan['inflation_pct']:g}% yearly inflation, ${plan['goal']:,.0f} in {years} years will buy about what ${today_value:,.0f} buys today. "
+                  f"To keep today's buying power you would need about ${plan['inflation_adjusted_goal']:,.0f}."))
+    st.info(md(plan["assumptions"]))
+    st.caption(md(plan["disclaimer"]))
 
 
 def render(client: FinnieClient) -> None:

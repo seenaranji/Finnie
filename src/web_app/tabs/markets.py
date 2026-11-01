@@ -3,7 +3,8 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from src.web_app.client import ApiError, FinnieClient
-from src.web_app.ui_common import guarded, show_error
+from src.web_app import charts
+from src.web_app.ui_common import guarded, md, show_error
 
 PERIODS = {"5 days": "5d", "1 month": "1mo", "3 months": "3mo", "6 months": "6mo", "1 year": "1y", "Year to date": "ytd"}
 
@@ -27,11 +28,10 @@ def cached_history(_client: FinnieClient, url: str, ticker: str, period: str) ->
 def history_figure(history: dict) -> go.Figure:
     dates = [p["date"] for p in history["points"]]
     closes = [p["close"] for p in history["points"]]
-    figure = go.Figure(go.Scatter(x=dates, y=closes, mode="lines", line={"width": 2}, name=history["symbol"], hovertemplate="%{x}<br>$%{y:,.2f}<extra></extra>"))
-    figure.update_layout(title=f"{history['symbol']} daily closing price ({history['period']})", yaxis_title="Close (USD)", xaxis_title=None,
-                         margin={"l": 10, "r": 10, "t": 50, "b": 10}, height=380)
+    figure = go.Figure(go.Scatter(x=dates, y=closes, mode="lines", line={"width": 2.5, "color": charts.PALETTE[0]}, name=history["symbol"], hovertemplate="%{x}<br>$%{y:,.2f}<extra></extra>"))
+    figure.update_layout(yaxis_title="Close (USD)", xaxis_title=None)
     figure.update_yaxes(tickprefix="$", tickformat=",.0f")
-    return figure
+    return charts.style(figure, f"{history['symbol']} daily closing price ({history['period']})", height=380)
 
 
 def freshness(item: dict) -> None:
