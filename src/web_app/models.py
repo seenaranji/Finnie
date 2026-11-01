@@ -49,6 +49,7 @@ class ScenarioOut(BaseModel):
     total_contributed: float
     growth_from_returns: float
     already_reached: bool
+    path_by_year: list[float] = Field(default_factory=list)   # balance at the end of each year (year 0 first), for the chart
 
 
 class GoalResponse(BaseModel):
@@ -91,6 +92,7 @@ class PortfolioResponse(BaseModel):
     disclaimer: str
     sources: list[Source]
     metrics: dict                  # the numbers behind the explanation (weights, sectors, correlation ...), for charts
+    correlation: dict | None = None   # {"tickers": [...], "matrix": [[...]]} for a heatmap; None when there is too little price history
     cost_usd: float
     latency_s: float
 
@@ -113,3 +115,17 @@ class ChatResponse(BaseModel):
     cost_usd: float                # all model calls for this turn
     latency_s: float
     degraded: bool                 # True when a fallback reply replaced a failed step
+
+
+class ArticleSummary(BaseModel):
+    id: str
+    title: str
+    category: str
+    difficulty: str | None = None
+    source_name: str | None = None
+    last_updated: str | None = None
+
+
+class Article(ArticleSummary):
+    source_url: str | None = None
+    text: str                      # markdown body

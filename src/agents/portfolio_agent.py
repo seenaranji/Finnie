@@ -107,7 +107,9 @@ class PortfolioAnalysisAgent(BaseAgent):
         payload = build_payload(result, max(dates) if dates else date.today().isoformat())
         if failed:
             payload["notes"] = payload["notes"] + [f"could not fetch data for: {'; '.join(failed)}"]
-        self._current = {"payload": payload, "sources": sources, "seconds": {"parse": parse_time["seconds"], "fetch": fetch_time["seconds"], "calc": calc_time["seconds"]}}
+        correlation = ({"tickers": list(result["correlation_tickers"]), "matrix": [[round(float(x), 2) for x in row] for row in result["correlation"]]}
+                       if result.get("correlation") is not None else None)   # for the UI heatmap; deliberately NOT in the payload the model sees
+        self._current = {"payload": payload, "correlation": correlation, "sources": sources, "seconds": {"parse": parse_time["seconds"], "fetch": fetch_time["seconds"], "calc": calc_time["seconds"]}}
         try:
             return self.handle(AgentRequest(message=question))
         finally:
@@ -123,5 +125,5 @@ class PortfolioAnalysisAgent(BaseAgent):
         sources = [Source(id=name, title=f"{name} prices for {count} holding(s), as of {payload['prices_as_of']}") for name, count in self._current["sources"].items()]
         return AgentAnswer(llm_result.text, llm_result.model, llm_result.input_tokens, llm_result.output_tokens,
                            llm_result.latency_s + sum(seconds.values()), llm_result.cost_usd, llm_result.attempts, sources=sources,
-                           extra={"metrics": payload, "llm_seconds": llm_result.latency_s, "data_seconds": seconds["fetch"],
+                           extra={"metrics": payload, "correlation": self._current["correlation"], "llm_seconds": llm_result.latency_s, "data_seconds": seconds["fetch"],
                                   "calc_seconds": seconds["calc"] + seconds["parse"]})

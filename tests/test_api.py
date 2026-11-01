@@ -225,3 +225,31 @@ def test_an_unexpected_exception_is_a_500_with_no_internals_in_the_reply():
 def test_different_sessions_get_different_locks_and_the_same_session_the_same_lock():
     services = client().app.state.services
     assert services.session_lock("a") is services.session_lock("a") and services.session_lock("a") is not services.session_lock("b")
+
+
+# ---------- additions for the UI (Step 23) ----------
+def test_goal_plan_includes_a_yearly_balance_path_per_scenario():
+    body = client().post("/goals/plan", json={"goal": 50000, "years": 5, "current_savings": 5000}).json()
+    for scenario in body["scenarios"]:
+        path = scenario["path_by_year"]
+        assert len(path) == 6 and path[0] == 5000 and path[-1] == pytest.approx(50000, rel=0.001)   # the plan's monthly amount lands on the goal
+
+
+def test_portfolio_analyze_returns_the_correlation_matrix_for_a_heatmap():
+    body = client().post("/portfolio/analyze", json={"csv_text": CSV}).json()
+    corr = body["correlation"]
+    assert corr["tickers"] == sorted(corr["tickers"]) or len(corr["tickers"]) == 2
+    assert len(corr["matrix"]) == 2 and all(row[i] == 1.0 for i, row in enumerate(corr["matrix"]))
+
+
+def test_articles_list_filter_and_fetch_one():
+    from types import SimpleNamespace
+    docs = [SimpleNamespace(id="a-1", text="# A\nbody", metadata={"title": "A", "category": "bonds", "source_url": "https://x"}),
+            SimpleNamespace(id="b-2", text="# B", metadata={"title": "B", "category": "taxes"})]
+    c = client()
+    c.app.state.services._articles = docs
+    assert [a["id"] for a in c.get("/knowledge/articles").json()] == ["a-1", "b-2"]
+    assert [a["id"] for a in c.get("/knowledge/articles?category=taxes").json()] == ["b-2"]
+    one = c.get("/knowledge/articles/a-1").json()
+    assert one["text"].startswith("# A") and one["source_url"] == "https://x"
+    assert c.get("/knowledge/articles/missing").status_code == 404 and c.get("/knowledge/articles/bad%20id").status_code == 422

@@ -1,0 +1,485 @@
+"""UI tests with Streamlit's headless AppTest: the real script runs against a stand-in for the API, so no server, no browser and no network."""
+import pytest
+import streamlit as st
+from streamlit.testing.v1 import AppTest
+
+from src.web_app.client import ApiError
+
+from pathlib import Path
+
+APP = str(Path(__file__).resolve().parents[1] / "src" / "web_app" / "app.py")
+
+
+class FakeApi:
+    """Same methods as FinnieClient; each can be replaced per test. Records what the UI sent."""
+    base_url = "http://fake-api"
+
+    def __init__(self):
+        self.sent, self.chats = [], []
+        self.chat_reply = lambda message, session_id, csv: {
+            "session_id": "sess-1", "turn": 1, "text": f"Answer to: {message}", "answered_by": "finance_qa", "route": "finance_qa",
+            "sources": [{"id": "etf-basics#0", "title": "ETF Basics", "url": "https://x.example"}], "disclaimer": "General education only.", "cost_usd": 0.002,
+            "latency_s": 1.5, "degraded": False}
+
+    def health(self):
+        return {"status": "ok"}
+
+    def overview(self):
+        self.sent.append("overview")
+        return {"indices": [{"name": "S&P 500", "quote": quote("^GSPC", 7580.07, -1.82)}, {"name": "Nasdaq Composite", "quote": quote("^IXIC", 25437.0, 0.4)}],
+                "unavailable": [], "note": ""}
+
+    def quote(self, ticker):
+        self.sent.append(("quote", ticker))
+        if ticker == "ZZZZ":
+            raise ApiError("I couldn't find a ticker called ZZZZ.", 404, "ticker_not_found", "req-404")
+        if ticker == "BAD!":
+            raise ApiError("The request was not valid.", 422, "invalid_request", "req-422")
+        return quote(ticker, 344.63, -1.23, stale=ticker == "OLD")
+
+    def history(self, ticker, period="1mo"):
+        self.sent.append(("history", ticker, period))
+        return {"symbol": ticker, "period": period, "source": "fake", "is_stale": False, "age_seconds": 0.0, "fetched_at": "2026-11-01T17:00:00Z",
+                "points": [{"date": f"2026-10-{d:02d}", "close": 340 + d} for d in range(1, 6)]}
+
+    def analyze_portfolio(self, csv_text, question=None):
+        self.sent.append(("analyze", csv_text, question))
+        if "bad" in csv_text:
+            raise ApiError("Your portfolio file could not be read. It needs the columns ticker, shares and avg_cost.", 422, "invalid_portfolio", "req-p",
+                           [{"problem": "missing column(s): avg_cost"}])
+        return {"text": "Your portfolio is mostly stocks.", "disclaimer": "Not advice.", "sources": [{"id": "fake", "title": "fake prices as of 2026-10-30", "url": None}],
+                "cost_usd": 0.004, "latency_s": 2.0,
+                "metrics": {"total_value_usd": 42094, "total_gain_pct": 43.1, "holding_count": 2, "diversification_score_out_of_100": {"score": 44.1, "built_from": "a heuristic"},
+                            "asset_class_pct": {"US stock": 70.0, "Bond": 30.0}, "holdings": [{"ticker": "VTI", "weight_pct": 70.0}, {"ticker": "BND", "weight_pct": 30.0}],
+                            "notes": ["no price for ['XYZ']: left out"]},
+                "correlation": None if "nocorr" in csv_text else {"tickers": ["VTI", "BND"], "matrix": [[1.0, 0.2], [0.2, 1.0]]}}
+
+    def plan_goal(self, goal, years, current_savings, risk_profile):
+        self.sent.append(("plan", goal, years, current_savings, risk_profile))
+        if goal == 1.0:
+            raise ApiError("the goal amount is not valid", 422, "invalid_goal", "req-g")
+        scenarios = [{"scenario": n, "annual_return_pct": r, "monthly_needed": m, "monthly_needed_inflation_adjusted": m * 1.1, "current_savings_grow_to": 2100.0,
+                      "total_contributed": m * 60, "growth_from_returns": 500.0, "already_reached": False, "path_by_year": [2000, 5000, 9000, 13000, 17000, goal]}
+                     for n, r, m in (("conservative", 2.0, 330.0), ("expected", 5.0, 300.0), ("optimistic", 8.0, 280.0))]
+        return {"goal": goal, "years": years, "current_savings": current_savings, "risk_profile": risk_profile, "inflation_pct": 3.0,
+                "inflation_adjusted_goal": goal * 1.159, "scenarios": scenarios, "flags": ["A flag from the server."] if goal > 90000 else [],
+                "assumptions": "ASSUMPTIONS, not forecasts: yearly returns of 2% / 5% / 8%.", "disclaimer": "Educational illustration only."}
+
+    def articles(self, category=None):
+        self.sent.append("articles")
+        return [{"id": "etf-basics", "title": "ETF Basics", "category": "etfs", "difficulty": "beginner", "source_name": "Investor.gov", "last_updated": "2026-10-30"},
+                {"id": "bonds-basics", "title": "Bonds Basics", "category": "bonds", "difficulty": "beginner", "source_name": "Investor.gov", "last_updated": "2026-10-30"},
+                {"id": "wash-sale", "title": "Wash Sales", "category": "taxes", "difficulty": None, "source_name": None, "last_updated": None}]
+
+    def article(self, doc_id):
+        self.sent.append(("article", doc_id))
+        return {"id": doc_id, "title": doc_id, "category": "etfs", "text": f"# Body of {doc_id}", "source_name": "Investor.gov" if doc_id != "wash-sale" else None,
+                "source_url": "https://investor.gov/x" if doc_id != "wash-sale" else None, "last_updated": "2026-10-30" if doc_id != "wash-sale" else None}
+
+    def search(self, query, category=None, top_k=5):
+        self.sent.append(("search", query, category))
+        if query == "pizza":
+            return {"query": query, "answerable": False, "results": []}
+        if query == "boom":
+            raise ApiError("The knowledge search index is being rebuilt. Please try again shortly.", 503, "knowledge_index_unavailable", "req-k")
+        return {"query": query, "answerable": True, "results": [{"doc_id": "etf-basics", "title": "ETF Basics", "section": "Costs", "source_name": "Investor.gov",
+                                                                 "source_url": "https://investor.gov/x", "last_updated": "2026-10-30", "text": "An expense ratio is a yearly fee.", "similarity": 0.512}]}
+
+    def chat(self, message, session_id=None, portfolio_csv=None):
+        self.chats.append((message, session_id, portfolio_csv))
+        return self.chat_reply(message, session_id, portfolio_csv)
+
+
+def quote(symbol, price, change, stale=False):
+    return {"symbol": symbol, "price": price, "previous_close": None, "change_pct": change, "currency": "USD", "source": "fake", "as_of": "2026-10-30",
+            "fetched_at": "2026-11-01T17:00:00Z", "is_stale": stale, "age_seconds": 600.0 if stale else 0.0}
+
+
+def app(api=None, timeout=10):
+    st.cache_data.clear()   # cached values outlive a single AppTest run; each test must start cold
+    at = AppTest.from_file(APP, default_timeout=timeout)
+    at.session_state["client"] = api or FakeApi()
+    return at.run()
+
+
+def texts(at):
+    return [m.value for m in at.markdown] + [c.value for c in at.caption] + [e.value for e in at.error] + [w.value for w in at.warning]
+
+
+# ---------- Chat tab ----------
+def test_the_page_loads_with_a_disclaimer_and_no_exception():
+    at = app()
+    assert not at.exception and any("not financial advice" in i.value for i in at.info)
+
+
+def test_a_chat_turn_shows_the_answer_badge_sources_and_disclaimer():
+    api = FakeApi()
+    at = app(api)
+    at.chat_input[0].set_value("What is an ETF?").run()
+    shown = " ".join(texts(at))
+    assert not at.exception and "Answer to: What is an ETF?" in shown and "General education only." in shown
+    assert ":blue-badge[Answered by: Finance Q&A]" in shown
+    assert [e.label for e in at.expander] == ["Sources (1)"] and any("ETF Basics" in m.value for m in at.expander[0].markdown)
+
+
+def test_the_session_id_from_the_first_reply_is_sent_with_the_second_message():
+    api = FakeApi()
+    at = app(api)
+    at.chat_input[0].set_value("first").run()
+    at.chat_input[0].set_value("second").run()
+    assert api.chats[0][1] is None and api.chats[1][1] == "sess-1"
+
+
+def test_history_survives_a_rerun():
+    at = app()
+    at.chat_input[0].set_value("hello there").run()
+    at.run()   # any other interaction re-runs the whole script
+    assert len([m for m in at.chat_message]) == 2
+
+
+def test_an_api_failure_shows_a_friendly_error_with_the_request_id_and_no_answer():
+    api = FakeApi()
+    api.chat_reply = lambda *a: (_ for _ in ()).throw(ApiError("The server took too long to answer. Please try again.", 504, "timeout", "req-9"))
+    at = app(api)
+    at.chat_input[0].set_value("anything").run()
+    assert not at.exception and any("took too long" in e.value for e in at.error) and any("req-9" in c.value for c in at.caption)
+    assert "Answered by" not in " ".join(texts(at))
+
+
+def test_a_starter_button_sends_its_question():
+    api = FakeApi()
+    at = app(api)
+    at.button[0].click().run()
+    assert api.chats and api.chats[0][0] == "What is an ETF?"
+
+
+def test_new_conversation_clears_history_and_session():
+    at = app()
+    at.chat_input[0].set_value("hi").run()
+    next(b for b in at.sidebar.button if b.label == "New conversation").click().run()
+    assert len(at.chat_message) == 0 and at.session_state["session_id"] is None
+
+
+def test_a_server_that_is_down_is_shown_in_the_sidebar():
+    api = FakeApi()
+    api.health = lambda: (_ for _ in ()).throw(ApiError("I can't reach the Finnie server at http://x. Is it running?"))
+    at = app(api)
+    assert any("can't reach" in e.value for e in at.sidebar.error) and not at.exception
+
+
+# ---------- Markets tab ----------
+def lookup(at, ticker, period="1 month"):
+    at.text_input[0].set_value(ticker)
+    at.selectbox[0].set_value(period)
+    next(b for b in at.button if b.label == "Look up").click()
+    return at.run()
+
+
+def test_overview_shows_each_index_as_a_metric_with_its_change():
+    at = app()
+    metrics = {m.label: (m.value, m.delta) for m in at.metric}
+    assert metrics["S&P 500"] == ("7,580.07", "-1.82%") and metrics["Nasdaq Composite"][1] == "+0.40%"
+    assert any("Closing price as of 2026-10-30" in c.value for c in at.caption)
+
+
+def test_overview_partial_failure_is_listed_not_hidden():
+    api = FakeApi()
+    base = api.overview
+    api.overview = lambda: {**base(), "unavailable": ["Dow Jones Industrial Average"]}
+    at = app(api)
+    assert any("Dow Jones" in w.value for w in at.warning)
+
+
+def test_overview_error_is_shown_and_the_rest_of_the_page_still_works():
+    api = FakeApi()
+    api.overview = lambda: (_ for _ in ()).throw(ApiError("The data service is down.", 502, "data_provider_unavailable", "req-5"))
+    at = app(api)
+    assert not at.exception and any("data service is down" in e.value for e in at.error) and any("req-5" in c.value for c in at.caption)
+
+
+def test_lookup_shows_price_freshness_and_a_chart():
+    at = lookup(app(), "aapl")
+    assert any(m.label == "AAPL" and m.value == "$344.63" for m in at.metric) and len(at.get("plotly_chart")) == 1
+
+
+def test_lookup_of_a_stale_quote_warns_the_user():
+    at = lookup(app(), "old")
+    assert any("older saved value" in w.value for w in at.warning)
+
+
+def test_unknown_ticker_shows_the_server_message_and_no_chart():
+    at = lookup(app(), "zzzz")
+    assert any("couldn't find a ticker" in e.value for e in at.error) and len(at.get("plotly_chart")) == 0
+
+
+def test_malformed_ticker_gets_a_plain_explanation_not_a_validation_dump():
+    at = lookup(app(), "bad!")
+    assert any("doesn't look like a ticker" in e.value for e in at.error)
+
+
+def test_empty_ticker_asks_for_one_and_calls_nothing():
+    api = FakeApi()
+    at = lookup(app(api), "")
+    assert any("type a ticker" in w.value for w in at.warning) and not [s for s in api.sent if isinstance(s, tuple)]
+
+
+def test_rerunning_does_not_refetch_prices_but_a_new_symbol_does():
+    api = FakeApi()
+    at = lookup(app(api), "aapl")
+    at.run()
+    at.run()
+    assert api.sent.count("overview") == 1 and api.sent.count(("quote", "AAPL")) == 1 and api.sent.count(("history", "AAPL", "1mo")) == 1
+    lookup(at, "msft")
+    assert api.sent.count(("quote", "MSFT")) == 1 and api.sent.count("overview") == 1
+
+
+def test_history_figure_has_one_line_with_the_right_points():
+    from src.web_app.tabs.markets import history_figure
+    figure = history_figure(FakeApi().history("AAPL", "5d"))
+    assert len(figure.data) == 1 and list(figure.data[0].y) == [341, 342, 343, 344, 345] and "AAPL" in figure.layout.title.text
+
+
+def test_an_index_level_is_not_shown_as_dollars():
+    at = lookup(app(), "^gspc")
+    assert any(m.label == "^GSPC" and m.value == "344.63" for m in at.metric)
+
+
+# ---------- Portfolio tab ----------
+def analyze(at, pick="Sample portfolio"):
+    at.radio[0].set_value(pick).run()
+    next(b for b in at.button if b.label == "Analyze").click()
+    return at.run()
+
+
+def paste(at, text):
+    """Switching the source reruns at once (it is outside the form); the pasted text is only read when the form is submitted, so set it and click in one run."""
+    at.radio[0].set_value("Paste CSV text").run()
+    at.text_area[0].set_value(text)
+    next(b for b in at.button if b.label == "Analyze").click()
+    return at.run()
+
+
+def test_a_sample_portfolio_is_analyzed_and_drawn():
+    api = FakeApi()
+    at = analyze(app(api))
+    assert not at.exception and any(m.label == "Total value" and m.value == "$42,094" for m in at.metric)
+    assert any(m.label == "Diversification score" and m.value == "44 / 100" for m in at.metric)
+    assert len(at.get("plotly_chart")) == 3 and any("mostly stocks" in m.value for m in at.markdown)
+    assert at.session_state["portfolio_csv"].startswith("ticker,shares,avg_cost") and any("no price for" in i.value for i in at.info)
+
+
+def test_the_same_portfolio_is_not_sent_twice_when_the_page_reruns():
+    api = FakeApi()
+    at = analyze(app(api))
+    at.run()
+    at.run()
+    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "analyze"]) == 1
+
+
+def test_pasted_text_that_the_server_rejects_shows_every_problem_and_an_example():
+    at = paste(app(), "bad,data")
+    assert any("could not be read" in e.value for e in at.error) and any("missing column(s): avg_cost" in c.value for c in at.caption)
+    assert any("ticker,shares,avg_cost" in c.value for c in at.get("code")) and "portfolio_csv" not in at.session_state
+
+
+def test_empty_paste_asks_for_input_and_calls_nothing():
+    api = FakeApi()
+    at = app(api)
+    at.radio[0].set_value("Paste CSV text").run()
+    next(b for b in at.button if b.label == "Analyze").click()
+    at.run()
+    assert any("Paste some holdings" in w.value for w in at.warning) and not [s for s in api.sent if isinstance(s, tuple) and s[0] == "analyze"]
+
+
+def test_missing_correlation_is_explained_instead_of_an_empty_chart():
+    at = paste(app(), "ticker,shares,avg_cost\nnocorr,1,1")
+    assert len(at.get("plotly_chart")) == 2 and any("enough overlapping price history" in i.value for i in at.info)
+
+
+def test_an_oversized_paste_is_refused_before_the_server_is_asked():
+    api = FakeApi()
+    at = paste(app(api), "a" * 20001)
+    assert any("too large" in e.value for e in at.error) and not [s for s in api.sent if isinstance(s, tuple) and s[0] == "analyze"]
+
+
+def test_forget_clears_the_portfolio_used_by_chat():
+    at = analyze(app())
+    next(b for b in at.button if b.label == "Forget this portfolio").click()
+    at.run()
+    assert not at.session_state["portfolio_csv"]
+
+
+def test_portfolio_figures_have_the_expected_shapes():
+    from src.web_app.tabs.portfolio import allocation_figure, concentration_figure, correlation_figure
+    assert list(allocation_figure({"A": 60.0, "B": 40.0}).data[0].values) == [60.0, 40.0]
+    assert list(concentration_figure([{"ticker": "A", "weight_pct": 10.0}, {"ticker": "B", "weight_pct": 90.0}]).data[0].y) == ["A", "B"]   # smallest first, so the biggest is on top
+    heat = correlation_figure({"tickers": ["A", "B"], "matrix": [[1.0, 0.5], [0.5, 1.0]]}).data[0]
+    assert (heat.zmin, heat.zmax) == (-1, 1)
+
+
+# ---------- failures must not be re-sent on every rerun ----------
+def test_a_failed_lookup_is_not_re_sent_when_the_page_reruns_but_is_when_the_user_presses_the_button_again():
+    api = FakeApi()
+    at = lookup(app(api), "zzzz")
+    at.run()
+    at.run()
+    assert api.sent.count(("quote", "ZZZZ")) == 1 and any("couldn't find" in e.value for e in at.error)
+    next(b for b in at.button if b.label == "Look up").click()
+    at.run()
+    assert api.sent.count(("quote", "ZZZZ")) == 2
+
+
+def test_a_failed_portfolio_analysis_is_not_re_sent_on_reruns():
+    api = FakeApi()
+    at = paste(app(api), "bad,data")
+    at.run()
+    at.run()
+    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "analyze"]) == 1 and any("could not be read" in e.value for e in at.error)
+
+
+def test_a_failure_is_retried_after_the_wait_has_passed(monkeypatch):
+    import time as real_time
+    from src.web_app import ui_common
+    clock = [real_time.time()]
+    monkeypatch.setattr(ui_common.time, "time", lambda: clock[0])
+    api = FakeApi()
+    at = lookup(app(api), "zzzz")
+    clock[0] += ui_common.RETRY_AFTER_SECONDS + 1
+    at.run()
+    assert api.sent.count(("quote", "ZZZZ")) == 2
+
+
+# ---------- Goals tab ----------
+def plan(at, goal=20000.0, years=5.0, savings=2000.0, risk=None):
+    box = {b.label: b for b in at.number_input}
+    box["Goal amount ($)"].set_value(goal)
+    box["Years to get there"].set_value(years)
+    box["Already saved ($)"].set_value(savings)
+    if risk:
+        next(b for b in at.selectbox if b.label == "Risk level").set_value(risk)
+    next(b for b in at.button if b.label == "Make a plan").click()
+    return at.run()
+
+
+def test_a_goal_plan_shows_three_scenarios_a_chart_and_the_assumptions():
+    api = FakeApi()
+    at = plan(app(api))
+    assert not at.exception and len(at.dataframe) == 1 and len(at.dataframe[0].value) == 3
+    assert [r["Scenario"] for r in at.dataframe[0].value.to_dict("records")] == ["Conservative", "Expected", "Optimistic"]
+    assert any("not forecasts" in i.value for i in at.info) and any("Educational illustration" in c.value for c in at.caption) and len(at.get("plotly_chart")) >= 1
+    assert api.sent[-1] == ("plan", 20000.0, 5.0, 2000.0, "medium")
+
+
+def test_the_chosen_risk_level_is_sent_as_the_servers_word_for_it():
+    api = FakeApi()
+    plan(app(api), risk="High risk (mostly stocks)")
+    assert api.sent[-1][-1] == "high"
+
+
+def test_server_warnings_about_the_plan_are_shown():
+    at = plan(app(), goal=100000.0)
+    assert any("A flag from the server." in w.value for w in at.warning)
+
+
+def test_a_rejected_goal_shows_the_server_message_and_no_chart():
+    at = plan(app(), goal=1.0)
+    assert any("not valid" in e.value for e in at.error) and not any("Projected balance" in str(p.value) for p in at.get("plotly_chart"))
+
+
+def test_rerunning_does_not_ask_the_server_again():
+    api = FakeApi()
+    at = plan(app(api))
+    at.run()
+    at.run()
+    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "plan"]) == 1
+
+
+def test_number_inputs_stop_nonsense_before_it_is_sent():
+    at = app()
+    box = {b.label: b for b in at.number_input}
+    assert box["Goal amount ($)"].min == 1.0 and box["Years to get there"].max == 60.0 and box["Already saved ($)"].min == 0.0
+
+
+def test_projection_figure_has_three_lines_and_a_goal_marker():
+    from src.web_app.tabs.goals import projection_figure
+    figure = projection_figure(FakeApi().plan_goal(20000.0, 5.0, 2000.0, "medium"))
+    assert len(figure.data) == 3 and figure.layout.shapes[0].y0 == 20000.0
+
+
+def test_a_goal_under_a_year_shows_no_chart_that_would_run_past_the_goal_date():
+    at = plan(app(), goal=5000.0, years=0.5, savings=0.0)
+    assert len(at.get("plotly_chart")) == 0 and any("at least one year" in c.value for c in at.caption)
+
+
+def test_the_inflation_sentence_gives_todays_value_of_the_goal():
+    at = plan(app(), goal=20000.0, years=5.0)
+    assert any("will buy about what $17,256 buys today" in c.value for c in at.caption)
+
+
+# ---------- Knowledge tab ----------
+def search(at, query, topic=None):
+    knowledge_radio = next(r for r in at.radio if r.label == "How do you want to explore?")
+    knowledge_radio.set_value("Search").run()
+    next(t for t in at.text_input if t.label == "What do you want to learn about?").set_value(query)
+    if topic:
+        next(s for s in at.selectbox if s.key == "search_topic").set_value(topic)
+    next(b for b in at.button if b.label == "Search").click()
+    return at.run()
+
+
+def test_a_search_shows_the_passage_its_source_and_its_date():
+    at = search(app(), "expense ratio")
+    shown = " ".join(texts(at))
+    assert "An expense ratio is a yearly fee." in shown and "Investor.gov" in shown and "updated 2026-10-30" in shown and "ETF Basics" in shown
+
+
+def test_a_topic_filter_is_sent_as_the_servers_category_name():
+    api = FakeApi()
+    search(app(api), "expense ratio", topic="Etfs")
+    assert ("search", "expense ratio", "etfs") in api.sent
+
+
+def test_a_search_with_no_match_says_so_plainly():
+    at = search(app(), "pizza")
+    assert any("close match" in i.value for i in at.info)
+
+
+def test_a_search_server_failure_is_shown_with_a_retry_hint_and_not_repeated_on_reruns():
+    api = FakeApi()
+    at = search(app(api), "boom")
+    at.run()
+    at.run()
+    assert any("being rebuilt" in e.value for e in at.error) and any("try again" in c.value.lower() for c in at.caption)
+    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "search"]) == 1
+
+
+def test_a_one_letter_search_is_refused_before_the_server_is_asked():
+    api = FakeApi()
+    at = search(app(api), "x")
+    assert any("at least two characters" in w.value for w in at.warning) and not [s for s in api.sent if isinstance(s, tuple) and s[0] == "search"]
+
+
+def test_browse_lists_articles_by_topic_and_shows_the_chosen_one_with_its_source():
+    api = FakeApi()
+    at = app(api)
+    next(r for r in at.radio if r.label == "How do you want to explore?").set_value("Browse articles").run()
+    next(s for s in at.selectbox if s.key == "browse_topic").set_value("Bonds").run()
+    chosen = next(s for s in at.selectbox if s.key == "browse_article")
+    assert chosen.options == ["Bonds Basics  (Bonds, beginner)"]
+    assert ("article", "bonds-basics") in api.sent and any("Body of bonds-basics" in m.value for m in at.markdown)
+    assert any("Source: [Investor.gov](https://investor.gov/x)" in c.value for c in at.caption)
+
+
+def test_an_article_with_no_source_recorded_says_so_instead_of_inventing_one():
+    at = app()
+    next(r for r in at.radio if r.label == "How do you want to explore?").set_value("Browse articles").run()
+    next(s for s in at.selectbox if s.key == "browse_topic").set_value("Taxes").run()
+    assert any("Source: not recorded" in c.value and "last updated unknown" in c.value for c in at.caption)
+
+
+def test_the_article_list_is_fetched_once_however_often_the_page_reruns():
+    api = FakeApi()
+    at = app(api)
+    at.run()
+    at.run()
+    assert api.sent.count("articles") == 1

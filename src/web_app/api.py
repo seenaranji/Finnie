@@ -6,6 +6,7 @@ This file only translates between HTTP and the logic that already exists (agents
 Status codes used: 200 ok | 404 unknown ticker or route | 422 the request body/params are invalid (FastAPI or our own domain checks)
                    500 a bug on our side | 502 a data provider failed and nothing saved could stand in | 503 not ready / dependency down
 """
+import math
 import threading
 import time
 import uuid
@@ -27,7 +28,7 @@ from src.data.errors import MarketDataError, ProviderUnavailable, TickerNotFound
 from src.data.models import PriceHistory, Quote
 from src.rag.hybrid_retriever import StaleKeywordIndexError
 from src.workflow.factory import config_for
-from src.web_app.models import (ChatRequest, ChatResponse, ErrorBody, GoalRequest, GoalResponse, HealthResponse, IndexQuote, KnowledgeResponse, MarketOverview, PassageOut,
+from src.web_app.models import (Article, ArticleSummary, ChatRequest, ChatResponse, ErrorBody, GoalRequest, GoalResponse, HealthResponse, IndexQuote, KnowledgeResponse, MarketOverview, PassageOut,
                                 PortfolioRequest, PortfolioResponse)
 from src.web_app.services import Services
 
@@ -40,6 +41,12 @@ CORS_ORIGINS = ["http://localhost:8501", "http://127.0.0.1:8501"]   # the Stream
 def _error(status: int, code: str, message: str, request: Request, details: list | None = None) -> JSONResponse:
     body = ErrorBody(code=code, message=message, request_id=request.state.request_id, details=details or [])
     return JSONResponse(status_code=status, content=body.model_dump(), headers={"X-Request-ID": request.state.request_id})
+
+
+def _summary(doc) -> ArticleSummary:
+    m = doc.metadata
+    return ArticleSummary(id=doc.id, title=m.get("title", doc.id), category=m.get("category", ""), difficulty=m.get("difficulty"),
+                          source_name=m.get("source_name"), last_updated=m.get("last_updated"))
 
 
 def create_app(services: Services | None = None) -> FastAPI:
@@ -141,7 +148,10 @@ def create_app(services: Services | None = None) -> FastAPI:
         config = request.app.state.services.settings.goal_planning
         plan = goal_calc.plan_goal(body.goal, body.years, body.current_savings, body.risk_profile, config)
         data = {k: getattr(plan, k) for k in ("goal", "years", "current_savings", "risk_profile", "inflation_pct", "inflation_adjusted_goal", "assumptions")}
-        return GoalResponse(**data, scenarios=[s.__dict__ for s in plan.scenarios], flags=goal_calc.assess(plan, config.large_monthly_usd),
+        years_whole = max(1, math.ceil(body.years))
+        scenarios = [{**s.__dict__, "path_by_year": [round(x, 2) for x in goal_calc.balance_path(body.current_savings, s.monthly_needed, s.annual_return_pct, years_whole)]}
+                     for s in plan.scenarios]
+        return GoalResponse(**data, scenarios=scenarios, flags=goal_calc.assess(plan, config.large_monthly_usd),
                             disclaimer="Educational illustration only, not financial advice. Real returns vary and can be negative.")
 
     @app.get("/knowledge/search", response_model=KnowledgeResponse, tags=["knowledge"])
@@ -154,6 +164,18 @@ def create_app(services: Services | None = None) -> FastAPI:
                    for p in found.passages]
         return KnowledgeResponse(query=q, answerable=found.answerable, results=results)
 
+    @app.get("/knowledge/articles", response_model=list[ArticleSummary], tags=["knowledge"])
+    def list_articles(request: Request, category: str | None = Query(None, max_length=40)):
+        """Every article in the knowledge base (no text), optionally one category."""
+        return [_summary(d) for d in request.app.state.services.articles() if category is None or d.metadata.get("category") == category]
+
+    @app.get("/knowledge/articles/{doc_id}", response_model=Article, tags=["knowledge"])
+    def get_article(request: Request, doc_id: str = Path(pattern=r"^[A-Za-z0-9_\-]{1,80}$")):
+        for d in request.app.state.services.articles():
+            if d.id == doc_id:
+                return Article(**_summary(d).model_dump(), source_url=d.metadata.get("source_url"), text=d.text)
+        raise StarletteHTTPException(404, "No article with that id.")
+
     @app.post("/portfolio/analyze", response_model=PortfolioResponse, tags=["portfolio"])
     def analyze_portfolio(body: PortfolioRequest, request: Request):
         """Explain a portfolio from CSV text. Bad CSV is the caller's fault (422 listing every problem); no prices at all is ours to report (502)."""
@@ -165,7 +187,7 @@ def create_app(services: Services | None = None) -> FastAPI:
         if metrics is None:
             raise ProviderUnavailable("I couldn't get prices for your holdings right now. Please try again in a few minutes.")
         return PortfolioResponse(text=result.text, disclaimer=result.disclaimer or DISCLAIMER_STRONG, sources=result.sources, metrics=metrics,
-                                 cost_usd=result.metadata.get("cost_usd", 0.0), latency_s=result.metadata.get("latency_s", 0.0))
+                                 correlation=result.metadata.get("correlation"), cost_usd=result.metadata.get("cost_usd", 0.0), latency_s=result.metadata.get("latency_s", 0.0))
 
     @app.post("/chat", response_model=ChatResponse, tags=["chat"])
     def chat(body: ChatRequest, request: Request):

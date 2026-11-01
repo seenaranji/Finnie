@@ -1,0 +1,7 @@
+# Finnie UI: listen on this computer only. Streamlit's default is every network interface, which would let anyone on the network spend your API money.
+[server]
+address = "127.0.0.1"
+headless = true
+
+[browser]
+gatherUsageStats = false

@@ -10,9 +10,9 @@ from src.data.factory import build_market_data_service
 
 
 class Services:
-    def __init__(self, settings: Settings | None = None, market=None, retriever=None, graph=None, llm=None) -> None:
+    def __init__(self, settings: Settings | None = None, market=None, retriever=None, graph=None, llm=None, articles=None) -> None:
         self.settings = settings or load_settings()
-        self._market, self._retriever, self._graph, self._llm, self._metadata = market, retriever, graph, llm, None
+        self._market, self._retriever, self._graph, self._llm, self._metadata, self._articles = market, retriever, graph, llm, None, articles
         self._lock = threading.Lock()
         self._session_locks: dict[str, threading.Lock] = {}
 
@@ -59,3 +59,11 @@ class Services:
     def session_lock(self, session_id: str) -> threading.Lock:
         with self._lock:
             return self._session_locks.setdefault(session_id, threading.Lock())   # grows by one small lock per session, like the in-memory conversation store
+
+    def articles(self) -> list:
+        """The knowledge base documents, read from disk once."""
+        with self._lock:
+            if self._articles is None:
+                from src.rag.loader import load_documents
+                self._articles = load_documents(PROJECT_ROOT / "knowledge_base")
+            return self._articles
