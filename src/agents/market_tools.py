@@ -13,7 +13,7 @@ from src.data.errors import MarketDataError, TickerNotFound
 from src.data.market_data import MarketDataService
 
 log = get_logger(__name__)
-PERIODS = ["5d", "1mo", "3mo", "6mo", "1y"]
+PERIODS = ["5d", "1mo", "3mo", "6mo", "ytd", "1y"]   # ytd = year to date
 
 TOOL_SCHEMAS = [
     {"type": "function", "function": {
@@ -23,7 +23,7 @@ TOOL_SCHEMAS = [
                        "required": ["symbol"], "additionalProperties": False}}},
     {"type": "function", "function": {
         "name": "get_history",
-        "description": "Summary of daily closing prices for ONE ticker over a period: first and last date and close, highest and lowest close, and the last 5 closes.",
+        "description": "Summary of daily closing prices for ONE ticker over a period (ytd = year to date): first and last date and close, the % change over the period, highest and lowest close, and the last 5 closes.",
         "parameters": {"type": "object", "properties": {"symbol": {"type": "string"}, "period": {"type": "string", "enum": PERIODS}},
                        "required": ["symbol", "period"], "additionalProperties": False}}},
     {"type": "function", "function": {
@@ -82,7 +82,7 @@ class MarketTools:
         closes = [p.close for p in history.points]
         return {"symbol": history.symbol, "period": history.period, "points": len(closes),
                 "first_date": history.points[0].date, "first_close": closes[0], "last_date": history.points[-1].date, "last_close": closes[-1],
-                "highest_close": max(closes), "lowest_close": min(closes), "last_5_closes": closes[-5:], **_freshness(history)}
+                "change_pct": stats.change_pct(closes[-1], closes[0]), "highest_close": max(closes), "lowest_close": min(closes), "last_5_closes": closes[-5:], **_freshness(history)}
 
     def get_stats(self, symbol: str) -> dict:
         quote = self.service.get_quote(symbol)

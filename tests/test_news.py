@@ -151,3 +151,10 @@ def test_no_single_feed_can_crowd_out_the_others():
     svc, _ = service({"https://m1.example/rss": busy, "https://m2.example/rss": quiet})
     sources = [i.source for i in svc.get_market_news().items]
     assert sources.count("Feed0") == 3 and sources.count("Feed1") == 1   # busy feed capped at max_per_feed=3; the older quiet item still appears
+
+
+def test_news_errors_separate_a_user_safe_message_from_internal_detail():
+    with pytest.raises(NewsUnavailable) as error:
+        service({"https://m1.example/rss": requests.Timeout("slow")})[0].get_market_news()
+    assert error.value.user_message == "News is not available right now."          # safe to show
+    assert "Timeout" in str(error.value) and "Timeout" not in error.value.user_message   # the detail stays out of the user text

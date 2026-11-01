@@ -27,7 +27,11 @@ _SYMBOL = re.compile(r"^[A-Z0-9][A-Z0-9.\-]{0,9}$")
 
 
 class NewsUnavailable(RuntimeError):
-    """No feed could be read. The message is safe to show a user."""
+    """No feed could be read. `user_message` is safe to show a user; `str(error)` is the detail for logs (feed names, exception types)."""
+
+    def __init__(self, user_message: str, detail: str = "") -> None:
+        super().__init__(detail or user_message)
+        self.user_message = user_message
 
 
 class NewsItem(BaseModel):
@@ -134,9 +138,9 @@ class NewsService:
             response = self._get(url, timeout=self.config.timeout_seconds, headers={"User-Agent": self.config.user_agent})
             response.raise_for_status()
         except requests.RequestException as error:
-            raise NewsUnavailable(f"{name}: {type(error).__name__}") from error
+            raise NewsUnavailable("A news source is not responding right now.", f"{name}: {type(error).__name__}") from error
         if len(response.content) > MAX_FEED_BYTES:
-            raise NewsUnavailable(f"{name}: feed larger than {MAX_FEED_BYTES} bytes")
+            raise NewsUnavailable("A news source sent something unusable.", f"{name}: feed larger than {MAX_FEED_BYTES} bytes")
         return parse_feed(response.content, name)
 
     def _batch(self, topic: str, feeds: list[tuple[str, str]], per_feed: int | None = None) -> NewsBatch:
@@ -157,7 +161,7 @@ class NewsService:
             if stale:   # all feeds down: an old digest, flagged by its own fetched_at, beats nothing
                 log.warning("all news feeds failed; serving a stale batch (%.0fs old)", stale[1])
                 return stale[0].model_copy(update={"feed_errors": errors})
-            raise NewsUnavailable("News is not available right now. " + "; ".join(errors))
+            raise NewsUnavailable("News is not available right now.", "; ".join(errors))
         cfg, cutoff = self.config, self._now() - timedelta(days=self.config.max_age_days)
         items = [sanitize_item(i, cfg.max_title_chars, cfg.max_summary_chars) for i in raw]
         items = [i for i in items if i.published is None or i.published >= cutoff]

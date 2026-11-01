@@ -113,6 +113,13 @@ class NewsConfig(BaseModel):
     market_feeds: list[NewsFeed]
 
 
+class WorkflowConfig(BaseModel):
+    history_turns_for_rewrite: int
+    clarify_reply: str
+    fallback_reply: str
+    needs_portfolio_reply: str
+
+
 class Secrets(BaseSettings):
     """Read from environment variables / .env. Missing is allowed here (None);
     code that actually needs a key calls the require_* method for a clear error."""
@@ -138,6 +145,7 @@ class Settings(BaseModel):
     alpha_vantage: AlphaVantageConfig = AlphaVantageConfig()
     goal_planning: GoalPlanningConfig
     news: NewsConfig
+    workflow: WorkflowConfig
     secrets: Secrets
 
     def masked(self) -> dict:

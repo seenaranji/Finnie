@@ -1,0 +1,217 @@
+[
+  {
+    "scenario": "market provider down from the start",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 2.8483849999975064,
+    "route": "market",
+    "error_recorded": null,
+    "text": "I couldn't retrieve the latest market data for Apple (AAPL) because the market data service is not responding right now. \n\nMarket data includes information like the current price, previous closing price, and daily percentage change. This data helps investors understand how a stock is performing on a given day. If you're interested, you might try checking again later or using a financial news website or app for the latest updates.",
+    "raised": null
+  },
+  {
+    "scenario": "market provider killed MID-RUN (stale served)",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 7.415672457995242,
+    "route": "market",
+    "error_recorded": null,
+    "text": "The last available price for Apple (AAPL) is $344.63, with a previous close of $348.91, reflecting a daily change of -1.23% as of 2026-10-30 (source: yfinance). This data may be out of date.\n\nThis means that Apple's stock price decreased by 1.23% from the previous trading day. A decrease in price can happen for various reasons, such as market trends or company news.",
+    "raised": null
+  },
+  {
+    "scenario": "unknown ticker",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 2.595834792002279,
+    "route": "market",
+    "error_recorded": null,
+    "text": "I couldn't find any market data for a ticker symbol called FAKEXYZ. It might not be a valid or recognized symbol. If you have another symbol in mind, feel free to ask!",
+    "raised": null
+  },
+  {
+    "scenario": "news feeds down",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 1.11342520800099,
+    "route": "news",
+    "error_recorded": {
+      "node": "news",
+      "type": "ConnectionError",
+      "message": "injected: feeds unreachable"
+    },
+    "text": "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment.",
+    "raised": null
+  },
+  {
+    "scenario": "vector store broken (finance_qa)",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 0.7252545000010286,
+    "route": "finance_qa",
+    "error_recorded": {
+      "node": "finance_qa",
+      "type": "RuntimeError",
+      "message": "injected: vector store corrupted"
+    },
+    "text": "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment.",
+    "raised": null
+  },
+  {
+    "scenario": "vector store broken (tax)",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 0.7052711670039571,
+    "route": "tax",
+    "error_recorded": {
+      "node": "tax",
+      "type": "RuntimeError",
+      "message": "injected: vector store corrupted"
+    },
+    "text": "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment.",
+    "raised": null
+  },
+  {
+    "scenario": "router model unreachable",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 0.003041957999812439,
+    "route": "fallback",
+    "error_recorded": {
+      "node": "router",
+      "type": "ConnectionError",
+      "message": "injected: model unreachable"
+    },
+    "text": "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment.",
+    "raised": null
+  },
+  {
+    "scenario": "answer model unreachable (router fine)",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 1.2161190840051859,
+    "route": "tax",
+    "error_recorded": {
+      "node": "tax",
+      "type": "ConnectionError",
+      "message": "injected: model unreachable"
+    },
+    "text": "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment.",
+    "raised": null
+  },
+  {
+    "scenario": "goal agent model unreachable",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 0.5407916660042247,
+    "route": "goal",
+    "error_recorded": {
+      "node": "goal",
+      "type": "ConnectionError",
+      "message": "injected: model unreachable"
+    },
+    "text": "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment.",
+    "raised": null
+  },
+  {
+    "scenario": "resolver model fails on turn 2",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 3.096713416998682,
+    "route": "clarify",
+    "error_recorded": null,
+    "text": "I want to make sure I help with the right thing. Are you asking about a concept (like ETFs or bonds), a stock or fund price, your own portfolio, a savings goal, the news, or taxes? Tell me a little more and I'll take it from there.",
+    "raised": null
+  },
+  {
+    "scenario": "oversized message (3,000 characters)",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "says_unavailable": true,
+      "disclaimer": true,
+      "fast_enough": true,
+      "no_invented_price": true
+    },
+    "seconds": 0.7951397079959861,
+    "route": "finance_qa",
+    "error_recorded": {
+      "node": "finance_qa",
+      "type": "ValidationError",
+      "message": "1 validation error for AgentRequest\nmessage\n  String should have at most 2000 characters [type=string_too_long, input_value='What is an ETF? What is ...n ETF? What is an ETF? ', input_type=str]\n    Fo"
+    },
+    "text": "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment.",
+    "raised": null
+  }
+]

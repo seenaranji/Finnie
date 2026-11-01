@@ -159,3 +159,11 @@ def test_daily_count_survives_a_restart_and_resets_on_a_new_day(tmp_path):
     day[0] = "2026-11-01"
     assert CallBudget(25, 0, state, today=lambda: day[0]).used_today == 0
     assert json.loads(state.read_text())["count"] == 2
+
+
+def test_ytd_history_from_alpha_vantage_keeps_the_latest_year_and_is_honest_when_it_does_not_reach_january():
+    series = {f"2026-{m:02d}-15": {"4. close": str(100 + m)} for m in range(1, 11)} | {"2025-12-15": {"4. close": "99"}}
+    assert make_alpha(FakeHttp({"Time Series (Daily)": series})).get_history("AAPL", "ytd").period == "ytd"        # reaches January
+    short = {f"2026-{m:02d}-15": {"4. close": str(100 + m)} for m in range(6, 11)}
+    history = make_alpha(FakeHttp({"Time Series (Daily)": short})).get_history("AAPL", "ytd")
+    assert history.period == "5d" and len(history.points) == 5                                                       # starts in June: says so

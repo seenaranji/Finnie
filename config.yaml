@@ -80,3 +80,10 @@ news:
     - {name: "CNBC Finance", url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664"}
     - {name: "MarketWatch Top Stories", url: "https://feeds.content.dowjones.io/public/rss/mw_topstories"}
     - {name: "Federal Reserve Press Releases", url: "https://www.federalreserve.gov/feeds/press_all.xml"}
+
+# Workflow (Steps 20-21): fixed replies, so they cost nothing, never vary and cannot hallucinate.
+workflow:
+  history_turns_for_rewrite: 3     # how many recent exchanges the "it/that" resolver may read
+  clarify_reply: "I want to make sure I help with the right thing. Are you asking about a concept (like ETFs or bonds), a stock or fund price, your own portfolio, a savings goal, the news, or taxes? Tell me a little more and I'll take it from there."
+  fallback_reply: "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment."
+  needs_portfolio_reply: "To analyze your portfolio I need your holdings. Please upload or paste them as a CSV with the columns ticker, shares and avg_cost."

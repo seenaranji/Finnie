@@ -105,3 +105,9 @@ def test_the_tool_trace_records_cache_hits():
     first = tools.run("get_quote", {"symbol": "AAPL"})[1]
     second = tools.run("get_quote", {"symbol": "AAPL"})[1]
     assert (first["cache_misses"], second["cache_hits"]) == (1, 1)
+
+
+def test_history_reports_the_period_change_computed_in_python_and_supports_ytd():
+    result = make_tools(260).get_history("AAPL", "ytd")
+    assert result["period"] == "ytd" and result["change_pct"] == round((result["last_close"] / result["first_close"] - 1) * 100, 2)
+    assert make_tools().run("get_history", {"symbol": "AAPL", "period": "ytd"})[0].get("error") is None

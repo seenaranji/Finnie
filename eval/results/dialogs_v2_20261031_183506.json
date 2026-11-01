@@ -1,0 +1,292 @@
+{
+  "turns_ok": 24,
+  "turns": 24,
+  "dialogs": [
+    {
+      "id": "d01",
+      "note": "spec example: concept, then a ticker, then 'it'",
+      "ok": true,
+      "turns": [
+        {
+          "say": "What's an ETF?",
+          "resolved": "What's an ETF?",
+          "route": "finance_qa",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "How is VOO doing today?",
+          "resolved": "How is VOO doing today?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "And how much is it up this year?",
+          "resolved": "How much is VOO up this year?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d02",
+      "note": "switch company, then compare both",
+      "ok": true,
+      "turns": [
+        {
+          "say": "How is Apple doing?",
+          "resolved": "How is Apple doing?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "What about Microsoft?",
+          "resolved": "How is Microsoft doing?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "Which one is more volatile?",
+          "resolved": "Which one is more volatile, Apple or Microsoft?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d03",
+      "note": "goal slot filling across replies that are meaningless alone",
+      "ok": true,
+      "turns": [
+        {
+          "say": "I want to save $50,000 in 5 years",
+          "resolved": "I want to save $50,000 in 5 years",
+          "route": "goal",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "I have $2,000 saved",
+          "resolved": "I want to save $50,000 in 5 years and I have $2,000 saved.",
+          "route": "goal",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "medium risk",
+          "resolved": "I want to save $50,000 in 5 years and I have $2,000 saved with a medium risk.",
+          "route": "goal",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d04",
+      "note": "account concept, then 'it'",
+      "ok": true,
+      "turns": [
+        {
+          "say": "What's a Roth IRA?",
+          "resolved": "What's a Roth IRA?",
+          "route": "finance_qa",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "How much can I contribute to it this year?",
+          "resolved": "How much can I contribute to a Roth IRA this year?",
+          "route": "tax",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d05",
+      "note": "concept, then 'they'",
+      "ok": true,
+      "turns": [
+        {
+          "say": "Tell me about bonds",
+          "resolved": "Tell me about bonds",
+          "route": "finance_qa",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "How are they taxed?",
+          "resolved": "How are bonds taxed?",
+          "route": "tax",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d06",
+      "note": "news, then 'and X?'",
+      "ok": true,
+      "turns": [
+        {
+          "say": "What's the latest news on Tesla?",
+          "resolved": "What's the latest news on Tesla?",
+          "route": "news",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "And Apple?",
+          "resolved": "What's the latest news on Apple?",
+          "route": "news",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d07",
+      "note": "no antecedent first, then the user supplies it",
+      "ok": true,
+      "turns": [
+        {
+          "say": "How is it doing?",
+          "resolved": "How is it doing?",
+          "route": "clarify",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "I mean VOO",
+          "resolved": "How is VOO doing?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d08",
+      "note": "topic switch: the old topic must NOT leak into the new question",
+      "ok": true,
+      "turns": [
+        {
+          "say": "What is inflation?",
+          "resolved": "What is inflation?",
+          "route": "finance_qa",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "How is Apple doing?",
+          "resolved": "How is Apple doing?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d09",
+      "note": "portfolio follow-up",
+      "ok": true,
+      "turns": [
+        {
+          "say": "Analyze my portfolio",
+          "resolved": "Analyze my portfolio",
+          "route": "portfolio",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "Is it diversified?",
+          "resolved": "Is my portfolio diversified?",
+          "route": "portfolio",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    },
+    {
+      "id": "d10",
+      "note": "small talk in the middle, then a follow-up",
+      "ok": true,
+      "turns": [
+        {
+          "say": "What's NVDA's price?",
+          "resolved": "What's NVDA's price?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "Thanks!",
+          "resolved": "Thanks!",
+          "route": "clarify",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        },
+        {
+          "say": "And Tesla's?",
+          "resolved": "What's Tesla's price?",
+          "route": "market",
+          "ok": true,
+          "route_ok": true,
+          "has_ok": true,
+          "not_ok": true
+        }
+      ]
+    }
+  ]
+}

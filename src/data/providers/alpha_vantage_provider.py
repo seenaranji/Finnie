@@ -70,6 +70,11 @@ class AlphaVantageProvider(MarketDataProvider):
             ordered = sorted((day, float(bar["4. close"])) for day, bar in series.items())
         except (TypeError, KeyError, ValueError, AttributeError) as error:
             raise ProviderUnavailable(_UNAVAILABLE, f"malformed TIME_SERIES_DAILY payload: {error!r}") from error
+        if period == "ytd":   # every bar of the latest year in the data (the free tier's 100 bars may not reach back to January: the label says so)
+            latest_year = ordered[-1][0][:4]
+            kept, wanted = [row for row in ordered if row[0].startswith(latest_year)], 0
+            return PriceHistory(symbol=symbol, period="ytd" if kept[0][0][5:7] == "01" else f"{len(kept)}d", source=self.name,
+                                points=[PricePoint(date=d, close=round(c, 4)) for d, c in kept])
         wanted = _PERIOD_DAYS.get(period, 21)
         kept = ordered[-wanted:]
         label = period if len(kept) >= wanted else f"{len(kept)}d"   # free tier has only ~100 bars: say what we really cover
