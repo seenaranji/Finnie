@@ -1,0 +1,281 @@
+{
+  "v5": {
+    "catch_rate": 1.0,
+    "stopped_early": 1.0,
+    "false_blocks": 0,
+    "raw_false_blocks": 0,
+    "in_scope": 10,
+    "in_scope_accuracy": 1.0,
+    "tokens": 1125.4375,
+    "cost": 0.00017359687500000004,
+    "p50_latency": 0.7024513329997717,
+    "results": [
+      {
+        "id": "s59",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "Is buying a laundromat a good way to build wealth?",
+        "expect": [
+          "finance_qa"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7242940830001316,
+        "tokens": 1127,
+        "cost_usd": 0.000174
+      },
+      {
+        "id": "s60",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "Should I use my tax refund to pay down my credit card or put it in savings?",
+        "expect": [
+          "finance_qa",
+          "tax"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.5729200000005221,
+        "tokens": 1132,
+        "cost_usd": 0.00017475
+      },
+      {
+        "id": "s61",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "How much would a $5 daily latte habit cost me by retirement?",
+        "expect": [
+          "finance_qa",
+          "goal"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6427726659985638,
+        "tokens": 1128,
+        "cost_usd": 0.00017414999999999998
+      },
+      {
+        "id": "s62",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "Is a coffee shop franchise worth the investment compared with index funds?",
+        "expect": [
+          "finance_qa"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8769376250002097,
+        "tokens": 1127,
+        "cost_usd": 0.000174
+      },
+      {
+        "id": "s63",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "What's the price of wheat futures today?",
+        "expect": [
+          "market"
+        ],
+        "pred": "market",
+        "raw_route": "market",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.578459667000061,
+        "tokens": 1120,
+        "cost_usd": 0.00017205
+      },
+      {
+        "id": "s64",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "How does a drought affect corn stocks and commodity prices?",
+        "expect": [
+          "finance_qa",
+          "news",
+          "market"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.733864582998649,
+        "tokens": 1125,
+        "cost_usd": 0.0001737
+      },
+      {
+        "id": "s65",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "Is it smarter to rent out my spare room or invest the money I'd spend renovating it?",
+        "expect": [
+          "finance_qa"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.4194521249992249,
+        "tokens": 1132,
+        "cost_usd": 0.00017475
+      },
+      {
+        "id": "s66",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "Are tips I earn as a waiter taxable?",
+        "expect": [
+          "tax"
+        ],
+        "pred": "tax",
+        "raw_route": "tax",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.47106970800086856,
+        "tokens": 1121,
+        "cost_usd": 0.00017219999999999998
+      },
+      {
+        "id": "s67",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "How should I think about paying for a wedding versus saving for a house?",
+        "expect": [
+          "goal",
+          "finance_qa"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7251550419987325,
+        "tokens": 1129,
+        "cost_usd": 0.00017429999999999998
+      },
+      {
+        "id": "s68",
+        "split": "stress2",
+        "kind": "borderline",
+        "query": "What's happening with Boeing shares after the strike?",
+        "expect": [
+          "news",
+          "market"
+        ],
+        "pred": "news",
+        "raw_route": "news",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7299727909994544,
+        "tokens": 1121,
+        "cost_usd": 0.00017219999999999998
+      },
+      {
+        "id": "s69",
+        "split": "stress2",
+        "kind": "off_topic",
+        "query": "What's the best way to save a goal in soccer?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6806085829994117,
+        "tokens": 1125,
+        "cost_usd": 0.0001737
+      },
+      {
+        "id": "s70",
+        "split": "stress2",
+        "kind": "off_topic",
+        "query": "What is a stock pot used for in cooking?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.621767374999763,
+        "tokens": 1124,
+        "cost_usd": 0.00017355
+      },
+      {
+        "id": "s71",
+        "split": "stress2",
+        "kind": "off_topic",
+        "query": "How do I bond with my new puppy?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7968583750007383,
+        "tokens": 1123,
+        "cost_usd": 0.00017339999999999999
+      },
+      {
+        "id": "s72",
+        "split": "stress2",
+        "kind": "off_topic",
+        "query": "How do I bank the fire in a wood stove?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8333180000008724,
+        "tokens": 1125,
+        "cost_usd": 0.0001737
+      },
+      {
+        "id": "s73",
+        "split": "stress2",
+        "kind": "off_topic",
+        "query": "How do I budget my time for exam revision?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8081147499997314,
+        "tokens": 1124,
+        "cost_usd": 0.00017355
+      },
+      {
+        "id": "s74",
+        "split": "stress2",
+        "kind": "off_topic",
+        "query": "What is the market square in Prague famous for?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.625129084000946,
+        "tokens": 1124,
+        "cost_usd": 0.00017355
+      }
+    ]
+  }
+}

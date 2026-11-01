@@ -8,23 +8,33 @@ Choices that make it dependable:
 Prompts are versioned in PROMPTS so two versions can be compared with the same evaluation code.
 """
 import json
+import re
 from dataclasses import asdict, dataclass
 
 from src.core.llm import LLMClient
 from src.core.logging import get_logger
 
 log = get_logger(__name__)
-ROUTES = ("finance_qa", "market", "portfolio", "goal", "news", "tax", "clarify")
+ROUTES_V2 = ("finance_qa", "market", "portfolio", "goal", "news", "tax", "clarify")   # the labels prompts v1 and v2 know
+ROUTES = ROUTES_V2 + ("out_of_scope",)                                                 # prompt v3 adds the scope gate (Step 21a)
 CONFIDENCE = ("high", "medium", "low")
 DEFAULT_ROUTE = "clarify"
+# A code-level veto (Step 21a). If the model says out_of_scope but the message contains money words, ASK (clarify) instead of blocking: wrongly blocking a real
+# finance question is worse than a wasted call. It costs some catches on off-topic messages that happen to use a money word ("bank the fire"); those still stop at clarify.
+FINANCE_WORDS = re.compile(r"\b(invest\w*|stocks?|shares?|shareholders?|bonds?|etfs?|funds?|dividends?|portfolios?|retire\w*|401\(?k\)?|iras?|roth|tax\w*|loans?|debts?|mortgages?|"
+                           r"interest|inflation|savings?|saving|saved|budget\w*|crypto\w*|bitcoin|finance\w*|financial|credit|brokers?\w*|equity|assets?|income|salary|wealth|"
+                           r"money|futures|commodit\w*|earnings|profits?|returns?|net worth|paycheck|refund)\b", re.I)
 
-SCHEMA = {
-    "type": "object",
-    "properties": {"route": {"type": "string", "enum": list(ROUTES)}, "confidence": {"type": "string", "enum": list(CONFIDENCE)}},
-    "required": ["route", "confidence"],
-    "additionalProperties": False,
-}
-RESPONSE_FORMAT = {"type": "json_schema", "json_schema": {"name": "route", "strict": True, "schema": SCHEMA}}
+
+
+def response_format_for(labels: tuple[str, ...]) -> dict:
+    """A strict schema whose route enum is exactly the labels that prompt version knows, so an old prompt can never answer with a label it was not told about."""
+    schema = {"type": "object", "properties": {"route": {"type": "string", "enum": list(labels)}, "confidence": {"type": "string", "enum": list(CONFIDENCE)}},
+              "required": ["route", "confidence"], "additionalProperties": False}
+    return {"type": "json_schema", "json_schema": {"name": "route", "strict": True, "schema": schema}}
+
+
+RESPONSE_FORMAT = response_format_for(ROUTES_V2)   # kept for the v1/v2 comparison
 
 _DEFINITIONS = """You route a user's message to exactly one agent and say how confident you are. Reply with the route and the confidence only.
 
@@ -62,7 +72,43 @@ Examples:
 "What is Intel's beta right now?" -> market, high
 "What did the Fed decide this week?" -> news, high
 "How is my retirement account allocated?" -> portfolio, medium"""
-PROMPTS = {"v1": _DEFINITIONS, "v2": _V2_DEFINITIONS + _V2_EXAMPLES}
+_V2 = _V2_DEFINITIONS + _V2_EXAMPLES
+_OUT_OF_SCOPE = ("\n- out_of_scope: the message is NOT about money, investing, saving, taxes, markets or personal finance "
+                 "(cooking, sports, poems, jokes, weather, trivia, coding, translation, health, travel).")
+_V3_EXTRA = """
+
+Scope rules:
+- out_of_scope is only for messages with NO connection to money or finance. A message about the price or stock of a company, inflation or the cost of living, budgeting, saving, taxes, or investing in something is IN scope even if it mentions food, sports or everyday items.
+- When unsure whether a message is about finance, choose a finance route (or clarify), NOT out_of_scope. Blocking a real finance question is worse than letting an off-topic one through.
+
+More examples:
+"How much does a haircut cost?" -> out_of_scope, high
+"Tell me a joke" -> out_of_scope, high
+"Who is the best player in the NBA?" -> out_of_scope, high
+"Is inflation raising my rent?" -> finance_qa, high
+"How is Starbucks stock doing?" -> market, high
+"Should I budget for travel?" -> finance_qa, medium
+"What is a bond?" -> finance_qa, high"""
+_V3 = _V2.replace("\n\nConfidence:", _OUT_OF_SCOPE + "\n\nConfidence:", 1) + _V3_EXTRA
+# v4 (written after the stress set showed a real finance question blocked): explicit rules for finance questions that wear everyday clothes, and "only when SURE"
+_V4_EXTRA = """
+
+More scope rules:
+- A question about whether something is a good INVESTMENT or business to put money into, whether to pay off debt or invest, how a purchase or habit adds up over time, or how earnings are TAXED is a finance question, whatever the everyday topic (a restaurant, a franchise, a loan, a latte habit).
+- Choose out_of_scope only when you are SURE that nothing about money is being asked (recipes, sports scores, poems, weather, trivia, coding, translation, health, travel).
+More examples:
+"Is buying a self-storage unit a good investment?" -> finance_qa, high
+"Should I pay down my student loan or save for a house?" -> finance_qa, high"""
+# v5 (written after the router test split and then stress3 showed uploaded-file requests blocked): in this app a message about the user's own file is a portfolio request
+_V5_EXTRA = """
+- This app lets users upload their holdings. A message about the user's uploaded file, CSV, spreadsheet, statement, holdings or account data is a PORTFOLIO request. If you cannot tell what a file contains, choose portfolio or clarify, NEVER out_of_scope.
+More examples:
+"Check the spreadsheet I attached" -> portfolio, high
+"Go through my account statement" -> portfolio, medium"""
+PROMPTS = {"v1": _DEFINITIONS, "v2": _V2, "v3": _V3, "v4": _V3 + _V4_EXTRA, "v5": _V3 + _V4_EXTRA + _V5_EXTRA}
+assert "out_of_scope" in PROMPTS["v3"] and "out_of_scope" not in PROMPTS["v2"]
+LABELS = {"v1": ROUTES_V2, "v2": ROUTES_V2, "v3": ROUTES, "v4": ROUTES, "v5": ROUTES}   # which labels each prompt version may produce
+DEFAULT_PROMPT_VERSION = "v5"   # v3 blocked a real finance question and asked too often (stress sets) -> v4; v4 blocked uploaded-file requests -> v5. The finance-word veto stays OFF (it cost catches and added nothing with v4)
 
 
 @dataclass
@@ -77,25 +123,28 @@ class RouteDecision:
     cost_usd: float
     latency_s: float
     fell_back: bool = False    # True = the reply was unusable and DEFAULT_ROUTE was used
+    vetoed: bool = False       # True = the model said out_of_scope but the message has money words, so it was sent to clarify instead of blocked
 
     def as_dict(self) -> dict:
         return asdict(self)
 
 
 class Router:
-    def __init__(self, llm: LLMClient, model_key: str = "router_model", prompt_version: str = "v2", low_confidence_to_clarify: bool = True) -> None:
+    def __init__(self, llm: LLMClient, model_key: str = "router_model", prompt_version: str = DEFAULT_PROMPT_VERSION, low_confidence_to_clarify: bool = True,
+                 finance_veto: bool = False) -> None:
         if prompt_version not in PROMPTS:
             raise ValueError(f"prompt_version must be one of {sorted(PROMPTS)}")
         self.llm, self.model_key, self.prompt_version = llm, model_key, prompt_version
-        self.low_confidence_to_clarify = low_confidence_to_clarify
+        self.labels, self.response_format = LABELS[prompt_version], response_format_for(LABELS[prompt_version])
+        self.low_confidence_to_clarify, self.finance_veto = low_confidence_to_clarify, finance_veto
 
     def classify(self, message: str) -> RouteDecision:
         result = self.llm.chat(f"MESSAGE: {message}", system=PROMPTS[self.prompt_version], model_key=self.model_key, temperature=0,
-                               max_output_tokens=30, response_format=RESPONSE_FORMAT)
+                               max_output_tokens=30, response_format=self.response_format)
         try:
             data = json.loads(result.text)
             raw_route, confidence, fell_back = data["route"], data["confidence"], False
-            if raw_route not in ROUTES or confidence not in CONFIDENCE:
+            if raw_route not in self.labels or confidence not in CONFIDENCE:
                 raise ValueError(result.text)
         except (json.JSONDecodeError, KeyError, TypeError, ValueError):
             log.warning("unusable router reply %r; falling back to %s", result.text[:80], DEFAULT_ROUTE)
@@ -104,5 +153,8 @@ class Router:
         overridden = self.low_confidence_to_clarify and confidence == "low" and raw_route != "clarify"
         if overridden:
             route = "clarify"
+        vetoed = self.finance_veto and route == "out_of_scope" and bool(FINANCE_WORDS.search(message))
+        if vetoed:
+            route = "clarify"
         return RouteDecision(route, confidence, raw_route, overridden, result.model, result.input_tokens, result.output_tokens,
-                             result.cost_usd, result.latency_s, fell_back)
+                             result.cost_usd, result.latency_s, fell_back, vetoed)

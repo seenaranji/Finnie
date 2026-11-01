@@ -24,8 +24,9 @@ from src.workflow.router import Router
 
 
 def build_default_graph(checkpointer="memory", settings=None, llm=None, router_llm=None, retriever=None, market_service=None, news_service=None,
-                        router_prompt="v2"):
-    """checkpointer: "memory" (default, an in-process InMemorySaver), None (no memory), or any LangGraph checkpointer."""
+                        router_prompt=None, router=None):
+    """checkpointer: "memory" (default, an in-process InMemorySaver), None (no memory), or any LangGraph checkpointer.
+    `router` replaces the router entirely (used to simulate a world without the scope gate)."""
     settings = settings or load_settings()
     llm = llm or LLMClient(settings)
     retriever = retriever or HybridRetriever(settings=settings)
@@ -36,7 +37,8 @@ def build_default_graph(checkpointer="memory", settings=None, llm=None, router_l
                     portfolio=PortfolioAnalysisAgent(llm, market_service, metadata), goal=GoalPlanningAgent(llm, settings.goal_planning),
                     news=NewsAgent(llm, news_service, defense="full", settings=settings), tax=TaxEducationAgent(llm, retriever))
     saver = InMemorySaver() if checkpointer == "memory" else checkpointer
-    return build_graph(llm, Router(router_llm or llm, prompt_version=router_prompt), agents, settings.workflow, checkpointer=saver)
+    router = router or Router(router_llm or llm, **({"prompt_version": router_prompt} if router_prompt else {}))   # default: the Router's own default prompt
+    return build_graph(llm, router, agents, settings.workflow, checkpointer=saver)
 
 
 def config_for(session_id: str) -> dict:

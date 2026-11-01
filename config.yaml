@@ -86,4 +86,6 @@ workflow:
   history_turns_for_rewrite: 3     # how many recent exchanges the "it/that" resolver may read
   clarify_reply: "I want to make sure I help with the right thing. Are you asking about a concept (like ETFs or bonds), a stock or fund price, your own portfolio, a savings goal, the news, or taxes? Tell me a little more and I'll take it from there."
   fallback_reply: "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment."
+  scope_reply: "I can only help with finance and investing topics. Try asking about ETFs, saving for a goal, or how a stock is doing."
+  scope_log_path: logs/out_of_scope.jsonl   # every out-of-scope decision is appended here, so wrongly blocked questions can be reviewed
   needs_portfolio_reply: "To analyze your portfolio I need your holdings. Please upload or paste them as a CSV with the columns ticker, shares and avg_cost."

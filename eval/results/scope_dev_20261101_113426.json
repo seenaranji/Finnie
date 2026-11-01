@@ -1,0 +1,338 @@
+{
+  "v5": {
+    "catch_rate": 1.0,
+    "stopped_early": 1.0,
+    "false_blocks": 0,
+    "raw_false_blocks": 0,
+    "in_scope": 10,
+    "in_scope_accuracy": 1.0,
+    "tokens": 1120.55,
+    "cost": 0.0001727175,
+    "p50_latency": 0.7374578124990876,
+    "results": [
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "What's the price of a large pepperoni pizza?",
+        "expect": "out_of_scope",
+        "id": "s01",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8498960830002034,
+        "tokens": 1124,
+        "cost_usd": 0.00017355
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "Who won the basketball game last night?",
+        "expect": "out_of_scope",
+        "id": "s02",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.579949958000725,
+        "tokens": 1122,
+        "cost_usd": 0.00017325
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "Write me a haiku about autumn",
+        "expect": "out_of_scope",
+        "id": "s03",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.799190166999324,
+        "tokens": 1121,
+        "cost_usd": 0.0001731
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "What's the weather like in Tokyo this weekend?",
+        "expect": "out_of_scope",
+        "id": "s04",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.5408209999986866,
+        "tokens": 1123,
+        "cost_usd": 0.00017339999999999999
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "How do I bake sourdough bread?",
+        "expect": "out_of_scope",
+        "id": "s05",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7122076249997917,
+        "tokens": 1123,
+        "cost_usd": 0.00017339999999999999
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "Translate 'thank you' into French",
+        "expect": "out_of_scope",
+        "id": "s06",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.9199211249997461,
+        "tokens": 1121,
+        "cost_usd": 0.0001731
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "What is the capital of Canada?",
+        "expect": "out_of_scope",
+        "id": "s07",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7529545409997809,
+        "tokens": 1121,
+        "cost_usd": 0.0001731
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "Recommend a good sci-fi novel",
+        "expect": "out_of_scope",
+        "id": "s08",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7808181250002235,
+        "tokens": 1120,
+        "cost_usd": 0.00017294999999999998
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "How do I fix a leaky faucet?",
+        "expect": "out_of_scope",
+        "id": "s09",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.785095958999591,
+        "tokens": 1123,
+        "cost_usd": 0.00017339999999999999
+      },
+      {
+        "split": "dev",
+        "kind": "off_topic",
+        "query": "What's the best pizza topping?",
+        "expect": "out_of_scope",
+        "id": "s10",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8018967079988215,
+        "tokens": 1120,
+        "cost_usd": 0.00017294999999999998
+      },
+      {
+        "split": "dev",
+        "kind": "borderline",
+        "query": "Is inflation making groceries more expensive?",
+        "expect": [
+          "finance_qa",
+          "news"
+        ],
+        "id": "s11",
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6862419999997655,
+        "tokens": 1121,
+        "cost_usd": 0.0001731
+      },
+      {
+        "split": "dev",
+        "kind": "borderline",
+        "query": "How is Domino's stock doing?",
+        "expect": [
+          "market"
+        ],
+        "id": "s12",
+        "pred": "market",
+        "raw_route": "market",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.5940832080013934,
+        "tokens": 1119,
+        "cost_usd": 0.0001719
+      },
+      {
+        "split": "dev",
+        "kind": "borderline",
+        "query": "Should I budget for eating out?",
+        "expect": [
+          "finance_qa",
+          "goal"
+        ],
+        "id": "s13",
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.7571831669993117,
+        "tokens": 1121,
+        "cost_usd": 0.0001731
+      },
+      {
+        "split": "dev",
+        "kind": "borderline",
+        "query": "What's the price of gold today?",
+        "expect": [
+          "market"
+        ],
+        "id": "s14",
+        "pred": "market",
+        "raw_route": "market",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7344534999992902,
+        "tokens": 1119,
+        "cost_usd": 0.0001719
+      },
+      {
+        "split": "dev",
+        "kind": "borderline",
+        "query": "How much should I save for a vacation next year?",
+        "expect": [
+          "goal"
+        ],
+        "id": "s15",
+        "pred": "goal",
+        "raw_route": "goal",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.725132499999745,
+        "tokens": 1123,
+        "cost_usd": 0.0001725
+      },
+      {
+        "split": "dev",
+        "kind": "finance",
+        "query": "What is an ETF?",
+        "expect": [
+          "finance_qa"
+        ],
+        "id": "s16",
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6059294589995261,
+        "tokens": 1119,
+        "cost_usd": 0.00017279999999999997
+      },
+      {
+        "split": "dev",
+        "kind": "finance",
+        "query": "How are capital gains taxed?",
+        "expect": [
+          "tax",
+          "finance_qa"
+        ],
+        "id": "s17",
+        "pred": "tax",
+        "raw_route": "tax",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.810762999999497,
+        "tokens": 1118,
+        "cost_usd": 0.00017175
+      },
+      {
+        "split": "dev",
+        "kind": "finance",
+        "query": "How is VOO doing today?",
+        "expect": [
+          "market"
+        ],
+        "id": "s18",
+        "pred": "market",
+        "raw_route": "market",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6298302080012945,
+        "tokens": 1119,
+        "cost_usd": 0.0001719
+      },
+      {
+        "split": "dev",
+        "kind": "finance",
+        "query": "Analyze my portfolio",
+        "expect": [
+          "portfolio"
+        ],
+        "id": "s19",
+        "pred": "portfolio",
+        "raw_route": "portfolio",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.740462124998885,
+        "tokens": 1115,
+        "cost_usd": 0.00017130000000000002
+      },
+      {
+        "split": "dev",
+        "kind": "finance",
+        "query": "What's the latest news on Apple?",
+        "expect": [
+          "news"
+        ],
+        "id": "s20",
+        "pred": "news",
+        "raw_route": "news",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6542313330010074,
+        "tokens": 1119,
+        "cost_usd": 0.0001719
+      }
+    ]
+  }
+}

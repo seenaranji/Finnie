@@ -1,0 +1,215 @@
+{
+  "v4": {
+    "catch_rate": 1.0,
+    "stopped_early": 1.0,
+    "false_blocks": 1,
+    "raw_false_blocks": 1,
+    "in_scope": 8,
+    "in_scope_accuracy": 0.875,
+    "tokens": 1039.4166666666667,
+    "cost": 0.0001603375,
+    "p50_latency": 0.7485343744992861,
+    "results": [
+      {
+        "id": "s75",
+        "split": "stress3",
+        "kind": "borderline",
+        "query": "Look at the spreadsheet of my holdings",
+        "expect": [
+          "portfolio"
+        ],
+        "pred": "portfolio",
+        "raw_route": "portfolio",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.8394415410002694,
+        "tokens": 1038,
+        "cost_usd": 0.00015975
+      },
+      {
+        "id": "s76",
+        "split": "stress3",
+        "kind": "borderline",
+        "query": "Can you check the file I just uploaded?",
+        "expect": [
+          "portfolio",
+          "clarify"
+        ],
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8963779589994374,
+        "tokens": 1042,
+        "cost_usd": 0.00016125
+      },
+      {
+        "id": "s77",
+        "split": "stress3",
+        "kind": "borderline",
+        "query": "What does my uploaded portfolio say about risk?",
+        "expect": [
+          "portfolio"
+        ],
+        "pred": "portfolio",
+        "raw_route": "portfolio",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.6009654579993366,
+        "tokens": 1040,
+        "cost_usd": 0.00016005000000000001
+      },
+      {
+        "id": "s78",
+        "split": "stress3",
+        "kind": "borderline",
+        "query": "Go over my brokerage statement",
+        "expect": [
+          "portfolio",
+          "clarify"
+        ],
+        "pred": "portfolio",
+        "raw_route": "portfolio",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.7450853329992242,
+        "tokens": 1036,
+        "cost_usd": 0.00015945
+      },
+      {
+        "id": "s79",
+        "split": "stress3",
+        "kind": "borderline",
+        "query": "Analyze the positions in my CSV",
+        "expect": [
+          "portfolio"
+        ],
+        "pred": "portfolio",
+        "raw_route": "portfolio",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6594582079997053,
+        "tokens": 1037,
+        "cost_usd": 0.0001596
+      },
+      {
+        "id": "s80",
+        "split": "stress3",
+        "kind": "borderline",
+        "query": "Here is my holdings file, what do you think?",
+        "expect": [
+          "portfolio",
+          "clarify"
+        ],
+        "pred": "portfolio",
+        "raw_route": "portfolio",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.6888687079990632,
+        "tokens": 1042,
+        "cost_usd": 0.00016035
+      },
+      {
+        "id": "s81",
+        "split": "stress3",
+        "kind": "borderline",
+        "query": "Is the data I uploaded diversified enough?",
+        "expect": [
+          "portfolio"
+        ],
+        "pred": "portfolio",
+        "raw_route": "portfolio",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.810606083001403,
+        "tokens": 1039,
+        "cost_usd": 0.0001599
+      },
+      {
+        "id": "s82",
+        "split": "stress3",
+        "kind": "borderline",
+        "query": "Explain the numbers in my account summary",
+        "expect": [
+          "portfolio",
+          "clarify"
+        ],
+        "pred": "portfolio",
+        "raw_route": "portfolio",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.5763247920003778,
+        "tokens": 1038,
+        "cost_usd": 0.00015975
+      },
+      {
+        "id": "s83",
+        "split": "stress3",
+        "kind": "off_topic",
+        "query": "Convert this CSV file to JSON",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7519834159993479,
+        "tokens": 1039,
+        "cost_usd": 0.00016079999999999998
+      },
+      {
+        "id": "s84",
+        "split": "stress3",
+        "kind": "off_topic",
+        "query": "Summarize the PDF of my vacation itinerary",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7872515830003977,
+        "tokens": 1042,
+        "cost_usd": 0.00016125
+      },
+      {
+        "id": "s85",
+        "split": "stress3",
+        "kind": "off_topic",
+        "query": "Open the spreadsheet of my workout log",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.5948492909992638,
+        "tokens": 1040,
+        "cost_usd": 0.00016094999999999998
+      },
+      {
+        "id": "s86",
+        "split": "stress3",
+        "kind": "off_topic",
+        "query": "Fix the formula in my Excel timetable",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7590896670008078,
+        "tokens": 1040,
+        "cost_usd": 0.00016094999999999998
+      }
+    ]
+  }
+}

@@ -22,3 +22,4 @@ keyword_index/
 *.log
 .DS_Store
 .alpha_usage.json
+logs/

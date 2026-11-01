@@ -19,7 +19,7 @@ from pathlib import Path
 from src.core.llm import LLMClient
 from src.core.logging import setup_logging
 from src.core.metrics import summarize
-from src.workflow.router import PROMPTS, ROUTES, Router
+from src.workflow.router import LABELS, PROMPTS, Router
 
 DATASET = Path("eval/datasets/router.jsonl")
 
@@ -36,12 +36,13 @@ def evaluate(rows: list[dict], router: Router) -> list[dict]:
     return results
 
 
-def report(results: list[dict], title: str) -> dict:
-    routable = [r for r in results if r["label"] != "out_of_scope"]
+def report(results: list[dict], title: str, labels: tuple[str, ...]) -> dict:
+    """`labels` = the labels this prompt version can produce. If out_of_scope is not one of them, those rows are reported separately instead of scored."""
+    routable = [r for r in results if r["label"] in labels]
     offtopic = [r for r in results if r["label"] == "out_of_scope"]
     correct = sum(r["correct"] for r in routable)
     print("=" * 100 + f"\n{title}\n" + "=" * 100)
-    print(f"ACCURACY (7 routable labels, {len(routable)} queries, multi-intent credited by also_ok): {correct}/{len(routable)} = {correct / len(routable):.1%}")
+    print(f"ACCURACY ({len(labels)} labels, {len(routable)} queries, multi-intent credited by also_ok): {correct}/{len(routable)} = {correct / len(routable):.1%}")
     singles = [r for r in routable if r["kind"] == "single"]
     hards = [r for r in routable if r["kind"] == "hard"]
     multis = [r for r in routable if r["kind"] == "multi"]
@@ -50,7 +51,7 @@ def report(results: list[dict], title: str) -> dict:
     print("\nPER CLASS (precision / recall / F1; 'effective' prediction = the label whenever the prediction was acceptable)")
     print(f"  {'class':12}{'support':>8}{'precision':>11}{'recall':>8}{'F1':>7}")
     per_class = {}
-    for label in ROUTES:
+    for label in labels:
         support = sum(r["label"] == label for r in routable)
         tp = sum(r["label"] == label and r["effective"] == label for r in routable)
         predicted = sum(r["effective"] == label for r in routable)
@@ -61,12 +62,12 @@ def report(results: list[dict], title: str) -> dict:
         print(f"  {label:12}{support:>8}{precision:>11.2f}{recall:>8.2f}{f1:>7.2f}")
 
     print("\nCONFUSION MATRIX (rows = true label, columns = predicted route)")
-    print(f"  {'':12}" + "".join(f"{c[:9]:>10}" for c in ROUTES))
+    print(f"  {'':12}" + "".join(f"{c[:9]:>10}" for c in labels))
     matrix = defaultdict(Counter)
     for r in routable:
         matrix[r["label"]][r["effective"]] += 1
-    for label in ROUTES:
-        print(f"  {label:12}" + "".join(f"{matrix[label][c]:>10}" for c in ROUTES))
+    for label in labels:
+        print(f"  {label:12}" + "".join(f"{matrix[label][c]:>10}" for c in labels))
 
     print("\nWRONG ROUTES")
     for r in routable:
@@ -83,10 +84,11 @@ def report(results: list[dict], title: str) -> dict:
           f"{sum(not r['raw_correct'] for r in overridden)} were wrong before (now sent to clarify)")
     print(f"  routed to clarify: {sum(r['pred'] == 'clarify' for r in routable)}/{len(routable)} routable queries ({sum(r['pred'] == 'clarify' and r['label'] != 'clarify' for r in routable)} of them should not have been)")
 
-    print(f"\nOFF-TOPIC QUERIES ({len(offtopic)}), no out_of_scope label yet: where they landed")
-    for r in offtopic:
-        print(f"  -> {r['pred']:10} (conf {r['confidence']:6}) {r['query']}")
-    print(f"  counts: {dict(Counter(r['pred'] for r in offtopic))}")
+    if "out_of_scope" not in labels:
+        print(f"\nOFF-TOPIC QUERIES ({len(offtopic)}), this prompt has no out_of_scope label: where they landed")
+        for r in offtopic:
+            print(f"  -> {r['pred']:10} (conf {r['confidence']:6}) {r['query']}")
+        print(f"  counts: {dict(Counter(r['pred'] for r in offtopic))}")
 
     latencies = [r["latency_s"] for r in results]
     print(f"\nLATENCY {summarize(latencies)}")
@@ -108,7 +110,7 @@ def main() -> None:
         print("*** TEST SPLIT: held out. Report these numbers; do not tune the prompt on them. ***\n")
     router = Router(LLMClient(), prompt_version=args.prompt, low_confidence_to_clarify=not args.no_policy)
     results = evaluate(rows, router)
-    summary = report(results, f"ROUTER prompt={args.prompt} split={args.split} policy={'off' if args.no_policy else 'on'} ({len(rows)} queries)")
+    summary = report(results, f"ROUTER prompt={args.prompt} split={args.split} policy={'off' if args.no_policy else 'on'} ({len(rows)} queries)", LABELS[args.prompt])
     output = Path(f"eval/results/router_{args.prompt}_{args.split}{'_nopolicy' if args.no_policy else ''}_{datetime.now():%Y%m%d_%H%M%S}.json")
     output.write_text(json.dumps({"prompt": args.prompt, "split": args.split, "summary": summary, "results": results}, indent=2, default=str))
     print(f"\nsaved: {output}")

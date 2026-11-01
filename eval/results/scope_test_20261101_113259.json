@@ -1,0 +1,338 @@
+{
+  "v4": {
+    "catch_rate": 1.0,
+    "stopped_early": 1.0,
+    "false_blocks": 0,
+    "raw_false_blocks": 0,
+    "in_scope": 10,
+    "in_scope_accuracy": 1.0,
+    "tokens": 1040.45,
+    "cost": 0.0001607475,
+    "p50_latency": 0.7569582080004693,
+    "results": [
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "How tall is Mount Everest?",
+        "expect": "out_of_scope",
+        "id": "s21",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8491089589988405,
+        "tokens": 1039,
+        "cost_usd": 0.00016079999999999998
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "What's a good workout routine for beginners?",
+        "expect": "out_of_scope",
+        "id": "s22",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7459093750003376,
+        "tokens": 1041,
+        "cost_usd": 0.00016109999999999999
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "Write a Python function that reverses a string",
+        "expect": "out_of_scope",
+        "id": "s23",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8798280000009981,
+        "tokens": 1042,
+        "cost_usd": 0.00016125
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "Who painted the Mona Lisa?",
+        "expect": "out_of_scope",
+        "id": "s24",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7835155409993604,
+        "tokens": 1039,
+        "cost_usd": 0.00016079999999999998
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "What time does the sun set in London?",
+        "expect": "out_of_scope",
+        "id": "s25",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.682661625000037,
+        "tokens": 1042,
+        "cost_usd": 0.00016125
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "Give me a recipe for lasagna",
+        "expect": "out_of_scope",
+        "id": "s26",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.5565051670000685,
+        "tokens": 1040,
+        "cost_usd": 0.00016094999999999998
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "How many ounces are in a pound?",
+        "expect": "out_of_scope",
+        "id": "s27",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7623095409999223,
+        "tokens": 1041,
+        "cost_usd": 0.00016109999999999999
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "Plan a three-day trip to Rome",
+        "expect": "out_of_scope",
+        "id": "s28",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.9158634999985225,
+        "tokens": 1040,
+        "cost_usd": 0.00016094999999999998
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "What's the plot of Hamlet?",
+        "expect": "out_of_scope",
+        "id": "s29",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6585101669988944,
+        "tokens": 1039,
+        "cost_usd": 0.00016079999999999998
+      },
+      {
+        "split": "test",
+        "kind": "off_topic",
+        "query": "How do I get rid of a headache?",
+        "expect": "out_of_scope",
+        "id": "s30",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8733236669995676,
+        "tokens": 1042,
+        "cost_usd": 0.00016125
+      },
+      {
+        "split": "test",
+        "kind": "borderline",
+        "query": "Are lottery winnings taxed?",
+        "expect": [
+          "tax"
+        ],
+        "id": "s31",
+        "pred": "tax",
+        "raw_route": "tax",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.730789207998896,
+        "tokens": 1036,
+        "cost_usd": 0.00015945
+      },
+      {
+        "split": "test",
+        "kind": "borderline",
+        "query": "How is Starbucks stock doing today?",
+        "expect": [
+          "market"
+        ],
+        "id": "s32",
+        "pred": "market",
+        "raw_route": "market",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.787956291998853,
+        "tokens": 1038,
+        "cost_usd": 0.00015975
+      },
+      {
+        "split": "test",
+        "kind": "borderline",
+        "query": "Is it cheaper to rent or buy a home in the long run?",
+        "expect": [
+          "finance_qa",
+          "goal"
+        ],
+        "id": "s33",
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7516068750010163,
+        "tokens": 1047,
+        "cost_usd": 0.000162
+      },
+      {
+        "split": "test",
+        "kind": "borderline",
+        "query": "Do rising gas prices affect inflation?",
+        "expect": [
+          "finance_qa",
+          "news"
+        ],
+        "id": "s34",
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6040265829997225,
+        "tokens": 1040,
+        "cost_usd": 0.00016094999999999998
+      },
+      {
+        "split": "test",
+        "kind": "borderline",
+        "query": "What happened to Netflix shares after earnings?",
+        "expect": [
+          "news",
+          "market"
+        ],
+        "id": "s35",
+        "pred": "news",
+        "raw_route": "news",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6946556670009159,
+        "tokens": 1039,
+        "cost_usd": 0.0001599
+      },
+      {
+        "split": "test",
+        "kind": "finance",
+        "query": "What is compound interest?",
+        "expect": [
+          "finance_qa"
+        ],
+        "id": "s36",
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8018875830002798,
+        "tokens": 1038,
+        "cost_usd": 0.00016064999999999997
+      },
+      {
+        "split": "test",
+        "kind": "finance",
+        "query": "What is the IRA contribution limit?",
+        "expect": [
+          "tax"
+        ],
+        "id": "s37",
+        "pred": "tax",
+        "raw_route": "tax",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8927043749990844,
+        "tokens": 1038,
+        "cost_usd": 0.00015975
+      },
+      {
+        "split": "test",
+        "kind": "finance",
+        "query": "How much do I need to save to reach $50,000 in 5 years?",
+        "expect": [
+          "goal"
+        ],
+        "id": "s38",
+        "pred": "goal",
+        "raw_route": "goal",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7442619579996972,
+        "tokens": 1049,
+        "cost_usd": 0.0001614
+      },
+      {
+        "split": "test",
+        "kind": "finance",
+        "query": "Is Microsoft above its 50-day moving average?",
+        "expect": [
+          "market"
+        ],
+        "id": "s39",
+        "pred": "market",
+        "raw_route": "market",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.4574042910007847,
+        "tokens": 1041,
+        "cost_usd": 0.0001602
+      },
+      {
+        "split": "test",
+        "kind": "finance",
+        "query": "What does diversification mean?",
+        "expect": [
+          "finance_qa"
+        ],
+        "id": "s40",
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.9135773340003652,
+        "tokens": 1038,
+        "cost_usd": 0.00016064999999999997
+      }
+    ]
+  }
+}

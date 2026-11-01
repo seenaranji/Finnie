@@ -1,16 +1,20 @@
 """The Finnie graph, part 2 (Step 21):
 
-  START -> contextualize -> router -> (conditional edge) -> finance_qa | market | portfolio | goal | news | tax | clarify | fallback -> finalize -> END
+  START -> contextualize -> router -> (conditional edge) -> finance_qa | market | portfolio | goal | news | tax | clarify | scope_reply | fallback -> finalize -> END
 
 contextualize  turns "and how much is it up this year?" into a standalone question using the saved conversation (no model call on the first turn)
 router         one cheap classification (Step 20/21); a failure sends the turn to `fallback`
 agent nodes    thin wrappers around the agents; ANY exception becomes a safe fixed reply plus an `error` record (nothing escapes the graph)
 clarify        a fixed reply asking what the user means (no model call)
+scope_reply    a fixed reply for messages that are not about finance, sent BEFORE any retrieval, tool or answering model (Step 21a); every decision is logged
 finalize       sets the disclaimer by route and saves the assistant's turn to the history
 Compile with a checkpointer and call with config={"configurable": {"thread_id": session_id}} to get memory.
 """
+import json
 import time
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
 
 from langgraph.graph import END, START, StateGraph
@@ -59,8 +63,11 @@ def build_graph(llm: LLMClient, router: Router, agents: Agents, config: Workflow
             log.exception("router failed")
             return {"route": "fallback", "router": {"error": type(error).__name__}, "error": {"node": "router", "type": type(error).__name__, "message": str(error)[:200]},
                     "trace": [{"turn": state["turn"], "node": "router", "route": "fallback", "error": type(error).__name__}]}
-        return {"route": d.route, "router": d.as_dict(),
-                "trace": [{"turn": state["turn"], "node": "router", "route": d.route, "raw_route": d.raw_route, "confidence": d.confidence, "overridden": d.overridden,
+        route, guard = d.route, None
+        if route == "out_of_scope" and state.get("portfolio_csv"):   # a user who uploaded their holdings is never told "that is not finance": ask instead
+            route, guard = "clarify", "has_uploaded_portfolio"
+        return {"route": route, "router": d.as_dict() | {"guard": guard},
+                "trace": [{"turn": state["turn"], "node": "router", "route": route, "raw_route": d.raw_route, "confidence": d.confidence, "overridden": d.overridden, "guard": guard,
                            "seconds": round(d.latency_s, 3), "tokens": d.input_tokens + d.output_tokens, "cost_usd": d.cost_usd, "fell_back": d.fell_back}]}
 
     def agent_node(name: str, call):
@@ -100,6 +107,21 @@ def build_graph(llm: LLMClient, router: Router, agents: Agents, config: Workflow
         reply = fixed_response(config.clarify_reply, "clarify", "clarify")
         return {"response": reply.model_dump(mode="json"), "trace": [{"turn": state["turn"], "node": "clarify", "agent": "clarify", "seconds": 0.0, "cost_usd": 0.0}]}
 
+    def scope_reply(state: FinnieState) -> dict:
+        """The router said the message is not about finance: a FIXED reply, no model, no search, no tool. The decision is logged for review."""
+        entry = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "session_id": state.get("session_id"), "query": state["message"],
+                 "resolved": state["resolved_message"], "confidence": state["router"].get("confidence"), "turn": state["turn"]}
+        log.info("out_of_scope decision: %r (confidence %s)", state["message"], entry["confidence"])
+        try:
+            path = Path(config.scope_log_path)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("a") as handle:
+                handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        except OSError:   # a full disk must not stop the polite reply
+            log.warning("could not write the out-of-scope log to %s", config.scope_log_path)
+        reply = fixed_response(config.scope_reply, "scope_reply", "out of scope")
+        return {"response": reply.model_dump(mode="json"), "trace": [{"turn": state["turn"], "node": "scope_reply", "agent": "scope_reply", "seconds": 0.0, "cost_usd": 0.0}]}
+
     def fallback(state: FinnieState) -> dict:
         reply = fixed_response(config.fallback_reply, "fallback", "fallback")
         return {"response": reply.model_dump(mode="json"), "trace": [{"turn": state["turn"], "node": "fallback", "agent": "fallback", "seconds": 0.0, "cost_usd": 0.0}]}
@@ -123,12 +145,13 @@ def build_graph(llm: LLMClient, router: Router, agents: Agents, config: Workflow
         graph.add_node(name, agent_node(name, call))
     graph.add_node("clarify", clarify)
     graph.add_node("fallback", fallback)
+    graph.add_node("scope_reply", scope_reply)
     graph.add_node("finalize", finalize)
     graph.add_edge(START, "contextualize")
     graph.add_edge("contextualize", "router")
-    targets = {route: route for route in ROUTES} | {"fallback": "fallback"}
+    targets = {route: route for route in ROUTES if route != "out_of_scope"} | {"out_of_scope": "scope_reply", "fallback": "fallback"}
     graph.add_conditional_edges("router", lambda state: state["route"], targets)   # the conditional edge: follow the route the router wrote into the state
-    for name in (*nodes, "clarify", "fallback"):
+    for name in (*nodes, "clarify", "fallback", "scope_reply"):
         graph.add_edge(name, "finalize")
     graph.add_edge("finalize", END)
     return graph.compile(checkpointer=checkpointer)

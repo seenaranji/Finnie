@@ -118,6 +118,8 @@ class WorkflowConfig(BaseModel):
     clarify_reply: str
     fallback_reply: str
     needs_portfolio_reply: str
+    scope_reply: str
+    scope_log_path: str
 
 
 class Secrets(BaseSettings):

@@ -1,0 +1,315 @@
+{
+  "v5": {
+    "catch_rate": 1.0,
+    "stopped_early": 1.0,
+    "false_blocks": 0,
+    "raw_false_blocks": 0,
+    "in_scope": 12,
+    "in_scope_accuracy": 1.0,
+    "tokens": 1123.888888888889,
+    "cost": 0.0001732833333333333,
+    "p50_latency": 0.7390363960003015,
+    "results": [
+      {
+        "id": "s41",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "How much does college tuition cost and how should I save for it?",
+        "expect": [
+          "goal",
+          "finance_qa"
+        ],
+        "pred": "goal",
+        "raw_route": "goal",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.5560633330005658,
+        "tokens": 1126,
+        "cost_usd": 0.00017294999999999998
+      },
+      {
+        "id": "s42",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "Is a pizza franchise a good investment?",
+        "expect": [
+          "finance_qa"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.728117167000164,
+        "tokens": 1122,
+        "cost_usd": 0.00017325
+      },
+      {
+        "id": "s43",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "What's the price of oil right now?",
+        "expect": [
+          "market"
+        ],
+        "pred": "market",
+        "raw_route": "market",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8555494580014056,
+        "tokens": 1120,
+        "cost_usd": 0.00017205
+      },
+      {
+        "id": "s44",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "How do tariffs on food imports affect stock prices?",
+        "expect": [
+          "finance_qa",
+          "news"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.8364237910009251,
+        "tokens": 1124,
+        "cost_usd": 0.00017355
+      },
+      {
+        "id": "s45",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "Does buying coffee every day really add up over 30 years?",
+        "expect": [
+          "finance_qa",
+          "goal"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6668344999998226,
+        "tokens": 1127,
+        "cost_usd": 0.000174
+      },
+      {
+        "id": "s46",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "How do I split rent and bills with my roommate and still save?",
+        "expect": [
+          "finance_qa",
+          "goal"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.7788908330003323,
+        "tokens": 1128,
+        "cost_usd": 0.00017414999999999998
+      },
+      {
+        "id": "s47",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "Should I pay off my car loan early or invest the money?",
+        "expect": [
+          "finance_qa"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6689652919994842,
+        "tokens": 1127,
+        "cost_usd": 0.000174
+      },
+      {
+        "id": "s48",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "How is Nike's stock reacting to the Olympics?",
+        "expect": [
+          "market",
+          "news"
+        ],
+        "pred": "news",
+        "raw_route": "news",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7155103750010312,
+        "tokens": 1122,
+        "cost_usd": 0.00017235
+      },
+      {
+        "id": "s49",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "Why is it called a bull market?",
+        "expect": [
+          "finance_qa"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8311811670009774,
+        "tokens": 1122,
+        "cost_usd": 0.00017325
+      },
+      {
+        "id": "s50",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "What are the tax rules if I sell my restaurant?",
+        "expect": [
+          "tax"
+        ],
+        "pred": "tax",
+        "raw_route": "tax",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.697989416999917,
+        "tokens": 1123,
+        "cost_usd": 0.0001725
+      },
+      {
+        "id": "s51",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "How much would my grocery budget grow over 10 years with 3% inflation?",
+        "expect": [
+          "finance_qa",
+          "goal"
+        ],
+        "pred": "finance_qa",
+        "raw_route": "finance_qa",
+        "vetoed": false,
+        "confidence": "medium",
+        "overridden": false,
+        "latency_s": 0.8830129170000873,
+        "tokens": 1131,
+        "cost_usd": 0.0001746
+      },
+      {
+        "id": "s52",
+        "split": "stress",
+        "kind": "borderline",
+        "query": "Are sports betting winnings taxable?",
+        "expect": [
+          "tax"
+        ],
+        "pred": "tax",
+        "raw_route": "tax",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.5994091249995108,
+        "tokens": 1118,
+        "cost_usd": 0.00017175
+      },
+      {
+        "id": "s53",
+        "split": "stress",
+        "kind": "off_topic",
+        "query": "What's the best way to bank a basketball shot?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.48143520899975556,
+        "tokens": 1124,
+        "cost_usd": 0.00017355
+      },
+      {
+        "id": "s54",
+        "split": "stress",
+        "kind": "off_topic",
+        "query": "How do I make a fortune cookie?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8810006249987055,
+        "tokens": 1122,
+        "cost_usd": 0.00017325
+      },
+      {
+        "id": "s55",
+        "split": "stress",
+        "kind": "off_topic",
+        "query": "How do I invest time in learning the guitar?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.6849296250002226,
+        "tokens": 1124,
+        "cost_usd": 0.00017355
+      },
+      {
+        "id": "s56",
+        "split": "stress",
+        "kind": "off_topic",
+        "query": "What's a good rate of speed for a marathon pace?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7499556250004389,
+        "tokens": 1125,
+        "cost_usd": 0.0001737
+      },
+      {
+        "id": "s57",
+        "split": "stress",
+        "kind": "off_topic",
+        "query": "Which Monopoly property is best to buy?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.7970559170007618,
+        "tokens": 1122,
+        "cost_usd": 0.00017325
+      },
+      {
+        "id": "s58",
+        "split": "stress",
+        "kind": "off_topic",
+        "query": "How do I save a document in Word?",
+        "expect": "out_of_scope",
+        "pred": "out_of_scope",
+        "raw_route": "out_of_scope",
+        "vetoed": false,
+        "confidence": "high",
+        "overridden": false,
+        "latency_s": 0.8082169160006742,
+        "tokens": 1123,
+        "cost_usd": 0.00017339999999999999
+      }
+    ]
+  }
+}

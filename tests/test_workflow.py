@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -13,7 +14,7 @@ from src.data.errors import ProviderUnavailable
 from src.data.news import NewsUnavailable
 from src.workflow.graph import Agents, build_graph
 from src.workflow.nodes import extract_news_topic, rewrite_message
-from src.workflow.router import DEFAULT_ROUTE, PROMPTS, RESPONSE_FORMAT, ROUTES, Router
+from src.workflow.router import FINANCE_WORDS, DEFAULT_PROMPT_VERSION, DEFAULT_ROUTE, LABELS, PROMPTS, RESPONSE_FORMAT, ROUTES, ROUTES_V2, Router, response_format_for
 
 CONFIG = load_settings().workflow
 
@@ -62,12 +63,12 @@ class FakeGoal(FakeAgent):
         return SimpleNamespace(response=self._answer(), state=new_state, plan_made=plan_made)
 
 
-def make(route=(), standalone=(), news_topic=(), saver=False, **overrides):
+def make(route=(), standalone=(), news_topic=(), saver=False, config=CONFIG, **overrides):
     llm = FakeLLM(route, standalone, news_topic)
     agents = Agents(FakeAgent("finance_qa"), FakeAgent("market_analysis"), FakeAgent("portfolio_analysis"), FakeGoal(), FakeAgent("news_synthesizer"), FakeAgent("tax_education"))
     for key, value in overrides.items():
         setattr(agents, key, value)
-    graph = build_graph(llm, Router(llm), agents, CONFIG, checkpointer=InMemorySaver() if saver else None)
+    graph = build_graph(llm, Router(llm), agents, config, checkpointer=InMemorySaver() if saver else None)
     return graph, llm, agents
 
 
@@ -212,16 +213,101 @@ def test_the_trace_grows_across_turns_and_is_tagged_with_the_turn_and_the_state_
 
 
 # ---------------- router ----------------
-def test_the_router_uses_the_cheap_model_temperature_zero_a_strict_enum_schema_and_prompt_v2():
+def test_the_router_uses_the_cheap_model_temperature_zero_a_strict_enum_schema_and_the_default_prompt():
     graph, llm, _ = make(route=[{"route": "finance_qa", "confidence": "high"}])
     ask(graph, "hello")
     call = llm.calls["route"][0]
-    assert call["model_key"] == "router_model" and call["temperature"] == 0 and call["response_format"] is RESPONSE_FORMAT and call["system"] == PROMPTS["v2"]
+    assert DEFAULT_PROMPT_VERSION == "v5" and call["model_key"] == "router_model" and call["temperature"] == 0 and call["system"] == PROMPTS[DEFAULT_PROMPT_VERSION]
+    assert call["response_format"] == response_format_for(ROUTES) and call["response_format"]["json_schema"]["strict"] is True
     schema = call["response_format"]["json_schema"]["schema"]
-    assert schema["properties"]["route"]["enum"] == list(ROUTES) and schema["additionalProperties"] is False and call["response_format"]["json_schema"]["strict"] is True
+    assert schema["properties"]["route"]["enum"] == list(ROUTES) and schema["additionalProperties"] is False
+
+
+def test_old_prompt_versions_cannot_produce_the_new_label_and_v3_can():
+    assert "out_of_scope" not in LABELS["v1"] and "out_of_scope" not in LABELS["v2"] and "out_of_scope" in LABELS["v3"]
+    assert RESPONSE_FORMAT == response_format_for(ROUTES_V2) and "out_of_scope" not in PROMPTS["v2"] and "out_of_scope" in PROMPTS["v3"]
+    llm = FakeLLM(route=[{"route": "out_of_scope", "confidence": "high"}])
+    assert Router(llm, prompt_version="v2").classify("pizza price").fell_back is True   # v2 may not say out_of_scope: treated as unusable, not obeyed
+
+
+# ---------------- Step 21a: the scope gate ----------------
+def scope_config(tmp_path):
+    return CONFIG.model_copy(update={"scope_log_path": str(tmp_path / "scope.jsonl")})
+
+
+def test_an_out_of_scope_message_gets_the_fixed_reply_and_touches_nothing_else(tmp_path):
+    graph, llm, agents = make(route=[{"route": "out_of_scope", "confidence": "high"}], config=scope_config(tmp_path))
+    state = ask(graph, "What's the price of a pizza?")
+    assert state["route"] == "out_of_scope" and state["response"]["text"] == CONFIG.scope_reply and state["response"]["agent_name"] == "scope_reply"
+    assert not any(called(agents).values())                                   # no agent, so no retrieval, no tool, no answering model
+    assert len(llm.calls["route"]) == 1 and llm.calls["standalone"] == [] and llm.calls["news_topic"] == []   # one cheap classification, nothing more
+    assert state["response"]["disclaimer"] == DISCLAIMER_STANDARD and [t["node"] for t in state["trace"]] == ["contextualize", "router", "scope_reply", "finalize"]
+
+
+def test_every_out_of_scope_decision_is_logged_for_review(tmp_path):
+    config = scope_config(tmp_path)
+    graph, *_ = make(route=[{"route": "out_of_scope", "confidence": "high"}] * 2, config=config)
+    ask(graph, "Write me a poem", session="a")
+    ask(graph, "Who won the game?", session="b")
+    entries = [json.loads(line) for line in open(config.scope_log_path)]
+    assert [e["query"] for e in entries] == ["Write me a poem", "Who won the game?"] and entries[0]["session_id"] == "a" and entries[0]["confidence"] == "high"
+
+
+def test_a_low_confidence_out_of_scope_becomes_clarify_so_a_real_question_is_never_blocked(tmp_path):
+    config = scope_config(tmp_path)
+    graph, _, agents = make(route=[{"route": "out_of_scope", "confidence": "low"}], config=config)
+    state = ask(graph, "hmm what about that pizza company")
+    assert state["route"] == "clarify" and state["router"]["raw_route"] == "out_of_scope" and state["router"]["overridden"] is True
+    assert state["response"]["text"] == CONFIG.clarify_reply and not any(called(agents).values()) and not Path(config.scope_log_path).exists()   # asked, not blocked, not logged
+
+
+def test_a_failing_log_does_not_stop_the_reply(tmp_path):
+    bad = CONFIG.model_copy(update={"scope_log_path": str(tmp_path / "a_file_not_a_folder" / "x.jsonl")})
+    (tmp_path / "a_file_not_a_folder").write_text("this is a file, so a log cannot be created inside it")
+    graph, *_ = make(route=[{"route": "out_of_scope", "confidence": "high"}], config=bad)
+    assert ask(graph, "Tell me a joke")["response"]["text"] == CONFIG.scope_reply
+
+
+def test_the_v3_prompt_defines_the_scope_and_warns_against_blocking_real_finance_questions():
+    prompt = PROMPTS["v3"]
+    assert "NOT about money" in prompt and "Blocking a real finance question is worse" in prompt
+    assert prompt.count("-> ") >= 8 + 4   # at least 8 new few-shot lines on top of the v2 examples
 
 
 def test_the_graph_draws_itself_with_every_node():
     graph, *_ = make()
     mermaid = graph.get_graph().draw_mermaid()
-    assert all(name in mermaid for name in ("contextualize", "router", "finance_qa", "market", "portfolio", "goal", "news", "tax", "clarify", "fallback", "finalize"))
+    assert all(name in mermaid for name in ("contextualize", "router", "finance_qa", "market", "portfolio", "goal", "news", "tax", "clarify", "scope_reply", "fallback", "finalize"))
+
+
+def test_v4_adds_the_rules_that_the_stress_sets_called_for():
+    assert "whatever the everyday topic" in PROMPTS["v4"] and "SURE" in PROMPTS["v4"] and PROMPTS["v4"].startswith(PROMPTS["v3"])
+    assert LABELS["v4"] == ROUTES
+
+
+def test_the_finance_word_veto_is_off_by_default_and_turns_a_block_into_a_question_when_on():
+    reply = {"route": "out_of_scope", "confidence": "high"}
+    off = Router(FakeLLM(route=[reply])).classify("Is a pizza franchise a good investment?")
+    assert off.route == "out_of_scope" and off.vetoed is False                    # default: the model's decision stands
+    on = Router(FakeLLM(route=[reply]), finance_veto=True).classify("Is a pizza franchise a good investment?")
+    assert on.route == "clarify" and on.vetoed is True and on.raw_route == "out_of_scope"
+    clean = Router(FakeLLM(route=[reply]), finance_veto=True).classify("Write me a haiku about autumn")
+    assert clean.route == "out_of_scope" and clean.vetoed is False               # no money word: still blocked
+    assert FINANCE_WORDS.search("Should I pay off my loan?") and not FINANCE_WORDS.search("What time does the sun set in London?")
+
+
+def test_v5_tells_the_router_that_uploaded_files_are_portfolio_requests():
+    assert "NEVER out_of_scope" in PROMPTS["v5"] and PROMPTS["v5"].startswith(PROMPTS["v4"]) and LABELS["v5"] == ROUTES
+
+
+def test_a_user_who_uploaded_a_portfolio_is_never_blocked_even_if_the_router_says_out_of_scope(tmp_path):
+    config = scope_config(tmp_path)
+    graph, _, agents = make(route=[{"route": "out_of_scope", "confidence": "high"}], config=config)
+    state = ask(graph, "Review the CSV I uploaded", portfolio_csv="ticker,shares,avg_cost\nAAA,1,1")
+    assert state["route"] == "clarify" and state["router"]["guard"] == "has_uploaded_portfolio" and state["response"]["text"] == CONFIG.clarify_reply
+    assert not Path(config.scope_log_path).exists() and not any(called(agents).values())   # asked, not blocked, not logged
+
+
+def test_without_an_upload_the_out_of_scope_decision_stands(tmp_path):
+    graph, *_ = make(route=[{"route": "out_of_scope", "confidence": "high"}], config=scope_config(tmp_path))
+    assert ask(graph, "Tell me a joke")["route"] == "out_of_scope"
