@@ -35,6 +35,14 @@ def test_upgrade_downgrade_upgrade(monkeypatch):
             config.set_main_option("script_location", str(PROJECT_ROOT / "migrations"))
             command.upgrade(config, "head")
             assert {"articles", "chunks", "store_meta", "portfolios", "holdings"} <= tables(url)
+            with psycopg.connect(url) as connection:
+                columns = {r[0] for r in connection.execute("SELECT column_name FROM information_schema.columns WHERE table_name = 'holdings'")}
+            assert {"asset_type", "purchase_date"} <= columns
+            command.downgrade(config, "0003")   # the newest migration alone is undone: the two columns go, the portfolio tables stay
+            with psycopg.connect(url) as connection:
+                columns = {r[0] for r in connection.execute("SELECT column_name FROM information_schema.columns WHERE table_name = 'holdings'")}
+            assert {"asset_type", "purchase_date"}.isdisjoint(columns) and "holdings" in tables(url)
+            command.upgrade(config, "head")
             command.downgrade(config, "0001")   # one step: portfolio tables go, knowledge-base tables stay
             assert {"portfolios", "holdings"}.isdisjoint(tables(url)) and "chunks" in tables(url)
             command.downgrade(config, "base")

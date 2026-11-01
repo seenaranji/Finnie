@@ -3,6 +3,7 @@
 Every failure becomes one ApiError with a message that is safe to show, so a tab needs a single `except ApiError` and never sees httpx, a traceback or JSON.
 """
 import os
+from uuid import UUID
 
 import httpx
 
@@ -18,6 +19,14 @@ class ApiError(Exception):
     def retryable(self) -> bool:
         """5xx or no connection: trying again later may work. A 4xx will fail the same way until the input changes."""
         return self.status == 0 or self.status >= 500
+
+
+def portfolio_id_or_error(text: str) -> str:
+    """A portfolio id typed or pasted by a person goes into a URL, so it must be a real UUID and nothing else (not '../auth/me', not an empty string)."""
+    try:
+        return str(UUID(str(text).strip()))
+    except ValueError:
+        raise ApiError("That doesn't look like a portfolio id. It is 36 characters, like 3f2b8c1e-5d4a-4c7e-9b1a-0a1b2c3d4e5f.", 422, "invalid_portfolio_id") from None
 
 
 class FinnieClient:
@@ -40,7 +49,7 @@ class FinnieClient:
                 raise ApiError(body["message"], response.status_code, body.get("code", ""), body.get("request_id", ""), body.get("details", []))
             except (ValueError, KeyError):
                 raise ApiError("The server sent a reply I did not understand.", response.status_code) from None
-        return response.json()
+        return response.json() if response.content else None   # 204 No Content (delete / replace) has no body
 
     def health(self) -> dict:
         return self._call("GET", "/health")
@@ -50,6 +59,21 @@ class FinnieClient:
 
     def login(self, email: str, password: str) -> dict:
         return self._call("POST", "/auth/login", json={"email": email, "password": password})
+
+    def save_portfolio(self, name: str, holdings: list[dict]) -> dict:
+        return self._call("POST", "/portfolios", json={"name": name, "holdings": holdings})
+
+    def list_portfolios(self) -> list[dict]:
+        return self._call("GET", "/portfolios")
+
+    def portfolio_summary(self, portfolio_id: str) -> dict:
+        return self._call("GET", f"/portfolios/{portfolio_id_or_error(portfolio_id)}/summary")
+
+    def analyze_saved_portfolio(self, portfolio_id: str, question: str | None = None) -> dict:
+        return self._call("GET", f"/portfolios/{portfolio_id_or_error(portfolio_id)}/analysis", params={"question": question} if question else None)
+
+    def delete_portfolio(self, portfolio_id: str) -> None:
+        self._call("DELETE", f"/portfolios/{portfolio_id_or_error(portfolio_id)}")
 
     def chat(self, message: str, session_id: str | None = None, portfolio_csv: str | None = None) -> dict:
         body = {"message": message, **({"session_id": session_id} if session_id else {}), **({"portfolio_csv": portfolio_csv} if portfolio_csv else {})}

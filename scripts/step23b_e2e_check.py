@@ -78,6 +78,25 @@ with httpx.Client(base_url=base, timeout=60) as client:
     check("another user's list does not show it", client.get("/portfolios", headers=bob).json() == [])
     check("my portfolio is still intact after those attempts", client.get(f"/portfolios/{pid}").json()["name"] == "e2e edited")
 
+    # a portfolio typed in with a kind per holding, shown grouped (live prices; no model call)
+    typed = client.post("/portfolios", json={"name": "e2e typed", "holdings": [
+        {"ticker": "VTI", "asset_type": "etf", "shares": "10", "avg_cost": "200.50", "purchase_date": "2024-02-01"},
+        {"ticker": "AAPL", "asset_type": "stock", "shares": "5", "avg_cost": "150"},
+        {"ticker": "BND", "asset_type": "bond", "shares": "20", "avg_cost": "72"},
+        {"ticker": "CASH", "asset_type": "cash", "shares": "1000", "avg_cost": "1"}]})
+    typed_id = typed.json()["id"]
+    check("typed portfolio saved with its own unique id", typed.status_code == 201 and typed_id != pid, typed_id)
+    summary = client.get(f"/portfolios/{typed_id}/summary").json()
+    groups = {g["asset_type"]: g for g in summary["groups"]}
+    check("grouped by the kinds I entered", set(groups) == {"etf", "stock", "bond", "cash"}, str(sorted(groups)))
+    check("cash is worth exactly its face value", groups["cash"]["value"] == 1000.0 and groups["cash"]["gain_pct"] == 0.0)
+    check("total cost is exact: 10*200.50 + 5*150 + 20*72 + 1000", summary["total_cost"] == 2005 + 750 + 1440 + 1000, str(summary["total_cost"]))
+    check("group values add up to the total value", abs(sum(g["value"] for g in summary["groups"]) - summary["total_value"]) < 0.05, f"{summary['total_value']}")
+    check("weights of the groups add up to 100%", abs(sum(g["weight_pct"] or 0 for g in summary["groups"]) - 100) < 0.1)
+    print("   ", [(g["label"], g["value"], g["weight_pct"]) for g in summary["groups"]], "unpriced:", summary["unpriced"])
+    check("another user cannot read it", client.get(f"/portfolios/{typed_id}/summary", headers=bob).status_code == 404)
+    client.delete(f"/portfolios/{typed_id}")
+
     check("DELETE -> 204, then 404", client.delete(f"/portfolios/{pid}").status_code == 204 and client.get(f"/portfolios/{pid}").status_code == 404)
 
     chat = client.post("/chat", json={"message": "What is an expense ratio?"}).json()

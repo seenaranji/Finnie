@@ -1,9 +1,19 @@
-"""Tab 3: Portfolio. Streamlit concepts: st.file_uploader, st.form, a cached POST (an analysis costs a model call, so the same input must not run twice)."""
+"""Tab 3: Portfolio, in three modes (a radio decides which one runs, so the others make no API calls):
+  Enter my holdings           type symbol, kind, shares, cost and date into a table, name it, save it (PostgreSQL gives it a unique id)
+  My saved portfolios         pick or load by id; shown GROUPED by kind with cost, value, gain and share of the total; explain, use in chat, delete
+  Analyze a file or sample    the original: nothing is stored, a CSV is sent for one analysis
+Streamlit concepts: st.data_editor (a spreadsheet-like table), widget keys that change to reset a form, st.cache_data keyed by user, st.file_uploader, a cached POST.
+"""
+import re
+from datetime import date
 from pathlib import Path
+from uuid import UUID
 
+import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from src.data.asset_types import ASSET_TYPES
 from src.web_app.client import ApiError, FinnieClient
 from src.web_app.ui_common import guarded, show_error
 
@@ -11,6 +21,10 @@ SAMPLES_DIR = Path(__file__).resolve().parents[2] / "data" / "sample_portfolios"
 SAMPLES = {"Diversified": "diversified.csv", "Bond heavy": "bond_heavy.csv", "One big stock": "concentrated_single_stock.csv"}
 MAX_CHARS = 20000   # the API's limit; checked here only to give a friendlier message than a 422
 EXAMPLE = "ticker,shares,avg_cost\nVTI,60,220.00\nBND,100,74.00"
+MODES = ["Enter my holdings", "My saved portfolios", "Analyze a file or sample"]
+LABEL_TO_KEY = {label: key for key, label in ASSET_TYPES.items()}
+COLUMNS = {"symbol": "Symbol", "type": "Type", "shares": "Shares", "cost": "Avg cost per share ($)", "date": "Purchase date"}
+FIELD_NAMES = {"ticker": "symbol", "asset_type": "type", "shares": "shares", "avg_cost": "average cost", "purchase_date": "purchase date"}
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -89,8 +103,242 @@ def show_result(result: dict) -> None:
         st.caption("Data: " + "; ".join(s["title"] for s in result["sources"]))
 
 
+# ---------------------------------------------------------------- entering a portfolio
+def blank_table() -> pd.DataFrame:
+    return pd.DataFrame({COLUMNS["symbol"]: [""], COLUMNS["type"]: [ASSET_TYPES["stock"]], COLUMNS["shares"]: [None], COLUMNS["cost"]: [None],
+                         COLUMNS["date"]: pd.Series([pd.NaT], dtype="datetime64[ns]")})
+
+
+def rows_to_holdings(table: pd.DataFrame) -> tuple[list[dict], list[int], list[str]]:
+    """The table the user filled in -> (holdings to send, the visible row number of each, plain-language problems). Completely empty rows are ignored.
+    Numbers travel as text so that 220.10 stays exactly 220.10 (the database stores exact decimals, not floating point)."""
+    holdings, row_numbers, problems = [], [], []
+    for number, row in enumerate(table.to_dict("records"), start=1):
+        raw_symbol = row[COLUMNS["symbol"]]
+        symbol = "" if pd.isna(raw_symbol) else str(raw_symbol).strip()   # a row added with the table's + has NO symbol (NaN, which is truthy: str(NaN) would be the text "nan")
+        shares, cost, bought = row[COLUMNS["shares"]], row[COLUMNS["cost"]], row[COLUMNS["date"]]
+        if not symbol and pd.isna(shares) and pd.isna(cost) and pd.isna(bought):
+            continue
+        before = len(problems)
+        if not symbol:
+            problems.append(f"Row {number}: enter the symbol (for example VTI or AAPL).")
+        if pd.isna(shares) or shares <= 0:
+            problems.append(f"Row {number}: shares must be a number greater than 0.")
+        if pd.isna(cost) or cost < 0:
+            problems.append(f"Row {number}: enter what you paid per share (0 or more).")
+        if not pd.isna(bought) and bought.date() > date.today():
+            problems.append(f"Row {number}: the purchase date cannot be in the future.")
+        if len(problems) > before:
+            continue
+        holding = {"ticker": symbol, "asset_type": LABEL_TO_KEY.get(row[COLUMNS["type"]], "other"), "shares": repr(float(shares)), "avg_cost": repr(float(cost))}
+        if not pd.isna(bought):
+            holding["purchase_date"] = bought.date().isoformat()
+        holdings.append(holding)
+        row_numbers.append(number)
+    return holdings, row_numbers, problems
+
+
+def server_problems_by_row(error: ApiError, row_numbers: list[int]) -> list[str]:
+    """The server names a problem 'holdings.2.shares'; the person sees their own table, so say 'Row 4, shares' (the server counts only the rows we sent)."""
+    lines = []
+    for detail in error.details:
+        found = re.match(r"holdings\.(\d+)\.(\w+)", detail.get("field", ""))
+        text = re.sub(r"^Value error, ", "", detail.get("problem", ""))
+        if found and int(found.group(1)) < len(row_numbers):
+            lines.append(f"Row {row_numbers[int(found.group(1))]}, {FIELD_NAMES.get(found.group(2), found.group(2))}: {text}")
+        else:
+            lines.append(text)
+    return lines
+
+
+def render_enter(client: FinnieClient) -> None:
+    st.markdown("Type in what you own, one holding per row, and save it. Each saved portfolio gets its own **unique id** and belongs only to your account.")
+    version = st.session_state.setdefault("pf_version", 0)   # saving bumps this, which gives the widgets new keys and so clears them
+    name = st.text_input("Portfolio name", max_chars=100, key=f"pf_name_{version}", placeholder="for example: Retirement account")
+    table = st.data_editor(
+        blank_table(), key=f"pf_table_{version}", num_rows="dynamic", hide_index=True, width="stretch",
+        column_config={
+            COLUMNS["symbol"]: st.column_config.TextColumn("Symbol", help="The ticker, such as VTI, AAPL or BND. For cash use CASH.", max_chars=10, required=False),
+            COLUMNS["type"]: st.column_config.SelectboxColumn("Type", help="What kind of holding it is", options=list(ASSET_TYPES.values()), required=True),
+            COLUMNS["shares"]: st.column_config.NumberColumn("Shares", help="How many shares or units you own (for cash: the dollar amount)", min_value=0.0, format="%g"),
+            COLUMNS["cost"]: st.column_config.NumberColumn("Avg cost per share ($)", help="What you paid per share on average (for cash: 1)", min_value=0.0, format="%.2f"),
+            COLUMNS["date"]: st.column_config.DateColumn("Purchase date", help="Optional", max_value=date.today())})
+    st.caption("Add rows with the + at the bottom of the table. Empty rows are ignored. The same symbol on two rows is combined into one holding.")
+    if not st.button("Save portfolio", type="primary", key=f"pf_save_{version}"):
+        return
+    holdings, row_numbers, problems = rows_to_holdings(table)
+    if not name.strip():
+        problems.insert(0, "Give the portfolio a name.")
+    if not holdings and not problems:
+        problems.append("Add at least one holding.")
+    if problems:
+        for problem in problems:
+            st.warning(problem)
+        return
+    try:
+        saved = client.save_portfolio(name.strip(), holdings)
+    except ApiError as error:
+        if error.code in ("invalid_request", "invalid_portfolio"):
+            st.error("The server could not accept some rows:")
+            for line in server_problems_by_row(error, row_numbers):
+                st.caption(f"- {line}")
+        else:
+            show_error(error)
+        return
+    st.session_state.pf_version = version + 1
+    st.session_state.selected_portfolio_id = saved["id"]
+    st.session_state.pf_saved_notice = (name.strip(), saved["id"])
+    st.session_state.pf_goto = MODES[1]   # take them to the grouped view of what they just saved (applied before the mode radio exists next run)
+    st.rerun()
+
+
+# ---------------------------------------------------------------- viewing saved portfolios
+def money(x: float | None) -> str:
+    return "n/a" if x is None else f"${x:,.2f}"
+
+
+def pct(x: float | None, signed: bool = False) -> str:
+    return "n/a" if x is None else (f"{x:+.1f}%" if signed else f"{x:.1f}%")
+
+
+def type_allocation_figure(groups: list[dict]) -> go.Figure:
+    priced = [g for g in groups if g["value"] > 0]
+    figure = go.Figure(go.Pie(labels=[g["label"] for g in priced], values=[g["value"] for g in priced], hole=0.4, sort=False, textinfo="label+percent"))
+    figure.update_layout(title="Share of the portfolio's value by type", showlegend=False, margin={"l": 10, "r": 10, "t": 50, "b": 10}, height=340)
+    return figure
+
+
+@st.cache_data(ttl=60, show_spinner=False)
+def cached_summary(_client: FinnieClient, url: str, user: str, portfolio_id: str, version: int) -> dict:
+    """`user` is part of the cache key on purpose: st.cache_data is shared by every visitor of the server, and a portfolio summary must never be served to someone else."""
+    return _client.portfolio_summary(portfolio_id)
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def cached_saved_analysis(_client: FinnieClient, url: str, user: str, portfolio_id: str, question: str) -> dict:
+    return _client.analyze_saved_portfolio(portfolio_id, question or None)
+
+
+def show_grouped(summary: dict) -> None:
+    st.subheader(summary["name"])
+    st.caption("Portfolio id (unique, keep it to load this portfolio again):")
+    st.code(summary["id"], language="text")
+    top = st.columns(4)
+    top[0].metric("Total cost", money(summary["total_cost"]))
+    top[1].metric("Current value", money(summary["total_value"]))
+    top[2].metric("Gain", pct(summary["gain_pct"], signed=True))
+    top[3].metric("Holdings", summary["holding_count"])
+    if summary["prices_as_of"]:
+        st.caption(f"Prices as of {summary['prices_as_of']}. Gain compares today's value with what you paid for the holdings that have a price.")
+    if summary["unpriced"]:
+        st.warning("No current price for: " + ", ".join(summary["unpriced"]) + ". They are shown with what you paid, but not counted in the value, gain or shares of the total.")
+    if summary["total_value"] > 0:
+        st.plotly_chart(type_allocation_figure(summary["groups"]), width="stretch")
+    for group in summary["groups"]:
+        weight = f" · {pct(group['weight_pct'])} of the total" if group["weight_pct"] is not None else ""
+        header = f"{group['label']} ({group['count']}): {money(group['value'])}{weight} · gain {pct(group['gain_pct'], signed=True)}"
+        with st.expander(header, expanded=True):
+            rows = [{"Symbol": h["ticker"], "Shares": h["shares"], "Avg cost": h["avg_cost"], "Paid": h["cost"], "Price": h["price"], "Value": h["value"],
+                     "Gain": h["gain_pct"], "Share of total": h["weight_pct"], "Bought": h["purchase_date"]} for h in group["holdings"]]
+            st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch", column_config={
+                "Shares": st.column_config.NumberColumn(format="%g"), "Avg cost": st.column_config.NumberColumn(format="$%.2f"),
+                "Paid": st.column_config.NumberColumn(format="$%.2f"), "Price": st.column_config.NumberColumn(format="$%.2f"),
+                "Value": st.column_config.NumberColumn(format="$%.2f"), "Gain": st.column_config.NumberColumn(format="%+.1f%%"),
+                "Share of total": st.column_config.NumberColumn(format="%.1f%%")})
+            if group["unpriced_count"]:
+                st.caption(f"{group['unpriced_count']} holding(s) here have no current price.")
+
+
+def chat_csv(summary: dict) -> str:
+    """The holdings as the CSV the chat expects. Cash has no market price, so it is left out of what chat analyzes."""
+    lines = [f"{h['ticker']},{h['shares']:g},{h['avg_cost']}" for g in summary["groups"] if g["asset_type"] != "cash" for h in g["holdings"]]
+    return "ticker,shares,avg_cost\n" + "\n".join(lines)
+
+
+def choose_portfolio(client: FinnieClient) -> str | None:
+    try:
+        saved = client.list_portfolios()
+    except ApiError as error:
+        show_error(error)
+        return None
+    typed = st.text_input("Load by id", key="pf_load_id", placeholder="paste a portfolio id", help="Only your own portfolios can be loaded.")
+    if typed.strip():
+        try:
+            return str(UUID(typed.strip()))
+        except ValueError:
+            st.warning("That doesn't look like a portfolio id (36 characters, like 3f2b8c1e-5d4a-4c7e-9b1a-0a1b2c3d4e5f).")
+            return None
+    if not saved:
+        st.info("You haven't saved a portfolio yet. Use 'Enter my holdings' to add one.")
+        return None
+    ids = [p["id"] for p in saved]
+    wanted = st.session_state.get("selected_portfolio_id")
+    labels = {p["id"]: f"{p['name']} — {p['holding_count']} holding(s) — {p['id'][:8]}…" for p in saved}
+    return st.selectbox("Your portfolios", ids, index=ids.index(wanted) if wanted in ids else 0, format_func=labels.get, key="pf_pick")
+
+
+def render_saved(client: FinnieClient) -> None:
+    notice = st.session_state.pop("pf_saved_notice", None)
+    if notice:
+        st.success(f"Saved '{notice[0]}'. Its unique id is {notice[1]}.")
+    portfolio_id = choose_portfolio(client)
+    if not portfolio_id:
+        return
+    st.session_state.selected_portfolio_id = portfolio_id
+    user = st.session_state.auth["email"]
+    version = st.session_state.get("pf_data_version", 0)
+    try:
+        with st.spinner("Loading prices…"):
+            summary = guarded(("summary", user, portfolio_id, version), lambda: cached_summary(client, client.base_url, user, portfolio_id, version))
+    except ApiError as error:
+        if error.status == 404:
+            st.error("No portfolio with that id was found in your account.")
+        else:
+            show_error(error)
+        return
+    show_grouped(summary)
+    left, middle, right = st.columns(3)
+    if left.button("Explain this portfolio", key="pf_explain", help="Asks Finnie to explain it in plain words (uses the AI model)"):
+        st.session_state.pf_explain_for = portfolio_id
+    if middle.button("Use in Chat", key="pf_use_in_chat", help="Chat questions about 'my portfolio' will use these holdings"):
+        st.session_state.portfolio_csv = chat_csv(summary)
+        st.success("Chat will now use this portfolio (cash is left out).")
+    with right.popover("Delete this portfolio"):
+        st.write("This permanently deletes the portfolio and all its holdings.")
+        if st.button("Yes, delete it", key="pf_delete", type="primary"):
+            try:
+                client.delete_portfolio(portfolio_id)
+            except ApiError as error:
+                show_error(error)
+            else:
+                st.session_state.pf_data_version = version + 1
+                st.session_state.pop("selected_portfolio_id", None)
+                st.session_state.pop("pf_explain_for", None)
+                st.rerun()
+    if st.session_state.get("pf_explain_for") == portfolio_id:
+        try:
+            with st.spinner("Explaining your portfolio…"):
+                result = guarded(("saved-analysis", user, portfolio_id), lambda: cached_saved_analysis(client, client.base_url, user, portfolio_id, ""))
+        except ApiError as error:
+            show_error(error)
+        else:
+            show_result(result)
+
+
 def render(client: FinnieClient) -> None:
-    st.markdown("See how a set of holdings is spread out. Nothing is stored: your file is sent for the analysis and kept only in this browser session.")
+    if "pf_goto" in st.session_state:   # a widget's value cannot be changed after it exists in the same run, so switching mode is done here, before the radio
+        st.session_state.portfolio_mode = st.session_state.pop("pf_goto")
+    mode = st.radio("What would you like to do?", MODES, horizontal=True, key="portfolio_mode")
+    if mode == MODES[0]:
+        render_enter(client)
+    elif mode == MODES[1]:
+        render_saved(client)
+    else:
+        render_analyze(client)
+
+
+def render_analyze(client: FinnieClient) -> None:
+    st.markdown("See how a set of holdings is spread out. Nothing is stored in this mode: your file is sent for the analysis and kept only in this browser session. To keep a portfolio, use 'Enter my holdings'.")
     source, sample = pick_source()
     with st.form("portfolio"):
         csv_text, problem = read_input(source, sample)

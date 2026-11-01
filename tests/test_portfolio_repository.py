@@ -173,3 +173,47 @@ def test_deleting_a_user_deletes_their_portfolios(repo, pg):
 def test_an_owner_is_required_and_cannot_be_forgotten(repo):
     with pytest.raises(TypeError):
         repo.get(uuid4())   # keyword-only and required: forgetting it is an error, not a silent "everyone's"
+
+
+# ---------- Step 27+: what kind of holding, and when it was bought ----------
+from datetime import date, timedelta  # noqa: E402
+
+
+def test_kind_and_purchase_date_round_trip(repo):
+    pid = repo.create("typed in", [{"ticker": "VTI", "shares": "10", "avg_cost": "220", "asset_type": "etf", "purchase_date": "2024-03-15"},
+                                   {"ticker": "BND", "shares": "5", "avg_cost": "74", "asset_type": "bond"}], owner_id=ME)
+    stored = repo.get(pid, owner_id=ME).holdings
+    assert [(h.ticker, h.asset_type, h.purchase_date) for h in stored] == [("VTI", "etf", date(2024, 3, 15)), ("BND", "bond", None)]
+
+
+def test_a_holding_with_no_kind_is_stored_as_other():
+    assert PortfolioIn(name="x", holdings=[{"ticker": "VTI", "shares": "1", "avg_cost": "1"}]).holdings[0].asset_type == "other"
+
+
+def test_an_unknown_kind_is_rejected_by_the_model_and_by_the_database(repo, pg):
+    with pytest.raises(ValidationError):
+        repo.create("bad", [{"ticker": "VTI", "shares": "1", "avg_cost": "1", "asset_type": "unicorn"}], owner_id=ME)
+    portfolio_id = repo.create("ok", HOLDINGS, owner_id=ME)
+    import psycopg
+    with pytest.raises(psycopg.errors.CheckViolation), pg.connection() as connection:   # the database refuses it even if validation were skipped
+        connection.execute("INSERT INTO holdings (portfolio_id, ticker, shares, avg_cost, asset_type) VALUES (%s, 'ZZZ', 1, 1, 'unicorn')", (portfolio_id,))
+
+
+def test_a_purchase_date_in_the_future_is_rejected_but_today_is_fine():
+    row = {"ticker": "VTI", "shares": "1", "avg_cost": "1"}
+    PortfolioIn(name="x", holdings=[{**row, "purchase_date": date.today().isoformat()}])
+    with pytest.raises(ValidationError):
+        PortfolioIn(name="x", holdings=[{**row, "purchase_date": (date.today() + timedelta(days=1)).isoformat()}])
+
+
+def test_two_lots_of_one_ticker_merge_keeping_the_kind_and_the_earlier_date():
+    p = PortfolioIn(name="x", holdings=[{"ticker": "VTI", "shares": "10", "avg_cost": "100", "asset_type": "etf", "purchase_date": "2024-06-01"},
+                                        {"ticker": "vti", "shares": "30", "avg_cost": "200", "asset_type": "etf", "purchase_date": "2023-01-10"}])
+    [h] = p.holdings
+    assert (h.shares, h.avg_cost, h.asset_type, h.purchase_date) == (Decimal("40"), Decimal("175"), "etf", date(2023, 1, 10))
+
+
+def test_one_ticker_listed_as_two_different_kinds_is_refused():
+    with pytest.raises(ValidationError) as caught:
+        PortfolioIn(name="x", holdings=[{"ticker": "VTI", "shares": "1", "avg_cost": "1", "asset_type": "etf"}, {"ticker": "VTI", "shares": "1", "avg_cost": "1", "asset_type": "stock"}])
+    assert "pick one type" in str(caught.value)

@@ -17,6 +17,7 @@ from src.core.llm import LLMClient
 from src.core.logging import get_logger
 from src.core.metrics import timer
 from src.core.schemas import AgentRequest, AgentResponse, Source
+from src.data.asset_types import ASSET_TYPES
 from src.data.errors import MarketDataError
 from src.data.market_data import MarketDataService
 
@@ -99,7 +100,12 @@ class PortfolioAnalysisAgent(BaseAgent):
         with timer() as load_time:
             stored = self.repository.get(portfolio_id, owner_id=owner_id)   # someone else's portfolio is PortfolioNotFound
             holdings = [pc.Holding(h.ticker, float(h.shares), float(h.avg_cost)) for h in stored.holdings]   # NUMERIC -> float only here, for the math
-        return self._analyze(holdings, question, load_time["seconds"])
+        # What the user said each holding IS wins over the hand-written ticker list (which only knows 16 tickers): a typed-in 'MSFT = stock' is a stock.
+        # 'other' is the default and means "not specified", so it leaves the ticker list's answer (or 'Unknown') alone.
+        kinds = {**self.metadata}
+        for h in (h for h in stored.holdings if h.asset_type != "other"):
+            kinds[h.ticker] = {"asset_class": ASSET_TYPES[h.asset_type], "sector": self.metadata.get(h.ticker, {}).get("sector", "Unspecified")}
+        return self._analyze(holdings, question, load_time["seconds"], metadata=kinds)
 
     def _fetch_one(self, holding: pc.Holding):
         """(quote, [(date, close)], error) for one holding. A failure keeps whatever was fetched before it, exactly like the old sequential loop."""
@@ -111,7 +117,7 @@ class PortfolioAnalysisAgent(BaseAgent):
         except MarketDataError as error:
             return quote, points, error
 
-    def _analyze(self, holdings: list[pc.Holding], question: str, parse_seconds: float) -> AgentResponse:
+    def _analyze(self, holdings: list[pc.Holding], question: str, parse_seconds: float, metadata: dict | None = None) -> AgentResponse:
         prices, closes, as_of, sources, failed = {}, {}, [], {}, []
         with timer() as fetch_time:
             # One quote + one year of history per holding. They are independent network calls, so they run side by side (Step 25: cold-cache fetch
@@ -129,7 +135,7 @@ class PortfolioAnalysisAgent(BaseAgent):
                     failed.append(f"{holding.ticker}: {error.user_message}")
         with timer() as calc_time:
             try:
-                result = pc.analyze(holdings, prices, closes, self.metadata)
+                result = pc.analyze(holdings, prices, closes, self.metadata if metadata is None else metadata)
             except pc.PortfolioInputError:
                 return self._canned("I couldn't get prices for any of your holdings right now, so I can't analyze the portfolio. "
                                     "Please try again in a few minutes.\n- " + "\n- ".join(failed), "no prices")

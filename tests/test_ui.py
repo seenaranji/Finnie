@@ -87,6 +87,40 @@ class FakeApi:
                 "inflation_adjusted_goal": goal * 1.159, "scenarios": scenarios, "flags": ["A flag from the server."] if goal > 90000 else [],
                 "assumptions": "ASSUMPTIONS, not forecasts: yearly returns of 2% / 5% / 8%.", "disclaimer": "Educational illustration only."}
 
+    saved_id = "3f2b8c1e-5d4a-4c7e-9b1a-0a1b2c3d4e5f"
+
+    def save_portfolio(self, name, holdings):
+        self.sent.append(("save", name, holdings))
+        return {"id": self.saved_id}
+
+    def list_portfolios(self):
+        self.sent.append("list")
+        return [p for p in self._all_portfolios() if p["id"] not in self.deleted]
+
+    deleted: set = set()
+
+    def _all_portfolios(self):
+        return [{"id": self.saved_id, "name": "Retirement", "holding_count": 3, "created_at": "2026-11-01T10:00:00Z", "updated_at": "2026-11-01T10:00:00Z"},
+                {"id": "aaaaaaaa-1111-4222-8333-444444444444", "name": "Kids college", "holding_count": 1, "created_at": "2026-11-01T11:00:00Z", "updated_at": "2026-11-01T11:00:00Z"}]
+
+    def portfolio_summary(self, portfolio_id):
+        self.sent.append(("summary", portfolio_id))
+        holding = lambda t, k, sh, ac, cost, price, gain, w: {"ticker": t, "asset_type": k, "shares": sh, "avg_cost": ac, "purchase_date": None, "cost": cost, "price": price,
+                                                              "value": None if price is None else sh * price, "gain_pct": gain, "weight_pct": w}
+        return {"id": portfolio_id, "name": "Retirement", "prices_as_of": "2026-10-30", "total_cost": 1800.0, "total_value": 2500.0, "gain_pct": 38.89, "holding_count": 3, "unpriced": [],
+                "groups": [{"asset_type": "etf", "label": "ETFs", "count": 1, "unpriced_count": 0, "cost": 1300.0, "value": 2000.0, "gain_pct": 53.85, "weight_pct": 80.0,
+                            "holdings": [holding("VTI", "etf", 10, 130.0, 1300.0, 200.0, 53.85, 80.0)]},
+                           {"asset_type": "cash", "label": "Cash", "count": 1, "unpriced_count": 0, "cost": 500.0, "value": 500.0, "gain_pct": 0.0, "weight_pct": 20.0,
+                            "holdings": [holding("CASH", "cash", 500, 1.0, 500.0, 1.0, 0.0, 20.0)]}]}
+
+    def analyze_saved_portfolio(self, portfolio_id, question=None):
+        self.sent.append(("analyze_saved", portfolio_id))
+        return self.analyze_portfolio("ticker,shares,avg_cost\nVTI,1,1", None)
+
+    def delete_portfolio(self, portfolio_id):
+        self.sent.append(("delete", portfolio_id))
+        self.deleted = self.deleted | {portfolio_id}
+
     def articles(self, category=None):
         self.sent.append("articles")
         return [{"id": "etf-basics", "title": "ETF Basics", "category": "etfs", "difficulty": "beginner", "source_name": "Investor.gov", "last_updated": "2026-10-30"},
@@ -277,15 +311,21 @@ def test_an_index_level_is_not_shown_as_dollars():
 
 
 # ---------- Portfolio tab ----------
+def choose_source(at, pick):
+    """The Portfolio tab has three modes; the analyze-a-file mode (the original tab) is reached by choosing it, then the source."""
+    at.radio(key="portfolio_mode").set_value("Analyze a file or sample").run()
+    next(r for r in at.radio if r.label == "Where are your holdings?").set_value(pick).run()
+
+
 def analyze(at, pick="Sample portfolio"):
-    at.radio[0].set_value(pick).run()
+    choose_source(at, pick)
     next(b for b in at.button if b.label == "Analyze").click()
     return at.run()
 
 
 def paste(at, text):
     """Switching the source reruns at once (it is outside the form); the pasted text is only read when the form is submitted, so set it and click in one run."""
-    at.radio[0].set_value("Paste CSV text").run()
+    choose_source(at, "Paste CSV text")
     at.text_area[0].set_value(text)
     next(b for b in at.button if b.label == "Analyze").click()
     return at.run()
@@ -317,7 +357,7 @@ def test_pasted_text_that_the_server_rejects_shows_every_problem_and_an_example(
 def test_empty_paste_asks_for_input_and_calls_nothing():
     api = FakeApi()
     at = app(api)
-    at.radio[0].set_value("Paste CSV text").run()
+    choose_source(at, "Paste CSV text")
     next(b for b in at.button if b.label == "Analyze").click()
     at.run()
     assert any("Paste some holdings" in w.value for w in at.warning) and not [s for s in api.sent if isinstance(s, tuple) and s[0] == "analyze"]
@@ -396,8 +436,9 @@ def plan(at, goal=20000.0, years=5.0, savings=2000.0, risk=None):
 def test_a_goal_plan_shows_three_scenarios_a_chart_and_the_assumptions():
     api = FakeApi()
     at = plan(app(api))
-    assert not at.exception and len(at.dataframe) == 1 and len(at.dataframe[0].value) == 3
-    assert [r["Scenario"] for r in at.dataframe[0].value.to_dict("records")] == ["Conservative", "Expected", "Optimistic"]
+    scenario_tables = [d for d in at.dataframe if len(d.value) == 3]   # (the Portfolio tab's entry table is also a dataframe, with one row)
+    assert not at.exception and len(scenario_tables) == 1
+    assert [r["Scenario"] for r in scenario_tables[0].value.to_dict("records")] == ["Conservative", "Expected", "Optimistic"]
     assert any("not forecasts" in i.value for i in at.info) and any("Educational illustration" in c.value for c in at.caption) and len(at.get("plotly_chart")) >= 1
     assert api.sent[-1] == ("plan", 20000.0, 5.0, 2000.0, "medium")
 
@@ -702,3 +743,205 @@ def test_the_next_user_on_the_same_browser_tab_starts_clean():
     assert not at.session_state["messages"] and at.session_state["session_id"] is None and "portfolio_csv" not in at.session_state
     assert "my private question" not in " ".join(texts(at))
     assert "_failures" not in at.session_state or not at.session_state["_failures"]   # an earlier user's remembered failures must not block the next one
+
+
+# ---------- Portfolio tab: enter, save, see grouped, load by id, delete ----------
+import pandas as pd  # noqa: E402
+
+from src.web_app.tabs.portfolio import rows_to_holdings, server_problems_by_row  # noqa: E402
+
+SYMBOL, TYPE, SHARES, COST, BOUGHT = "Symbol", "Type", "Shares", "Avg cost per share ($)", "Purchase date"
+ID = FakeApi.saved_id
+
+
+def fill_table(at, rows, name="Retirement", version=0):
+    """Put rows into the entry table the way the browser does (the editor's delta state) and name the portfolio. The first row is the blank one the table starts with."""
+    first, *more = rows
+    at.session_state[f"pf_table_{version}"] = {"edited_rows": {0: first}, "added_rows": more, "deleted_rows": []}
+    at.text_input(key=f"pf_name_{version}").set_value(name)
+    return at
+
+
+def save(at, version=0):
+    at.button(key=f"pf_save_{version}").click()
+    return at.run()
+
+
+VTI = {SYMBOL: "VTI", TYPE: "ETF", SHARES: 10.0, COST: 130.0}
+BND = {SYMBOL: "bnd", TYPE: "Bond", SHARES: 5.0, COST: 74.5, BOUGHT: "2024-03-15"}
+
+
+def test_the_portfolio_tab_opens_on_entering_holdings_with_a_table_a_name_and_a_save_button():
+    at = app()
+    assert at.radio(key="portfolio_mode").value == "Enter my holdings" and at.text_input(key="pf_name_0") and at.button(key="pf_save_0")
+    assert not at.exception
+
+
+def test_saving_sends_exact_text_numbers_kinds_and_dates_and_shows_the_new_unique_id():
+    api = FakeApi()
+    at = save(fill_table(app(api), [VTI, BND]))
+    (_, name, holdings), = [s for s in api.sent if isinstance(s, tuple) and s[0] == "save"]
+    assert name == "Retirement"
+    assert holdings == [{"ticker": "VTI", "asset_type": "etf", "shares": "10.0", "avg_cost": "130.0"},
+                        {"ticker": "bnd", "asset_type": "bond", "shares": "5.0", "avg_cost": "74.5", "purchase_date": "2024-03-15"}]   # the server upper-cases bnd
+    assert not at.exception and at.radio(key="portfolio_mode").value == "My saved portfolios"            # taken straight to the grouped view
+    assert any(ID in s.value for s in at.success) and any(c.value == ID for c in at.get("code"))
+    assert at.session_state["selected_portfolio_id"] == ID
+
+
+def test_the_form_is_reset_after_a_save_so_the_same_portfolio_is_not_saved_twice_by_accident():
+    api = FakeApi()
+    at = save(fill_table(app(api), [VTI]))
+    at.radio(key="portfolio_mode").set_value("Enter my holdings").run()
+    assert at.text_input(key="pf_name_1").value == "" and at.session_state["pf_version"] == 1
+
+
+def test_missing_pieces_are_named_by_row_and_nothing_is_sent():
+    api = FakeApi()
+    at = save(fill_table(app(api), [{SYMBOL: "VTI", TYPE: "ETF", SHARES: 10.0}, {SYMBOL: "", TYPE: "Bond", SHARES: -3.0, COST: 70.0}], name="  "))
+    warnings = " | ".join(w.value for w in at.warning)
+    assert "Give the portfolio a name" in warnings and "Row 1: enter what you paid per share" in warnings
+    assert "Row 2: enter the symbol" in warnings and "Row 2: shares must be a number greater than 0" in warnings
+    assert not [s for s in api.sent if isinstance(s, tuple) and s[0] == "save"]
+
+
+def test_an_empty_table_asks_for_a_holding():
+    api = FakeApi()
+    at = save(app(api).run() and fill_table(app(api), [{}]))
+    assert any("Add at least one holding" in w.value for w in at.warning) and not [s for s in api.sent if isinstance(s, tuple) and s[0] == "save"]
+
+
+def test_server_complaints_are_shown_against_the_rows_the_person_sees_even_when_a_blank_row_sits_between():
+    api = FakeApi()
+    api.save_portfolio = lambda name, holdings: (_ for _ in ()).throw(ApiError("The request was not valid.", 422, "invalid_request", "req-s", [
+        {"field": "holdings.1.ticker", "problem": "Value error, 'N/A!' is not a valid ticker"}, {"field": "name", "problem": "String should have at most 100 characters"}]))
+    at = save(fill_table(app(api), [VTI, {}, {SYMBOL: "N/A!", TYPE: "Stock", SHARES: 1.0, COST: 1.0}]))
+    lines = " | ".join(c.value for c in at.caption)
+    assert "Row 3, symbol: 'N/A!' is not a valid ticker" in lines and "String should have at most 100 characters" in lines
+    assert at.radio(key="portfolio_mode").value == "Enter my holdings"          # stays on the form so nothing typed is lost
+
+
+def test_rows_to_holdings_ignores_blank_rows_and_keeps_the_number_text_exact():
+    table = pd.DataFrame({SYMBOL: ["", " vti ", ""], TYPE: ["Stock", "ETF", "Stock"], SHARES: [None, 0.1, None], COST: [None, 220.1, None],
+                          BOUGHT: pd.Series([pd.NaT, pd.Timestamp("2024-01-02"), pd.NaT], dtype="datetime64[ns]")})
+    holdings, rows, problems = rows_to_holdings(table)
+    assert problems == [] and rows == [2] and holdings == [{"ticker": "vti", "asset_type": "etf", "shares": "0.1", "avg_cost": "220.1", "purchase_date": "2024-01-02"}]
+
+
+def test_a_future_purchase_date_is_refused_before_sending():
+    table = pd.DataFrame({SYMBOL: ["VTI"], TYPE: ["ETF"], SHARES: [1.0], COST: [1.0], BOUGHT: pd.Series([pd.Timestamp.today().normalize() + pd.Timedelta(days=3)], dtype="datetime64[ns]")})
+    assert "Row 1: the purchase date cannot be in the future." in rows_to_holdings(table)[2]
+
+
+def test_server_problem_text_loses_its_technical_prefix_and_falls_back_for_unknown_rows():
+    error = ApiError("x", 422, "invalid_request", "r", [{"field": "holdings.0.shares", "problem": "Value error, shares must be greater than 0"}, {"field": "holdings.9.shares", "problem": "odd"}])
+    assert server_problems_by_row(error, [4]) == ["Row 4, shares: shares must be greater than 0", "odd"]
+
+
+# ---- the saved portfolios view
+def open_saved(api=None, **session):
+    at = app(api or FakeApi())
+    for key, value in session.items():
+        at.session_state[key] = value
+    at.radio(key="portfolio_mode").set_value("My saved portfolios").run()
+    return at
+
+
+def test_a_saved_portfolio_is_shown_grouped_by_kind_with_totals_and_its_id():
+    api = FakeApi()
+    at = open_saved(api)
+    assert not at.exception and ("summary", ID) in api.sent                         # the first saved portfolio is selected for them
+    metrics = {m.label: m.value for m in at.metric if m.label in ("Total cost", "Current value", "Gain", "Holdings")}
+    assert metrics == {"Total cost": "$1,800.00", "Current value": "$2,500.00", "Gain": "+38.9%", "Holdings": "3"}
+    headers = [e.label for e in at.expander]
+    assert headers[0].startswith("ETFs (1): $2,000.00 · 80.0% of the total · gain +53.9%") and headers[1].startswith("Cash (1): $500.00 · 20.0% of the total")
+    assert any(c.value == ID for c in at.get("code")) and len(at.get("plotly_chart")) >= 1
+
+
+def test_the_group_tables_list_each_holding_with_cost_price_value_and_share():
+    at = open_saved()
+    tables = [d.value for d in at.dataframe if "Symbol" in d.value.columns and "Value" in d.value.columns]
+    assert [t["Symbol"].tolist() for t in tables] == [["VTI"], ["CASH"]]
+    assert tables[0].iloc[0].to_dict()["Paid"] == 1300.0 and tables[0].iloc[0].to_dict()["Value"] == 2000.0
+
+
+def test_holdings_without_a_price_are_listed_and_explained():
+    api = FakeApi()
+    base = api.portfolio_summary
+    api.portfolio_summary = lambda pid: {**base(pid), "unpriced": ["XYZ"]}
+    at = open_saved(api)
+    assert any("No current price for: XYZ" in w.value for w in at.warning)
+
+
+def test_loading_by_id_asks_only_for_that_portfolio_and_a_bad_id_asks_nothing():
+    api = FakeApi()
+    at = open_saved(api)
+    at.text_input(key="pf_load_id").set_value("aaaaaaaa-1111-4222-8333-444444444444").run()
+    assert ("summary", "aaaaaaaa-1111-4222-8333-444444444444") in api.sent
+    api2 = FakeApi()
+    at = open_saved(api2)
+    at.text_input(key="pf_load_id").set_value("../auth/me").run()
+    assert any("doesn't look like a portfolio id" in w.value for w in at.warning) and not [s for s in api2.sent if isinstance(s, tuple) and s[0] == "summary" and "auth" in s[1]]
+
+
+def test_an_id_that_is_not_in_my_account_says_so_plainly():
+    api = FakeApi()
+    api.portfolio_summary = lambda pid: (_ for _ in ()).throw(ApiError("No saved portfolio has that id.", 404, "portfolio_not_found", "r404"))
+    at = open_saved(api)
+    assert any("No portfolio with that id was found in your account" in e.value for e in at.error)
+
+
+def test_with_nothing_saved_it_points_to_entering_holdings():
+    api = FakeApi()
+    api.list_portfolios = lambda: []
+    assert any("haven't saved a portfolio yet" in i.value for i in open_saved(api).info)
+
+
+def test_the_summary_is_fetched_once_however_often_the_page_reruns():
+    api = FakeApi()
+    at = open_saved(api)
+    at.run(); at.run()
+    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "summary"]) == 1
+
+
+def test_one_users_cached_summary_is_never_served_to_another_user():
+    api = FakeApi()
+    at = open_saved(api)
+    at.session_state["auth"] = {"token": "other", "email": "someone-else@example.com"}   # same server cache, different person
+    at.run()
+    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "summary"]) == 2
+
+
+def test_use_in_chat_sends_the_holdings_without_cash():
+    at = open_saved()
+    at.button(key="pf_use_in_chat").click()
+    at.run()
+    assert at.session_state["portfolio_csv"] == "ticker,shares,avg_cost\nVTI,10,130.0"
+
+
+def test_explain_this_portfolio_runs_the_analysis_only_when_asked():
+    api = FakeApi()
+    at = open_saved(api)
+    assert not [s for s in api.sent if isinstance(s, tuple) and s[0] == "analyze_saved"]
+    at.button(key="pf_explain").click()
+    at.run()
+    assert ("analyze_saved", ID) in api.sent and any("mostly stocks" in m.value for m in at.markdown)
+
+
+def test_deleting_asks_the_server_and_then_shows_the_next_portfolio_not_the_deleted_one():
+    api = FakeApi()
+    api.deleted = set()
+    at = open_saved(api)
+    at.button(key="pf_delete").click()
+    at.run()
+    other = "aaaaaaaa-1111-4222-8333-444444444444"
+    assert ("delete", ID) in api.sent and at.session_state["selected_portfolio_id"] == other and ("summary", other) in api.sent
+    assert ID not in [o for o in at.selectbox(key="pf_pick").options]
+
+
+
+def test_a_row_added_with_the_plus_button_and_left_untouched_is_ignored_not_saved_as_nan():
+    blank_added = pd.DataFrame({SYMBOL: ["VTI", None], TYPE: ["ETF", None], SHARES: [1.0, float("nan")], COST: [1.0, float("nan")],
+                                BOUGHT: pd.Series([pd.NaT, pd.NaT], dtype="datetime64[ns]")})
+    holdings, rows, problems = rows_to_holdings(blank_added)
+    assert problems == [] and [h["ticker"] for h in holdings] == ["VTI"] and rows == [1]

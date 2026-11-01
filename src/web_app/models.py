@@ -1,5 +1,5 @@
 """Request and response shapes for the API. FastAPI validates every request against these before any of our code runs; a bad one becomes a 422."""
-from datetime import datetime
+from datetime import date, datetime
 from typing import Literal
 from uuid import UUID
 
@@ -109,6 +109,43 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
     expires_in: int                # seconds
     user: UserOut
+
+
+class GroupedHolding(BaseModel):
+    ticker: str
+    asset_type: str
+    shares: float
+    avg_cost: float
+    purchase_date: date | None = None
+    cost: float
+    price: float | None = None       # None = the price could not be fetched
+    value: float | None = None
+    gain_pct: float | None = None
+    weight_pct: float | None = None
+
+
+class HoldingGroup(BaseModel):
+    asset_type: str
+    label: str                       # "Stocks", "ETFs", ...
+    count: int
+    unpriced_count: int
+    cost: float
+    value: float                     # priced holdings only
+    gain_pct: float | None = None
+    weight_pct: float | None = None
+    holdings: list[GroupedHolding]
+
+
+class GroupedPortfolio(BaseModel):
+    id: UUID
+    name: str
+    prices_as_of: str | None = None
+    total_cost: float
+    total_value: float
+    gain_pct: float | None = None
+    holding_count: int
+    unpriced: list[str]
+    groups: list[HoldingGroup]
 
 
 class PortfolioSaved(BaseModel):

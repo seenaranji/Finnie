@@ -7,6 +7,7 @@ Status codes used: 200 ok | 404 unknown ticker or route | 422 the request body/p
                    500 a bug on our side | 502 a data provider failed and nothing saved could stand in | 503 not ready / dependency down
 """
 import math
+from decimal import Decimal
 from contextlib import asynccontextmanager
 import threading
 import time
@@ -31,6 +32,7 @@ from src.core.config import load_settings
 from src.core.logging import get_logger, setup_logging
 from src.agents import goal_calc, portfolio_calc
 from src.agents.portfolio_agent import PortfolioAnalysisAgent
+from src.agents.portfolio_summary import group_by_type
 from src.core.guardrails import DISCLAIMER_STRONG
 from src.data.errors import MarketDataError, ProviderUnavailable, TickerNotFound
 from src.data.models import PriceHistory, Quote
@@ -39,7 +41,7 @@ from src.data.portfolio_repository import PortfolioIn, PortfolioNotFound, Portfo
 from src.rag.hybrid_retriever import StaleKeywordIndexError
 from src.workflow.factory import config_for
 from src.web_app.models import (Article, ArticleSummary, ChatRequest, ChatResponse, ErrorBody, GoalRequest, GoalResponse, HealthResponse, IndexQuote, KnowledgeResponse, MarketOverview, NewsItemOut, NewsResponse, PassageOut,
-                                LoginRequest, PortfolioRequest, PortfolioResponse, PortfolioSaved, RegisterRequest, TokenResponse, UserOut)
+                                GroupedPortfolio, LoginRequest, PortfolioRequest, PortfolioResponse, PortfolioSaved, RegisterRequest, TokenResponse, UserOut)
 from src.web_app.services import Services
 
 log = get_logger("finnie.api")
@@ -306,6 +308,29 @@ def create_app(services: Services | None = None) -> FastAPI:
     @protected.get("/portfolios/{portfolio_id}", response_model=StoredPortfolio, tags=["portfolio"])
     def get_portfolio(request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):
         return request.app.state.services.portfolios.get(portfolio_id, owner_id=user.id)
+
+    @protected.get("/portfolios/{portfolio_id}/summary", response_model=GroupedPortfolio, tags=["portfolio"])
+    def summarize_saved_portfolio(request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):
+        """A saved portfolio grouped by the kind of holding the user chose, with cost, current value, gain and share of the total per group. No model call: quick and free."""
+        services = request.app.state.services
+        stored = services.portfolios.get(portfolio_id, owner_id=user.id)
+        prices, as_of = {}, []
+
+        def price_of(holding):
+            if holding.asset_type == "cash":
+                return holding.ticker, Decimal(1), None   # cash is worth exactly one dollar per unit; there is nothing to look up
+            try:
+                quote = services.market.get_quote(holding.ticker)
+                return holding.ticker, Decimal(str(quote.price)), quote.as_of
+            except MarketDataError:
+                return holding.ticker, None, None   # shown with its cost, without a value, and listed under "unpriced"
+        with ThreadPoolExecutor(max_workers=min(8, len(stored.holdings))) as pool:
+            for ticker, price, quote_date in pool.map(price_of, stored.holdings):
+                prices[ticker] = price
+                if quote_date:
+                    as_of.append(quote_date)
+        summary = group_by_type(stored.holdings, prices)
+        return GroupedPortfolio(id=stored.id, name=stored.name, prices_as_of=max(as_of) if as_of else None, **summary)
 
     @protected.get("/portfolios/{portfolio_id}/analysis", response_model=PortfolioResponse, tags=["portfolio"])
     def analyze_saved_portfolio(request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user), question: str = Query("Please explain my portfolio in simple terms.", min_length=1, max_length=500)):

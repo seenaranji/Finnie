@@ -95,3 +95,66 @@ def test_bob_cannot_see_change_analyze_or_delete_alices_portfolio(api):
     assert api.get("/portfolios", **bob).json() == []
     assert api.get(f"/portfolios/{pid}").json()["name"] == "alices"   # still Alice's, unchanged
     assert api.get(f"/portfolios/{pid}", **bob).json()["code"] == api.get("/portfolios/00000000-0000-4000-8000-000000000000", **bob).json()["code"]   # same answer as "no such id"
+
+
+# ---------- typed-in portfolios and the grouped summary ----------
+TYPED = [{"ticker": "AAA", "asset_type": "stock", "shares": "10", "avg_cost": "50", "purchase_date": "2024-01-02"},     # price 100: cost 500, value 1000
+         {"ticker": "BBB", "asset_type": "bond", "shares": "20", "avg_cost": "40"},                                     # price 50:  cost 800, value 1000
+         {"ticker": "CASH", "asset_type": "cash", "shares": "500", "avg_cost": "1"}]                                    # always $1: cost 500, value 500
+
+
+def save_typed(api, holdings=TYPED, name="typed"):
+    return api.post("/portfolios", json={"name": name, "holdings": holdings}).json()["id"]
+
+
+def test_the_kind_and_date_are_stored_and_returned_with_a_unique_id(api):
+    one, two = save_typed(api), save_typed(api)
+    assert one != two and len(one) == 36                                       # a new UUID every time
+    body = api.get(f"/portfolios/{one}").json()
+    assert [(h["ticker"], h["asset_type"], h["purchase_date"]) for h in body["holdings"]] == [("AAA", "stock", "2024-01-02"), ("BBB", "bond", None), ("CASH", "cash", None)]
+
+
+def test_an_unknown_kind_or_a_future_date_is_422_naming_the_field(api):
+    bad_kind = api.post("/portfolios", json={"name": "x", "holdings": [{**TYPED[0], "asset_type": "unicorn"}]})
+    future = api.post("/portfolios", json={"name": "x", "holdings": [{**TYPED[0], "purchase_date": "2999-01-01"}]})
+    assert bad_kind.status_code == future.status_code == 422
+    assert "holdings.0.asset_type" in {d["field"] for d in bad_kind.json()["details"]} and "holdings.0.purchase_date" in {d["field"] for d in future.json()["details"]}
+    assert api.get("/portfolios").json() == []
+
+
+def test_the_summary_groups_by_kind_with_cost_value_gain_and_weight(api):
+    body = api.get(f"/portfolios/{save_typed(api)}/summary").json()
+    assert (body["total_cost"], body["total_value"], body["holding_count"], body["unpriced"]) == (1800.0, 2500.0, 3, [])
+    groups = {g["asset_type"]: g for g in body["groups"]}
+    assert (groups["stock"]["cost"], groups["stock"]["value"], groups["stock"]["gain_pct"], groups["stock"]["weight_pct"]) == (500.0, 1000.0, 100.0, 40.0)
+    assert (groups["bond"]["cost"], groups["bond"]["value"], groups["bond"]["gain_pct"]) == (800.0, 1000.0, 25.0)
+    assert (groups["cash"]["value"], groups["cash"]["gain_pct"], groups["cash"]["weight_pct"]) == (500.0, 0.0, 20.0)
+    assert body["prices_as_of"] == "2026-10-30" and body["name"] == "typed"
+
+
+def test_a_ticker_that_cannot_be_priced_is_listed_not_hidden_and_does_not_break_the_page(pg, two_users):
+    market = MarketDataService(FlakyProvider(down={"BBB"}), TTLCache(), settings_with_secret(), sleep=lambda s: None)
+    client = TestClient(create_app(Services(settings_with_secret(), market=market, llm=ReplyLLM(), portfolios=PortfolioRepository(pg))), raise_server_exceptions=False, headers=headers_for(ALICE))
+    body = client.get(f"/portfolios/{save_typed(client)}/summary").json()
+    assert body["unpriced"] == ["BBB"] and body["total_cost"] == 1800.0 and body["total_value"] == 1500.0
+    bond = {g["asset_type"]: g for g in body["groups"]}["bond"]
+    assert bond["cost"] == 800.0 and bond["value"] == 0.0 and bond["weight_pct"] is None and bond["unpriced_count"] == 1
+
+
+def test_a_market_that_is_totally_down_still_shows_the_portfolio_and_values_the_cash(pg, two_users):
+    market = MarketDataService(FlakyProvider(down={"AAA", "BBB"}), TTLCache(), settings_with_secret(), sleep=lambda s: None)
+    client = TestClient(create_app(Services(settings_with_secret(), market=market, llm=ReplyLLM(), portfolios=PortfolioRepository(pg))), raise_server_exceptions=False, headers=headers_for(ALICE))
+    r = client.get(f"/portfolios/{save_typed(client)}/summary")
+    assert r.status_code == 200 and r.json()["total_value"] == 500.0 and sorted(r.json()["unpriced"]) == ["AAA", "BBB"]
+
+
+def test_bob_cannot_see_alices_summary(api):
+    pid = save_typed(api)
+    assert api.get(f"/portfolios/{pid}/summary", headers=headers_for(BOB)).status_code == 404
+    assert api.get("/portfolios/00000000-0000-4000-8000-000000000000/summary").status_code == 404
+
+
+def test_the_explanation_uses_the_kinds_the_user_entered(api):
+    pid = save_typed(api, [{"ticker": "AAA", "asset_type": "bond", "shares": "10", "avg_cost": "50"}, {"ticker": "BBB", "asset_type": "stock", "shares": "20", "avg_cost": "40"}])
+    classes = api.get(f"/portfolios/{pid}/analysis").json()["metrics"]["asset_class_pct"]
+    assert set(classes) == {"Bond", "Stock"}                 # the hand-written list says AAA is a 'US stock'; the user said bond, and the user wins

@@ -14,7 +14,7 @@ Ownership (Step 27): every portfolio belongs to a user, and EVERY method takes `
 A portfolio that is not yours looks exactly like one that does not exist (PortfolioNotFound), so ids cannot be probed for existence.
 """
 import re
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from uuid import UUID
 
@@ -22,6 +22,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 from psycopg_pool import ConnectionPool
 
 from src.core.config import Settings, load_settings
+from src.data.asset_types import AssetType
 from src.data.db import get_pool
 
 MAX_HOLDINGS = load_settings().database.max_holdings_per_portfolio
@@ -38,6 +39,15 @@ class HoldingIn(BaseModel):
     ticker: str
     shares: Decimal = Field(allow_inf_nan=False)
     avg_cost: Decimal = Field(allow_inf_nan=False)
+    asset_type: AssetType = "other"          # what kind of holding it is; the user's own word, never guessed from the ticker
+    purchase_date: date | None = None        # optional: when it was bought
+
+    @field_validator("purchase_date")
+    @classmethod
+    def _not_in_the_future(cls, value: date | None) -> date | None:
+        if value is not None and value > date.today():
+            raise ValueError("purchase date cannot be in the future")
+        return value
 
     @field_validator("ticker")
     @classmethod
@@ -81,8 +91,11 @@ class PortfolioIn(BaseModel):
         for holding in self.holdings:
             if holding.ticker in merged:
                 old = merged[holding.ticker]
+                if old.asset_type != holding.asset_type:
+                    raise ValueError(f"{holding.ticker} is listed as both '{old.asset_type}' and '{holding.asset_type}': pick one type")
                 shares = old.shares + holding.shares
-                merged[holding.ticker] = HoldingIn(ticker=holding.ticker, shares=shares,
+                dates = [d for d in (old.purchase_date, holding.purchase_date) if d]   # two purchases of one ticker: keep the earlier date
+                merged[holding.ticker] = HoldingIn(ticker=holding.ticker, shares=shares, asset_type=old.asset_type, purchase_date=min(dates) if dates else None,
                                                    avg_cost=(old.shares * old.avg_cost + holding.shares * holding.avg_cost) / shares)
             else:
                 merged[holding.ticker] = holding
@@ -96,6 +109,8 @@ class StoredHolding(BaseModel):
     ticker: str
     shares: Decimal
     avg_cost: Decimal
+    asset_type: AssetType = "other"
+    purchase_date: date | None = None
 
 
 class StoredPortfolio(BaseModel):
@@ -125,8 +140,8 @@ class PortfolioRepository:
     @staticmethod
     def _insert_holdings(connection, portfolio_id: UUID, holdings: list[HoldingIn]) -> None:
         with connection.cursor() as cursor:
-            cursor.executemany("INSERT INTO holdings (portfolio_id, ticker, shares, avg_cost) VALUES (%s, %s, %s, %s)",
-                               [(portfolio_id, h.ticker, h.shares, h.avg_cost) for h in holdings])
+            cursor.executemany("INSERT INTO holdings (portfolio_id, ticker, shares, avg_cost, asset_type, purchase_date) VALUES (%s, %s, %s, %s, %s, %s)",
+                               [(portfolio_id, h.ticker, h.shares, h.avg_cost, h.asset_type, h.purchase_date) for h in holdings])
 
     def create(self, name: str, holdings: list[HoldingIn | dict], *, owner_id: UUID) -> UUID:
         """Validate, then save the portfolio and ALL its holdings in one transaction. Returns the new id.
@@ -142,9 +157,9 @@ class PortfolioRepository:
             row = connection.execute("SELECT id, name, created_at, updated_at FROM portfolios WHERE id = %s AND owner_id = %s", (portfolio_id, owner_id)).fetchone()
             if row is None:
                 raise PortfolioNotFound(portfolio_id)
-            holdings = connection.execute("SELECT ticker, shares, avg_cost FROM holdings WHERE portfolio_id = %s ORDER BY id", (portfolio_id,)).fetchall()
+            holdings = connection.execute("SELECT ticker, shares, avg_cost, asset_type, purchase_date FROM holdings WHERE portfolio_id = %s ORDER BY id", (portfolio_id,)).fetchall()
         return StoredPortfolio(id=row[0], name=row[1], created_at=row[2], updated_at=row[3],
-                               holdings=[StoredHolding(ticker=t, shares=s, avg_cost=c) for t, s, c in holdings])
+                               holdings=[StoredHolding(ticker=t, shares=s, avg_cost=c, asset_type=a, purchase_date=d) for t, s, c, a, d in holdings])
 
     def update(self, portfolio_id: UUID, holdings: list[HoldingIn | dict], name: str | None = None, *, owner_id: UUID) -> None:
         """Replace the holdings (and optionally the name) in one transaction: either the whole new set is saved or the old one stays."""
