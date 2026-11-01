@@ -92,3 +92,32 @@ def test_handle_without_a_portfolio_fails_loudly():
     from src.core.schemas import AgentRequest
     with pytest.raises(RuntimeError):
         make_agent().handle(AgentRequest(message="hi"))
+
+
+def test_two_threads_sharing_one_agent_each_get_their_own_portfolio_explained():
+    """The API shares one agent across sessions. The agent keeps per-call scratch state, so it must be per thread or answers get swapped."""
+    import threading
+    import time
+
+    class SlowProvider(FakeProvider):
+        def get_history(self, symbol, period):
+            time.sleep(0.15 if symbol in ("AAA", "BBB") else 0.01)   # make the two calls overlap in time
+            return super().get_history(symbol, period)
+
+    class EchoLLM:
+        def chat(self, prompt, system=None, **kwargs):
+            time.sleep(0.2)
+            holdings = json.loads(prompt.split("METRICS (the only source of numbers):\n")[1].split("\n\nUSER QUESTION")[0])["holding_count"]
+            return LLMResult(f"You hold {holdings} positions.", "fake", 1, 1, 0.1, 0.0, 1)
+
+    service = MarketDataService(SlowProvider(), TTLCache(), load_settings(), sleep=lambda s: None)
+    agent = PortfolioAnalysisAgent(EchoLLM(), service, {**META, "CCC": {"asset_class": "US stock", "sector": "Tech"}})
+    two, three = "ticker,shares,avg_cost\nAAA,10,50\nBBB,20,40\n", "ticker,shares,avg_cost\nAAA,10,50\nBBB,20,40\nCCC,5,30\n"
+    answers = {}
+
+    def go(name, csv):
+        answers[name] = agent.run(csv).text
+    threads = [threading.Thread(target=go, args=("two", two)), threading.Thread(target=go, args=("three", three))]
+    [t.start() for t in threads]
+    [t.join() for t in threads]
+    assert answers == {"two": "You hold 2 positions.", "three": "You hold 3 positions."}

@@ -68,7 +68,7 @@ class GoalPlanningAgent(BaseAgent):
     def __init__(self, llm: LLMClient, config: GoalPlanningConfig, extraction_model: str = "answer_model") -> None:
         super().__init__(llm)
         self.config, self.extraction_model = config, extraction_model
-        self._current: dict | None = None   # payload for the call in progress (set by run(); not thread-safe)
+        self._current: dict | None = None   # payload for the call in progress (set by run(); kept per thread by BaseAgent)
 
     def _canned(self, text: str, reason: str, cost: float = 0.0, state: GoalState | None = None, extra: dict | None = None) -> AgentResponse:
         return AgentResponse(text=text, agent_name=self.name, disclaimer=self.default_disclaimer,

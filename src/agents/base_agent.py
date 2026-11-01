@@ -5,6 +5,7 @@ handle() is the fixed pipeline all agents share (the "franchise rules"):
     4. check the output    5. attach the disclaimer
 Subclasses only fill in what is different (their prompt and how they get an answer).
 """
+import threading
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 
@@ -47,6 +48,17 @@ class BaseAgent(ABC):
 
     def __init__(self, llm: LLMClient) -> None:
         self.llm = llm
+
+    # Agents with a tool or data step (portfolio, goal, news) pass their per-call facts from run() to answer() in `self._current`. The API shares ONE agent
+    # between all sessions, so that scratch space must belong to the calling thread: otherwise one call's cleanup erases another's data (a crash, or worse,
+    # an answer built from someone else's portfolio).
+    @property
+    def _current(self):
+        return getattr(self.__dict__.setdefault("_per_thread", threading.local()), "value", None)
+
+    @_current.setter
+    def _current(self, value) -> None:
+        self.__dict__.setdefault("_per_thread", threading.local()).value = value
 
     # Hooks: an agent with its own domain (taxes) overrides these; the defaults are the Step 2 rules.
     def detect_advice_request(self, message: str) -> bool:

@@ -72,7 +72,7 @@ class PortfolioAnalysisAgent(BaseAgent):
     def __init__(self, llm: LLMClient, service: MarketDataService, metadata: dict | None = None) -> None:
         super().__init__(llm)
         self.service, self.metadata = service, metadata or {}
-        self._current: dict | None = None   # the metrics for the call in progress (set by run(); not thread-safe)
+        self._current: dict | None = None   # the metrics for the call in progress (set by run(); kept per thread by BaseAgent)
 
     def _canned(self, text: str, reason: str) -> AgentResponse:
         return AgentResponse(text=text, agent_name=self.name, disclaimer=self.default_disclaimer,

@@ -98,7 +98,7 @@ class NewsAgent(BaseAgent):
         super().__init__(llm)
         self.defense = defense
         self.news = news or NewsService((settings or load_settings()).news)
-        self._current: dict | None = None   # set by summarize(); not thread-safe
+        self._current: dict | None = None   # set by summarize(); kept per thread by BaseAgent
 
     def run(self, topic: str) -> AgentResponse:
         """topic is a ticker ("AAPL") or "markets"."""
