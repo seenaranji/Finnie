@@ -3,10 +3,16 @@
 Streamlit re-runs this whole file from the top on every click or keystroke. What must survive a rerun lives in st.session_state; what is expensive
 and repeatable is wrapped in st.cache_data (see the tabs).
 """
+import sys
+from pathlib import Path
+
 import streamlit as st
 
+# Streamlit puts this script's folder on sys.path, not the project root, so `src.*` imports need the root added.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from src.web_app.client import DEFAULT_URL, ApiError, FinnieClient
-from src.web_app.tabs import chat, goals, knowledge, markets, portfolio
+from src.web_app.tabs import chat, goals, knowledge, markets, news, portfolio
 from src.web_app.ui_common import DISCLAIMER
 
 st.set_page_config(page_title="Finnie", page_icon="💬", layout="wide")
@@ -45,11 +51,13 @@ def sidebar(client: FinnieClient) -> None:
 client = get_client()
 sidebar(client)
 st.info(DISCLAIMER, icon="ℹ️")
-chat_tab, markets_tab, portfolio_tab, goals_tab, knowledge_tab = st.tabs(["Chat", "Markets", "Portfolio", "Goals", "Knowledge"])
+chat_tab, markets_tab, news_tab, portfolio_tab, goals_tab, knowledge_tab = st.tabs(["Chat", "Markets", "News", "Portfolio", "Goals", "Knowledge"])
 with chat_tab:
     chat.render(client)
 with markets_tab:
     markets.render(client)
+with news_tab:
+    news.render(client)
 with portfolio_tab:
     portfolio.render(client)
 with goals_tab:

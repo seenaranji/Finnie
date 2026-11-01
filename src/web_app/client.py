@@ -56,6 +56,12 @@ class FinnieClient:
     def overview(self) -> dict:
         return self._call("GET", "/market/overview")
 
+    def market_news(self) -> dict:
+        return self._call("GET", "/news/market")
+
+    def ticker_news(self, ticker: str) -> dict:
+        return self._call("GET", f"/news/ticker/{ticker.strip()}")
+
     def plan_goal(self, goal: float, years: float, current_savings: float, risk_profile: str) -> dict:
         return self._call("POST", "/goals/plan", json={"goal": goal, "years": years, "current_savings": current_savings, "risk_profile": risk_profile})
 

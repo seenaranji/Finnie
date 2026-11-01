@@ -53,3 +53,11 @@ def test_caret_symbols_are_encoded_and_a_session_id_is_only_sent_when_known():
     c.chat("hi")
     c.chat("hi", session_id="s1", portfolio_csv="a,b")
     assert "%5EGSPC" in str(seen[0].url) and b"session_id" not in seen[1].content and b'"session_id":"s1"' in seen[2].content.replace(b" ", b"")
+
+
+def test_news_calls_the_market_and_ticker_endpoints():
+    seen = []
+    client = client_with(lambda r: (seen.append(r.url.path), httpx.Response(200, json={"items": []}))[1])
+    client.market_news()
+    client.ticker_news(" AAPL ")
+    assert seen == ["/news/market", "/news/ticker/AAPL"]

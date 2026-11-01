@@ -29,6 +29,14 @@ class FakeApi:
         return {"indices": [{"name": "S&P 500", "quote": quote("^GSPC", 7580.07, -1.82)}, {"name": "Nasdaq Composite", "quote": quote("^IXIC", 25437.0, 0.4)}],
                 "unavailable": [], "note": ""}
 
+    def market_news(self):
+        self.sent.append("news_market")
+        return news_batch("market")
+
+    def ticker_news(self, ticker):
+        self.sent.append(("news_ticker", ticker))
+        return news_batch(ticker)
+
     def quote(self, ticker):
         self.sent.append(("quote", ticker))
         if ticker == "ZZZZ":
@@ -93,6 +101,14 @@ class FakeApi:
 def quote(symbol, price, change, stale=False):
     return {"symbol": symbol, "price": price, "previous_close": None, "change_pct": change, "currency": "USD", "source": "fake", "as_of": "2026-10-30",
             "fetched_at": "2026-11-01T17:00:00Z", "is_stale": stale, "age_seconds": 600.0 if stale else 0.0}
+
+
+def news_batch(topic, items=None, withheld=0, feed_errors=()):
+    items = [{"id": 1, "title": f"{topic} rallies on rate hopes", "summary": "Stocks rose.", "link": "https://news.example/1", "source": "CNBC Finance",
+              "published": "2026-11-01T14:30:00Z"},
+             {"id": 2, "title": "Fed holds rates", "summary": "", "link": "https://news.example/2", "source": "Federal Reserve Press Releases", "published": None}] \
+        if items is None else items
+    return {"topic": topic, "items": items, "fetched_at": "2026-11-01T17:00:00Z", "withheld": withheld, "feed_errors": list(feed_errors)}
 
 
 def app(api=None, timeout=10):
@@ -483,3 +499,76 @@ def test_the_article_list_is_fetched_once_however_often_the_page_reruns():
     at.run()
     at.run()
     assert api.sent.count("articles") == 1
+
+
+# ---------- News tab ----------
+def show_news(at, ticker):
+    next(t for t in at.text_input if t.label.startswith("Ticker (leave empty")).set_value(ticker)
+    next(b for b in at.button if b.label == "Show news").click()
+    return at.run()
+
+
+def test_market_news_lists_headlines_with_links_source_and_date():
+    at = app()
+    shown = texts(at)
+    assert not at.exception and any(sub.value == "Market news" for sub in at.subheader)
+    assert any("[market rallies on rate hopes](https://news.example/1)" in m for m in shown)
+    assert any(m.value == "Stocks rose." for m in at.markdown)
+    assert any("CNBC Finance · 2026-11-01" in c for c in shown)
+    assert any(c.endswith("· date unknown") for c in shown)   # an item with no date says so, in full
+    assert any("Finnie does not vouch" in c for c in shown)
+
+
+def test_no_headlines_says_so_plainly():
+    api = FakeApi()
+    api.market_news = lambda: news_batch("market", items=[])
+    at = app(api)
+    assert not at.exception and any("No recent headlines" in i.value for i in at.info)
+
+
+def test_a_news_failure_shows_the_server_message_and_request_id_and_the_other_tabs_still_work():
+    api = FakeApi()
+    api.market_news = lambda: (_ for _ in ()).throw(ApiError("The news feeds are not responding right now.", 502, "news_unavailable", "req-n"))
+    at = app(api)
+    assert not at.exception and any("news feeds are not responding" in e.value for e in at.error) and any("req-n" in c.value for c in at.caption)
+    assert any(m.label == "S&P 500" for m in at.metric)   # the Markets tab was not broken by it
+
+
+def test_withheld_headlines_are_counted_not_shown():
+    api = FakeApi()
+    api.market_news = lambda: news_batch("market", withheld=2)
+    at = app(api)
+    assert any("2 item(s) were left out because their text looked unsafe" in c.value for c in at.caption)
+    assert not any("ignore previous" in m for m in texts(at))
+
+
+def test_a_feed_that_did_not_respond_warns_that_the_list_may_be_incomplete():
+    api = FakeApi()
+    api.market_news = lambda: news_batch("market", feed_errors=["MarketWatch Top Stories"])
+    at = app(api)
+    assert any("may be incomplete" in w.value for w in at.warning)
+
+
+def test_a_ticker_is_uppercased_and_asks_for_that_tickers_news():
+    api = FakeApi()
+    at = show_news(app(api), " aapl ")
+    assert ("news_ticker", "AAPL") in api.sent and any(sub.value == "News: AAPL" for sub in at.subheader)
+
+
+def test_emptying_the_ticker_goes_back_to_market_news():
+    api = FakeApi()
+    at = show_news(show_news(app(api), "aapl"), "")
+    assert any(sub.value == "Market news" for sub in at.subheader)
+
+
+def test_rerunning_does_not_refetch_the_news_but_a_failure_is_not_resent_either():
+    api = FakeApi()
+    at = app(api)
+    at.run()
+    assert api.sent.count("news_market") == 1
+    failing = FakeApi()
+    failing.market_news = lambda: (failing.sent.append("news_market"), (_ for _ in ()).throw(ApiError("down", 502, "news_unavailable", "r")))[1]
+    bad = app(failing)
+    bad.run()
+    bad.run()
+    assert failing.sent.count("news_market") == 1
