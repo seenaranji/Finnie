@@ -38,7 +38,9 @@ def build_default_graph(checkpointer="memory", settings=None, llm=None, router_l
                     news=NewsAgent(llm, news_service, defense="full", settings=settings), tax=TaxEducationAgent(llm, retriever))
     saver = InMemorySaver() if checkpointer == "memory" else checkpointer
     router = router or Router(router_llm or llm, **({"prompt_version": router_prompt} if router_prompt else {}))   # default: the Router's own default prompt
-    return build_graph(llm, router, agents, settings.workflow, checkpointer=saver)
+    embedder = getattr(getattr(retriever, "dense", None), "embedder", None)
+    prefetch = embedder.prefetch if settings.rag.embedding_prefetch and hasattr(embedder, "prefetch") else None
+    return build_graph(llm, router, agents, settings.workflow, checkpointer=saver, prefetch=prefetch)
 
 
 def config_for(session_id: str, max_concurrency: int | None = 4) -> dict:

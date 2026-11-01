@@ -87,7 +87,7 @@ class Agents:
 
 
 def build_graph(llm: LLMClient, router: Router, agents: Agents, config: WorkflowConfig, checkpointer=None, resolver_version: str = "v2",
-                planner: Planner | None = None, synthesizer: Synthesizer | None = None):
+                planner: Planner | None = None, synthesizer: Synthesizer | None = None, prefetch=None):
     planner = planner or Planner(llm, config.max_tasks)
     synthesizer = synthesizer or Synthesizer(llm)
 
@@ -99,6 +99,8 @@ def build_graph(llm: LLMClient, router: Router, agents: Agents, config: Workflow
         history, message = state.get("history", []), state["message"]
         turn = sum(h["role"] == "user" for h in history) + 1
         resolved, call = (message, None) if not history else rewrite_message(llm, message, history, config.history_turns_for_rewrite, resolver_version)
+        if prefetch:
+            prefetch(resolved)   # Step 25: start the question embedding now; it runs while the router decides, and is simply unused if the route needs no search
         return {"turn": turn, "resolved_message": resolved, "error": None, "history": [{"role": "user", "content": message}],
                 "trace": [{"turn": turn, "node": "contextualize", "rewritten": resolved != message, "resolved": resolved if resolved != message else None,
                            "cost_usd": call.cost_usd if call else 0.0, "seconds": round(call.latency_s, 3) if call else 0.0}]}

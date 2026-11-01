@@ -316,3 +316,26 @@ def test_without_an_upload_the_out_of_scope_decision_stands(tmp_path):
 def test_v6_adds_the_multi_label_and_leans_toward_it_when_two_sources_are_asked_for():
     assert "multi" in LABELS["v6"] and "multi" not in LABELS["v5"] and "multi" not in PROMPTS["v5"]
     assert PROMPTS["v6"].startswith(PROMPTS["v5"].split("\n\nConfidence:")[0]) and "TWO OR MORE separate things" in PROMPTS["v6"] and "choose multi" in PROMPTS["v6"]
+
+
+# ---------- Step 25: the embedding of the user's message starts before the router runs ----------
+def test_prefetch_gets_the_message_the_agents_will_search_with_and_runs_before_routing():
+    seen = []
+    llm = FakeLLM(route=[{"route": "finance_qa", "confidence": "high"}])
+    agents = Agents(FakeAgent("finance_qa"), FakeAgent("market_analysis"), FakeAgent("portfolio_analysis"), FakeGoal(), FakeAgent("news_synthesizer"), FakeAgent("tax_education"))
+    router = Router(llm)
+    original = router.classify
+    router.classify = lambda message: (seen.append(("route", message)), original(message))[1]
+    graph = build_graph(llm, router, agents, CONFIG, prefetch=lambda text: seen.append(("prefetch", text)))
+    ask(graph, "What is an ETF?")
+    assert seen == [("prefetch", "What is an ETF?"), ("route", "What is an ETF?")]
+
+
+def test_prefetch_uses_the_rewritten_standalone_question_for_a_follow_up():
+    seen = []
+    llm = FakeLLM(route=[{"route": "market", "confidence": "high"}, {"route": "market", "confidence": "high"}], standalone=[{"standalone": "How is VOO doing this year?"}])
+    agents = Agents(FakeAgent("finance_qa"), FakeAgent("market_analysis"), FakeAgent("portfolio_analysis"), FakeGoal(), FakeAgent("news_synthesizer"), FakeAgent("tax_education"))
+    graph = build_graph(llm, Router(llm), agents, CONFIG, checkpointer=InMemorySaver(), prefetch=seen.append)
+    ask(graph, "How is VOO doing?", session="p")
+    ask(graph, "and this year?", session="p")
+    assert seen == ["How is VOO doing?", "How is VOO doing this year?"]

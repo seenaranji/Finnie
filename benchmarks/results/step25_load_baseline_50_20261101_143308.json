@@ -1,0 +1,30 @@
+{
+ "label": "baseline_50",
+ "target_p95_s": 8.0,
+ "workers": 1,
+ "levels": [
+  {
+   "users": 50,
+   "seconds": 18.4,
+   "requests": 279,
+   "errors": 0,
+   "error_rate": 0.0,
+   "error_kinds": [],
+   "degraded": 0,
+   "throughput_rps": 15.135332418582337,
+   "latency_s": {
+    "n": 279,
+    "mean": 2.8968087101433326,
+    "p50": 2.7192800419979903,
+    "p95": 4.255924767000394,
+    "min": 1.4819112500008487,
+    "max": 5.470045791000302
+   },
+   "p99_s": 4.950349766219587,
+   "cost_usd": 0.9237990000000004,
+   "rss_mb_peak": 265.703125,
+   "cpu_percent_mean": 23.283783783783782
+  }
+ ],
+ "max_users_within_target": 50
+}

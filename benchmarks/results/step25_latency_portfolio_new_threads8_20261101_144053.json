@@ -1,0 +1,301 @@
+{
+ "label": "portfolio_new_threads8",
+ "warm": {
+  "portfolio_new": {
+   "latency_s": {
+    "n": 30,
+    "mean": 3.0847694860664583,
+    "p50": 3.1396962910002912,
+    "p95": 3.8259316309502536,
+    "min": 0.7120087500006775,
+    "max": 5.501830625002185
+   },
+   "errors": 0,
+   "degraded": 0,
+   "routed_to": {
+    "portfolio": 30
+   },
+   "cost_usd_mean": 0.004591333333333334,
+   "runs": [
+    {
+     "seconds": 3.1639234159993066,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004903,
+     "degraded": false,
+     "server_latency_s": 3.16
+    },
+    {
+     "seconds": 3.100911958001234,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004831,
+     "degraded": false,
+     "server_latency_s": 3.097
+    },
+    {
+     "seconds": 2.9094045419988106,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004686,
+     "degraded": false,
+     "server_latency_s": 2.905
+    },
+    {
+     "seconds": 3.3815867500015884,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.005046,
+     "degraded": false,
+     "server_latency_s": 3.378
+    },
+    {
+     "seconds": 3.1242035840004974,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004826,
+     "degraded": false,
+     "server_latency_s": 3.121
+    },
+    {
+     "seconds": 3.1444372910009406,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004703,
+     "degraded": false,
+     "server_latency_s": 3.14
+    },
+    {
+     "seconds": 2.938916208997398,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004811,
+     "degraded": false,
+     "server_latency_s": 2.936
+    },
+    {
+     "seconds": 3.04581637499723,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004798,
+     "degraded": false,
+     "server_latency_s": 3.044
+    },
+    {
+     "seconds": 2.933662291998189,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004718,
+     "degraded": false,
+     "server_latency_s": 2.929
+    },
+    {
+     "seconds": 3.839698125000723,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004823,
+     "degraded": false,
+     "server_latency_s": 3.837
+    },
+    {
+     "seconds": 3.574435541002458,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.005086,
+     "degraded": false,
+     "server_latency_s": 3.572
+    },
+    {
+     "seconds": 3.325264333998348,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.005171,
+     "degraded": false,
+     "server_latency_s": 3.322
+    },
+    {
+     "seconds": 5.501830625002185,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004691,
+     "degraded": false,
+     "server_latency_s": 5.498
+    },
+    {
+     "seconds": 3.245630875000643,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004878,
+     "degraded": false,
+     "server_latency_s": 3.242
+    },
+    {
+     "seconds": 3.143943166000099,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004778,
+     "degraded": false,
+     "server_latency_s": 3.14
+    },
+    {
+     "seconds": 3.8091059159996803,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004731,
+     "degraded": false,
+     "server_latency_s": 3.805
+    },
+    {
+     "seconds": 2.9094679999980144,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004691,
+     "degraded": false,
+     "server_latency_s": 2.906
+    },
+    {
+     "seconds": 2.8702435000013793,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004856,
+     "degraded": false,
+     "server_latency_s": 2.868
+    },
+    {
+     "seconds": 3.1354494160004833,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.005106,
+     "degraded": false,
+     "server_latency_s": 3.133
+    },
+    {
+     "seconds": 3.4769624170003226,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004953,
+     "degraded": false,
+     "server_latency_s": 3.474
+    },
+    {
+     "seconds": 2.9174974579982518,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004756,
+     "degraded": false,
+     "server_latency_s": 2.914
+    },
+    {
+     "seconds": 3.1852035840020108,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.005456,
+     "degraded": false,
+     "server_latency_s": 3.183
+    },
+    {
+     "seconds": 3.184649332997651,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.005288,
+     "degraded": false,
+     "server_latency_s": 3.176
+    },
+    {
+     "seconds": 2.9776377499983937,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.005166,
+     "degraded": false,
+     "server_latency_s": 2.975
+    },
+    {
+     "seconds": 3.2483917499994277,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004833,
+     "degraded": false,
+     "server_latency_s": 3.246
+    },
+    {
+     "seconds": 2.7907137919974048,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004841,
+     "degraded": false,
+     "server_latency_s": 2.788
+    },
+    {
+     "seconds": 3.1908994580007857,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.005301,
+     "degraded": false,
+     "server_latency_s": 3.188
+    },
+    {
+     "seconds": 2.9798235000016575,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.004611,
+     "degraded": false,
+     "server_latency_s": 2.977
+    },
+    {
+     "seconds": 0.781364874997962,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.000201,
+     "degraded": false,
+     "server_latency_s": 0.779
+    },
+    {
+     "seconds": 0.7120087500006775,
+     "status": 200,
+     "route": "portfolio",
+     "answered_by": "portfolio_analysis",
+     "cost_usd": 0.000201,
+     "degraded": false,
+     "server_latency_s": 0.71
+    }
+   ]
+  }
+ },
+ "cold": {
+  "portfolio_new": {
+   "latency_s": {
+    "n": 0
+   },
+   "runs": []
+  }
+ }
+}

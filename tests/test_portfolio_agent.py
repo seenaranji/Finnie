@@ -121,3 +121,29 @@ def test_two_threads_sharing_one_agent_each_get_their_own_portfolio_explained():
     [t.start() for t in threads]
     [t.join() for t in threads]
     assert answers == {"two": "You hold 2 positions.", "three": "You hold 3 positions."}
+
+
+# ---------- Step 25: prices are fetched side by side ----------
+def test_holdings_are_fetched_concurrently():
+    import threading
+
+    class BarrierProvider(FakeProvider):
+        """Every quote call waits until three calls are in flight. Sequential code can never get three in flight, so it times out and fails the test."""
+        def __init__(self):
+            super().__init__()
+            self.barrier = threading.Barrier(3, timeout=3)
+
+        def get_quote(self, symbol):
+            self.barrier.wait()
+            return super().get_quote(symbol)
+
+    service = MarketDataService(BarrierProvider(), TTLCache(), load_settings(), sleep=lambda s: None)
+    response = PortfolioAnalysisAgent(FakeLLM(), service, META).run("ticker,shares,avg_cost\nAAA,10,50\nBBB,20,40\nCCC,5,10\n")
+    assert response.metadata["metrics"]["holding_count"] == 3
+
+
+def test_a_failure_in_one_holding_is_reported_in_holding_order_and_the_rest_still_count():
+    response = make_agent(down={"BBB", "CCC"}).run("ticker,shares,avg_cost\nAAA,10,50\nBBB,20,40\nCCC,5,10\n")
+    notes = response.metadata["metrics"]["notes"]
+    assert response.metadata["metrics"]["holding_count"] == 1
+    assert [n for n in notes if "could not fetch" in n][0].index("BBB") < [n for n in notes if "could not fetch" in n][0].index("CCC")

@@ -45,6 +45,8 @@ class RAGConfig(BaseModel):
     similarity_threshold: float = 0.0
     vector_store: str = "pgvector"           # only pgvector exists now (Chroma removed after Step 23b); the keyword search is PostgreSQL full-text
     candidate_k: int = 20                    # chunks fetched from the store before filtering and reranking
+    embedding_prefetch: bool = True          # start embedding the user's message while the router runs (Step 25)
+    embedding_cache_size: int = 256          # remember this many question embeddings (0 = remember none)
     rerank: bool = False                     # second-stage re-ordering by an LLM (off until Step 8 shows it helps)
     dedupe_overlap: float = 0.8              # drop a chunk if this share of its words appears in a better chunk
     # --- Step 7c: hybrid search. Default stays "dense" so Step 7 behaviour is unchanged until Step 8 measures. ---
@@ -184,6 +186,10 @@ def load_settings(path: Path = CONFIG_PATH) -> Settings:
     load_dotenv(PROJECT_ROOT / ".env")
     with open(path) as config_file:
         raw = yaml.safe_load(config_file)
+    for env_name, key, kind in (("FINNIE_EMBEDDING_PREFETCH", "embedding_prefetch", lambda v: v.lower() in ("1", "true", "yes")),
+                                ("FINNIE_EMBEDDING_CACHE_SIZE", "embedding_cache_size", int)):   # benchmark switches (Step 25): same idea as FINNIE_VECTOR_STORE
+        if os.environ.get(env_name):
+            raw["rag"][key] = kind(os.environ[env_name])
     if os.environ.get("FINNIE_VECTOR_STORE"):   # run one command against the other store without editing config.yaml (Step 23b side-by-side runs)
         raw["rag"]["vector_store"] = os.environ["FINNIE_VECTOR_STORE"]
     return Settings(**raw, secrets=Secrets())

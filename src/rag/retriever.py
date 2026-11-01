@@ -11,6 +11,7 @@ from dataclasses import dataclass
 
 from src.core.config import Settings, load_settings
 from src.rag.embedder import Embedder, OpenAIEmbedder
+from src.rag.embedding_cache import CachedEmbedder
 from src.rag.passages import Passage, dedupe_passages, passage_from_hit
 from src.rag.reranker import LLMReranker, Reranker
 from src.rag.factory import build_vector_store
@@ -36,7 +37,7 @@ class Retriever:
                  reranker: Reranker | None = None, settings: Settings | None = None) -> None:
         self.settings = settings or load_settings()
         self.store = store or build_vector_store(self.settings)
-        self.embedder = embedder or OpenAIEmbedder(self.settings)
+        self.embedder = embedder or CachedEmbedder(OpenAIEmbedder(self.settings), self.settings.rag.embedding_cache_size)
         self._reranker = reranker
 
     @property

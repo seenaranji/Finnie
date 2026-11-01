@@ -6,6 +6,8 @@ Flow:  CSV -> parse + validate -> prices and history (market data layer) -> port
 Short-circuits (no model call): a CSV with problems, or a portfolio where nothing could be priced.
 """
 import json
+import os
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date
 
 from src.agents import portfolio_calc as pc
@@ -19,6 +21,7 @@ from src.data.errors import MarketDataError
 from src.data.market_data import MarketDataService
 
 log = get_logger(__name__)
+MAX_FETCH_THREADS = int(os.environ.get("FINNIE_FETCH_THREADS", 8))   # (env override exists so benchmarks can compare 1 thread with 8)  # price lookups running at once for one portfolio; enough for typical portfolios, small enough not to hammer the data provider
 
 SYSTEM_PROMPT = """You are Finnie, a friendly finance tutor for beginners. You explain the numbers in a METRICS block about a user's portfolio. You teach; you never give personal investment advice.
 
@@ -98,17 +101,31 @@ class PortfolioAnalysisAgent(BaseAgent):
             holdings = [pc.Holding(h.ticker, float(h.shares), float(h.avg_cost)) for h in stored.holdings]   # NUMERIC -> float only here, for the math
         return self._analyze(holdings, question, load_time["seconds"])
 
+    def _fetch_one(self, holding: pc.Holding):
+        """(quote, [(date, close)], error) for one holding. A failure keeps whatever was fetched before it, exactly like the old sequential loop."""
+        quote = points = None
+        try:
+            quote = self.service.get_quote(holding.ticker)
+            points = [(p.date, p.close) for p in self.service.get_history(holding.ticker, "1y").points]
+            return quote, points, None
+        except MarketDataError as error:
+            return quote, points, error
+
     def _analyze(self, holdings: list[pc.Holding], question: str, parse_seconds: float) -> AgentResponse:
         prices, closes, as_of, sources, failed = {}, {}, [], {}, []
         with timer() as fetch_time:
-            for holding in holdings:
-                try:
-                    quote = self.service.get_quote(holding.ticker)
+            # One quote + one year of history per holding. They are independent network calls, so they run side by side (Step 25: cold-cache fetch
+            # for 5 holdings fell from about 0.35 s to the time of the slowest one). map() returns results in holding order, so notes stay in order.
+            with ThreadPoolExecutor(max_workers=min(MAX_FETCH_THREADS, len(holdings))) as pool:
+                fetched = list(pool.map(self._fetch_one, holdings))
+            for holding, (quote, points, error) in zip(holdings, fetched):
+                if quote is not None:
                     prices[holding.ticker] = quote.price
                     as_of.append(quote.as_of)
                     sources[quote.source] = sources.get(quote.source, 0) + 1
-                    closes[holding.ticker] = [(p.date, p.close) for p in self.service.get_history(holding.ticker, "1y").points]
-                except MarketDataError as error:
+                if points is not None:
+                    closes[holding.ticker] = points
+                if error is not None:
                     failed.append(f"{holding.ticker}: {error.user_message}")
         with timer() as calc_time:
             try:

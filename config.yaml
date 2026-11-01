@@ -26,6 +26,8 @@ rag:
   similarity_threshold: 0.465  # midpoint of the gap between answerable (min 0.482) and unanswerable (max 0.448) scores, Step 7
   vector_store: pgvector     # PostgreSQL + pgvector (Chroma was removed after Step 23b). The keyword search is PostgreSQL full-text
   candidate_k: 20            # fetch this many, then threshold -> dedupe -> (rerank) -> keep top_k
+  embedding_prefetch: true   # embed the user's message while the router is still deciding (Step 25)
+  embedding_cache_size: 256  # question embeddings remembered (same question again = no embedding call); 0 = none
   rerank: false              # LLM re-ordering of candidates; off until Step 8 measures it
   dedupe_overlap: 0.8        # drop a chunk if 80% of its words already appear in a better-ranked chunk
   # Step 7c: hybrid search (spec calls these retrieval.*; kept under rag: next to the other retrieval settings)

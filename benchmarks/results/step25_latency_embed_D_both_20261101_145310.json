@@ -1,0 +1,596 @@
+{
+ "label": "embed_D_both",
+ "warm": {
+  "qa": {
+   "latency_s": {
+    "n": 30,
+    "mean": 1.6046228513664877,
+    "p50": 1.5896722079996835,
+    "p95": 1.9589838829982906,
+    "min": 1.3339945830011857,
+    "max": 2.0198177920028684
+   },
+   "errors": 0,
+   "degraded": 0,
+   "routed_to": {
+    "finance_qa": 30
+   },
+   "cost_usd_mean": 0.0021252999999999997,
+   "runs": [
+    {
+     "seconds": 1.6391433329990832,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002394,
+     "degraded": false,
+     "server_latency_s": 1.637
+    },
+    {
+     "seconds": 1.8321237910022319,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002394,
+     "degraded": false,
+     "server_latency_s": 1.829
+    },
+    {
+     "seconds": 2.0198177920028684,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002005,
+     "degraded": false,
+     "server_latency_s": 2.016
+    },
+    {
+     "seconds": 1.4388260830019135,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001764,
+     "degraded": false,
+     "server_latency_s": 1.434
+    },
+    {
+     "seconds": 1.6309432919988467,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002044,
+     "degraded": false,
+     "server_latency_s": 1.627
+    },
+    {
+     "seconds": 1.908345667001413,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002449,
+     "degraded": false,
+     "server_latency_s": 1.905
+    },
+    {
+     "seconds": 1.5842604159988696,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001657,
+     "degraded": false,
+     "server_latency_s": 1.58
+    },
+    {
+     "seconds": 1.4854122500000813,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002149,
+     "degraded": false,
+     "server_latency_s": 1.482
+    },
+    {
+     "seconds": 1.91837270799806,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002639,
+     "degraded": false,
+     "server_latency_s": 1.914
+    },
+    {
+     "seconds": 1.4038234159997955,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002436,
+     "degraded": false,
+     "server_latency_s": 1.4
+    },
+    {
+     "seconds": 1.5204970000013418,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002436,
+     "degraded": false,
+     "server_latency_s": 1.517
+    },
+    {
+     "seconds": 1.4416131660000246,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001817,
+     "degraded": false,
+     "server_latency_s": 1.439
+    },
+    {
+     "seconds": 1.7523319169995375,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002409,
+     "degraded": false,
+     "server_latency_s": 1.749
+    },
+    {
+     "seconds": 1.7316333339986159,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001864,
+     "degraded": false,
+     "server_latency_s": 1.729
+    },
+    {
+     "seconds": 1.3659343749968684,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002181,
+     "degraded": false,
+     "server_latency_s": 1.363
+    },
+    {
+     "seconds": 1.3339945830011857,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001594,
+     "degraded": false,
+     "server_latency_s": 1.332
+    },
+    {
+     "seconds": 1.4543894590024138,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001965,
+     "degraded": false,
+     "server_latency_s": 1.452
+    },
+    {
+     "seconds": 1.99221120799848,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002436,
+     "degraded": false,
+     "server_latency_s": 1.989
+    },
+    {
+     "seconds": 1.6371045419982693,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002444,
+     "degraded": false,
+     "server_latency_s": 1.634
+    },
+    {
+     "seconds": 1.614043583998864,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001955,
+     "degraded": false,
+     "server_latency_s": 1.612
+    },
+    {
+     "seconds": 1.6506893330006278,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002464,
+     "degraded": false,
+     "server_latency_s": 1.649
+    },
+    {
+     "seconds": 1.5290992090012878,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001604,
+     "degraded": false,
+     "server_latency_s": 1.527
+    },
+    {
+     "seconds": 1.6131915409969224,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001817,
+     "degraded": false,
+     "server_latency_s": 1.611
+    },
+    {
+     "seconds": 1.763242666998849,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001734,
+     "degraded": false,
+     "server_latency_s": 1.761
+    },
+    {
+     "seconds": 1.5477036250013043,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002214,
+     "degraded": false,
+     "server_latency_s": 1.544
+    },
+    {
+     "seconds": 1.35949674999938,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002334,
+     "degraded": false,
+     "server_latency_s": 1.356
+    },
+    {
+     "seconds": 1.4024366249977902,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002131,
+     "degraded": false,
+     "server_latency_s": 1.399
+    },
+    {
+     "seconds": 1.5950840000004973,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002149,
+     "degraded": false,
+     "server_latency_s": 1.592
+    },
+    {
+     "seconds": 1.57080487499843,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002149,
+     "degraded": false,
+     "server_latency_s": 1.564
+    },
+    {
+     "seconds": 1.4021150000007765,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002131,
+     "degraded": false,
+     "server_latency_s": 1.398
+    }
+   ]
+  },
+  "tax": {
+   "latency_s": {
+    "n": 30,
+    "mean": 1.8157486944330836,
+    "p50": 1.72760583300078,
+    "p95": 2.483073362348841,
+    "min": 1.1728835419999086,
+    "max": 2.586737916000857
+   },
+   "errors": 0,
+   "degraded": 0,
+   "routed_to": {
+    "tax": 18,
+    "finance_qa": 12
+   },
+   "cost_usd_mean": 0.003395466666666667,
+   "runs": [
+    {
+     "seconds": 2.256095374999859,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.004435,
+     "degraded": false,
+     "server_latency_s": 2.254
+    },
+    {
+     "seconds": 1.6578625840011227,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003686,
+     "degraded": false,
+     "server_latency_s": 1.655
+    },
+    {
+     "seconds": 1.4917185419981251,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001787,
+     "degraded": false,
+     "server_latency_s": 1.488
+    },
+    {
+     "seconds": 2.198051250001299,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.004275,
+     "degraded": false,
+     "server_latency_s": 2.196
+    },
+    {
+     "seconds": 2.413685957999405,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.004763,
+     "degraded": false,
+     "server_latency_s": 2.411
+    },
+    {
+     "seconds": 2.0550228749998496,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003465,
+     "degraded": false,
+     "server_latency_s": 2.052
+    },
+    {
+     "seconds": 1.7218511249993753,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003708,
+     "degraded": false,
+     "server_latency_s": 1.72
+    },
+    {
+     "seconds": 1.6330269159989257,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003708,
+     "degraded": false,
+     "server_latency_s": 1.63
+    },
+    {
+     "seconds": 1.5208560419996502,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002642,
+     "degraded": false,
+     "server_latency_s": 1.518
+    },
+    {
+     "seconds": 1.9260265409975545,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003666,
+     "degraded": false,
+     "server_latency_s": 1.924
+    },
+    {
+     "seconds": 2.075154083999223,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003835,
+     "degraded": false,
+     "server_latency_s": 2.073
+    },
+    {
+     "seconds": 2.3342975420018774,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.004803,
+     "degraded": false,
+     "server_latency_s": 2.331
+    },
+    {
+     "seconds": 1.1728835419999086,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003256,
+     "degraded": false,
+     "server_latency_s": 1.17
+    },
+    {
+     "seconds": 1.6345706249994691,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002729,
+     "degraded": false,
+     "server_latency_s": 1.632
+    },
+    {
+     "seconds": 1.3940994999975374,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002642,
+     "degraded": false,
+     "server_latency_s": 1.392
+    },
+    {
+     "seconds": 1.723789083000156,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003708,
+     "degraded": false,
+     "server_latency_s": 1.72
+    },
+    {
+     "seconds": 1.8898257500004547,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003615,
+     "degraded": false,
+     "server_latency_s": 1.887
+    },
+    {
+     "seconds": 1.4593475839974417,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002529,
+     "degraded": false,
+     "server_latency_s": 1.456
+    },
+    {
+     "seconds": 1.7314225830014038,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003711,
+     "degraded": false,
+     "server_latency_s": 1.728
+    },
+    {
+     "seconds": 1.7136509579977428,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003711,
+     "degraded": false,
+     "server_latency_s": 1.711
+    },
+    {
+     "seconds": 1.5522097920002125,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002879,
+     "degraded": false,
+     "server_latency_s": 1.55
+    },
+    {
+     "seconds": 1.9823314579989528,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.003711,
+     "degraded": false,
+     "server_latency_s": 1.979
+    },
+    {
+     "seconds": 1.5996850000010454,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001797,
+     "degraded": false,
+     "server_latency_s": 1.596
+    },
+    {
+     "seconds": 2.53984487499838,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.004275,
+     "degraded": false,
+     "server_latency_s": 2.537
+    },
+    {
+     "seconds": 1.8262069580014213,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.003132,
+     "degraded": false,
+     "server_latency_s": 1.824
+    },
+    {
+     "seconds": 1.3507491669988667,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.001797,
+     "degraded": false,
+     "server_latency_s": 1.348
+    },
+    {
+     "seconds": 2.586737916000857,
+     "status": 200,
+     "route": "tax",
+     "answered_by": "tax_education",
+     "cost_usd": 0.004823,
+     "degraded": false,
+     "server_latency_s": 2.584
+    },
+    {
+     "seconds": 1.4359000000004016,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.002642,
+     "degraded": false,
+     "server_latency_s": 1.433
+    },
+    {
+     "seconds": 1.836076250001497,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.003102,
+     "degraded": false,
+     "server_latency_s": 1.833
+    },
+    {
+     "seconds": 1.7594809580004949,
+     "status": 200,
+     "route": "finance_qa",
+     "answered_by": "finance_qa",
+     "cost_usd": 0.003032,
+     "degraded": false,
+     "server_latency_s": 1.757
+    }
+   ]
+  }
+ },
+ "cold": {
+  "qa": {
+   "latency_s": {
+    "n": 0
+   },
+   "runs": []
+  },
+  "tax": {
+   "latency_s": {
+    "n": 0
+   },
+   "runs": []
+  }
+ }
+}
