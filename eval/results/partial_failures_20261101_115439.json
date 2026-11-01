@@ -1,0 +1,226 @@
+[
+  {
+    "scenario": "nothing broken (control)",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": true,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 8.18538499999886,
+    "missing": [],
+    "text": "- **Apple's Current Status**: As of October 30, 2026, Apple's stock closed at $344.63, down 1.23% from the previous day. This means the stock price decreased slightly on the last trading day.\n\n- **Latest News on Apple**: Recently, Apple CEO John Ternus spoke about the company's AI strategy, emphasizing a cautious approach rather than rushing developments. This week, Apple is set to release its earnings report, a significant event for investors. The tech sector, including Apple, is experiencing volatility due to broader market concerns and a recent sell-off in tech stocks.\n\n- **Expense Ratio Explained**: An expense ratio is a yearly fee charged by a fund, expressed as a percentage of your investment. For instance, a 0.10% expense ratio means you pay about $1 annually for every $1,000 invested. Actively managed funds typically have higher expense ratios than index funds.",
+    "statuses": {
+      "t1": "ok",
+      "t2": "ok",
+      "t3": "ok"
+    }
+  },
+  {
+    "scenario": "news feeds down",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": true,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 5.064557707999484,
+    "missing": [
+      "news"
+    ],
+    "text": "- **Apple's Current Performance**: As of October 30, 2026, Apple's stock closed at $344.63, which is a decrease of 1.23% from the previous day's closing price of $348.91. This indicates a slight drop in the stock price on the last trading day.\n\n- **Latest News on Apple**: The latest available data shows a decrease in Apple's stock price. Stock prices can change daily due to factors like market conditions, company performance, and investor sentiment.\n\n- **Expense Ratio Explained**: An expense ratio is a yearly fee charged by a fund, expressed as a percentage of your investment. For instance, a 0.10% expense ratio means you pay about $1 annually for every $1,000 invested. This fee is common in mutual funds, with actively managed funds typically having higher expense ratios than index funds.\n\nI couldn't include everything you asked for:\n- News: that part isn't available right now\nYou can ask for the missing part again in a moment.",
+    "statuses": {
+      "t1": "ok",
+      "t2": "error",
+      "t3": "ok"
+    }
+  },
+  {
+    "scenario": "market provider down",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": true,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 6.29021187500075,
+    "missing": [
+      "market"
+    ],
+    "text": "**News**\nHere is a summary of the recent news about Apple (AAPL) as of November 1, 2026:\n\n- Apple is in the spotlight this week as investors anticipate earnings reports from major tech companies, including Apple, which could influence market trends [2, 7].\n- Apple's new CEO, John Ternus, expressed confidence in the company's AI strategy, despite criticism that Apple is lagging behind in AI development. He emphasized that Apple will not release AI products just for the sake of it [8].\n\nGeneral market news:\n\n- The stock market experienced a significant sell-off, with technology stocks leading the decline. This has created a cautious atmosphere among investors [1, 6].\n- The upcoming week is expected to be volatile due to factors like midterm elections, jobs data, and geopolitical tensions, which could impact market movements [4].\n- Alphabet, another major tech company, faced a massive drop in market value, highlighting the challenges in the tech sector [3, 5].\n\n**Concept**\nAn expense ratio is a yearly fee taken from the fund, stated as a percentage of what you have invested. For example, a 0.10% expense ratio costs about $1 a year per $1,000 invested [etf-basics#2].\n\nI couldn't include everything you asked for:\n- Market data: that part isn't available right now\nYou can ask for the missing part again in a moment.",
+    "statuses": {
+      "t1": "degraded",
+      "t2": "ok",
+      "t3": "ok"
+    }
+  },
+  {
+    "scenario": "knowledge base broken",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": true,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 7.298008832998676,
+    "missing": [
+      "finance_qa"
+    ],
+    "text": "### How is Apple Doing?\nApple's stock price recently closed at $344.63, which is a slight decrease of 1.23% from the previous day's closing price of $348.91. This indicates a small drop in the stock's value on the last trading day.\n\n### Latest News on Apple\nApple is currently in the spotlight as investors await its earnings reports and insights from the new CEO, John Ternus. The company is also involved in discussions about its role in the artificial intelligence (AI) sector. Ternus has expressed confidence in Apple's AI strategy, despite some criticism. The tech sector, including Apple, has experienced a significant sell-off recently, which is part of a broader market trend affecting major tech companies.\n\n### What is an Expense Ratio?\nAn expense ratio is a fee that mutual funds or exchange-traded funds (ETFs) charge investors to cover the fund's operating expenses. It is expressed as a percentage of the fund's average assets and is deducted from the fund's returns. A lower expense ratio means more of the fund's returns go to the investor, while a higher ratio means more is taken out to cover costs.\n\nI couldn't include everything you asked for:\n- Concept: that part isn't available right now\nYou can ask for the missing part again in a moment.",
+    "statuses": {
+      "t1": "ok",
+      "t2": "ok",
+      "t3": "error"
+    }
+  },
+  {
+    "scenario": "slow news branch (6 s) with a 1.5 s timeout",
+    "graceful": false,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": false,
+      "survivors_visible": true,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 5.219554541999969,
+    "missing": [
+      "market",
+      "news"
+    ],
+    "text": "- **Apple's Performance**: As of the latest updates, Apple continues to be a leading technology company, known for its innovative products and strong market presence. However, specific financial performance details or recent news are not provided here.\n\n- **Latest News on Apple**: The latest news about Apple is not included in the provided information. For current updates, you might want to check recent news articles or financial reports.\n\n- **Expense Ratio**: An expense ratio is a yearly fee charged by a fund, expressed as a percentage of your investment. For instance, a 0.10% expense ratio means you pay about $1 annually for every $1,000 invested [etf-basics#2]. Actively managed funds usually have higher expense ratios compared to index funds [mutual-funds-basics#3].\n\nI couldn't include everything you asked for:\n- Market data: that part took too long\n- News: that part took too long\nYou can ask for the missing part again in a moment.",
+    "statuses": {
+      "t1": "timeout",
+      "t2": "timeout",
+      "t3": "ok"
+    }
+  },
+  {
+    "scenario": "news AND market down",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": true,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 4.355237166999359,
+    "missing": [
+      "market",
+      "news"
+    ],
+    "text": "- **Apple's Performance**: As of the latest updates, Apple continues to be a leading technology company, known for its innovative products and strong market presence. Specific financial performance details or recent stock movements are not provided here.\n\n- **Latest News on Apple**: There are no specific recent news updates provided in the sections.\n\n- **Expense Ratio**: An expense ratio is a yearly fee charged by a fund, expressed as a percentage of your investment. For instance, a 0.10% expense ratio means you pay about $1 annually for every $1,000 invested. This fee is common in both mutual funds and ETFs, with actively managed funds typically having higher expense ratios than index funds.\n\nI couldn't include everything you asked for:\n- Market data: that part isn't available right now\n- News: that part isn't available right now\nYou can ask for the missing part again in a moment.",
+    "statuses": {
+      "t1": "degraded",
+      "t2": "error",
+      "t3": "ok"
+    }
+  },
+  {
+    "scenario": "all three parts down",
+    "graceful": false,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": false,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 3.58951870799865,
+    "missing": [
+      "finance_qa",
+      "market",
+      "news"
+    ],
+    "text": "I couldn't get any part of that right now.\nI couldn't include everything you asked for:\n- Market data: that part isn't available right now\n- News: that part isn't available right now\n- Concept: that part isn't available right now\nYou can ask for the missing part again in a moment.",
+    "statuses": {
+      "t1": "degraded",
+      "t2": "error",
+      "t3": "error"
+    }
+  },
+  {
+    "scenario": "dependency: portfolio down, news skipped",
+    "graceful": false,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": false,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 1.7682903330005502,
+    "missing": [
+      "news",
+      "portfolio"
+    ],
+    "text": "I couldn't get any part of that right now.\nI couldn't include everything you asked for:\n- Your portfolio: your holdings' prices aren't available right now\n- News: it depended on another part that isn't available\nYou can ask for the missing part again in a moment.",
+    "statuses": {
+      "t1": "degraded",
+      "t2": "skipped"
+    }
+  },
+  {
+    "scenario": "merging model down",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": true,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 4.5268242089987325,
+    "missing": [],
+    "text": "**Market data**\nAs of 2026-10-30 (source: yfinance), Apple's last closing price was $344.63, which is a decrease of 1.23% from the previous close of $348.91. This is the last closing price, not live data.\n\nFor a beginner, this means that Apple's stock price went down slightly on the last trading day. The percentage change shows how much the price moved compared to the previous day.\n\n**News**\nHere is a summary of the recent news about Apple (AAPL) and the general market, fetched on 2026-11-01:\n\n- Apple is in the spotlight this week as investors anticipate earnings reports and insights from its new CEO, John Ternus. The company is also involved in discussions about its position in the artificial intelligence (AI) sector [2][7].\n\n- John Ternus, Apple's CEO, expressed confidence in the company's AI strategy, despite criticism that Apple is lagging behind competitors. He emphasized that Apple will not release AI products just for the sake of it [8].\n\n- General market news indicates a significant sell-off in tech stocks, with Apple and other tech companies like Palantir and Alphabet being closely watched. This sell-off is linked to broader market concerns, including upcoming midterm elections and economic reports [1][4][6].\n\n- The market is also reacting to a major drop in Alphabet's market value, which has impacted the tech sector's overall performance [3][5].\n\n- Investors are advised to be cautious as the market faces potential volatility due to various factors, including political events and economic data releases [1][4].\n\n**Concept**\nAn expense ratio is a yearly fee taken from the fund, stated as a percentage of what you have invested. For example, a 0.10% expense ratio costs about $1 a year per $1,000 invested [etf-basics#2]. It is also mentioned as a yearly fee shown as a percentage of your investment in mutual funds, with actively managed funds often charging more than index funds [mutual-funds-basics#3].",
+    "statuses": {
+      "t1": "ok",
+      "t2": "ok",
+      "t3": "ok"
+    }
+  },
+  {
+    "scenario": "planner model down",
+    "graceful": true,
+    "checks": {
+      "returned": true,
+      "no_leak": true,
+      "disclaimer": true,
+      "missing_is_exact": true,
+      "survivors_visible": true,
+      "missing_named": true,
+      "in_time": true
+    },
+    "seconds": 0.9316192499991303,
+    "missing": [],
+    "text": "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment.",
+    "statuses": {}
+  }
+]

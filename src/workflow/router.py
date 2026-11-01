@@ -16,7 +16,8 @@ from src.core.logging import get_logger
 
 log = get_logger(__name__)
 ROUTES_V2 = ("finance_qa", "market", "portfolio", "goal", "news", "tax", "clarify")   # the labels prompts v1 and v2 know
-ROUTES = ROUTES_V2 + ("out_of_scope",)                                                 # prompt v3 adds the scope gate (Step 21a)
+ROUTES_V5 = ROUTES_V2 + ("out_of_scope",)                                              # prompts v3-v5 add the scope gate (Step 21a)
+ROUTES = ROUTES_V5 + ("multi",)                                                         # prompt v6 adds multi-intent routing (Step 21b)
 CONFIDENCE = ("high", "medium", "low")
 DEFAULT_ROUTE = "clarify"
 # A code-level veto (Step 21a). If the model says out_of_scope but the message contains money words, ASK (clarify) instead of blocking: wrongly blocking a real
@@ -105,10 +106,26 @@ _V5_EXTRA = """
 More examples:
 "Check the spreadsheet I attached" -> portfolio, high
 "Go through my account statement" -> portfolio, medium"""
-PROMPTS = {"v1": _DEFINITIONS, "v2": _V2, "v3": _V3, "v4": _V3 + _V4_EXTRA, "v5": _V3 + _V4_EXTRA + _V5_EXTRA}
+_V5 = _V3 + _V4_EXTRA + _V5_EXTRA
+# v6 (Step 21b): a `multi` route for messages that need SEVERAL agents. The planner decides what to run; a false `multi` costs one cheap planner call (it can still
+# downgrade to one task), while a missed `multi` loses half the answer, so when two distinct sources are clearly asked for the router leans to multi.
+_MULTI = ("\n- multi: the message asks for TWO OR MORE separate things that need DIFFERENT agents (for example a concept explained AND a live price, news AND the user's "
+          "portfolio, tax rules AND how a stock is doing).")
+_V6_EXTRA = """
+
+Multi rules:
+- multi is for requests with separate parts that different agents must answer. A single question that one agent can answer, even if it has several sentences or parts, is NOT multi.
+- When two clearly different sources are asked for (data plus an explanation, news plus prices, the user's holdings plus the market), choose multi.
+More examples:
+"Explain what a bond is and tell me how TLT did this month" -> multi, high
+"Is my portfolio exposed to the news about the banking sector?" -> multi, medium
+"What are the tax rules for IRAs and how much can I contribute?" -> tax, high
+"How is Intel doing and what is its beta?" -> market, medium"""
+PROMPTS = {"v1": _DEFINITIONS, "v2": _V2, "v3": _V3, "v4": _V3 + _V4_EXTRA, "v5": _V5,
+           "v6": _V5.replace("\n\nConfidence:", _MULTI + "\n\nConfidence:", 1) + _V6_EXTRA}
 assert "out_of_scope" in PROMPTS["v3"] and "out_of_scope" not in PROMPTS["v2"]
-LABELS = {"v1": ROUTES_V2, "v2": ROUTES_V2, "v3": ROUTES, "v4": ROUTES, "v5": ROUTES}   # which labels each prompt version may produce
-DEFAULT_PROMPT_VERSION = "v5"   # v3 blocked a real finance question and asked too often (stress sets) -> v4; v4 blocked uploaded-file requests -> v5. The finance-word veto stays OFF (it cost catches and added nothing with v4)
+LABELS = {"v1": ROUTES_V2, "v2": ROUTES_V2, "v3": ROUTES, "v4": ROUTES_V5, "v5": ROUTES_V5, "v6": ROUTES}   # which labels each prompt version may produce
+DEFAULT_PROMPT_VERSION = "v6"   # v6 adds multi (Step 21b). Before that: v3 blocked a real finance question and asked too often (stress sets) -> v4; v4 blocked uploaded-file requests -> v5. The finance-word veto stays OFF (it cost catches and added nothing with v4)
 
 
 @dataclass

@@ -21,7 +21,7 @@ from src.data.models import PriceHistory, Quote, utc_now
 from src.data.providers.base import MarketDataProvider
 
 log = get_logger(__name__)
-_SYMBOL = re.compile(r"^[A-Z0-9][A-Z0-9.\-]{0,9}$")   # AAPL, BRK-B, BRK.B; rejects "", "DROP TABLE", "A"*50
+_SYMBOL = re.compile(r"^\^?[A-Z0-9][A-Z0-9.\-]{0,9}$")   # AAPL, BRK-B, BRK.B and index symbols like ^GSPC; rejects "", "DROP TABLE", "A"*50
 
 
 class MarketDataService:

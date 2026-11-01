@@ -1,0 +1,24 @@
+{"id": "m01", "split": "dev", "query": "How is my portfolio affected by today's market news?", "expected": ["portfolio", "news"], "optional": ["market"], "depends": [], "kind": "multi"}
+{"id": "m02", "split": "dev", "query": "What's Apple's stock price and what's the latest news on it?", "expected": ["market", "news"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m03", "split": "dev", "query": "Explain what an ETF is and tell me how VOO is doing today", "expected": ["finance_qa", "market"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m04", "split": "dev", "query": "What's the dividend tax rate and how is Microsoft stock doing?", "expected": ["tax", "market"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m05", "split": "dev", "query": "Plan a $50,000 goal in 5 years and tell me how the S&P 500 has done this year", "expected": ["goal", "market"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m06", "split": "dev", "query": "Find my largest holding and give me the latest news on it", "expected": ["portfolio", "news"], "optional": [], "depends": [["news", "portfolio"]], "kind": "multi"}
+{"id": "m07", "split": "dev", "query": "Look at my portfolio and tell me how its biggest position is doing today", "expected": ["portfolio", "market"], "optional": [], "depends": [["market", "portfolio"]], "kind": "multi"}
+{"id": "m08", "split": "dev", "query": "Compare Tesla and Ford today and summarize the news on both", "expected": ["market", "news"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m09", "split": "dev", "query": "What's the 401(k) limit and how much do I need to save to retire in 25 years with $2 million?", "expected": ["tax", "goal"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m10", "split": "dev", "query": "What is an ETF?", "expected": ["finance_qa"], "optional": [], "depends": [], "kind": "single"}
+{"id": "m11", "split": "dev", "query": "How is VOO doing today?", "expected": ["market"], "optional": [], "depends": [], "kind": "single"}
+{"id": "m12", "split": "dev", "query": "Summarize the news on the Fed and explain what the federal funds rate is", "expected": ["news", "finance_qa"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m13", "split": "test", "query": "Explain bonds and show me how BND has done this year", "expected": ["finance_qa", "market"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m14", "split": "test", "query": "How is NVDA doing, what's the news, and what's an expense ratio?", "expected": ["market", "news", "finance_qa"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m15", "split": "test", "query": "Analyze my portfolio and plan how long to reach $500,000 given its current value", "expected": ["portfolio", "goal"], "optional": [], "depends": [["goal", "portfolio"]], "kind": "multi"}
+{"id": "m16", "split": "test", "query": "Give me the news on Amazon and tell me whether Amazon stock is above its 50-day average", "expected": ["news", "market"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m17", "split": "test", "query": "What are Roth IRA withdrawal rules and how is my portfolio allocated?", "expected": ["tax", "portfolio"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m18", "split": "test", "query": "Explain diversification and check whether my portfolio is diversified", "expected": ["finance_qa", "portfolio"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m19", "split": "test", "query": "How's the market today, and what does inflation mean?", "expected": ["market", "finance_qa"], "optional": ["news"], "depends": [], "kind": "multi"}
+{"id": "m20", "split": "test", "query": "Latest headlines on Microsoft plus its current price and 52-week range", "expected": ["news", "market"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m21", "split": "test", "query": "Analyze my portfolio", "expected": ["portfolio"], "optional": [], "depends": [], "kind": "single"}
+{"id": "m22", "split": "test", "query": "What's the latest news on Apple?", "expected": ["news"], "optional": [], "depends": [], "kind": "single"}
+{"id": "m23", "split": "test", "query": "What is the capital gains tax rate, and how did the Nasdaq do this week?", "expected": ["tax", "market"], "optional": [], "depends": [], "kind": "multi"}
+{"id": "m24", "split": "test", "query": "Tell me about the Fed's latest decision in the news and how my portfolio might be affected", "expected": ["news", "portfolio"], "optional": ["market", "finance_qa"], "depends": [], "kind": "multi"}

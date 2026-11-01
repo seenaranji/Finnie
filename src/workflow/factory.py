@@ -41,6 +41,6 @@ def build_default_graph(checkpointer="memory", settings=None, llm=None, router_l
     return build_graph(llm, router, agents, settings.workflow, checkpointer=saver)
 
 
-def config_for(session_id: str) -> dict:
-    """The LangGraph config that selects a conversation: same session id, same saved state."""
-    return {"configurable": {"thread_id": session_id}}
+def config_for(session_id: str, max_concurrency: int | None = 4) -> dict:
+    """The LangGraph config that selects a conversation (same session id, same saved state) and caps how many branches run at once."""
+    return {"configurable": {"thread_id": session_id}, "max_concurrency": max_concurrency}

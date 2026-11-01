@@ -14,19 +14,19 @@ from src.data.errors import ProviderUnavailable
 from src.data.news import NewsUnavailable
 from src.workflow.graph import Agents, build_graph
 from src.workflow.nodes import extract_news_topic, rewrite_message
-from src.workflow.router import FINANCE_WORDS, DEFAULT_PROMPT_VERSION, DEFAULT_ROUTE, LABELS, PROMPTS, RESPONSE_FORMAT, ROUTES, ROUTES_V2, Router, response_format_for
+from src.workflow.router import FINANCE_WORDS, DEFAULT_PROMPT_VERSION, DEFAULT_ROUTE, LABELS, PROMPTS, RESPONSE_FORMAT, ROUTES, ROUTES_V2, ROUTES_V5, Router, response_format_for
 
 CONFIG = load_settings().workflow
 
 
 class FakeLLM:
     """Scripted replies per purpose, chosen by the name of the JSON schema the caller asks for: route, standalone, news_topic."""
-    def __init__(self, route=(), standalone=(), news_topic=()):
-        self.queues = {"route": list(route), "standalone": list(standalone), "news_topic": list(news_topic)}
-        self.calls = {"route": [], "standalone": [], "news_topic": []}
+    def __init__(self, route=(), standalone=(), news_topic=(), plan=(), answer=()):
+        self.queues = {"route": list(route), "standalone": list(standalone), "news_topic": list(news_topic), "plan": list(plan), "answer": list(answer)}
+        self.calls = {"route": [], "standalone": [], "news_topic": [], "plan": [], "answer": []}
 
     def chat(self, prompt, system=None, **kwargs):
-        purpose = kwargs["response_format"]["json_schema"]["name"]
+        purpose = (kwargs.get("response_format") or {}).get("json_schema", {}).get("name") or "answer"
         self.calls[purpose].append({"prompt": prompt, "system": system, **kwargs})
         reply = self.queues[purpose].pop(0)
         if isinstance(reply, Exception):
@@ -63,8 +63,8 @@ class FakeGoal(FakeAgent):
         return SimpleNamespace(response=self._answer(), state=new_state, plan_made=plan_made)
 
 
-def make(route=(), standalone=(), news_topic=(), saver=False, config=CONFIG, **overrides):
-    llm = FakeLLM(route, standalone, news_topic)
+def make(route=(), standalone=(), news_topic=(), saver=False, config=CONFIG, plan=(), answer=(), **overrides):
+    llm = FakeLLM(route, standalone, news_topic, plan, answer)
     agents = Agents(FakeAgent("finance_qa"), FakeAgent("market_analysis"), FakeAgent("portfolio_analysis"), FakeGoal(), FakeAgent("news_synthesizer"), FakeAgent("tax_education"))
     for key, value in overrides.items():
         setattr(agents, key, value)
@@ -217,14 +217,14 @@ def test_the_router_uses_the_cheap_model_temperature_zero_a_strict_enum_schema_a
     graph, llm, _ = make(route=[{"route": "finance_qa", "confidence": "high"}])
     ask(graph, "hello")
     call = llm.calls["route"][0]
-    assert DEFAULT_PROMPT_VERSION == "v5" and call["model_key"] == "router_model" and call["temperature"] == 0 and call["system"] == PROMPTS[DEFAULT_PROMPT_VERSION]
+    assert DEFAULT_PROMPT_VERSION == "v6" and call["model_key"] == "router_model" and call["temperature"] == 0 and call["system"] == PROMPTS[DEFAULT_PROMPT_VERSION]
     assert call["response_format"] == response_format_for(ROUTES) and call["response_format"]["json_schema"]["strict"] is True
     schema = call["response_format"]["json_schema"]["schema"]
     assert schema["properties"]["route"]["enum"] == list(ROUTES) and schema["additionalProperties"] is False
 
 
 def test_old_prompt_versions_cannot_produce_the_new_label_and_v3_can():
-    assert "out_of_scope" not in LABELS["v1"] and "out_of_scope" not in LABELS["v2"] and "out_of_scope" in LABELS["v3"]
+    assert "out_of_scope" not in LABELS["v1"] and "out_of_scope" not in LABELS["v2"] and "out_of_scope" in LABELS["v3"] and "multi" not in LABELS["v5"]
     assert RESPONSE_FORMAT == response_format_for(ROUTES_V2) and "out_of_scope" not in PROMPTS["v2"] and "out_of_scope" in PROMPTS["v3"]
     llm = FakeLLM(route=[{"route": "out_of_scope", "confidence": "high"}])
     assert Router(llm, prompt_version="v2").classify("pizza price").fell_back is True   # v2 may not say out_of_scope: treated as unusable, not obeyed
@@ -282,7 +282,7 @@ def test_the_graph_draws_itself_with_every_node():
 
 def test_v4_adds_the_rules_that_the_stress_sets_called_for():
     assert "whatever the everyday topic" in PROMPTS["v4"] and "SURE" in PROMPTS["v4"] and PROMPTS["v4"].startswith(PROMPTS["v3"])
-    assert LABELS["v4"] == ROUTES
+    assert LABELS["v4"] == ROUTES_V5
 
 
 def test_the_finance_word_veto_is_off_by_default_and_turns_a_block_into_a_question_when_on():
@@ -297,7 +297,7 @@ def test_the_finance_word_veto_is_off_by_default_and_turns_a_block_into_a_questi
 
 
 def test_v5_tells_the_router_that_uploaded_files_are_portfolio_requests():
-    assert "NEVER out_of_scope" in PROMPTS["v5"] and PROMPTS["v5"].startswith(PROMPTS["v4"]) and LABELS["v5"] == ROUTES
+    assert "NEVER out_of_scope" in PROMPTS["v5"] and PROMPTS["v5"].startswith(PROMPTS["v4"]) and LABELS["v5"] == ROUTES_V5
 
 
 def test_a_user_who_uploaded_a_portfolio_is_never_blocked_even_if_the_router_says_out_of_scope(tmp_path):
@@ -311,3 +311,8 @@ def test_a_user_who_uploaded_a_portfolio_is_never_blocked_even_if_the_router_say
 def test_without_an_upload_the_out_of_scope_decision_stands(tmp_path):
     graph, *_ = make(route=[{"route": "out_of_scope", "confidence": "high"}], config=scope_config(tmp_path))
     assert ask(graph, "Tell me a joke")["route"] == "out_of_scope"
+
+
+def test_v6_adds_the_multi_label_and_leans_toward_it_when_two_sources_are_asked_for():
+    assert "multi" in LABELS["v6"] and "multi" not in LABELS["v5"] and "multi" not in PROMPTS["v5"]
+    assert PROMPTS["v6"].startswith(PROMPTS["v5"].split("\n\nConfidence:")[0]) and "TWO OR MORE separate things" in PROMPTS["v6"] and "choose multi" in PROMPTS["v6"]

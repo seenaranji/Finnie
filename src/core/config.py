@@ -120,6 +120,10 @@ class WorkflowConfig(BaseModel):
     needs_portfolio_reply: str
     scope_reply: str
     scope_log_path: str
+    execution: str
+    max_tasks: int
+    max_concurrency: int
+    branch_timeout_seconds: float
 
 
 class Secrets(BaseSettings):

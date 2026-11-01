@@ -13,6 +13,14 @@ import operator
 from typing import Annotated, TypedDict
 
 
+def merge_results(old: dict | None, new: dict) -> dict:
+    """Reducer for `sub_results`: branches write {task_id: result} and the dicts are MERGED, so parallel branches never overwrite each other.
+    A write containing "__reset__" starts a new, empty collection (the planner does this at the start of every turn, because the checkpointer keeps old values)."""
+    if new.get("__reset__"):
+        return {key: value for key, value in new.items() if key != "__reset__"}
+    return {**(old or {}), **new}
+
+
 class FinnieState(TypedDict, total=False):
     message: str                                   # the user's message this turn (input)
     session_id: str                                # which conversation (input; also the checkpointer's thread id)
@@ -25,4 +33,7 @@ class FinnieState(TypedDict, total=False):
     error: dict | None                             # set when a node failed and a safe fallback answer was given; None otherwise
     goal_state: dict                               # the goal agent's partly filled slots, kept between turns until a plan is made
     history: Annotated[list[dict], operator.add]   # the conversation so far: {"role": "user"|"assistant", "content": ..., "route": ...}
+    plan: dict                                     # the planner's tasks for a multi-intent message: {"tasks": [...], "error": None | "..."}
+    execution: str                                 # "parallel" or "sequential" (input; defaults to config)
+    sub_results: Annotated[dict, merge_results]    # task id -> that branch's result, with timing (REDUCER: merged, so parallel branches cannot overwrite each other)
     trace: Annotated[list[dict], operator.add]     # one entry per node that ran, for every turn (REDUCER: appended, never overwritten)

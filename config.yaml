@@ -89,3 +89,8 @@ workflow:
   scope_reply: "I can only help with finance and investing topics. Try asking about ETFs, saving for a goal, or how a stock is doing."
   scope_log_path: logs/out_of_scope.jsonl   # every out-of-scope decision is appended here, so wrongly blocked questions can be reviewed
   needs_portfolio_reply: "To analyze your portfolio I need your holdings. Please upload or paste them as a CSV with the columns ticker, shares and avg_cost."
+  # Step 21b: several agents for one message
+  execution: parallel               # parallel | sequential (sequential exists to measure the speedup)
+  max_tasks: 4                      # the most sub-tasks a plan may have
+  max_concurrency: 4                # at most this many branches at once (respect API rate limits)
+  branch_timeout_seconds: 25        # per sub-task; a branch that takes longer is abandoned and reported as missing

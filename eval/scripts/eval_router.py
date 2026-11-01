@@ -28,7 +28,7 @@ def evaluate(rows: list[dict], router: Router) -> list[dict]:
     results = []
     for row in rows:
         d = router.classify(row["query"])
-        accepted = {row["label"], *row["also_ok"]}
+        accepted = {row["label"], *row["also_ok"], *(["multi"] if row["kind"] == "multi" and "multi" in router.labels else [])}   # a multi-intent row is rightly routed to multi once that label exists
         results.append({**row, "pred": d.route, "raw_route": d.raw_route, "confidence": d.confidence, "overridden": d.overridden, "fell_back": d.fell_back,
                         "correct": d.route in accepted, "raw_correct": d.raw_route in accepted,
                         "effective": row["label"] if d.route in accepted else d.route, "latency_s": d.latency_s, "cost_usd": d.cost_usd,
