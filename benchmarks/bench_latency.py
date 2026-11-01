@@ -13,7 +13,7 @@ import random
 
 import httpx
 
-from benchmarks.common import BASE, ROUTES, Server, chat, save, summarize
+from benchmarks.common import BASE, ROUTES, Server, bearer_headers, chat, save, summarize
 
 
 def main() -> None:
@@ -29,7 +29,7 @@ def main() -> None:
     report = {"label": args.label, "warm": {}, "cold": {}}
 
     print(f"WARM: {args.warm} runs per route, one at a time")
-    with Server(env=env) as server, httpx.Client(base_url=BASE, timeout=90) as client:
+    with Server(env=env) as server, httpx.Client(base_url=BASE, timeout=90, headers=bearer_headers(BASE)) as client:
         for route in args.routes:
             chat(client, *ROUTES[route][0]) if route != "portfolio_new" else chat(client, *ROUTES["portfolio"][0])   # warm-up (its own request: lazy builders, connection pools); not counted
             requests = (ROUTES[route] * 3)[:args.warm]
@@ -52,7 +52,7 @@ def main() -> None:
         samples = []
         for i in range(args.cold):
             message, csv = ROUTES[route][i % len(ROUTES[route])]
-            with Server(env=env) as server, httpx.Client(base_url=BASE, timeout=90) as client:
+            with Server(env=env) as server, httpx.Client(base_url=BASE, timeout=90, headers=bearer_headers(BASE)) as client:
                 samples.append(chat(client, message, csv))
         seconds = [r["seconds"] for r in samples if r["status"] == 200]
         report["cold"][route] = {"latency_s": summarize(seconds), "runs": samples}

@@ -8,6 +8,7 @@ from src.data.market_data import MarketDataService
 from src.data.portfolio_repository import PortfolioRepository
 from src.web_app.api import create_app
 from src.web_app.services import Services
+from tests.auth_support import ALICE, BOB, headers_for, settings_with_secret
 from tests.test_api import FlakyProvider, ReplyLLM
 from tests.test_portfolio_agent import CSV, META
 
@@ -15,11 +16,11 @@ HOLDINGS = [{"ticker": "AAA", "shares": "10", "avg_cost": "50"}, {"ticker": "BBB
 
 
 @pytest.fixture
-def api(pg):
-    market = MarketDataService(FlakyProvider(), TTLCache(), load_settings(), sleep=lambda s: None)
-    services = Services(load_settings(), market=market, llm=ReplyLLM(), portfolios=PortfolioRepository(pg))
+def api(pg, two_users):
+    market = MarketDataService(FlakyProvider(), TTLCache(), settings_with_secret(), sleep=lambda s: None)
+    services = Services(settings_with_secret(), market=market, llm=ReplyLLM(), portfolios=PortfolioRepository(pg))
     services._metadata = META
-    return TestClient(create_app(services), raise_server_exceptions=False)
+    return TestClient(create_app(services), raise_server_exceptions=False, headers=headers_for(ALICE))
 
 
 def test_save_then_get_by_id(api):
@@ -66,9 +67,9 @@ def test_analysis_by_id_gives_the_same_numbers_as_the_csv_route(api):
     assert by_id.json()["correlation"] == by_csv.json()["correlation"]
 
 
-def test_analysis_of_a_missing_id_is_404_before_any_market_or_model_call(pg):
-    services = Services(load_settings(), llm=object(), market=object(), portfolios=PortfolioRepository(pg))   # object() would crash if used
-    r = TestClient(create_app(services), raise_server_exceptions=False).get("/portfolios/00000000-0000-4000-8000-000000000000/analysis")
+def test_analysis_of_a_missing_id_is_404_before_any_market_or_model_call(pg, two_users):
+    services = Services(settings_with_secret(), llm=object(), market=object(), portfolios=PortfolioRepository(pg))   # object() would crash if used
+    r = TestClient(create_app(services), raise_server_exceptions=False, headers=headers_for(ALICE)).get("/portfolios/00000000-0000-4000-8000-000000000000/analysis")
     assert r.status_code == 404
 
 
@@ -76,8 +77,21 @@ def test_database_down_is_a_503_with_the_usual_error_shape(api):
     from psycopg import OperationalError
 
     class Down:
-        def list(self):
+        def list(self, *, owner_id):
             raise OperationalError("connection refused")
     api.app.state.services._portfolios = Down()
     r = api.get("/portfolios")
     assert r.status_code == 503 and r.json()["code"] == "database_unavailable" and "refused" not in r.text
+
+
+# ---------- Step 27: one user cannot touch another's portfolios through the API ----------
+def test_bob_cannot_see_change_analyze_or_delete_alices_portfolio(api):
+    pid = api.post("/portfolios", json={"name": "alices", "holdings": HOLDINGS}).json()["id"]
+    bob = {"headers": headers_for(BOB)}
+    assert api.get(f"/portfolios/{pid}", **bob).status_code == 404
+    assert api.get(f"/portfolios/{pid}/analysis", **bob).status_code == 404
+    assert api.put(f"/portfolios/{pid}", json={"name": "hijack", "holdings": HOLDINGS[:1]}, **bob).status_code == 404
+    assert api.delete(f"/portfolios/{pid}", **bob).status_code == 404
+    assert api.get("/portfolios", **bob).json() == []
+    assert api.get(f"/portfolios/{pid}").json()["name"] == "alices"   # still Alice's, unchanged
+    assert api.get(f"/portfolios/{pid}", **bob).json()["code"] == api.get("/portfolios/00000000-0000-4000-8000-000000000000", **bob).json()["code"]   # same answer as "no such id"

@@ -21,8 +21,22 @@ class FakeApi:
             "sources": [{"id": "etf-basics#0", "title": "ETF Basics", "url": "https://x.example"}], "disclaimer": "General education only.", "cost_usd": 0.002,
             "latency_s": 1.5, "degraded": False}
 
+    token = None
+
     def health(self):
         return {"status": "ok"}
+
+    def login(self, email, password):
+        self.sent.append(("login", email))
+        if password != "right-password-123":
+            raise ApiError("The email or password is incorrect.", 401, "invalid_credentials", "req-login")
+        return {"access_token": f"token-for-{email}", "token_type": "bearer", "expires_in": 3600, "user": {"id": "u-1", "email": email.lower()}}
+
+    def register(self, email, password):
+        self.sent.append(("register", email))
+        if email == "taken@example.com":
+            raise ApiError("Please fix the problems below.", 422, "invalid_auth_input", "req-reg", [{"problem": "email: an account with this email already exists; log in instead"}])
+        return {"access_token": f"token-for-{email}", "token_type": "bearer", "expires_in": 3600, "user": {"id": "u-2", "email": email.lower()}}
 
     def overview(self):
         self.sent.append("overview")
@@ -111,10 +125,12 @@ def news_batch(topic, items=None, withheld=0, feed_errors=()):
     return {"topic": topic, "items": items, "fetched_at": "2026-11-01T17:00:00Z", "withheld": withheld, "feed_errors": list(feed_errors)}
 
 
-def app(api=None, timeout=10):
+def app(api=None, timeout=10, signed_in=True):
     st.cache_data.clear()   # cached values outlive a single AppTest run; each test must start cold
     at = AppTest.from_file(APP, default_timeout=timeout)
     at.session_state["client"] = api or FakeApi()
+    if signed_in:   # every test below the login tests starts as a logged-in user; the login tests pass signed_in=False
+        at.session_state["auth"] = {"token": "test-token", "email": "tester@example.com"}
     return at.run()
 
 
@@ -572,3 +588,117 @@ def test_rerunning_does_not_refetch_the_news_but_a_failure_is_not_resent_either(
     bad.run()
     bad.run()
     assert failing.sent.count("news_market") == 1
+
+
+# ---------- Login and registration (Step 27) ----------
+def submit(at, label):
+    next(b for b in at.button if b.label == label).click()
+    return at.run()
+
+
+def fill(at, key, value):
+    at.text_input(key=key).set_value(value)
+
+
+def test_nobody_sees_the_app_or_causes_a_single_api_call_before_logging_in():
+    api = FakeApi()
+    at = app(api, signed_in=False)
+    assert not at.exception and api.sent == []                        # no health check, no market data, nothing
+    assert [t.label for t in at.tabs] == ["Log in", "Create account"]  # the six app tabs are not even built
+    assert not at.chat_input and not at.metric
+
+
+def test_logging_in_shows_the_app_and_sends_the_token_with_every_later_call():
+    api = FakeApi()
+    at = app(api, signed_in=False)
+    fill(at, "login_email", "Alice@Example.com")
+    fill(at, "login_password", "right-password-123")
+    at = submit(at, "Log in")
+    assert not at.exception and ("login", "Alice@Example.com") in api.sent
+    assert api.token == "token-for-Alice@Example.com" and any("alice@example.com" in c.value for c in at.sidebar.caption)
+    assert [t.label for t in at.tabs][:3] == ["Chat", "Markets", "News"]
+
+
+def test_wrong_credentials_show_the_servers_message_and_keep_the_door_shut():
+    api = FakeApi()
+    at = app(api, signed_in=False)
+    fill(at, "login_email", "alice@example.com")
+    fill(at, "login_password", "nope")
+    at = submit(at, "Log in")
+    assert any("email or password is incorrect" in e.value for e in at.error) and api.token is None and "auth" not in at.session_state
+    assert [t.label for t in at.tabs] == ["Log in", "Create account"]
+
+
+def test_empty_fields_are_refused_before_the_server_is_asked():
+    api = FakeApi()
+    at = submit(app(api, signed_in=False), "Log in")
+    assert any("Enter your email and password" in e.value for e in at.error) and api.sent == []
+
+
+def test_creating_an_account_signs_the_new_user_in():
+    api = FakeApi()
+    at = app(api, signed_in=False)
+    fill(at, "register_email", "new@example.com")
+    fill(at, "register_password", "a-fine-password-1")
+    fill(at, "register_confirm", "a-fine-password-1")
+    at = submit(at, "Create account")
+    assert not at.exception and ("register", "new@example.com") in api.sent and api.token == "token-for-new@example.com"
+    assert [t.label for t in at.tabs][:2] == ["Chat", "Markets"]
+
+
+def test_mismatched_passwords_are_caught_before_the_server_is_asked():
+    api = FakeApi()
+    at = app(api, signed_in=False)
+    fill(at, "register_email", "new@example.com")
+    fill(at, "register_password", "a-fine-password-1")
+    fill(at, "register_confirm", "a-different-one-2")
+    at = submit(at, "Create account")
+    assert any("not the same" in e.value for e in at.error) and api.sent == []
+
+
+def test_a_taken_email_shows_the_servers_explanation():
+    at = app(signed_in=False)
+    fill(at, "register_email", "taken@example.com")
+    fill(at, "register_password", "a-fine-password-1")
+    fill(at, "register_confirm", "a-fine-password-1")
+    at = submit(at, "Create account")
+    assert any("Please fix the problems" in e.value for e in at.error) and any("already exists" in c.value for c in at.caption)
+
+
+def chatted_and_loaded_a_portfolio(api):
+    """A signed-in user who really asked something in chat (so `messages` and `session_id` exist, made by the real tab code) and has a portfolio loaded."""
+    at = app(api)
+    at.session_state["portfolio_csv"] = "ticker,shares,avg_cost\nVTI,1,1"
+    at.chat_input[0].set_value("my private question").run()
+    assert at.session_state["messages"] and at.session_state["session_id"] == "sess-1"   # guards the test: the state it checks for really existed
+    return at
+
+
+def test_logging_out_removes_the_token_and_the_previous_users_data():
+    api = FakeApi()
+    at = submit(chatted_and_loaded_a_portfolio(api), "Log out")
+    assert api.token is None and "auth" not in at.session_state
+    for key in ("messages", "session_id", "portfolio_csv"):
+        assert key not in at.session_state, f"{key} survived the logout"
+    assert [t.label for t in at.tabs] == ["Log in", "Create account"]
+    assert "my private question" not in " ".join(texts(at))
+
+
+def test_a_session_that_the_server_stopped_accepting_returns_to_the_login_screen_with_an_explanation():
+    api = FakeApi()
+    api.overview = lambda: (_ for _ in ()).throw(ApiError("Please log in to use Finnie.", 401, "not_authenticated", "req-401"))
+    at = app(api)
+    assert not at.exception and "auth" not in at.session_state and api.token is None
+    assert any("Your session has ended" in w.value for w in at.warning) and [t.label for t in at.tabs] == ["Log in", "Create account"]
+
+
+def test_the_next_user_on_the_same_browser_tab_starts_clean():
+    api = FakeApi()
+    at = submit(chatted_and_loaded_a_portfolio(api), "Log out")
+    fill(at, "login_email", "bob@example.com")
+    fill(at, "login_password", "right-password-123")
+    at = submit(at, "Log in")
+    assert at.session_state["auth"]["email"] == "bob@example.com"
+    assert not at.session_state["messages"] and at.session_state["session_id"] is None and "portfolio_csv" not in at.session_state
+    assert "my private question" not in " ".join(texts(at))
+    assert "_failures" not in at.session_state or not at.session_state["_failures"]   # an earlier user's remembered failures must not block the next one

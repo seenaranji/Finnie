@@ -25,6 +25,13 @@ def check(label, ok, detail=""):
 
 
 with httpx.Client(base_url=base, timeout=60) as client:
+    # since Step 27 every endpoint needs a login: register a throwaway user for this check (random email, so re-running never clashes)
+    import uuid
+    email = f"e2e-{uuid.uuid4().hex[:8]}@example.com"
+    signup = client.post("/auth/register", json={"email": email, "password": "e2e-check-password-1"})
+    check("POST /auth/register -> 201 with a token", signup.status_code == 201, email)
+    client.headers["Authorization"] = f"Bearer {signup.json()['access_token']}"
+    check("an anonymous request is refused", httpx.get(f"{base}/portfolios", timeout=10).status_code == 401)
     health = client.get("/health").json()
     print("health:", health)
 
@@ -61,6 +68,15 @@ with httpx.Client(base_url=base, timeout=60) as client:
     check("negative shares and empty ticker -> 422 naming the fields", r.status_code == 422 and {"holdings.0.ticker", "holdings.0.shares"} <= {d["field"] for d in r.json()["details"]},
           json.dumps(r.json()["details"]))
     check("malformed id -> 422", client.get("/portfolios/not-a-uuid").status_code == 422)
+
+    # a second user must not be able to see, change, analyze or delete the first user's portfolio (Step 27)
+    other = httpx.post(f"{base}/auth/register", json={"email": f"e2e-{uuid.uuid4().hex[:8]}@example.com", "password": "e2e-check-password-2"}, timeout=30).json()
+    bob = {"Authorization": f"Bearer {other['access_token']}"}
+    bob_view = [client.get(f"/portfolios/{pid}", headers=bob).status_code, client.get(f"/portfolios/{pid}/analysis", headers=bob).status_code,
+                client.put(f"/portfolios/{pid}", json={"name": "x", "holdings": HOLDINGS[:1]}, headers=bob).status_code, client.delete(f"/portfolios/{pid}", headers=bob).status_code]
+    check("another user gets 404 for get / analysis / put / delete of my portfolio", bob_view == [404, 404, 404, 404], str(bob_view))
+    check("another user's list does not show it", client.get("/portfolios", headers=bob).json() == [])
+    check("my portfolio is still intact after those attempts", client.get(f"/portfolios/{pid}").json()["name"] == "e2e edited")
 
     check("DELETE -> 204, then 404", client.delete(f"/portfolios/{pid}").status_code == 204 and client.get(f"/portfolios/{pid}").status_code == 404)
 

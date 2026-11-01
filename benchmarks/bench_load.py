@@ -15,7 +15,7 @@ import time
 import httpx
 import psutil
 
-from benchmarks.common import BASE, ROUTES, Server, save, summarize, percentile
+from benchmarks.common import BASE, ROUTES, Server, bearer_headers, percentile, save, summarize
 
 MIX = [("qa", 40), ("market", 15), ("portfolio", 10), ("goal", 10), ("tax", 10), ("news", 5), ("qa", 10)]
 
@@ -52,9 +52,10 @@ async def sample_memory(pid, stop, samples):
 
 
 async def level(users, seconds, pid, seed):
+    headers = bearer_headers(BASE)   # one login for all simulated users: this measures the app under load, not the (deliberately slow) password hash
     results, samples, stop = [], [], asyncio.Event()
     rng = random.Random(seed)
-    async with httpx.AsyncClient(base_url=BASE, timeout=120, limits=httpx.Limits(max_connections=users + 5)) as client:
+    async with httpx.AsyncClient(base_url=BASE, timeout=120, headers=headers, limits=httpx.Limits(max_connections=users + 5)) as client:
         for route in ("qa", "market", "portfolio", "goal", "tax", "news"):   # warm-up, not counted: lazy builders, connection pools, data caches
             message, csv = ROUTES[route][0]
             await client.post("/chat", json={"message": message, **({"portfolio_csv": csv} if csv else {})})

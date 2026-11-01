@@ -7,6 +7,7 @@ Status codes used: 200 ok | 404 unknown ticker or route | 422 the request body/p
                    500 a bug on our side | 502 a data provider failed and nothing saved could stand in | 503 not ready / dependency down
 """
 import math
+from contextlib import asynccontextmanager
 import threading
 import time
 import uuid
@@ -16,12 +17,16 @@ from uuid import UUID
 
 from psycopg import OperationalError
 from psycopg_pool import PoolTimeout
-from fastapi import FastAPI, Path, Query, Request
+from fastapi import APIRouter, Depends, FastAPI, Path, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from src.auth.repository import EmailTaken
+from src.auth.security import AuthInputError, AuthUser, InvalidToken, TooManyAttempts
+from src.auth.service import BadCredentials
 from src.core.config import load_settings
 from src.core.logging import get_logger, setup_logging
 from src.agents import goal_calc, portfolio_calc
@@ -34,7 +39,7 @@ from src.data.portfolio_repository import PortfolioIn, PortfolioNotFound, Portfo
 from src.rag.hybrid_retriever import StaleKeywordIndexError
 from src.workflow.factory import config_for
 from src.web_app.models import (Article, ArticleSummary, ChatRequest, ChatResponse, ErrorBody, GoalRequest, GoalResponse, HealthResponse, IndexQuote, KnowledgeResponse, MarketOverview, NewsItemOut, NewsResponse, PassageOut,
-                                PortfolioRequest, PortfolioResponse, PortfolioSaved)
+                                LoginRequest, PortfolioRequest, PortfolioResponse, PortfolioSaved, RegisterRequest, TokenResponse, UserOut)
 from src.web_app.services import Services
 
 log = get_logger("finnie.api")
@@ -43,9 +48,13 @@ TICKER = Path(pattern=r"^\^?[A-Za-z0-9][A-Za-z0-9.\-]{0,9}$", description="Ticke
 CORS_ORIGINS = ["http://localhost:8501", "http://127.0.0.1:8501"]   # the Streamlit UI (Step 23); any other origin is refused by browsers
 
 
-def _error(status: int, code: str, message: str, request: Request, details: list | None = None) -> JSONResponse:
+class AuthRequired(Exception):
+    """No valid login token on a request to a protected endpoint."""
+
+
+def _error(status: int, code: str, message: str, request: Request, details: list | None = None, headers: dict | None = None) -> JSONResponse:
     body = ErrorBody(code=code, message=message, request_id=request.state.request_id, details=details or [])
-    return JSONResponse(status_code=status, content=body.model_dump(), headers={"X-Request-ID": request.state.request_id})
+    return JSONResponse(status_code=status, content=body.model_dump(), headers={"X-Request-ID": request.state.request_id, **(headers or {})})
 
 
 def _summary(doc) -> ArticleSummary:
@@ -55,9 +64,31 @@ def _summary(doc) -> ArticleSummary:
 
 
 def create_app(services: Services | None = None) -> FastAPI:
-    app = FastAPI(title="Finnie API", version="0.1.0", description="Educational finance tutor. Not financial advice.")
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        app.state.services.settings.secrets.require_jwt_secret()   # refuse to START without a signing secret, instead of failing on the first login
+        yield
+
+    app = FastAPI(title="Finnie API", version="0.1.0", description="Educational finance tutor. Not financial advice.", lifespan=lifespan)
     app.state.services = services or Services()
-    app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["GET", "POST", "PUT", "DELETE"], allow_headers=["Content-Type", "X-Request-ID"],
+    bearer = HTTPBearer(auto_error=False, description="Log in at POST /auth/login, then send the access_token as: Authorization: Bearer <token>")
+
+    def require_user(request: Request, credentials: HTTPAuthorizationCredentials | None = Depends(bearer)) -> AuthUser:
+        """The one gate for every protected endpoint. A request is let in only with a valid, unexpired token signed with our secret."""
+        if credentials is None or credentials.scheme.lower() != "bearer":
+            raise AuthRequired()
+        try:
+            user = request.app.state.services.auth.verify_token(credentials.credentials)
+        except InvalidToken as reason:
+            log.info("req=%s rejected token: %s", request.state.request_id, reason)
+            raise AuthRequired() from None
+        request.state.user = user
+        return user
+
+    # Everything on this router needs a login. /health, /auth/register, /auth/login and the docs are the only routes NOT on it, and a test walks
+    # every route in the app to prove that nothing else is open (tests/test_auth_api.py).
+    protected = APIRouter(dependencies=[Depends(require_user)])
+    app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["GET", "POST", "PUT", "DELETE"], allow_headers=["Content-Type", "X-Request-ID", "Authorization"],
                        expose_headers=["X-Request-ID"])
 
     @app.middleware("http")
@@ -95,6 +126,23 @@ def create_app(services: Services | None = None) -> FastAPI:
     async def bad_portfolio(request: Request, error: portfolio_calc.PortfolioInputError):
         return _error(422, "invalid_portfolio", "Your portfolio file could not be read. It needs the columns ticker, shares and avg_cost.", request,
                       [{"problem": p} for p in error.problems])
+
+    @app.exception_handler(AuthRequired)
+    async def not_logged_in(request: Request, error: AuthRequired):
+        return _error(401, "not_authenticated", "Please log in to use Finnie.", request, headers={"WWW-Authenticate": "Bearer"})
+
+    @app.exception_handler(BadCredentials)
+    async def bad_credentials(request: Request, error: BadCredentials):
+        return _error(401, "invalid_credentials", "The email or password is incorrect.", request, headers={"WWW-Authenticate": "Bearer"})
+
+    @app.exception_handler(AuthInputError)
+    async def bad_auth_input(request: Request, error: AuthInputError):
+        return _error(422, "invalid_auth_input", "Please fix the problems below.", request, [{"problem": p} for p in error.problems])
+
+    @app.exception_handler(TooManyAttempts)
+    async def too_many(request: Request, error: TooManyAttempts):
+        return _error(429, "too_many_attempts", f"Too many attempts. Please wait {max(1, round(error.retry_after_seconds / 60))} minute(s) and try again.", request,
+                      headers={"Retry-After": str(error.retry_after_seconds)})
 
     @app.exception_handler(PortfolioNotFound)
     async def portfolio_not_found(request: Request, error: PortfolioNotFound):
@@ -139,17 +187,34 @@ def create_app(services: Services | None = None) -> FastAPI:
         """Is the server up? Cheap on purpose: never calls a model, a data provider or the vector store."""
         return HealthResponse(status="ok", version=app.version, ready=request.app.state.services.ready())
 
-    @app.get("/market/quote/{ticker}", response_model=Quote, tags=["market"])
+    @app.post("/auth/register", response_model=TokenResponse, status_code=201, tags=["auth"])
+    def register(body: RegisterRequest, request: Request):
+        """Create an account and log in straight away. Anyone may register; nobody can use Finnie without an account."""
+        auth = request.app.state.services.auth
+        user = auth.register(body.email, body.password, request.client.host if request.client else "unknown")
+        return TokenResponse(access_token=auth.token_for(user), expires_in=auth.config.token_minutes * 60, user=UserOut(id=user.id, email=user.email))
+
+    @app.post("/auth/login", response_model=TokenResponse, tags=["auth"])
+    def login(body: LoginRequest, request: Request):
+        auth = request.app.state.services.auth
+        user = auth.login(body.email, body.password, request.client.host if request.client else "unknown")
+        return TokenResponse(access_token=auth.token_for(user), expires_in=auth.config.token_minutes * 60, user=UserOut(id=user.id, email=user.email))
+
+    @protected.get("/auth/me", response_model=UserOut, tags=["auth"])
+    def me(user: AuthUser = Depends(require_user)):
+        return UserOut(id=user.id, email=user.email)
+
+    @protected.get("/market/quote/{ticker}", response_model=Quote, tags=["market"])
     def quote(request: Request, ticker: str = TICKER):
         """Latest price. Carries its source, as_of date and is_stale flag: a stale value is returned (flagged) rather than an error when the provider is down."""
         return request.app.state.services.market.get_quote(ticker)
 
-    @app.get("/market/history/{ticker}", response_model=PriceHistory, tags=["market"])
+    @protected.get("/market/history/{ticker}", response_model=PriceHistory, tags=["market"])
     def history(request: Request, ticker: str = TICKER, period: Literal["5d", "1mo", "3mo", "6mo", "1y", "ytd"] = Query("1mo")):
         """Daily closes for charting (used by the Markets tab in Step 23)."""
         return request.app.state.services.market.get_history(ticker, period)
 
-    @app.get("/market/overview", response_model=MarketOverview, tags=["market"])
+    @protected.get("/market/overview", response_model=MarketOverview, tags=["market"])
     def overview(request: Request):
         """The main US indices side by side. If one fails the others are still returned and the failure is listed, not hidden."""
         market = request.app.state.services.market
@@ -169,17 +234,17 @@ def create_app(services: Services | None = None) -> FastAPI:
         return NewsResponse(topic=batch.topic, items=[NewsItemOut(**i.model_dump(exclude={"injection_markers"})) for i in clean],
                             fetched_at=batch.fetched_at, withheld=len(batch.items) - len(clean), feed_errors=batch.feed_errors)
 
-    @app.get("/news/market", response_model=NewsResponse, tags=["news"])
+    @protected.get("/news/market", response_model=NewsResponse, tags=["news"])
     def market_news(request: Request):
         """Recent general market headlines from the configured feeds, newest first. Headlines only; the Chat tab summarizes them."""
         return _news_response(request.app.state.services.news.get_market_news())
 
-    @app.get("/news/ticker/{ticker}", response_model=NewsResponse, tags=["news"])
+    @protected.get("/news/ticker/{ticker}", response_model=NewsResponse, tags=["news"])
     def ticker_news(request: Request, ticker: str = TICKER):
         """Recent headlines about one ticker."""
         return _news_response(request.app.state.services.news.get_ticker_news(ticker))
 
-    @app.post("/goals/plan", response_model=GoalResponse, tags=["goals"])
+    @protected.post("/goals/plan", response_model=GoalResponse, tags=["goals"])
     def plan_goal(body: GoalRequest, request: Request):
         """Three-scenario savings plan. Pure arithmetic with assumed returns from config.yaml: no model is called, so it is instant, free and repeatable."""
         config = request.app.state.services.settings.goal_planning
@@ -191,7 +256,7 @@ def create_app(services: Services | None = None) -> FastAPI:
         return GoalResponse(**data, scenarios=scenarios, flags=goal_calc.assess(plan, config.large_monthly_usd),
                             disclaimer="Educational illustration only, not financial advice. Real returns vary and can be negative.")
 
-    @app.get("/knowledge/search", response_model=KnowledgeResponse, tags=["knowledge"])
+    @protected.get("/knowledge/search", response_model=KnowledgeResponse, tags=["knowledge"])
     def search_knowledge(request: Request, q: str = Query(min_length=2, max_length=300), category: str | None = Query(None, max_length=40),
                          top_k: int = Query(5, ge=1, le=10)):
         """Search the knowledge base. Returns the matching passages with their sources; no model writes anything here."""
@@ -201,19 +266,19 @@ def create_app(services: Services | None = None) -> FastAPI:
                    for p in found.passages]
         return KnowledgeResponse(query=q, answerable=found.answerable, results=results)
 
-    @app.get("/knowledge/articles", response_model=list[ArticleSummary], tags=["knowledge"])
+    @protected.get("/knowledge/articles", response_model=list[ArticleSummary], tags=["knowledge"])
     def list_articles(request: Request, category: str | None = Query(None, max_length=40)):
         """Every article in the knowledge base (no text), optionally one category."""
         return [_summary(d) for d in request.app.state.services.articles() if category is None or d.metadata.get("category") == category]
 
-    @app.get("/knowledge/articles/{doc_id}", response_model=Article, tags=["knowledge"])
+    @protected.get("/knowledge/articles/{doc_id}", response_model=Article, tags=["knowledge"])
     def get_article(request: Request, doc_id: str = Path(pattern=r"^[A-Za-z0-9_\-]{1,80}$")):
         for d in request.app.state.services.articles():
             if d.id == doc_id:
                 return Article(**_summary(d).model_dump(), source_url=d.metadata.get("source_url"), text=d.text)
         raise StarletteHTTPException(404, "No article with that id.")
 
-    @app.post("/portfolio/analyze", response_model=PortfolioResponse, tags=["portfolio"])
+    @protected.post("/portfolio/analyze", response_model=PortfolioResponse, tags=["portfolio"])
     def analyze_portfolio(body: PortfolioRequest, request: Request):
         """Explain a portfolio from CSV text. Bad CSV is the caller's fault (422 listing every problem); no prices at all is ours to report (502)."""
         services = request.app.state.services
@@ -229,44 +294,47 @@ def create_app(services: Services | None = None) -> FastAPI:
                                  correlation=result.metadata.get("correlation"), cost_usd=result.metadata.get("cost_usd", 0.0), latency_s=result.metadata.get("latency_s", 0.0))
 
     # ---- saved portfolios (PostgreSQL). The UI never touches the database: it calls these. A missing id is 404, invalid holdings are 422. ----
-    @app.post("/portfolios", response_model=PortfolioSaved, status_code=201, tags=["portfolio"])
-    def save_portfolio(body: PortfolioIn, request: Request):
+    @protected.post("/portfolios", response_model=PortfolioSaved, status_code=201, tags=["portfolio"])
+    def save_portfolio(body: PortfolioIn, request: Request, user: AuthUser = Depends(require_user)):
         """Save a portfolio (name + holdings) and get back its id. Duplicate tickers are merged."""
-        return PortfolioSaved(id=request.app.state.services.portfolios.create(body.name, body.holdings))
+        return PortfolioSaved(id=request.app.state.services.portfolios.create(body.name, body.holdings, owner_id=user.id))
 
-    @app.get("/portfolios", response_model=list[PortfolioSummary], tags=["portfolio"])
-    def list_portfolios(request: Request):
-        return request.app.state.services.portfolios.list()
+    @protected.get("/portfolios", response_model=list[PortfolioSummary], tags=["portfolio"])
+    def list_portfolios(request: Request, user: AuthUser = Depends(require_user)):
+        return request.app.state.services.portfolios.list(owner_id=user.id)
 
-    @app.get("/portfolios/{portfolio_id}", response_model=StoredPortfolio, tags=["portfolio"])
-    def get_portfolio(request: Request, portfolio_id: UUID):
-        return request.app.state.services.portfolios.get(portfolio_id)
+    @protected.get("/portfolios/{portfolio_id}", response_model=StoredPortfolio, tags=["portfolio"])
+    def get_portfolio(request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):
+        return request.app.state.services.portfolios.get(portfolio_id, owner_id=user.id)
 
-    @app.get("/portfolios/{portfolio_id}/analysis", response_model=PortfolioResponse, tags=["portfolio"])
-    def analyze_saved_portfolio(request: Request, portfolio_id: UUID, question: str = Query("Please explain my portfolio in simple terms.", min_length=1, max_length=500)):
+    @protected.get("/portfolios/{portfolio_id}/analysis", response_model=PortfolioResponse, tags=["portfolio"])
+    def analyze_saved_portfolio(request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user), question: str = Query("Please explain my portfolio in simple terms.", min_length=1, max_length=500)):
         """Explain a SAVED portfolio: holdings come from the database, prices and metrics are computed now."""
         services = request.app.state.services
         agent = PortfolioAnalysisAgent(services.llm, services.market, services.metadata, repository=services.portfolios)
-        return _portfolio_reply(agent.run_by_id(portfolio_id, question))
+        return _portfolio_reply(agent.run_by_id(portfolio_id, user.id, question))
 
-    @app.put("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
-    def replace_portfolio(body: PortfolioIn, request: Request, portfolio_id: UUID):
+    @protected.put("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
+    def replace_portfolio(body: PortfolioIn, request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):
         """Replace the name and all holdings in one transaction."""
-        request.app.state.services.portfolios.update(portfolio_id, body.holdings, body.name)
+        request.app.state.services.portfolios.update(portfolio_id, body.holdings, body.name, owner_id=user.id)
 
-    @app.delete("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
-    def delete_portfolio(request: Request, portfolio_id: UUID):
-        request.app.state.services.portfolios.delete(portfolio_id)
+    @protected.delete("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
+    def delete_portfolio(request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):
+        request.app.state.services.portfolios.delete(portfolio_id, owner_id=user.id)
 
-    @app.post("/chat", response_model=ChatResponse, tags=["chat"])
-    def chat(body: ChatRequest, request: Request):
+    @protected.post("/chat", response_model=ChatResponse, tags=["chat"])
+    def chat(body: ChatRequest, request: Request, user: AuthUser = Depends(require_user)):
         """One conversational turn through the full workflow (router, agents, planner for multi-part questions). Memory is kept per session_id."""
         services = request.app.state.services
         session_id = body.session_id or uuid.uuid4().hex[:16]
-        state_in = {"message": body.message, "session_id": session_id, **({"portfolio_csv": body.portfolio_csv} if body.portfolio_csv else {})}
+        # A conversation belongs to the user who started it. The memory is keyed by "<user id>:<session id>", so user B sending user A's session id
+        # simply starts a new conversation of their own and can never read or continue A's. The client only ever sees the plain session id.
+        internal_id = f"{user.id}:{session_id}"
+        state_in = {"message": body.message, "session_id": internal_id, **({"portfolio_csv": body.portfolio_csv} if body.portfolio_csv else {})}
         start = time.perf_counter()
-        with services.session_lock(session_id):   # two simultaneous turns of ONE conversation would interleave its saved history; different sessions never wait
-            state = services.graph.invoke(state_in, config_for(session_id, services.settings.workflow.max_concurrency))
+        with services.session_lock(internal_id):   # two simultaneous turns of ONE conversation would interleave its saved history; different sessions never wait
+            state = services.graph.invoke(state_in, config_for(internal_id, services.settings.workflow.max_concurrency))
         reply = state["response"]
         trace = state.get("trace", [])
         routing = sum(t.get("cost_usd") or 0.0 for t in trace if t.get("turn") == state.get("turn") and t["node"] in ("contextualize", "router"))   # the agent's own cost is in its reply
@@ -275,6 +343,7 @@ def create_app(services: Services | None = None) -> FastAPI:
                             cost_usd=round((reply.get("metadata", {}).get("cost_usd") or 0.0) + routing, 6),
                             latency_s=round(time.perf_counter() - start, 3), degraded=state.get("error") is not None)
 
+    app.include_router(protected)
     return app
 
 

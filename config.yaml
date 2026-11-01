@@ -44,6 +44,15 @@ database:
   max_holdings_per_portfolio: 500
   keyword_match: any          # any | all (see src/rag/pg_keyword_index.py)
 
+# Authentication (Step 27). The signing secret is the JWT_SECRET environment variable (.env), never this file.
+auth:
+  token_minutes: 60
+  min_password_length: 10
+  max_password_length: 128
+  max_failed_logins: 5          # per email + client address
+  lockout_minutes: 15
+  max_registrations_per_hour: 10
+
 cache:
   quote_ttl_seconds: 60
   history_ttl_seconds: 900   # 15 minutes

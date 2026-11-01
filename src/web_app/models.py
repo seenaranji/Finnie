@@ -89,6 +89,28 @@ class PortfolioRequest(BaseModel):
     question: str = Field("Please explain my portfolio in simple terms.", min_length=1, max_length=500)
 
 
+class RegisterRequest(BaseModel):
+    email: str = Field(max_length=254)
+    password: str = Field(max_length=256, description="Stored only as an Argon2 hash; never logged or returned")
+
+
+class LoginRequest(BaseModel):
+    email: str = Field(max_length=254)
+    password: str = Field(max_length=256)
+
+
+class UserOut(BaseModel):
+    id: UUID
+    email: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int                # seconds
+    user: UserOut
+
+
 class PortfolioSaved(BaseModel):
     id: UUID
 

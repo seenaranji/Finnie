@@ -51,6 +51,18 @@ def summarize(values):
     return {"n": len(values), "mean": float(np.mean(values)), "p50": percentile(values, 50), "p95": percentile(values, 95), "min": float(min(values)), "max": float(max(values))} if len(values) else {"n": 0}
 
 
+BENCH_EMAIL, BENCH_PASSWORD = "benchmark@finnie.local", "benchmark-password-not-a-secret-1"   # a local-only account for the benchmarks (delete: DELETE FROM users WHERE email = 'benchmark@finnie.local')
+
+
+def bearer_headers(base_url: str) -> dict:
+    """Log the benchmark user in (creating it the first time) and return the Authorization header every request needs since Step 27."""
+    for path in ("/auth/login", "/auth/register"):
+        response = httpx.post(f"{base_url}{path}", json={"email": BENCH_EMAIL, "password": BENCH_PASSWORD}, timeout=30)
+        if response.status_code in (200, 201):
+            return {"Authorization": f"Bearer {response.json()['access_token']}"}
+    raise RuntimeError(f"could not log the benchmark user in: {response.status_code} {response.text[:200]}")
+
+
 class Server:
     """A real uvicorn process on its own port. Extra environment (e.g. an optimization switch) can be passed in."""
     def __init__(self, env=None, workers=1):

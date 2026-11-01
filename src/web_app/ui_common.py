@@ -10,6 +10,11 @@ DISCLAIMER = "Finnie is an educational tool, not financial advice. Nothing here 
 
 def show_error(error: ApiError, what: str = "that") -> None:
     """One way to show every failure: what happened in plain words, whether trying again can help, and the request id to quote."""
+    if error.status == 401 and st.session_state.get("auth"):
+        # The server no longer accepts our token (it expired, or the server's secret changed). Back to the login screen with a plain explanation.
+        from src.web_app.auth_screen import sign_out
+        sign_out(st.session_state.client, "Your session has ended. Please log in again.")
+        st.rerun()
     st.error(error.message)
     hint = "This may be temporary. Try again in a moment." if error.retryable else "Please change the input and try again."
     st.caption(f"{hint}" + (f"  Request id: `{error.request_id}`" if error.request_id else ""))

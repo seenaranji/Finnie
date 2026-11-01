@@ -41,6 +41,8 @@ try:
     command.upgrade(config, "head")
     pool = make_pool(bench_url, settings, max_size=10)
     repo = PortfolioRepository(pool)
+    with pool.connection() as connection:   # every portfolio needs an owner (Step 27)
+        OWNER = connection.execute("INSERT INTO users (email, password_hash) VALUES ('bench@example.com', 'x') RETURNING id").fetchone()[0]
     TICKERS = [f"T{i}" for i in range(600)]
 
     def grow_to(total: int) -> list:
@@ -49,7 +51,7 @@ try:
             have = connection.execute("SELECT count(*) FROM portfolios").fetchone()[0]
             with connection.cursor() as cursor:
                 for n in range(have, total):
-                    pid = connection.execute("INSERT INTO portfolios (name) VALUES (%s) RETURNING id", (f"bench {n}",)).fetchone()[0]
+                    pid = connection.execute("INSERT INTO portfolios (name, owner_id) VALUES (%s, %s) RETURNING id", (f"bench {n}", OWNER)).fetchone()[0]
                     cursor.executemany("INSERT INTO holdings (portfolio_id, ticker, shares, avg_cost) VALUES (%s, %s, %s, %s)",
                                        [(pid, t, 10, 100) for t in random.sample(TICKERS, 5)])
             connection.execute("ANALYZE holdings")   # fresh statistics, so the planner chooses fairly
@@ -59,7 +61,7 @@ try:
         times = []
         for pid in random.choices(ids, k=n):
             start = time.perf_counter()
-            repo.get(pid)
+            repo.get(pid, owner_id=OWNER)
             times.append((time.perf_counter() - start) * 1000)
         return summarize(times)
 
@@ -98,7 +100,7 @@ try:
         times = []
         for _ in range(40):
             start = time.perf_counter()
-            repo.create("write bench", holdings)
+            repo.create("write bench", holdings, owner_id=OWNER)
             times.append((time.perf_counter() - start) * 1000)
         report["create_ms"][size] = summarize(times)
         print(f"\ncreate() with {size:>3} holdings: p50 {report['create_ms'][size]['p50']:.1f} ms, p95 {report['create_ms'][size]['p95']:.1f} ms")
@@ -112,9 +114,9 @@ try:
         start = time.perf_counter()
         try:
             if n % 10 == 0:
-                repo.create(f"concurrent {n}", [{"ticker": "AAA", "shares": "1", "avg_cost": "1"}])
+                repo.create(f"concurrent {n}", [{"ticker": "AAA", "shares": "1", "avg_cost": "1"}], owner_id=OWNER)
             else:
-                assert len(repo.get(random.choice(ids)).holdings) == 5
+                assert len(repo.get(random.choice(ids), owner_id=OWNER).holdings) == 5
         except Exception as error:
             errors.append(f"{type(error).__name__}: {error}")
         return (time.perf_counter() - start) * 1000

@@ -11,6 +11,7 @@ import streamlit as st
 # Streamlit puts this script's folder on sys.path, not the project root, so `src.*` imports need the root added.
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from src.web_app import auth_screen
 from src.web_app.client import DEFAULT_URL, ApiError, FinnieClient
 from src.web_app.tabs import chat, goals, knowledge, markets, news, portfolio
 from src.web_app.ui_common import DISCLAIMER
@@ -35,6 +36,10 @@ def sidebar(client: FinnieClient) -> None:
     with st.sidebar:
         st.title("Finnie")
         st.caption("A finance tutor for beginners")
+        st.caption(f"Signed in as {st.session_state.auth['email']}")
+        if st.button("Log out", width="stretch"):
+            auth_screen.sign_out(client)
+            st.rerun()
         try:
             server_status(client, client.base_url)
             st.success("Server connected", icon="✅")
@@ -49,6 +54,12 @@ def sidebar(client: FinnieClient) -> None:
 
 
 client = get_client()
+if not auth_screen.signed_in():   # nobody gets past this line without an account: no tabs, no API calls
+    client.token = None
+    st.info(DISCLAIMER, icon="ℹ️")
+    auth_screen.render(client)
+    st.stop()
+client.token = st.session_state.auth["token"]
 sidebar(client)
 st.info(DISCLAIMER, icon="ℹ️")
 chat_tab, markets_tab, news_tab, portfolio_tab, goals_tab, knowledge_tab = st.tabs(["Chat", "Markets", "News", "Portfolio", "Goals", "Knowledge"])

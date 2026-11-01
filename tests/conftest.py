@@ -50,5 +50,15 @@ def pg_pool():
 def pg(pg_pool):
     """The test database, emptied before each test."""
     with pg_pool.connection() as connection:
-        connection.execute("TRUNCATE articles, portfolios, store_meta CASCADE")
+        connection.execute("TRUNCATE articles, portfolios, users, store_meta CASCADE")
     return pg_pool
+
+
+@pytest.fixture
+def two_users(pg):
+    """Alice and Bob exist as real rows (portfolios.owner_id is a foreign key), with the same ids tests/auth_support.py puts in their tokens."""
+    from tests.auth_support import ALICE, BOB
+    with pg.connection() as connection:
+        for user in (ALICE, BOB):
+            connection.execute("INSERT INTO users (id, email, password_hash) VALUES (%s, %s, 'not-a-real-hash')", (user.id, user.email))
+    return ALICE, BOB

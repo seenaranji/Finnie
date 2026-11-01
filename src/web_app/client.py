@@ -23,11 +23,13 @@ class ApiError(Exception):
 class FinnieClient:
     def __init__(self, base_url: str = DEFAULT_URL, transport: httpx.BaseTransport | None = None, timeout: float = 60.0) -> None:
         self.base_url = base_url
+        self.token: str | None = None   # set after login; sent as 'Authorization: Bearer <token>' on every call
         self._http = httpx.Client(base_url=base_url, transport=transport, timeout=timeout)
 
     def _call(self, method: str, path: str, **kwargs):
         try:
-            response = self._http.request(method, path, **kwargs)
+            headers = {"Authorization": f"Bearer {self.token}"} if self.token else {}
+            response = self._http.request(method, path, headers=headers, **kwargs)
         except httpx.TimeoutException:
             raise ApiError("The server took too long to answer. Please try again.") from None
         except httpx.HTTPError:
@@ -42,6 +44,12 @@ class FinnieClient:
 
     def health(self) -> dict:
         return self._call("GET", "/health")
+
+    def register(self, email: str, password: str) -> dict:
+        return self._call("POST", "/auth/register", json={"email": email, "password": password})
+
+    def login(self, email: str, password: str) -> dict:
+        return self._call("POST", "/auth/login", json={"email": email, "password": password})
 
     def chat(self, message: str, session_id: str | None = None, portfolio_csv: str | None = None) -> dict:
         body = {"message": message, **({"session_id": session_id} if session_id else {}), **({"portfolio_csv": portfolio_csv} if portfolio_csv else {})}

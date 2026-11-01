@@ -10,10 +10,10 @@ from src.data.factory import build_market_data_service
 
 
 class Services:
-    def __init__(self, settings: Settings | None = None, market=None, retriever=None, graph=None, llm=None, articles=None, news=None, portfolios=None) -> None:
+    def __init__(self, settings: Settings | None = None, market=None, retriever=None, graph=None, llm=None, articles=None, news=None, portfolios=None, auth=None) -> None:
         self.settings = settings or load_settings()
         self._market, self._retriever, self._graph, self._llm, self._metadata, self._articles = market, retriever, graph, llm, None, articles
-        self._news, self._portfolios = news, portfolios
+        self._news, self._portfolios, self._auth = news, portfolios, auth
         self._lock = threading.Lock()
         self._session_locks: dict[str, threading.Lock] = {}
 
@@ -39,6 +39,15 @@ class Services:
                 from src.data.portfolio_repository import PortfolioRepository
                 self._portfolios = PortfolioRepository.from_settings(self.settings)
             return self._portfolios
+
+    @property
+    def auth(self):
+        """Register / log in / verify tokens. Built on first use; needs the database (users) and JWT_SECRET."""
+        with self._lock:
+            if self._auth is None:
+                from src.auth.service import AuthService
+                self._auth = AuthService(None, self.settings)
+            return self._auth
 
     @property
     def retriever(self):

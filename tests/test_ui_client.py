@@ -61,3 +61,29 @@ def test_news_calls_the_market_and_ticker_endpoints():
     client.market_news()
     client.ticker_news(" AAPL ")
     assert seen == ["/news/market", "/news/ticker/AAPL"]
+
+
+def test_the_token_is_sent_on_every_call_once_set_and_not_before():
+    seen = []
+    client = client_with(lambda r: (seen.append(r.headers.get("authorization")), httpx.Response(200, json={}))[1])
+    client.health()
+    client.token = "abc.def.ghi"
+    client.overview()
+    client.chat("hi")
+    assert seen == [None, "Bearer abc.def.ghi", "Bearer abc.def.ghi"]
+
+
+def test_login_and_register_post_the_credentials_as_json():
+    sent = []
+    client = client_with(lambda r: (sent.append((r.method, r.url.path, r.content)), httpx.Response(200, json={"access_token": "t"}))[1])
+    client.login("a@example.com", "pw")
+    client.register("b@example.com", "pw2")
+    assert [(m, p) for m, p, _ in sent] == [("POST", "/auth/login"), ("POST", "/auth/register")]
+    assert b'"email":"a@example.com"' in sent[0][2].replace(b" ", b"")
+
+
+def test_a_401_becomes_an_api_error_with_status_401_so_the_ui_can_log_out():
+    body = {"code": "not_authenticated", "message": "Please log in to use Finnie.", "request_id": "r1", "details": []}
+    with pytest.raises(ApiError) as caught:
+        client_with(lambda r: httpx.Response(401, json=body)).overview()
+    assert (caught.value.status, caught.value.code, caught.value.retryable) == (401, "not_authenticated", False)

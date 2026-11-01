@@ -10,10 +10,11 @@ from src.data.market_data import MarketDataService
 from src.rag.hybrid_retriever import StaleKeywordIndexError
 from src.web_app.api import create_app
 from src.web_app.services import Services
+from tests.auth_support import headers_for, settings_with_secret
 from tests.test_portfolio_agent import CSV, META, FakeProvider
 from tests.test_workflow import make
 
-SETTINGS = load_settings()
+SETTINGS = settings_with_secret()
 
 
 class FlakyProvider(FakeProvider):
@@ -53,7 +54,7 @@ def client(provider=None, retriever=None, graph=None, llm=None, raise_server_exc
     market = MarketDataService(provider or FlakyProvider(), TTLCache(), SETTINGS, sleep=lambda s: None)
     services = Services(SETTINGS, market=market, retriever=retriever or FakeRetriever([passage()]), graph=graph, llm=llm or ReplyLLM())
     services._metadata = META
-    return TestClient(create_app(services), raise_server_exceptions=raise_server_exceptions)
+    return TestClient(create_app(services), raise_server_exceptions=raise_server_exceptions, headers=headers_for())
 
 
 # ---------- system: health, request id, error shape, CORS ----------
@@ -108,7 +109,7 @@ def test_provider_down_but_a_saved_value_exists_is_200_and_flagged_stale():
     settings = SETTINGS.model_copy(update={"cache": SETTINGS.cache.model_copy(update={"quote_ttl_seconds": 0})})   # ttl 0: every entry is expired at once, only get_stale can serve it
     provider = FlakyProvider()
     market = MarketDataService(provider, TTLCache(), settings, sleep=lambda s: None)
-    c = TestClient(create_app(Services(settings, market=market, retriever=FakeRetriever(), llm=ReplyLLM())))
+    c = TestClient(create_app(Services(settings, market=market, retriever=FakeRetriever(), llm=ReplyLLM())), headers=headers_for())
     assert c.get("/market/quote/AAA").json()["is_stale"] is False
     provider.down = {"AAA"}
     r = c.get("/market/quote/AAA")

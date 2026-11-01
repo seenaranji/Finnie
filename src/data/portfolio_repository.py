@@ -9,9 +9,9 @@ Money and share counts are `Decimal` in Python and `NUMERIC` in PostgreSQL, so w
 placeholders (`%s`) with the values passed separately, so user text can never become SQL. Each write is one transaction: a portfolio and all of
 its holdings are saved together or not at all.
 
-Known limitation (a must-fix before real users store financial data): there is no login. Anyone who knows or guesses an id can read, change or
-delete that portfolio. The ids are random UUIDs, which makes guessing impractical but is NOT access control; a real app needs an owner column and
-an owner check on every request.
+Ownership (Step 27): every portfolio belongs to a user, and EVERY method takes `owner_id` as a required keyword argument and puts it in the SQL
+(`WHERE ... AND owner_id = %s`), so one user can never read, change or delete another's portfolio, and a caller cannot forget to say whose it is.
+A portfolio that is not yours looks exactly like one that does not exist (PortfolioNotFound), so ids cannot be probed for existence.
 """
 import re
 from datetime import datetime
@@ -128,48 +128,49 @@ class PortfolioRepository:
             cursor.executemany("INSERT INTO holdings (portfolio_id, ticker, shares, avg_cost) VALUES (%s, %s, %s, %s)",
                                [(portfolio_id, h.ticker, h.shares, h.avg_cost) for h in holdings])
 
-    def create(self, name: str, holdings: list[HoldingIn | dict]) -> UUID:
+    def create(self, name: str, holdings: list[HoldingIn | dict], *, owner_id: UUID) -> UUID:
         """Validate, then save the portfolio and ALL its holdings in one transaction. Returns the new id.
         Bad input raises pydantic.ValidationError before the database is touched."""
         portfolio = PortfolioIn(name=name, holdings=holdings)
         with self.pool.connection() as connection, connection.transaction():
-            portfolio_id = connection.execute("INSERT INTO portfolios (name) VALUES (%s) RETURNING id", (portfolio.name,)).fetchone()[0]
+            portfolio_id = connection.execute("INSERT INTO portfolios (name, owner_id) VALUES (%s, %s) RETURNING id", (portfolio.name, owner_id)).fetchone()[0]
             self._insert_holdings(connection, portfolio_id, portfolio.holdings)
         return portfolio_id
 
-    def get(self, portfolio_id: UUID) -> StoredPortfolio:
+    def get(self, portfolio_id: UUID, *, owner_id: UUID) -> StoredPortfolio:
         with self.pool.connection() as connection:
-            row = connection.execute("SELECT id, name, created_at, updated_at FROM portfolios WHERE id = %s", (portfolio_id,)).fetchone()
+            row = connection.execute("SELECT id, name, created_at, updated_at FROM portfolios WHERE id = %s AND owner_id = %s", (portfolio_id, owner_id)).fetchone()
             if row is None:
                 raise PortfolioNotFound(portfolio_id)
             holdings = connection.execute("SELECT ticker, shares, avg_cost FROM holdings WHERE portfolio_id = %s ORDER BY id", (portfolio_id,)).fetchall()
         return StoredPortfolio(id=row[0], name=row[1], created_at=row[2], updated_at=row[3],
                                holdings=[StoredHolding(ticker=t, shares=s, avg_cost=c) for t, s, c in holdings])
 
-    def update(self, portfolio_id: UUID, holdings: list[HoldingIn | dict], name: str | None = None) -> None:
+    def update(self, portfolio_id: UUID, holdings: list[HoldingIn | dict], name: str | None = None, *, owner_id: UUID) -> None:
         """Replace the holdings (and optionally the name) in one transaction: either the whole new set is saved or the old one stays."""
-        current = self.get(portfolio_id) if name is None else None
+        current = self.get(portfolio_id, owner_id=owner_id) if name is None else None
         portfolio = PortfolioIn(name=name if name is not None else current.name, holdings=holdings)
         with self.pool.connection() as connection, connection.transaction():
-            updated = connection.execute("UPDATE portfolios SET name = %s, updated_at = now() WHERE id = %s RETURNING id",
-                                         (portfolio.name, portfolio_id)).fetchone()
+            updated = connection.execute("UPDATE portfolios SET name = %s, updated_at = now() WHERE id = %s AND owner_id = %s RETURNING id",
+                                         (portfolio.name, portfolio_id, owner_id)).fetchone()
             if updated is None:
                 raise PortfolioNotFound(portfolio_id)
             connection.execute("DELETE FROM holdings WHERE portfolio_id = %s", (portfolio_id,))
             self._insert_holdings(connection, portfolio_id, portfolio.holdings)
 
-    def delete(self, portfolio_id: UUID) -> None:
+    def delete(self, portfolio_id: UUID, *, owner_id: UUID) -> None:
         """Delete the portfolio; its holdings go with it (ON DELETE CASCADE)."""
         with self.pool.connection() as connection:
-            deleted = connection.execute("DELETE FROM portfolios WHERE id = %s RETURNING id", (portfolio_id,)).fetchone()
+            deleted = connection.execute("DELETE FROM portfolios WHERE id = %s AND owner_id = %s RETURNING id", (portfolio_id, owner_id)).fetchone()
         if deleted is None:
             raise PortfolioNotFound(portfolio_id)
 
     # defined last on purpose: inside this class body the name `list` means this method, so no annotation below it may use list[...]
-    def list(self) -> list[PortfolioSummary]:
+    def list(self, *, owner_id: UUID) -> list[PortfolioSummary]:
         with self.pool.connection() as connection:
             rows = connection.execute(
                 """SELECT p.id, p.name, count(h.id), p.created_at, p.updated_at
                    FROM portfolios p LEFT JOIN holdings h ON h.portfolio_id = p.id
-                   GROUP BY p.id ORDER BY p.created_at DESC, p.id""").fetchall()
+                   WHERE p.owner_id = %s
+                   GROUP BY p.id ORDER BY p.created_at DESC, p.id""", (owner_id,)).fetchall()
         return [PortfolioSummary(id=i, name=n, holding_count=c, created_at=ca, updated_at=ua) for i, n, c, ca, ua in rows]

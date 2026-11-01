@@ -17,6 +17,10 @@ psycopg[binary,pool]==3.3.6   # PostgreSQL driver + connection pool
 pgvector==0.5.1               # pgvector type adapters for psycopg
 alembic==1.20.1               # versioned schema migrations (pulls in SQLAlchemy)
 
+# --- Authentication (Step 27) ---
+argon2-cffi==25.1.0       # password hashing (Argon2id)
+PyJWT==2.15.1             # signed, expiring login tokens
+
 # --- Config + validation ---
 pydantic==2.14.1          # typed data models
 pydantic-settings==2.16.2 # settings from YAML/env

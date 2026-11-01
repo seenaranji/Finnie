@@ -65,6 +65,15 @@ class DatabaseConfig(BaseModel):
     keyword_match: str = "any"           # any = a chunk matching ANY query word qualifies (like BM25) | all = it must match every word (websearch_to_tsquery default)
 
 
+class AuthConfig(BaseModel):
+    token_minutes: int = 60              # how long a login stays valid; after that the user logs in again (no refresh tokens yet)
+    min_password_length: int = 10
+    max_password_length: int = 128       # also stops absurdly long inputs from being hashed
+    max_failed_logins: int = 5           # per email + client address ...
+    lockout_minutes: int = 15            # ... within this window, then 429 until it passes
+    max_registrations_per_hour: int = 10 # per client address
+
+
 class CacheConfig(BaseModel):
     quote_ttl_seconds: int = 60
     history_ttl_seconds: int = 900
@@ -144,6 +153,14 @@ class Secrets(BaseSettings):
     openai_api_key: str | None = None
     alpha_vantage_api_key: str | None = None
     database_url: str | None = None
+    jwt_secret: str | None = None
+
+    def require_jwt_secret(self) -> str:
+        if not self.jwt_secret or len(self.jwt_secret) < 32:
+            raise MissingSecretError(
+                "JWT_SECRET is missing or shorter than 32 characters. Add it to .env (see .env.example); generate one with: "
+                "python -c \"import secrets;print(secrets.token_urlsafe(48))\"")
+        return self.jwt_secret
 
     def require_database_url(self) -> str:
         if not self.database_url:
@@ -164,6 +181,7 @@ class Settings(BaseModel):
     llm: LLMConfig
     rag: RAGConfig
     database: DatabaseConfig = DatabaseConfig()
+    auth: AuthConfig = AuthConfig()
     cache: CacheConfig
     market_data: MarketDataConfig = MarketDataConfig()
     alpha_vantage: AlphaVantageConfig = AlphaVantageConfig()

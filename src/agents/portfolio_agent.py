@@ -91,13 +91,13 @@ class PortfolioAnalysisAgent(BaseAgent):
                                     + "\nPlease fix these and send it again. It needs the columns: ticker, shares, avg_cost.", "bad input")
         return self._analyze(holdings, question, parse_time["seconds"])
 
-    def run_by_id(self, portfolio_id, question: str = "Please explain my portfolio in simple terms.") -> AgentResponse:
+    def run_by_id(self, portfolio_id, owner_id, question: str = "Please explain my portfolio in simple terms.") -> AgentResponse:
         """Explain a SAVED portfolio: load its holdings from the database, then run exactly the same math and explanation as run().
         Raises PortfolioNotFound for an unknown id (the caller decides what to tell the user)."""
         if self.repository is None:
             raise RuntimeError("this agent was built without a PortfolioRepository")
         with timer() as load_time:
-            stored = self.repository.get(portfolio_id)
+            stored = self.repository.get(portfolio_id, owner_id=owner_id)   # someone else's portfolio is PortfolioNotFound
             holdings = [pc.Holding(h.ticker, float(h.shares), float(h.avg_cost)) for h in stored.holdings]   # NUMERIC -> float only here, for the math
         return self._analyze(holdings, question, load_time["seconds"])
 

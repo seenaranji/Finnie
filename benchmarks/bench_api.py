@@ -19,6 +19,8 @@ from pathlib import Path
 
 import httpx
 
+from benchmarks.common import bearer_headers
+
 ROOT = Path(__file__).resolve().parents[1]
 PORT, BASE = 8765, "http://127.0.0.1:8765"
 TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "JPM", "V", "WMT", "KO", "PEP", "DIS", "NFLX", "INTC", "AMD", "BA", "XOM", "CVX", "PG",
@@ -66,7 +68,7 @@ def main() -> None:
                     break
             except httpx.HTTPError:
                 time.sleep(0.25)
-        client = httpx.Client(base_url=BASE, timeout=60)
+        client = httpx.Client(base_url=BASE, timeout=60, headers=bearer_headers(BASE))
         rows, started = [], datetime.now()
         print("\nSTAGE 1: per-endpoint latency (real HTTP, one request at a time)")
         rows.append(measure(client, "GET /health", [lambda: client.get("/health")] * 30))
