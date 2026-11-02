@@ -1,0 +1,17 @@
+# Keep secrets, local state and bulky development files out of the image.
+.env
+.git
+.venv
+.pytest_cache
+.coverage
+__pycache__
+*.pyc
+logs
+.alpha_usage.json
+eval
+benchmarks
+tests
+PROJECT_SPEC.md
+PROGRESS.md
+LEARNING_LOG.md
+BENCHMARKS.md

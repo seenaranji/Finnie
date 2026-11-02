@@ -43,6 +43,7 @@ summary = {
 print(json.dumps(summary, indent=2))
 
 output_file = Path(f"benchmarks/results/step6_index_{datetime.now():%Y%m%d_%H%M%S}.json")
+output_file.parent.mkdir(parents=True, exist_ok=True)   # the folder is not in the Docker image
 output_file.write_text(json.dumps(summary, indent=2))
 print(f"saved: {output_file}")
 print("\n*** INDEXING FINISHED ***")

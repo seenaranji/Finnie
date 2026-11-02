@@ -1,5 +1,8 @@
-# Finnie's database: PostgreSQL with the pgvector extension (Steps 6, 7c, 15b; migrated in 23b).
-# Start:  docker compose up -d      Check:  docker compose ps   (wait for "healthy")
+# Finnie's full stack (Step 26): db (PostgreSQL + pgvector) -> migrate (one-off) -> api -> ui.
+# First time:  docker compose up -d --build
+#              docker compose run --rm api python -m scripts.index_knowledge_base    (fills the knowledge base; about $0.001 of embeddings)
+# Then open http://localhost:8501.   Check: docker compose ps   (wait for "healthy")
+# Database only (to run the app from your own Python): docker compose up -d db
 # Credentials come from .env (git-ignored). The data lives in the named volume below, so it survives
 # `docker compose down` but NOT `docker compose down -v` (that deletes the volume and every saved row).
 services:
@@ -20,5 +23,46 @@ services:
       timeout: 3s
       retries: 10
 
+  # One-off job: bring the schema up to date, then exit. api and ui wait for it to finish successfully.
+  migrate:
+    build: .
+    command: ["alembic", "upgrade", "head"]
+    environment: &app_env
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}   # inside the network the host is "db" and the port 5432, not 127.0.0.1:5433
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    build: .
+    restart: unless-stopped
+    env_file: .env             # keys and JWT_SECRET are read at run time; they are not in the image
+    environment: *app_env      # applied after env_file, so the container's DATABASE_URL wins over the one meant for your laptop
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    volumes:
+      - finnie_logs:/app/logs
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  ui:
+    build: .
+    restart: unless-stopped
+    command: ["streamlit", "run", "src/web_app/app.py", "--server.address=0.0.0.0", "--server.port=8501"]
+    environment:
+      FINNIE_API_URL: http://api:8000
+    ports:
+      - "127.0.0.1:${UI_PORT:-8501}:8501"
+    depends_on:
+      api:
+        condition: service_healthy
+
 volumes:
   finnie_pgdata:
+  finnie_logs:

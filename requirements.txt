@@ -21,6 +21,9 @@ alembic==1.20.1               # versioned schema migrations (pulls in SQLAlchemy
 argon2-cffi==25.1.0       # password hashing (Argon2id)
 PyJWT==2.15.1             # signed, expiring login tokens
 
+# --- MCP server (Step 28) ---
+mcp==2.3.0                # Model Context Protocol SDK: exposes Finnie's tools to desktop AI clients
+
 # --- Config + validation ---
 pydantic==2.14.1          # typed data models
 pydantic-settings==2.16.2 # settings from YAML/env

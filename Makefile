@@ -3,7 +3,13 @@
 #   make eval ...          REAL models, REAL embeddings, the real database: costs money (about $0.10 for `make eval`) and takes minutes
 PY := .venv/bin/python
 
-.PHONY: test cov eval eval-retrieval eval-answers eval-router eval-gate eval-gate-update eval-all db-up
+.PHONY: mcp mcp-check test cov eval eval-retrieval eval-answers eval-router eval-gate eval-gate-update eval-all db-up
+
+mcp:                 ## Step 28: run the MCP server on stdio (a client normally starts it; this is for a manual look)
+	$(PY) scripts/run_mcp_server.py
+
+mcp-check:           ## Step 28: live check over real stdio: success rate and latency vs direct calls (about $0.005)
+	$(PY) -m scripts.step28_mcp_check
 
 db-up:                ## start PostgreSQL (needed by the database tests and every eval)
 	docker compose up -d
