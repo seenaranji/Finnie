@@ -1,0 +1,3 @@
+# Copy to terraform.tfvars (git-ignored). Prefer TF_VAR_openai_api_key in your shell for the keys.
+allowed_cidrs = ["YOUR.PUBLIC.IP.HERE/32"]   # curl -s https://checkip.amazonaws.com
+# certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/..."

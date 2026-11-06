@@ -23,3 +23,8 @@ keyword_index/
 .DS_Store
 .alpha_usage.json
 logs/
+
+# Terraform (Step 29): state holds secrets
+deploy/aws/.terraform/
+deploy/aws/*.tfstate*
+deploy/aws/terraform.tfvars
