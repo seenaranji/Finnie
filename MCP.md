@@ -40,7 +40,5 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (Settings
 make mcp-check      # .venv/bin/python -m scripts.step28_mcp_check  (real subprocess over stdio, about $0.005)
 .venv/bin/python -m pytest tests/test_mcp_server.py
 ```
-Results are recorded in PROGRESS.md.
-
 ## Limits
 Local stdio only (no remote/HTTP transport, so no multi-user auth beyond the one configured account); read-only (no saving or deleting portfolios); not clicked through in the real Claude Desktop app (verified with the official MCP client over a real subprocess).

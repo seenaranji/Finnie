@@ -59,7 +59,6 @@ docker compose up -d db                    # only the database
 | `DATABASE_URL` | `postgresql://USER:PASSWORD@127.0.0.1:5433/DB`, used when running from source. In Docker, compose replaces it with the internal address. |
 | `JWT_SECRET` | signs login tokens, at least 32 characters: `python -c "import secrets;print(secrets.token_urlsafe(48))"` |
 | `ALPHA_VANTAGE_API_KEY` | optional backup for prices (free tier: 25 requests a day) |
-| `LANGSMITH_API_KEY` | optional, only for uploading evaluation runs |
 | `API_PORT`, `UI_PORT` | optional host ports for Docker (defaults 8000, 8501) |
 
 Behaviour (models, thresholds, cache times, login limits, planning assumptions) lives in [config.yaml](config.yaml); it contains no secrets.
@@ -97,14 +96,13 @@ Errors always have the same shape (`error.code`, `error.message`, `request_id`);
 ## MCP server (use Finnie from Claude Desktop)
 Four read-only tools (`get_quote`, `analyze_portfolio`, `plan_goal`, `search_knowledge`) over stdio. Setup and protocol notes: [MCP.md](MCP.md).
 
-## Tests and evaluation
+## Tests
 ```bash
 make test        # unit and integration tests, free and offline (database tests are skipped if PostgreSQL is not running)
 make cov         # the same with coverage (95% at last run)
-make eval        # REAL models, about $0.10: retrieval, answer quality, router accuracy, then a regression gate against eval/baseline.json
 make mcp-check   # live check of the MCP server
 ```
-Performance numbers and how to reproduce them: [BENCHMARKS.md](BENCHMARKS.md).
+Deploying to AWS (ECS Fargate + RDS, Terraform): [deploy/aws/README.md](deploy/aws/README.md).
 
 ## Troubleshooting
 | Symptom | Cause and fix |

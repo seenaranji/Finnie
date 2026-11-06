@@ -6,7 +6,7 @@ Audience: an engineer who has to maintain or extend Finnie. Everything measured 
 1. **The model explains; code calculates and fetches.** Prices come from data providers, arithmetic from Python (`portfolio_calc`, `goal_calc`, `stats`, `real_estate`), facts from retrieved documents. Numbers in answers are checked against tool output.
 2. **Education, not advice.** Enforced in code (an advice-request detector, output checks, mandatory disclaimers, a fixed refusal for out-of-scope questions) and tested, not only requested in prompts.
 3. **Fail soft and say so.** Every agent node catches any exception and returns a fixed, safe reply; stale prices are served flagged (`is_stale`) rather than as errors; the user never sees a stack trace.
-4. **Measure, change one thing, re-measure.** Thresholds and prompts were chosen from datasets with dev/test splits; a regression gate (`make eval-gate`) fails if router accuracy or retrieval Hit@3 drops below `eval/baseline.json`.
+4. **Measure, change one thing, re-measure.** Thresholds and prompts were chosen from datasets with dev/test splits; the regression gate (`make eval-gate`, `eval/baseline.json`) lives on the `main` branch.
 
 ## 2. Architecture
 ```
