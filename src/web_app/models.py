@@ -3,6 +3,8 @@ from datetime import date, datetime
 from typing import Literal
 from uuid import UUID
 
+from decimal import Decimal
+
 from pydantic import BaseModel, Field
 
 from src.agents.goal_calc import MAX_AMOUNT, MAX_YEARS
@@ -197,6 +199,7 @@ class ChatRequest(BaseModel):
     session_id: str | None = Field(None, min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_\-]+$",
                                    description="Omit to start a new conversation; send back the id you get to continue it")
     portfolio_csv: str | None = Field(None, max_length=20000, description="Optional holdings (ticker, shares, avg_cost); remembered for the session")
+    portfolio_id: UUID | None = Field(None, description="Optional saved portfolio the person is asking about (used for mortgage payoff questions); remembered for the session")
 
 
 class ChatResponse(BaseModel):
@@ -241,3 +244,15 @@ class NewsResponse(BaseModel):
     fetched_at: datetime
     withheld: int = 0              # items left out because their text looked like instructions to an AI (same quarantine as the news agent)
     feed_errors: list[str] = Field(default_factory=list)
+
+
+class MortgageTermsIn(BaseModel):
+    property: str = Field(min_length=1, max_length=120, description="the property's name exactly as saved")
+    monthly_payment: Decimal = Field(ge=0, allow_inf_nan=False, description="principal + interest paid each month")
+    rate_pct: Decimal = Field(ge=0, le=100, allow_inf_nan=False, description="yearly interest rate in percent, e.g. 6.5")
+
+
+class MortgagePayoffResponse(BaseModel):
+    portfolio: str
+    extra: float
+    properties: list[dict]   # one answer per property with a mortgage, from src/agents/mortgage.py

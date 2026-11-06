@@ -1,0 +1,221 @@
+<title>Finnie Request Flow</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; two wide figures scroll sideways inside their own frames on phones. */
+:root {
+  --bg: #f6f7f5; --fg: #1c2321; --muted: #5d6965; --line: #c9d0cc; --line-strong: #8a9892;
+  --panel: #ffffff; --accent: #0f766e; --accent-soft: #d9efec; --fixed: #fbf3df; --fixed-line: #b7892b;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121817; --fg: #e4ebe8; --muted: #9aa8a3; --line: #2c3633; --line-strong: #5f706a;
+    --panel: #1a2220; --accent: #4fd1c5; --accent-soft: #163532; --fixed: #2b2412; --fixed-line: #c99a3a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121817; --fg: #e4ebe8; --muted: #9aa8a3; --line: #2c3633; --line-strong: #5f706a;
+  --panel: #1a2220; --accent: #4fd1c5; --accent-soft: #163532; --fixed: #2b2412; --fixed-line: #c99a3a; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.55;
+  padding-block: 40px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 1040px; margin: 0 auto; display: grid; gap: 40px; }
+h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.15; margin: 0 0 8px; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-size: 1.15rem; margin: 0 0 6px; }
+p { margin: 0; max-width: 68ch; }
+.lede { color: var(--muted); }
+code, .mono { font-family: var(--mono); font-size: 0.88em; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 14px; font-size: 0.85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend i { width: 22px; height: 14px; border: 1.5px solid var(--line-strong); background: var(--panel); border-radius: 3px; display: inline-block; }
+.legend i.f { border-style: dashed; border-color: var(--fixed-line); background: var(--fixed); }
+.legend i.h { border-color: var(--accent); background: var(--accent-soft); }
+figure { margin: 0; display: grid; gap: 10px; }
+.frame { overflow-x: auto; border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 12px; }
+.frame svg { display: block; min-width: 820px; width: 100%; height: auto; color: var(--muted); }
+figcaption { color: var(--muted); font-size: 0.9rem; max-width: 80ch; }
+svg .node { fill: var(--panel); stroke: var(--line-strong); stroke-width: 1.5; }
+svg .fixed { fill: var(--fixed); stroke: var(--fixed-line); stroke-dasharray: 5 3; stroke-width: 1.5; }
+svg .hot { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.75; }
+svg .zone { fill: none; stroke: var(--line-strong); stroke-dasharray: 3 4; }
+svg .edge { stroke: currentColor; stroke-width: 1.4; fill: none; }
+svg .edge.hot { stroke: var(--accent); fill: none; stroke-width: 1.75; }
+svg text { fill: var(--fg); font-family: var(--sans); }
+svg .t { font-size: 13px; font-weight: 600; }
+svg .s { font-size: 11px; fill: var(--muted); }
+svg .l { font-size: 11px; fill: var(--muted); font-family: var(--mono); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.card { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.card h3 { margin: 0; font-size: 0.95rem; }
+.card p { font-size: 0.9rem; color: var(--muted); }
+.table { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.88rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+td.n { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pill { font-family: var(--mono); font-size: 0.78rem; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line-strong); white-space: nowrap; }
+.pill.f { border-color: var(--fixed-line); background: var(--fixed); border-style: dashed; }
+footer { color: var(--muted); font-size: 0.85rem; }
+</style>
+
+<main>
+  <header>
+    <h1>Finnie request flow</h1>
+    <p class="lede">What happens between a user pressing Enter in the chat and the answer appearing, including every point where the turn can stop early.</p>
+    <div class="legend">
+      <span><i></i> step that may call a model</span>
+      <span><i class="f"></i> fixed reply, no model call</span>
+      <span><i class="h"></i> multi-agent path</span>
+    </div>
+  </header>
+
+  <figure>
+    <div class="frame">
+      <svg viewBox="0 0 1000 540" role="img" aria-label="A question passes the UI, the API gate, contextualize and the router, which sends it to one of nine destinations; all reach finalize.">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+              <marker id="arh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker></defs>
+
+        <rect class="node" x="10" y="237" width="100" height="60" rx="6"/>
+        <text class="t" x="60" y="263" text-anchor="middle">Chat tab</text><text class="s" x="60" y="281" text-anchor="middle">POST /chat</text>
+
+        <rect class="node" x="150" y="237" width="120" height="60" rx="6"/>
+        <text class="t" x="210" y="259" text-anchor="middle">API gate</text><text class="s" x="210" y="275" text-anchor="middle">JWT · schema · lock</text><text class="s" x="210" y="289" text-anchor="middle">401 / 422 stop here</text>
+
+        <rect class="node" x="310" y="237" width="130" height="60" rx="6"/>
+        <text class="t" x="375" y="259" text-anchor="middle">contextualize</text><text class="s" x="375" y="275" text-anchor="middle">“and BP?” → full question</text><text class="s" x="375" y="289" text-anchor="middle">starts embedding early</text>
+
+        <rect class="node" x="480" y="237" width="100" height="60" rx="6"/>
+        <text class="t" x="530" y="259" text-anchor="middle">router</text><text class="s" x="530" y="275" text-anchor="middle">one route +</text><text class="s" x="530" y="289" text-anchor="middle">confidence</text>
+
+        <line class="edge" x1="110" y1="267" x2="148" y2="267" marker-end="url(#ar)"/>
+        <line class="edge" x1="270" y1="267" x2="308" y2="267" marker-end="url(#ar)"/>
+        <line class="edge" x1="440" y1="267" x2="478" y2="267" marker-end="url(#ar)"/>
+
+        <!-- destinations -->
+        <g id="dest">
+          <rect class="node" x="620" y="10" width="240" height="50" rx="6"/><text class="t" x="632" y="30">finance_qa · tax</text><text class="s" x="632" y="47">retrieve → 0.465 gate → cited answer</text>
+          <rect class="node" x="620" y="68" width="240" height="50" rx="6"/><text class="t" x="632" y="88">market</text><text class="s" x="632" y="105">tool loop ≤ 5 turns · stale-cache fallback</text>
+          <rect class="node" x="620" y="126" width="240" height="50" rx="6"/><text class="t" x="632" y="146">portfolio</text><text class="s" x="632" y="163">parallel price fetch → Python metrics</text>
+          <rect class="node" x="620" y="184" width="240" height="50" rx="6"/><text class="t" x="632" y="204">goal</text><text class="s" x="632" y="221">4 slots: ask for gaps, or calculate</text>
+          <rect class="node" x="620" y="242" width="240" height="50" rx="6"/><text class="t" x="632" y="262">news</text><text class="s" x="632" y="279">quarantine → summarize → validate</text>
+          <rect class="fixed" x="620" y="300" width="240" height="50" rx="6"/><text class="t" x="632" y="320">clarify</text><text class="s" x="632" y="337">vague or low confidence · fixed</text>
+          <rect class="fixed" x="620" y="358" width="240" height="50" rx="6"/><text class="t" x="632" y="378">scope_reply</text><text class="s" x="632" y="395">not finance · fixed · logged to file</text>
+          <rect class="fixed" x="620" y="416" width="240" height="50" rx="6"/><text class="t" x="632" y="436">fallback</text><text class="s" x="632" y="453">router call failed · fixed</text>
+          <rect class="hot" x="620" y="474" width="240" height="50" rx="6"/><text class="t" x="632" y="494">multi → planner</text><text class="s" x="632" y="511">2+ agents in waves · see figure 2</text>
+        </g>
+
+        <!-- fan-out from router (580,267) -->
+        <g class="edge">
+          <path d="M580 267 C600 267 600 35 618 35" marker-end="url(#ar)"/>
+          <path d="M580 267 C600 267 600 93 618 93" marker-end="url(#ar)"/>
+          <path d="M580 267 C600 267 600 151 618 151" marker-end="url(#ar)"/>
+          <path d="M580 267 C600 267 600 209 618 209" marker-end="url(#ar)"/>
+          <path d="M580 267 C600 267 600 267 618 267" marker-end="url(#ar)"/>
+          <path d="M580 267 C600 267 600 325 618 325" marker-end="url(#ar)"/>
+          <path d="M580 267 C600 267 600 383 618 383" marker-end="url(#ar)"/>
+          <path d="M580 267 C600 267 600 441 618 441" marker-end="url(#ar)"/>
+        </g>
+        <path class="edge hot" d="M580 267 C600 267 600 499 618 499" marker-end="url(#arh)"/>
+
+        <!-- converge on finalize -->
+        <rect class="node" x="900" y="237" width="90" height="60" rx="6"/>
+        <text class="t" x="945" y="263" text-anchor="middle">finalize</text><text class="s" x="945" y="279" text-anchor="middle">disclaimer</text><text class="s" x="945" y="291" text-anchor="middle">+ history</text>
+        <g class="edge">
+          <path d="M860 35 C880 35 880 255 898 255" marker-end="url(#ar)"/>
+          <path d="M860 93 C880 93 880 258 898 258" />
+          <path d="M860 151 C880 151 880 261 898 261"/>
+          <path d="M860 209 C880 209 880 264 898 264"/>
+          <path d="M860 267 L898 267"/>
+          <path d="M860 325 C880 325 880 270 898 270"/>
+          <path d="M860 383 C880 383 880 273 898 273"/>
+          <path d="M860 441 C880 441 880 276 898 276"/>
+        </g>
+        <path class="edge hot" d="M860 499 C885 499 885 285 898 285" marker-end="url(#arh)"/>
+        <text class="l" x="945" y="316" text-anchor="middle">ChatResponse</text>
+      </svg>
+    </div>
+    <figcaption><strong>Figure 1.</strong> One router decision picks one of nine destinations. The three dashed ones answer from fixed text. The router also turns three cases into <code>clarify</code>: low confidence, an unusable reply, and “not finance” when the user has loaded a portfolio. If the router call itself throws, the turn goes to <code>fallback</code>.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="frame">
+      <svg viewBox="0 0 960 330" role="img" aria-label="The planner splits a message into tasks. Independent tasks run in parallel in wave one; a dependent task starts in wave two with the earlier result attached; the synthesizer merges successes and code appends what is missing.">
+        <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+              <marker id="ar2h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker></defs>
+
+        <rect class="hot" x="10" y="115" width="120" height="70" rx="6"/>
+        <text class="t" x="70" y="140" text-anchor="middle">planner</text><text class="s" x="70" y="157" text-anchor="middle">1–4 tasks,</text><text class="s" x="70" y="171" text-anchor="middle">deps checked in code</text>
+
+        <rect class="zone" x="170" y="30" width="230" height="240" rx="10"/>
+        <text class="l" x="185" y="52">wave 1 · parallel · 25 s each</text>
+        <rect class="node" x="190" y="68" width="190" height="64" rx="6"/>
+        <text class="t" x="202" y="90">t1 portfolio</text><text class="s" x="202" y="107">“Which holding is smallest?”</text><text class="s" x="202" y="121">ok · degraded · error · timeout</text>
+        <rect class="node" x="190" y="168" width="190" height="64" rx="6"/>
+        <text class="t" x="202" y="190">t2 market</text><text class="s" x="202" y="207">“How did VNQ do this week?”</text><text class="s" x="202" y="221">no dependency, starts at once</text>
+
+        <rect class="node" x="440" y="115" width="110" height="70" rx="6"/>
+        <text class="t" x="495" y="143" text-anchor="middle">after_tasks</text><text class="s" x="495" y="160" text-anchor="middle">any task now</text><text class="s" x="495" y="173" text-anchor="middle">ready?</text>
+
+        <rect class="zone" x="590" y="60" width="150" height="140" rx="10"/>
+        <text class="l" x="602" y="82">wave 2</text>
+        <rect class="node" x="600" y="96" width="130" height="64" rx="6"/>
+        <text class="t" x="612" y="118">t3 news</text><text class="s" x="612" y="135">needs t1’s result;</text><text class="s" x="612" y="149">skipped if t1 failed</text>
+
+        <rect class="hot" x="790" y="115" width="160" height="70" rx="6"/>
+        <text class="t" x="870" y="140" text-anchor="middle">synthesize</text><text class="s" x="870" y="157" text-anchor="middle">merge ok branches,</text><text class="s" x="870" y="171" text-anchor="middle">check, add missing note</text>
+
+        <line class="edge hot" x1="130" y1="150" x2="168" y2="150" marker-end="url(#ar2h)"/>
+        <path class="edge" d="M380 100 C410 100 410 140 438 140" marker-end="url(#ar2)"/>
+        <path class="edge" d="M380 200 C410 200 410 160 438 160" marker-end="url(#ar2)"/>
+        <line class="edge" x1="550" y1="140" x2="598" y2="128" marker-end="url(#ar2)"/>
+        <text class="l" x="556" y="120">ready: t3</text>
+        <line class="edge" x1="730" y1="128" x2="788" y2="140" marker-end="url(#ar2)"/>
+        <path class="edge" d="M495 185 C495 290 870 290 870 187" marker-end="url(#ar2)"/>
+        <text class="l" x="620" y="284">nothing ready → go straight to synthesize</text>
+        <path class="edge" d="M380 82 C470 20 640 20 665 94" marker-end="url(#ar2)" stroke-dasharray="5 3"/>
+        <text class="l" x="440" y="30">t1 result (≤ 1500 chars) joins t3’s question</text>
+      </svg>
+    </div>
+    <figcaption><strong>Figure 2.</strong> The multi route. Only a dependency on <code>portfolio</code> is kept, so most plans run as a single parallel wave. Each task ends as ok, degraded (the agent returned but did no real work), error, timeout or skipped. A timed-out task is abandoned, but its thread keeps running and its model calls are still billed.</figcaption>
+  </figure>
+
+  <section>
+    <h2>Checks done in code, not by the model</h2>
+    <div class="cols" style="margin-top:12px">
+      <div class="card"><h3>Answer quality</h3><p>Retrieval gate (no passages means no model call). Citation ids must have been retrieved. Advice-phrase scan replaces a leaking answer with a fixed redirect.</p></div>
+      <div class="card"><h3>Numbers</h3><p>Prices, statistics, portfolio metrics and goal scenarios are computed in Python. The model may only quote them from a METRICS block or tool result.</p></div>
+      <div class="card"><h3>Untrusted text</h3><p>News items that look like instructions are quarantined. Output must cite real items and may only contain links the articles supplied, or a code-built headline list replaces it.</p></div>
+      <div class="card"><h3>Merging</h3><p>The merged answer is rejected if it adds numbers, citation markers, links or unsupported sentences. The code-built version is used instead and the missing-parts note is always written by code.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where a turn can stop</h2>
+    <div class="table" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Situation</th><th>Stops at</th><th class="n">Model calls</th><th>User sees</th></tr></thead>
+        <tbody>
+          <tr><td>No or invalid token</td><td>API gate</td><td class="n">0</td><td>401, login screen</td></tr>
+          <tr><td>Empty or over-length message</td><td>UI or schema</td><td class="n">0</td><td>Warning or 422</td></tr>
+          <tr><td>Concept not in the knowledge base</td><td>finance_qa gate</td><td class="n">router (+ rewrite)</td><td>“I don’t have information on that…”</td></tr>
+          <tr><td>Off-topic message</td><td><span class="pill f">scope_reply</span></td><td class="n">router</td><td>Fixed scope message, logged</td></tr>
+          <tr><td>Vague or low-confidence message</td><td><span class="pill f">clarify</span></td><td class="n">router</td><td>Asks what the user means</td></tr>
+          <tr><td>Router model call fails</td><td><span class="pill f">fallback</span></td><td class="n">0 useful</td><td>Fixed apology, <code>degraded</code> true</td></tr>
+          <tr><td>Portfolio question without holdings</td><td>portfolio guard</td><td class="n">router</td><td>“I need your holdings”</td></tr>
+          <tr><td>Goal with missing details</td><td>goal follow-up</td><td class="n">router + extraction</td><td>Asks for the missing field; state kept for next turn</td></tr>
+          <tr><td>All market providers down</td><td>market data service</td><td class="n">normal</td><td>Stale cached price, flagged; or a plain “unavailable”</td></tr>
+          <tr><td>News fails validation</td><td>news agent</td><td class="n">normal</td><td>Headline list built by code</td></tr>
+          <tr><td>Agent throws</td><td>agent node</td><td class="n">varies</td><td>Safe fixed reply, <code>degraded</code> true</td></tr>
+          <tr><td>Multi: one task fails or times out</td><td>synthesize</td><td class="n">normal</td><td>Partial answer plus missing-parts note (<code>degraded</code> stays false)</td></tr>
+          <tr><td>Multi: bad plan</td><td>planner</td><td class="n">router + planner</td><td>Fixed apology, <code>degraded</code> true</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>Read from the code on 2026-11-02, not from a run. Full write-up: <span class="mono">docs/question-to-answer-workflow.md</span>.</footer>
+</main>

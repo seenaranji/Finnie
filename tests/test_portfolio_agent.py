@@ -147,3 +147,43 @@ def test_a_failure_in_one_holding_is_reported_in_holding_order_and_the_rest_stil
     notes = response.metadata["metrics"]["notes"]
     assert response.metadata["metrics"]["holding_count"] == 1
     assert [n for n in notes if "could not fetch" in n][0].index("BBB") < [n for n in notes if "could not fetch" in n][0].index("CCC")
+
+
+def test_a_growth_question_adds_a_what_if_for_each_option_and_the_fixed_notice():
+    llm = FakeLLM("One example to consider: moving 10.0% of the portfolio from Technology into bonds.")
+    response = make_agent(llm).run(CSV, "How can I grow my portfolio?")
+    prompt, system = llm.calls[0]
+    scenarios = json.loads(prompt.split("METRICS (the only source of numbers):\n")[1].split("\n\nUSER QUESTION")[0])["what_if_scenarios"]
+    assert [x["option"] for x in scenarios] == ["Bond", "International stock", "Real estate", "Cash"]
+    bond = scenarios[0]
+    assert bond["moved_pct_of_portfolio"] == 10.0                                          # 10 points of the whole portfolio
+    assert bond["sector_pct"] == {"before": 50.0, "after": 40.0} and bond["option_asset_class_pct"] == {"before": 50.0, "after": 60.0}
+    assert bond["hhi_concentration_0_to_1"] == {"before": 0.5, "after": 0.42}              # 0.4^2 + 0.5^2 + 0.1^2
+    assert scenarios[1]["option_asset_class_pct"] == {"before": 0.0, "after": 10.0} and all(x["trade_off"] for x in scenarios)
+    assert "what_if_scenarios" in system and response.text.endswith("before changing your portfolio.")
+    assert response.disclaimer == DISCLAIMER_STRONG and not response.metadata["output_flagged"]
+
+
+def test_a_what_if_question_does_not_also_get_the_do_not_advise_instruction_but_directive_output_is_still_replaced():
+    llm = FakeLLM("You should move 10% into bonds.")
+    response = make_agent(llm).run(CSV, "Should I move money to grow my portfolio?")
+    assert "personal recommendation" not in llm.calls[0][1]
+    assert response.metadata["output_flagged"] and "You should move" not in response.text
+
+
+def test_no_scenario_without_a_growth_question_or_without_a_concentrated_sector():
+    plain = FakeLLM()
+    make_agent(plain).run(CSV, "Explain it")
+    assert "what_if_scenarios" not in plain.calls[0][0]
+    no_tech = FakeLLM()
+    service = MarketDataService(FakeProvider(), TTLCache(), load_settings(), sleep=lambda s: None)
+    PortfolioAnalysisAgent(no_tech, service, {"AAA": {"asset_class": "US stock", "sector": "Broad market"}, "BBB": META["BBB"]}).run(CSV, "How do I grow this?")
+    assert "what_if_scenarios" not in no_tech.calls[0][0]
+
+
+def test_the_what_if_moves_money_out_of_the_most_concentrated_sector_whatever_it_is():
+    llm = FakeLLM()
+    service = MarketDataService(FakeProvider(), TTLCache(), load_settings(), sleep=lambda s: None)
+    PortfolioAnalysisAgent(llm, service, {"AAA": {"asset_class": "US stock", "sector": "Energy"}, "BBB": META["BBB"]}).run(CSV, "How do I grow this?")
+    scenarios = json.loads(llm.calls[0][0].split("METRICS (the only source of numbers):\n")[1].split("\n\nUSER QUESTION")[0])["what_if_scenarios"]
+    assert {x["from_sector"] for x in scenarios} == {"Energy"} and scenarios[0]["sector_pct"] == {"before": 50.0, "after": 40.0}

@@ -30,6 +30,12 @@ MAX_PROPERTIES = 50
 _TICKER = re.compile(r"^[A-Z0-9][A-Z0-9.\-]{0,9}$")   # the same rule portfolio_calc applies to a CSV
 
 
+class PropertyNotFound(LookupError):
+    def __init__(self, name) -> None:
+        super().__init__(f"no property named {name!r} in this portfolio")
+        self.name = name
+
+
 class PortfolioNotFound(LookupError):
     def __init__(self, portfolio_id) -> None:
         super().__init__(f"no portfolio with id {portfolio_id}")
@@ -74,7 +80,7 @@ class HoldingIn(BaseModel):
 
 
 class PropertyIn(BaseModel):
-    """A property the user owns. All money is exact decimal and entered by the user; Finnie looks nothing up. The mortgage is one balance (no payments tracked)."""
+    """A property the user owns. All money is exact decimal and entered by the user; Finnie looks nothing up. The mortgage is a balance plus, optionally, the monthly payment and rate (used only when the owner asks how long it takes to pay off)."""
     name: str = Field(min_length=1, max_length=120, description="a name or address, however the owner thinks of it")
     property_type: PropertyType = "house"
     purchase_price: Decimal = Field(ge=0, allow_inf_nan=False)
@@ -83,6 +89,8 @@ class PropertyIn(BaseModel):
     mortgage_balance: Decimal = Field(default=Decimal(0), ge=0, allow_inf_nan=False)
     monthly_rent: Decimal = Field(default=Decimal(0), ge=0, allow_inf_nan=False)
     monthly_expenses: Decimal = Field(default=Decimal(0), ge=0, allow_inf_nan=False, description="tax, insurance, upkeep, fees: everything except the mortgage payment")
+    monthly_mortgage_payment: Decimal = Field(default=Decimal(0), ge=0, allow_inf_nan=False, description="principal + interest paid each month (0 = not entered)")
+    mortgage_rate_pct: Decimal = Field(default=Decimal(0), ge=0, le=100, allow_inf_nan=False, description="yearly interest rate in percent, e.g. 6.5 (0 = not entered)")
 
     @field_validator("name")
     @classmethod
@@ -98,6 +106,12 @@ class PropertyIn(BaseModel):
         if value is not None and value > date.today():
             raise ValueError("purchase date cannot be in the future")
         return value
+
+
+class PropertyTerms(BaseModel):
+    """The two mortgage numbers that can be changed on a saved property."""
+    payment: Decimal = Field(ge=0, allow_inf_nan=False)
+    rate_pct: Decimal = Field(ge=0, le=100, allow_inf_nan=False)
 
 
 class PortfolioIn(BaseModel):
@@ -190,9 +204,11 @@ class PortfolioRepository:
     def _insert_properties(connection, portfolio_id: UUID, properties: list[PropertyIn]) -> None:
         with connection.cursor() as cursor:
             cursor.executemany(
-                """INSERT INTO properties (portfolio_id, name, property_type, purchase_price, purchase_date, current_value, mortgage_balance, monthly_rent, monthly_expenses)
-                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                [(portfolio_id, p.name, p.property_type, p.purchase_price, p.purchase_date, p.current_value, p.mortgage_balance, p.monthly_rent, p.monthly_expenses) for p in properties])
+                """INSERT INTO properties (portfolio_id, name, property_type, purchase_price, purchase_date, current_value, mortgage_balance, monthly_rent, monthly_expenses,
+                                       monthly_mortgage_payment, mortgage_rate_pct)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                [(portfolio_id, p.name, p.property_type, p.purchase_price, p.purchase_date, p.current_value, p.mortgage_balance, p.monthly_rent, p.monthly_expenses,
+                  p.monthly_mortgage_payment, p.mortgage_rate_pct) for p in properties])
 
     def create(self, name: str, holdings: list[HoldingIn | dict] = (), *, owner_id: UUID, properties: list[PropertyIn | dict] = ()) -> UUID:
         """Validate, then save the portfolio with ALL its holdings and properties in one transaction. Returns the new id.
@@ -211,12 +227,14 @@ class PortfolioRepository:
                 raise PortfolioNotFound(portfolio_id)
             holdings = connection.execute("SELECT ticker, shares, avg_cost, asset_type, purchase_date FROM holdings WHERE portfolio_id = %s ORDER BY id", (portfolio_id,)).fetchall()
             properties = connection.execute(
-                """SELECT name, property_type, purchase_price, purchase_date, current_value, mortgage_balance, monthly_rent, monthly_expenses
+                """SELECT name, property_type, purchase_price, purchase_date, current_value, mortgage_balance, monthly_rent, monthly_expenses,
+                          monthly_mortgage_payment, mortgage_rate_pct
                    FROM properties WHERE portfolio_id = %s ORDER BY id""", (portfolio_id,)).fetchall()
         return StoredPortfolio(id=row[0], name=row[1], created_at=row[2], updated_at=row[3],
                                holdings=[StoredHolding(ticker=t, shares=s, avg_cost=c, asset_type=a, purchase_date=d) for t, s, c, a, d in holdings],
-                               properties=[StoredProperty(name=n, property_type=k, purchase_price=pp, purchase_date=pd_, current_value=cv, mortgage_balance=mb, monthly_rent=mr, monthly_expenses=me)
-                                           for n, k, pp, pd_, cv, mb, mr, me in properties])
+                               properties=[StoredProperty(name=n, property_type=k, purchase_price=pp, purchase_date=pd_, current_value=cv, mortgage_balance=mb, monthly_rent=mr, monthly_expenses=me,
+                                                          monthly_mortgage_payment=mp, mortgage_rate_pct=mrate)
+                                           for n, k, pp, pd_, cv, mb, mr, me, mp, mrate in properties])
 
     def update(self, portfolio_id: UUID, holdings: list[HoldingIn | dict], name: str | None = None, *, owner_id: UUID, properties: list[PropertyIn | dict] | None = None) -> None:
         """Replace the holdings (and optionally the name and the properties) in one transaction: either the whole new set is saved or the old one stays.
@@ -235,6 +253,17 @@ class PortfolioRepository:
             if not keep_properties:
                 connection.execute("DELETE FROM properties WHERE portfolio_id = %s", (portfolio_id,))
                 self._insert_properties(connection, portfolio_id, portfolio.properties)
+
+    def set_mortgage_terms(self, portfolio_id: UUID, property_name: str, payment: Decimal, rate_pct: Decimal, *, owner_id: UUID) -> None:
+        """Fill in (or change) the monthly payment and yearly rate of ONE saved property, leaving everything else alone. This is how existing portfolios get these values."""
+        PropertyTerms(payment=payment, rate_pct=rate_pct)   # same limits as when the property is first saved
+        with self.pool.connection() as connection:
+            if connection.execute("SELECT 1 FROM portfolios WHERE id = %s AND owner_id = %s", (portfolio_id, owner_id)).fetchone() is None:
+                raise PortfolioNotFound(portfolio_id)
+            updated = connection.execute("UPDATE properties SET monthly_mortgage_payment = %s, mortgage_rate_pct = %s WHERE portfolio_id = %s AND name = %s RETURNING id",
+                                         (payment, rate_pct, portfolio_id, property_name)).fetchone()
+            if updated is None:
+                raise PropertyNotFound(property_name)
 
     def delete(self, portfolio_id: UUID, *, owner_id: UUID) -> None:
         """Delete the portfolio; its holdings go with it (ON DELETE CASCADE)."""

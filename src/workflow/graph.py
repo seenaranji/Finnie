@@ -15,7 +15,9 @@ synthesize     merges the branches into one answer (checked in code), lists what
 finalize       sets the disclaimer by route and saves the assistant's turn to the history
 Compile with a checkpointer and call with config={"configurable": {"thread_id": session_id}} to get memory.
 """
+import contextvars
 import json
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -27,9 +29,10 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.types import Send
 
 from src.agents.goal_extraction import GoalState
+from src.agents.mortgage_chat import is_mortgage_follow_up, is_mortgage_payoff_question
 from src.core.config import WorkflowConfig
 from src.core.guardrails import DISCLAIMER_STANDARD, DISCLAIMER_STRONG
-from src.core.llm import LLMClient
+from src.core.llm import LLMClient, run_cancellable
 from src.core.logging import get_logger
 from src.core.schemas import AgentRequest, AgentResponse
 from src.workflow.nodes import extract_news_topic, fixed_response, rewrite_message, user_safe_text
@@ -40,7 +43,18 @@ from src.workflow.synthesizer import Synthesizer, missing_note
 from src.workflow.timeline import timing_summary
 
 log = get_logger(__name__)
-STRONG_DISCLAIMER_ROUTES = ("portfolio", "goal", "tax")
+STRONG_DISCLAIMER_ROUTES = ("portfolio", "goal", "tax", "mortgage")
+
+
+def previous_mortgage_question(history: list[dict]) -> tuple[bool, str | None]:
+    """(was the LAST answer a mortgage answer, the person's question that got it). The history already ends with this turn's user message, so the last ASSISTANT
+    entry is the previous turn's reply. This is how "what about my 123 Opossum Road property?" is understood as a continuation of a payoff question."""
+    for index in range(len(history) - 1, -1, -1):
+        if history[index]["role"] == "assistant":
+            was = history[index].get("route") == "mortgage"
+            question = next((h["content"] for h in reversed(history[:index]) if h["role"] == "user"), None) if was else None
+            return was, question
+    return False, None
 
 
 def degraded_reason(metadata: dict) -> str | None:
@@ -64,14 +78,19 @@ def degraded_reason(metadata: dict) -> str | None:
 
 
 def run_with_timeout(fn, timeout: float):
-    """('ok', value) | ('error', exception) | ('timeout', None). A thread cannot be killed: on a timeout the call is ABANDONED (its result is discarded)
-    and keeps running in the background until it finishes, so its model calls still cost money."""
+    """('ok', value) | ('error', exception) | ('timeout', None). A thread cannot be killed, so on a timeout the call is abandoned (its result is discarded) and a
+    cancel event is set: every model call made by `fn` checks it, so no NEW model call or retry starts after the timeout. Only a request already in flight
+    can still finish (at most llm.timeout_seconds), so the cost of an abandoned branch is bounded by one call instead of the rest of its tool loop."""
+    cancel = threading.Event()
     executor = ThreadPoolExecutor(max_workers=1)
-    future = executor.submit(fn)
+    future = executor.submit(contextvars.copy_context().run, run_cancellable, fn, cancel)
     try:
         return "ok", future.result(timeout=timeout)
     except Exception as error:
-        return ("error", error) if future.done() else ("timeout", None)
+        if future.done():
+            return "error", error
+        cancel.set()
+        return "timeout", None
     finally:
         executor.shutdown(wait=False, cancel_futures=True)
 
@@ -84,6 +103,7 @@ class Agents:
     goal: Any         # .run(message, GoalState) -> GoalTurn
     news: Any         # .run(topic)
     tax: Any          # .handle(AgentRequest)
+    mortgage: Any = None   # .run(message, portfolio_id, owner_id): saved-mortgage payoff questions, answered from the calculator (no model)
 
 
 def build_graph(llm: LLMClient, router: Router, agents: Agents, config: WorkflowConfig, checkpointer=None, resolver_version: str = "v2",
@@ -106,6 +126,13 @@ def build_graph(llm: LLMClient, router: Router, agents: Agents, config: Workflow
                            "cost_usd": call.cost_usd if call else 0.0, "seconds": round(call.latency_s, 3) if call else 0.0}]}
 
     def router_node(state: FinnieState) -> dict:
+        asked = state["message"], state["resolved_message"]
+        was_mortgage, _earlier = previous_mortgage_question(state.get("history", []))
+        guard = ("mortgage_payoff" if any(is_mortgage_payoff_question(m) for m in asked)                       # rules, not the model: a personal payoff question goes to the calculator
+                 else "mortgage_follow_up" if was_mortgage and any(is_mortgage_follow_up(m) for m in asked) else None)   # ... and so does a short follow-up to a payoff answer
+        if agents.mortgage is not None and guard:
+            return {"route": "mortgage", "router": {"route": "mortgage", "confidence": "high", "guard": guard},
+                    "trace": [{"turn": state["turn"], "node": "router", "route": "mortgage", "guard": guard, "seconds": 0.0, "tokens": 0, "cost_usd": 0.0}]}
         try:
             d = router.classify(state["resolved_message"])
         except Exception as error:   # the router's model call failed: nothing else will work either, so answer with the fixed fallback
@@ -141,6 +168,10 @@ def build_graph(llm: LLMClient, router: Router, agents: Agents, config: Workflow
         if not csv_text:
             return fixed_response(config.needs_portfolio_reply, "portfolio_analysis", "needs the portfolio", DISCLAIMER_STRONG), {}
         return agents.portfolio.run(csv_text, state["resolved_message"]), {}
+
+    def call_mortgage(state):
+        _, earlier = previous_mortgage_question(state.get("history", []))
+        return agents.mortgage.run(state["resolved_message"], state.get("portfolio_id"), state.get("owner_id"), earlier=earlier), {}
 
     def call_goal(state):
         turn = agents.goal.run(state["resolved_message"], GoalState(**(state.get("goal_state") or {})))
@@ -269,6 +300,8 @@ def build_graph(llm: LLMClient, router: Router, agents: Agents, config: Workflow
     # ---------------- wiring ----------------
     nodes = {"finance_qa": lambda s: (agents.finance_qa.handle(request(s)), {}), "market": lambda s: (agents.market.handle(request(s)), {}),
              "tax": lambda s: (agents.tax.handle(request(s)), {}), "portfolio": call_portfolio, "goal": call_goal, "news": call_news}
+    if agents.mortgage is not None:
+        nodes["mortgage"] = call_mortgage
     calls.update(nodes)
     graph = StateGraph(FinnieState)
     graph.add_node("contextualize", contextualize)
@@ -285,7 +318,7 @@ def build_graph(llm: LLMClient, router: Router, agents: Agents, config: Workflow
     graph.add_node("synthesize", synthesize)
     graph.add_edge(START, "contextualize")
     graph.add_edge("contextualize", "router")
-    targets = {route: route for route in ROUTES if route not in ("out_of_scope", "multi")} | {"out_of_scope": "scope_reply", "multi": "planner", "fallback": "fallback"}
+    targets = {route: route for route in ROUTES if route not in ("out_of_scope", "multi")} | ({"mortgage": "mortgage"} if agents.mortgage is not None else {}) | {"out_of_scope": "scope_reply", "multi": "planner", "fallback": "fallback"}
     graph.add_conditional_edges("router", lambda state: state["route"], targets)   # the conditional edge: follow the route the router wrote into the state
     for name in (*nodes, "clarify", "fallback", "scope_reply"):
         graph.add_edge(name, "finalize")

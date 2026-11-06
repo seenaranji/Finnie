@@ -168,6 +168,70 @@ def diversification_score(holding_weights, class_weights, avg_correlation: float
             "concentration": round(concentration, 3), "asset_class_spread": round(spread, 3), "low_correlation": round(low_corr, 3)}
 
 
+# ---------- what-if: move part of the portfolio from one sector into another kind of holding ----------
+# The options a growth question is answered with. Labels match asset_class in the ticker metadata (and ASSET_TYPES for typed-in holdings); the trade-off text is fixed
+# here, in code, so the model paraphrases it instead of inventing claims. Asset classes only: never a specific fund or stock.
+WHATIF_OPTIONS = {
+    "Bond": {"aliases": ("Bond",), "trade_off": "usually lower expected growth and smaller swings; prices can fall when interest rates rise"},
+    "International stock": {"aliases": ("International stock",), "trade_off": "keeps stock-market growth potential and spreads across other regions; still has stock-market risk plus currency swings"},
+    "Real estate": {"aliases": ("Real estate", "REIT (real estate)"), "trade_off": "can add rental-style income and some inflation protection; can fall when interest rates rise and is not as steady as it looks"},
+    "Cash": {"aliases": ("Cash",), "trade_off": "very stable and easy to use, but little growth and it can lose buying power to inflation"},
+}
+
+
+# Sectors that are already spread out or are not an equity sector: nothing to "move out of", so they are never the source of a what-if.
+SPREAD_SECTORS = {"Broad market", "Aggregate bonds", "Long-term Treasuries", "Inflation-protected bonds", "Real estate", "Unknown", "Unspecified"}
+NOT_A_SOURCE_CLASSES = {"Bond", "Cash"}   # already the steady side: a what-if never moves money out of these
+MIN_SOURCE_WEIGHT = 0.20   # a sector below this share is not concentrated enough to suggest moving money out of
+
+
+def concentrated_sector(result: dict, metadata: dict) -> str | None:
+    """The sector holding the biggest share of the portfolio, counting only holdings that are not bonds or cash and not in a spread-out sector.
+    None when no such sector reaches MIN_SOURCE_WEIGHT."""
+    weights: dict[str, float] = {}
+    for p in result["positions"]:
+        info = metadata.get(p.ticker, {})
+        sector = info.get("sector", "Unknown")
+        if info.get("asset_class") not in NOT_A_SOURCE_CLASSES and sector not in SPREAD_SECTORS:
+            weights[sector] = weights.get(sector, 0.0) + p.weight
+    weights = {sector: w for sector, w in weights.items() if w >= MIN_SOURCE_WEIGHT}
+    return max(weights, key=weights.get) if weights else None
+
+
+def rebalance_scenarios(result: dict, metadata: dict, shift: float = 0.10, from_sector: str | None = None, options: dict = WHATIF_OPTIONS) -> list[dict]:
+    """Illustrative what-ifs, pure arithmetic: for each option, take `shift` of the WHOLE portfolio (10 percentage points, not 10% of the sector) out of the holdings
+    in `from_sector` (default: the portfolio's most concentrated sector), pro rata, and put it in one new holding of that option's asset class. [] when there is no
+    such sector. Volatility is NOT re-estimated (the new holding has no price history here) and the average correlation is carried over unchanged."""
+    from_sector = from_sector or concentrated_sector(result, metadata)
+    if from_sector is None:
+        return []
+    positions = result["positions"]
+    in_sector = [p for p in positions if metadata.get(p.ticker, {}).get("sector", "Unknown") == from_sector]
+    sector_weight = sum(p.weight for p in in_sector)
+    if not sector_weight:
+        return []
+    moved = min(shift, sector_weight)
+    keep = (sector_weight - moved) / sector_weight
+    weights = [p.weight * (keep if p in in_sector else 1.0) for p in positions] + [moved]
+    avg_corr = result["avg_correlation"] if result["avg_correlation"] is not None else 1.0
+    scenarios = []
+    for label, option in options.items():
+        canonical = lambda cls: label if cls in option["aliases"] else cls   # a typed-in 'REIT (real estate)' and a listed 'Real estate' are one class
+        class_weights: dict[str, float] = {}
+        for p, w in zip(positions, weights):
+            cls = canonical(metadata.get(p.ticker, {}).get("asset_class", "Unknown"))
+            class_weights[cls] = class_weights.get(cls, 0.0) + w
+        class_weights[label] = class_weights.get(label, 0.0) + moved
+        before = sum(v for cls, v in result["by_asset_class"].items() if cls in option["aliases"])
+        scenarios.append({"option": label, "from_sector": from_sector, "trade_off": option["trade_off"], "moved": moved, "sector_before": sector_weight, "sector_after": sector_weight - moved,
+                          "class_before": before, "class_after": class_weights[label],
+                          "hhi_before": result["hhi"], "hhi_after": hhi(weights),
+                          "effective_before": result["effective_holdings"], "effective_after": effective_holdings(weights),
+                          "score_before": result["diversification"]["score"],
+                          "score_after": diversification_score(weights, list(class_weights.values()), avg_corr)["score"]})
+    return scenarios
+
+
 # ---------- everything together (pure: prices and closes are passed in) ----------
 def analyze(holdings: list[Holding], prices: dict[str, float], closes: dict[str, list[tuple[str, float]]], metadata: dict) -> dict:
     notes = []

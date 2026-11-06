@@ -77,6 +77,9 @@ class AuthConfig(BaseModel):
 class CacheConfig(BaseModel):
     quote_ttl_seconds: int = 60
     history_ttl_seconds: int = 900
+    backend: str = "memory"              # memory | redis. Redis holds PUBLIC market data and news only (see src/data/redis_cache.py)
+    stale_grace_seconds: int = 3600      # redis only: how long past its TTL an entry may still be served (flagged stale) when the provider is down
+    redis_socket_timeout_seconds: float = 0.5   # a slow cache must never be slower than the provider it protects
 
 
 class MarketDataConfig(BaseModel):
@@ -154,6 +157,7 @@ class Secrets(BaseSettings):
     alpha_vantage_api_key: str | None = None
     database_url: str | None = None
     jwt_secret: str | None = None
+    redis_url: str | None = None   # rediss://:password@host:6379/0 (TLS) in production; contains the password, so it lives in .env
 
     def require_jwt_secret(self) -> str:
         if not self.jwt_secret or len(self.jwt_secret) < 32:

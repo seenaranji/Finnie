@@ -30,18 +30,18 @@ from src.auth.security import AuthInputError, AuthUser, InvalidToken, TooManyAtt
 from src.auth.service import BadCredentials
 from src.core.config import load_settings
 from src.core.logging import get_logger, setup_logging
-from src.agents import goal_calc, portfolio_calc
+from src.agents import goal_calc, mortgage, portfolio_calc
 from src.agents.portfolio_agent import NothingToAnalyze, PortfolioAnalysisAgent
 from src.agents.portfolio_summary import summarize_portfolio
 from src.core.guardrails import DISCLAIMER_STRONG
 from src.data.errors import MarketDataError, ProviderUnavailable, TickerNotFound
 from src.data.models import PriceHistory, Quote
 from src.data.news import NewsUnavailable
-from src.data.portfolio_repository import PortfolioIn, PortfolioNotFound, PortfolioSummary, StoredPortfolio
+from src.data.portfolio_repository import PortfolioIn, PortfolioNotFound, PortfolioSummary, PropertyNotFound, StoredPortfolio
 from src.rag.hybrid_retriever import StaleKeywordIndexError
 from src.workflow.factory import config_for
 from src.web_app.models import (Article, ArticleSummary, ChatRequest, ChatResponse, ErrorBody, GoalRequest, GoalResponse, HealthResponse, IndexQuote, KnowledgeResponse, MarketOverview, NewsItemOut, NewsResponse, PassageOut,
-                                GroupedPortfolio, LoginRequest, PortfolioRequest, PortfolioResponse, PortfolioSaved, RegisterRequest, TokenResponse, UserOut)
+                                GroupedPortfolio, LoginRequest, MortgagePayoffResponse, MortgageTermsIn, PortfolioRequest, PortfolioResponse, PortfolioSaved, RegisterRequest, TokenResponse, UserOut)
 from src.web_app.services import Services
 
 log = get_logger("finnie.api")
@@ -157,6 +157,10 @@ def create_app(services: Services | None = None) -> FastAPI:
     @app.exception_handler(PortfolioNotFound)
     async def portfolio_not_found(request: Request, error: PortfolioNotFound):
         return _error(404, "portfolio_not_found", "No saved portfolio has that id.", request)
+
+    @app.exception_handler(PropertyNotFound)
+    async def property_not_found(request: Request, error: PropertyNotFound):
+        return _error(404, "property_not_found", "That portfolio has no property with that name.", request)
 
     @app.exception_handler(PoolTimeout)
     async def database_busy(request: Request, error: PoolTimeout):
@@ -350,6 +354,19 @@ def create_app(services: Services | None = None) -> FastAPI:
         except NothingToAnalyze:
             raise NothingToExplain() from None
 
+    @protected.get("/portfolios/{portfolio_id}/mortgage-payoff", response_model=MortgagePayoffResponse, tags=["portfolio"])
+    def mortgage_payoff(request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user),
+                        extra: Decimal = Query(Decimal(0), ge=0, le=Decimal(1_000_000), allow_inf_nan=False, description="extra paid every month on top of the regular payment")):
+        """How long until each mortgage in a saved portfolio is paid off, and how much sooner with `extra` more each month. Only computed when asked: no model call, nothing stored."""
+        stored = request.app.state.services.portfolios.get(portfolio_id, owner_id=user.id)
+        answers = [mortgage.mortgage_payoff(p, extra) for p in stored.properties if p.mortgage_balance > 0]
+        return MortgagePayoffResponse(portfolio=stored.name, extra=float(extra), properties=answers)
+
+    @protected.put("/portfolios/{portfolio_id}/mortgage-terms", status_code=204, tags=["portfolio"])
+    def set_mortgage_terms(body: MortgageTermsIn, request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):
+        """Add the monthly payment and yearly rate to ONE property of an existing portfolio, without re-entering the rest."""
+        request.app.state.services.portfolios.set_mortgage_terms(portfolio_id, body.property, body.monthly_payment, body.rate_pct, owner_id=user.id)
+
     @protected.put("/portfolios/{portfolio_id}", status_code=204, tags=["portfolio"])
     def replace_portfolio(body: PortfolioIn, request: Request, portfolio_id: UUID, user: AuthUser = Depends(require_user)):
         """Replace the name, ALL holdings and ALL properties in one transaction (a full replacement: properties left out of the request are removed)."""
@@ -367,7 +384,7 @@ def create_app(services: Services | None = None) -> FastAPI:
         # A conversation belongs to the user who started it. The memory is keyed by "<user id>:<session id>", so user B sending user A's session id
         # simply starts a new conversation of their own and can never read or continue A's. The client only ever sees the plain session id.
         internal_id = f"{user.id}:{session_id}"
-        state_in = {"message": body.message, "session_id": internal_id, **({"portfolio_csv": body.portfolio_csv} if body.portfolio_csv else {})}
+        state_in = {"message": body.message, "session_id": internal_id, "owner_id": str(user.id), **({"portfolio_id": str(body.portfolio_id)} if body.portfolio_id else {}), **({"portfolio_csv": body.portfolio_csv} if body.portfolio_csv else {})}
         start = time.perf_counter()
         with services.session_lock(internal_id):   # two simultaneous turns of ONE conversation would interleave its saved history; different sessions never wait
             state = services.graph.invoke(state_in, config_for(internal_id, services.settings.workflow.max_concurrency))

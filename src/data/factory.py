@@ -34,8 +34,29 @@ def build_providers(settings: Settings, order: list[str] | None = None) -> list[
     return providers
 
 
+def build_cache(settings: Settings):
+    """In-memory TTLCache by default; RedisTTLCache when cache.backend is 'redis'. A missing REDIS_URL or an unreachable Redis falls back to memory."""
+    cfg = settings.cache
+    if cfg.backend != "redis":
+        return TTLCache()
+    url = settings.secrets.redis_url
+    if not url:
+        log.warning("cache.backend is 'redis' but REDIS_URL is not set; using the in-memory cache")
+        return TTLCache()
+    import redis
+    from src.data.redis_cache import RedisTTLCache
+    client = redis.Redis.from_url(url, socket_timeout=cfg.redis_socket_timeout_seconds,
+                                  socket_connect_timeout=cfg.redis_socket_timeout_seconds, decode_responses=True)
+    try:
+        client.ping()
+    except redis.RedisError as error:
+        log.warning("redis is not reachable (%s); using the in-memory cache", type(error).__name__)
+        return TTLCache()
+    return RedisTTLCache(client, cfg.stale_grace_seconds)
+
+
 def build_market_data_service(settings: Settings | None = None, order: list[str] | None = None) -> MarketDataService:
     settings = settings or load_settings()
     providers = build_providers(settings, order)
     provider = providers[0] if len(providers) == 1 else FallbackProvider(providers)
-    return MarketDataService(provider, TTLCache(), settings)
+    return MarketDataService(provider, build_cache(settings), settings)

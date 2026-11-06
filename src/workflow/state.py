@@ -25,6 +25,8 @@ class FinnieState(TypedDict, total=False):
     message: str                                   # the user's message this turn (input)
     session_id: str                                # which conversation (input; also the checkpointer's thread id)
     portfolio_csv: str                             # the user's holdings (input; supplied once, remembered by the checkpointer)
+    portfolio_id: str                              # the saved portfolio the person picked in the UI (input; remembered by the checkpointer)
+    owner_id: str                                  # who is asking: set by the API from the login, never by the client (input; rewritten every turn)
     turn: int                                      # 1 for the first user message of the session, 2 for the second ...
     resolved_message: str                          # the message rewritten as a standalone question ("it" -> "VOO"); equals message when nothing needed resolving
     route: str                                     # set by the router: which node answers (an agent, clarify, or fallback)

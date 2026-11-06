@@ -16,26 +16,28 @@ from src.agents.portfolio_agent import PortfolioAnalysisAgent
 from src.agents.tax_agent import TaxEducationAgent
 from src.core.config import PROJECT_ROOT, load_settings
 from src.core.llm import LLMClient
-from src.data.factory import build_market_data_service
+from src.data.factory import build_cache, build_market_data_service
 from src.data.news import NewsService
 from src.rag.hybrid_retriever import HybridRetriever
+from src.agents.mortgage_chat import MortgagePayoffChat
 from src.workflow.graph import Agents, build_graph
 from src.workflow.router import Router
 
 
 def build_default_graph(checkpointer="memory", settings=None, llm=None, router_llm=None, retriever=None, market_service=None, news_service=None,
-                        router_prompt=None, router=None):
+                        router_prompt=None, router=None, repository_getter=None):
     """checkpointer: "memory" (default, an in-process InMemorySaver), None (no memory), or any LangGraph checkpointer.
     `router` replaces the router entirely (used to simulate a world without the scope gate)."""
     settings = settings or load_settings()
     llm = llm or LLMClient(settings)
     retriever = retriever or HybridRetriever(settings=settings)
     market_service = market_service or build_market_data_service(settings)
-    news_service = news_service or NewsService(settings.news)
+    news_service = news_service or NewsService(settings.news, build_cache(settings))
     metadata = json.loads((PROJECT_ROOT / "src" / "data" / "ticker_metadata.json").read_text())
     agents = Agents(finance_qa=FinanceQAAgent(llm, retriever), market=MarketAnalysisAgent(llm, MarketTools(market_service)),
                     portfolio=PortfolioAnalysisAgent(llm, market_service, metadata), goal=GoalPlanningAgent(llm, settings.goal_planning),
-                    news=NewsAgent(llm, news_service, defense="full", settings=settings), tax=TaxEducationAgent(llm, retriever))
+                    news=NewsAgent(llm, news_service, defense="full", settings=settings), tax=TaxEducationAgent(llm, retriever),
+                    mortgage=MortgagePayoffChat(repository_getter) if repository_getter else None)
     saver = InMemorySaver() if checkpointer == "memory" else checkpointer
     router = router or Router(router_llm or llm, **({"prompt_version": router_prompt} if router_prompt else {}))   # default: the Router's own default prompt
     embedder = getattr(getattr(retriever, "dense", None), "embedder", None)

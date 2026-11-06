@@ -75,8 +75,16 @@ class FakeApi:
                 "cost_usd": 0.004, "latency_s": 2.0,
                 "metrics": {"total_value_usd": 42094, "total_gain_pct": 43.1, "holding_count": 2, "diversification_score_out_of_100": {"score": 44.1, "built_from": "a heuristic"},
                             "asset_class_pct": {"US stock": 70.0, "Bond": 30.0}, "holdings": [{"ticker": "VTI", "weight_pct": 70.0}, {"ticker": "BND", "weight_pct": 30.0}],
-                            "notes": ["no price for ['XYZ']: left out"]},
+                            "notes": ["no price for ['XYZ']: left out"],
+                            **({"what_if_scenarios": [self.what_if(o, t) for o, t in (("Bond", "steadier, lower expected growth"), ("Cash", "stable, little growth"))]}
+                               if question and "grow" in question else {})},
                 "correlation": None if "nocorr" in csv_text else {"tickers": ["VTI", "BND"], "matrix": [[1.0, 0.2], [0.2, 1.0]]}}
+
+    @staticmethod
+    def what_if(option, trade_off):
+        return {"option": option, "from_sector": "Technology", "moved_pct_of_portfolio": 10.0, "trade_off": trade_off, "sector_pct": {"before": 50.0, "after": 40.0},
+                "option_asset_class_pct": {"before": 20.0, "after": 30.0}, "hhi_concentration_0_to_1": {"before": 0.5, "after": 0.42},
+                "effective_number_of_holdings": {"before": 2.0, "after": 2.4}, "diversification_score_out_of_100": {"before": 44.1, "after": 52.0}}
 
     def plan_goal(self, goal, years, current_savings, risk_profile):
         self.sent.append(("plan", goal, years, current_savings, risk_profile))
@@ -122,6 +130,22 @@ class FakeApi:
         self.sent.append(("analyze_saved", portfolio_id))
         return self.analyze_portfolio("ticker,shares,avg_cost\nVTI,1,1", None)
 
+    def get_portfolio(self, portfolio_id):
+        self.sent.append(("get", portfolio_id))
+        return {"id": portfolio_id, "name": "Retirement" if portfolio_id == self.saved_id else "Kids college", "created_at": "2026-11-01T10:00:00Z", "updated_at": "2026-11-01T10:00:00Z",
+                "holdings": [{"ticker": "VTI", "shares": "10", "avg_cost": "130.00", "asset_type": "etf", "purchase_date": "2026-01-05"},
+                             {"ticker": "CASH", "shares": "500", "avg_cost": "1", "asset_type": "cash", "purchase_date": None}],
+                "properties": [{"name": "Maple St", "property_type": "house", "purchase_price": "300000", "purchase_date": None, "current_value": "350000", "mortgage_balance": "200000",
+                                "monthly_rent": "2000", "monthly_expenses": "500", "monthly_mortgage_payment": "1500", "mortgage_rate_pct": "6.5"}]}
+
+    def update_portfolio(self, portfolio_id, name, holdings, properties=None):
+        self.sent.append(("update", portfolio_id, name, holdings, properties))
+
+    def mortgage_payoff(self, portfolio_id, extra=0):
+        self.sent.append(("payoff", portfolio_id, extra))
+        return {"portfolio": "x", "extra": extra, "properties": [{"name": "Maple St", "balance": 200000.0, "monthly_payment": 1500.0, "rate_pct": 6.5, "extra": extra, "status": "ok",
+                                                                   "regular": {"months": 221, "years": 18.4, "payoff_date": "2045-04-01", "total_interest": 100000.0}, "with_extra": None, "saved": None}]}
+
     def delete_portfolio(self, portfolio_id):
         self.sent.append(("delete", portfolio_id))
         self.deleted = self.deleted | {portfolio_id}
@@ -146,8 +170,9 @@ class FakeApi:
         return {"query": query, "answerable": True, "results": [{"doc_id": "etf-basics", "title": "ETF Basics", "section": "Costs", "source_name": "Investor.gov",
                                                                  "source_url": "https://investor.gov/x", "last_updated": "2026-10-30", "text": "An expense ratio is a yearly fee.", "similarity": 0.512}]}
 
-    def chat(self, message, session_id=None, portfolio_csv=None):
+    def chat(self, message, session_id=None, portfolio_csv=None, portfolio_id=None):
         self.chats.append((message, session_id, portfolio_csv))
+        self.chat_portfolio_ids = getattr(self, "chat_portfolio_ids", []) + [portfolio_id]
         return self.chat_reply(message, session_id, portfolio_csv)
 
 
@@ -354,6 +379,23 @@ def test_a_sample_portfolio_is_analyzed_and_drawn():
     assert any(m.label == "Diversification score" and m.value == "44 / 100" for m in at.metric)
     assert len(at.get("plotly_chart")) == 3 and any("mostly stocks" in m.value for m in at.markdown)
     assert at.session_state["portfolio_csv"].startswith("ticker,shares,avg_cost") and any("no price for" in i.value for i in at.info)
+
+
+def test_a_growth_question_shows_the_what_if_options_with_a_warning_and_a_table():
+    api = FakeApi()
+    choose_source(app_ := app(api), "Sample portfolio")
+    next(t for t in app_.text_input if t.label.startswith("Anything specific")).set_value("How can I grow this portfolio?")
+    next(b for b in app_.button if b.label == "Analyze").click()
+    at = app_.run()
+    assert not at.exception and len(at.get("plotly_chart")) == 4                                   # the three usual charts plus the before/after score
+    assert any("illustrations, not advice" in w.value for w in at.warning)
+    table = at.dataframe[0].value
+    assert list(table["Option"]) == ["Bond", "Cash"] and table["Score"][0] == "44 → 52" and table["Technology share (now → after)"][0] == "50.0% → 40.0%"
+
+
+def test_without_a_growth_question_there_is_no_what_if_section():
+    at = analyze(app(FakeApi()))
+    assert not any("illustrations, not advice" in w.value for w in at.warning) and not at.dataframe
 
 
 def test_the_same_portfolio_is_not_sent_twice_when_the_page_reruns():
@@ -863,30 +905,10 @@ def open_saved(api=None, **session):
     return at
 
 
-def test_a_saved_portfolio_is_shown_grouped_by_kind_with_totals_and_its_id():
-    api = FakeApi()
-    at = open_saved(api)
-    assert not at.exception and ("summary", ID) in api.sent                         # the first saved portfolio is selected for them
-    metrics = {m.label: m.value for m in at.metric if m.label in ("Total cost", "Current value", "Gain", "Holdings")}
-    assert metrics == {"Total cost": "$1,800.00", "Current value": "$2,500.00", "Gain": "+38.9%", "Holdings": "3"}
-    headers = [plain(e.label) for e in at.expander if not e.label.startswith("Have a portfolio id")]   # the group sections (the first expander on the page is the load-by-id box)
-    assert headers[0].startswith("ETFs (1): $2,000.00 · 80.0% of the total · gain +53.9%") and headers[1].startswith("Cash (1): $500.00 · 20.0% of the total")
-    assert any(c.value == ID for c in at.get("code")) and len(at.get("plotly_chart")) >= 1
 
 
-def test_the_group_tables_list_each_holding_with_cost_price_value_and_share():
-    at = open_saved()
-    tables = [d.value for d in at.dataframe if "Symbol" in d.value.columns and "Value" in d.value.columns]
-    assert [t["Symbol"].tolist() for t in tables] == [["VTI"], ["CASH"]]
-    assert tables[0].iloc[0].to_dict()["Paid"] == 1300.0 and tables[0].iloc[0].to_dict()["Value"] == 2000.0
 
 
-def test_holdings_without_a_price_are_listed_and_explained():
-    api = FakeApi()
-    base = api.portfolio_summary
-    api.portfolio_summary = lambda pid: {**base(pid), "unpriced": ["XYZ"]}
-    at = open_saved(api)
-    assert any("No current price for: XYZ" in w.value for w in at.warning)
 
 
 def test_loading_by_id_asks_only_for_that_portfolio_and_a_bad_id_asks_nothing():
@@ -917,7 +939,7 @@ def test_the_summary_is_fetched_once_however_often_the_page_reruns():
     api = FakeApi()
     at = open_saved(api)
     at.run(); at.run()
-    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "summary"]) == 1
+    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "summary"]) == 2   # once per saved portfolio (the dashboard loads them all), never again on a rerun
 
 
 def test_one_users_cached_summary_is_never_served_to_another_user():
@@ -925,7 +947,7 @@ def test_one_users_cached_summary_is_never_served_to_another_user():
     at = open_saved(api)
     at.session_state["auth"] = {"token": "other", "email": "someone-else@example.com"}   # same server cache, different person
     at.run()
-    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "summary"]) == 2
+    assert len([s for s in api.sent if isinstance(s, tuple) and s[0] == "summary"]) == 4   # 2 portfolios x 2 people
 
 
 def test_use_in_chat_sends_the_holdings_without_cash():
@@ -942,6 +964,194 @@ def test_explain_this_portfolio_runs_the_analysis_only_when_asked():
     at.button(key="pf_explain").click()
     at.run()
     assert ("analyze_saved", ID) in api.sent and any("mostly stocks" in m.value for m in at.markdown)
+
+
+
+
+
+
+# ---- the dashboard: ONE editable stocks table and ONE editable real estate table for every portfolio, buttons under them
+from src.web_app.tabs import portfolio as pf   # noqa: E402
+
+OTHER = "aaaaaaaa-1111-4222-8333-444444444444"
+SAVED = [{"id": ID, "name": "Retirement"}, {"id": OTHER, "name": "Kids college"}]
+
+
+def dashboard_frames(api=None):
+    api = api or FakeApi()
+    api = with_real_estate(api)
+    stored = {p["id"]: api.get_portfolio(p["id"]) for p in SAVED}
+    summaries = {p["id"]: api.portfolio_summary(p["id"]) for p in SAVED}
+    labels = pf.portfolio_labels(SAVED)
+    return pf.stocks_frame(stored, summaries, labels), pf.estate_frame(stored, summaries, labels), labels
+
+
+def test_every_holding_of_every_portfolio_is_one_row_of_one_stocks_table_and_every_property_one_row_of_one_real_estate_table():
+    stocks, estate, _ = dashboard_frames()
+    assert stocks["Portfolio"].tolist() == ["Retirement", "Retirement", "Kids college", "Kids college"] and stocks["Symbol"].tolist() == ["VTI", "CASH", "VTI", "CASH"]
+    assert stocks.iloc[0]["Value"] == 2000.0 and stocks.iloc[0]["Shares"] == 10.0 and str(stocks.iloc[0]["Purchase date"].date()) == "2026-01-05"
+    assert estate["Portfolio"].tolist() == ["Retirement", "Kids college"] and estate["Property (name or address)"].tolist() == ["Maple St", "Maple St"]
+    row = estate.iloc[0].to_dict()
+    assert (row["Equity"], row["Net yield"], row["Monthly mortgage payment ($)"], row["Mortgage rate (%)"], row["Monthly rent ($)"]) == (200000.0, 5.1, 1500.0, 6.5, 2000.0)
+
+
+def test_two_portfolios_with_the_same_name_are_told_apart_in_the_portfolio_column():
+    labels = pf.portfolio_labels([{"id": ID, "name": "IRA"}, {"id": OTHER, "name": "IRA"}, {"id": "bbbbbbbb-1111-4222-8333-444444444444", "name": "Taxable"}])
+    assert list(labels.values()) == ["IRA (3f2b8c1e)", "IRA (aaaaaaaa)", "Taxable"]
+
+
+def test_the_tables_are_split_back_into_their_portfolios_and_a_row_with_no_portfolio_is_a_problem():
+    stocks, estate, labels = dashboard_frames()
+    ids = {label: pid for pid, label in labels.items()}
+    per, problems = pf.rows_by_portfolio(stocks, estate, ids)
+    assert not problems and [h["ticker"] for h in per[ID]["holdings"]] == ["VTI", "CASH"] and [p["name"] for p in per[OTHER]["properties"]] == ["Maple St"]
+    stocks.loc[1, "Portfolio"] = None
+    _, problems = pf.rows_by_portfolio(stocks, estate, ids)
+    assert problems == ["Row 2: choose which portfolio it belongs to."]
+
+
+def dashboard(api=None):
+    api = with_real_estate(api or FakeApi())
+    return api, open_saved(api)
+
+
+def open_editing(which, api=None):
+    """Press the Edit button under the table, as a person does; the table then accepts changes and Save appears."""
+    api, at = dashboard(api)
+    at.button(key=f"pf_edit_{which}").click()
+    at.run()
+    return api, at
+
+
+def press_save(at, which="stocks"):
+    at.button(key=f"pf_save_{which}").click()
+    return at.run()
+
+
+def updates(api):
+    return [x for x in api.sent if isinstance(x, tuple) and x[0] == "update"]
+
+
+def test_the_dashboard_shows_totals_for_everything_with_the_buttons_under_the_tables():
+    api, at = dashboard()
+    assert not at.exception and {m.label: m.value for m in at.metric if m.label in ("Portfolios", "Total value", "Mortgage owed", "Net worth")}["Portfolios"] == "2"
+    assert [m.label for m in at.metric].count("Mortgage owed") == 1
+    keys = [b.key for b in at.button]
+    assert keys.index("pf_edit_stocks") < keys.index("pf_edit_estate") < keys.index("pf_explain")    # an Edit button under each table, then the per-portfolio actions
+    assert not [k for k in keys if k and (k.startswith("pf_save_") or k.startswith("pf_cancel_"))]   # no Save or Cancel until Edit is pressed
+    assert not [e for e in at.expander if "ETFs" in e.label]                                          # the one-portfolio tables are gone
+
+
+def test_pressing_edit_opens_that_table_for_changes_and_only_then_shows_save_and_cancel():
+    api, at = dashboard()
+    at.button(key="pf_edit_stocks").click()
+    at.run()
+    keys = [b.key for b in at.button]
+    assert not at.exception and at.session_state["pf_editing_table"] == "stocks" and "pf_save_stocks" in keys and "pf_cancel_stocks" in keys
+    assert "pf_edit_stocks" not in keys and "pf_edit_estate" in keys and "pf_save_estate" not in keys    # the other table stays view-only
+
+
+def test_changing_a_cell_saves_only_the_portfolio_it_belongs_to():
+    api, at = open_editing("stocks")
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {0: {"Shares": 20.0}}, "added_rows": [], "deleted_rows": []}   # row 0 = VTI in Retirement
+    press_save(at)
+    (_, pid, name, holdings, properties), = updates(api)
+    assert pid == ID and name == "Retirement" and holdings[0]["ticker"] == "VTI" and holdings[0]["shares"] == "20.0"
+    assert properties[0]["name"] == "Maple St" and properties[0]["monthly_mortgage_payment"] == "1500.0"      # the portfolio's other table travels along unchanged
+    assert not at.exception and any("Retirement" in x.value for x in at.success)
+
+
+def test_changing_a_property_on_the_real_estate_table_saves_it():
+    api, at = open_editing("estate")
+    at.session_state["dash_estate_edit_0_0"] = {"edited_rows": {1: {"Monthly rent ($)": 2500.0, "Current value ($)": 360000.0}}, "added_rows": [], "deleted_rows": []}   # row 1 = Kids college
+    press_save(at, "estate")
+    (_, pid, _, _, properties), = updates(api)
+    assert pid == OTHER and properties[0]["monthly_rent"] == "2500.0" and properties[0]["current_value"] == "360000.0"
+
+
+def test_a_row_added_with_a_portfolio_chosen_is_saved_into_that_portfolio():
+    api, at = open_editing("stocks")
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {}, "added_rows": [{"Portfolio": "Kids college", "Symbol": "bnd", "Type": "Bond", "Shares": 5.0, "Avg cost per share ($)": 74.5}], "deleted_rows": []}
+    press_save(at)
+    (_, pid, _, holdings, _), = updates(api)
+    assert pid == OTHER and [h["ticker"] for h in holdings] == ["VTI", "CASH", "bnd"]
+
+
+def test_deleting_a_row_removes_it_from_its_portfolio():
+    api, at = open_editing("stocks")
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {}, "added_rows": [], "deleted_rows": [1]}   # CASH in Retirement
+    press_save(at)
+    (_, pid, _, holdings, _), = updates(api)
+    assert pid == ID and [h["ticker"] for h in holdings] == ["VTI"]
+
+
+def test_saving_without_changes_sends_nothing():
+    api, at = open_editing("stocks")
+    press_save(at)
+    assert not updates(api) and any("Nothing to save" in i.value for i in at.info)
+
+
+def test_emptying_a_portfolio_is_refused_and_nothing_is_sent_for_any_portfolio():
+    api = FakeApi()
+    stored = api.get_portfolio
+    api.get_portfolio = lambda pid: {**stored(pid), "properties": []}      # portfolios that hold only stocks
+    api, at = open_editing("stocks", api)
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {0: {"Shares": 99.0}}, "added_rows": [], "deleted_rows": [2, 3]}   # all of Kids college's stocks
+    press_save(at)
+    assert not updates(api) and any("Kids college" in w.value and "nothing left" in w.value for w in at.warning)
+
+
+def test_a_row_with_no_portfolio_is_named_and_nothing_is_sent():
+    api, at = open_editing("stocks")
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {}, "added_rows": [{"Symbol": "VXUS", "Type": "ETF", "Shares": 3.0, "Avg cost per share ($)": 60.0}], "deleted_rows": []}
+    press_save(at)
+    assert not updates(api) and any("Row 5: choose which portfolio" in w.value for w in at.warning)
+
+
+def test_a_bad_value_is_named_by_its_row_and_nothing_is_sent():
+    api, at = open_editing("stocks")
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {2: {"Shares": -1.0}}, "added_rows": [], "deleted_rows": []}
+    press_save(at)
+    assert not updates(api) and any("Row 3: shares must be a number greater than 0" in w.value for w in at.warning)
+
+
+def test_cancel_throws_the_edits_away_and_closes_the_table():
+    api, at = open_editing("stocks")
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {0: {"Shares": 20.0}}, "added_rows": [], "deleted_rows": []}
+    at.button(key="pf_cancel_stocks").click()
+    at.run()
+    assert not updates(api) and at.session_state["pf_edit_version"] == 1 and at.session_state["pf_editing_table"] is None and "pf_edit_stocks" in [b.key for b in at.button]
+
+
+def test_after_saving_the_table_is_view_only_again():
+    api, at = open_editing("stocks")
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {0: {"Shares": 20.0}}, "added_rows": [], "deleted_rows": []}
+    press_save(at)
+    keys = [b.key for b in at.button]
+    assert at.session_state["pf_editing_table"] is None and "pf_edit_stocks" in keys and "pf_save_stocks" not in keys
+
+
+def test_a_server_refusal_names_the_portfolio_and_the_visible_row():
+    api, at = open_editing("stocks")
+
+    def refuse(portfolio_id, name, holdings, properties=None):
+        raise ApiError("bad", 422, "invalid_portfolio", details=[{"field": "holdings.0.shares", "problem": "Value error, shares must be greater than 0"}])
+    api.update_portfolio = refuse
+    at.session_state["dash_stocks_edit_0_0"] = {"edited_rows": {2: {"Shares": 7.0}}, "added_rows": [], "deleted_rows": []}   # Kids college's VTI is visible row 3
+    press_save(at)
+    assert any("Kids college" in e.value for e in at.error) and any("Row 3, shares" in c.value for c in at.caption)
+
+
+def test_the_mortgage_payoff_calculator_lists_the_mortgages_of_every_portfolio_and_works_out_each():
+    api, at = dashboard()
+    at.button(key="pf_payoff_open").click()
+    at.run()
+    assert not at.exception and any("2 mortgage(s) across your saved portfolios" in c.value for c in at.caption)
+    assert len([n for n in at.number_input if n.label == "Monthly payment ($)"]) == 2                           # one row per mortgage, from both portfolios
+    at.button(key="pf_payoff_go").click()
+    at.run()
+    assert {x[1] for x in api.sent if isinstance(x, tuple) and x[0] == "payoff"} == {ID, OTHER}
+    assert any("Maple St (Retirement)" in m.value for m in at.markdown) and any("Maple St (Kids college)" in m.value for m in at.markdown)
 
 
 def test_deleting_asks_the_server_and_then_shows_the_next_portfolio_not_the_deleted_one():
@@ -986,9 +1196,10 @@ def test_a_property_is_sent_with_exact_numbers_and_sensible_defaults():
     api = FakeApi()
     at = save(fill_properties(fill_table(app(api), [VTI]), [MAPLE_ROW, {PNAME: "Lot 7", PPRICE: 50000.0, PVALUE: 65000.0}]))
     assert api.saved_properties == [
-        {"name": "Maple St", "property_type": "house", "purchase_price": "300000.0", "current_value": "400000.0", "mortgage_balance": "200000.0", "monthly_rent": "2500.0",
-         "monthly_expenses": "800.0", "purchase_date": "2019-06-01"},
-        {"name": "Lot 7", "property_type": "house", "purchase_price": "50000.0", "current_value": "65000.0", "mortgage_balance": "0.0", "monthly_rent": "0.0", "monthly_expenses": "0.0"}]
+        {"name": "Maple St", "property_type": "house", "purchase_price": "300000.0", "current_value": "400000.0", "mortgage_balance": "200000.0", "monthly_mortgage_payment": "0.0",
+         "mortgage_rate_pct": "0.0", "monthly_rent": "2500.0", "monthly_expenses": "800.0", "purchase_date": "2019-06-01"},
+        {"name": "Lot 7", "property_type": "house", "purchase_price": "50000.0", "current_value": "65000.0", "mortgage_balance": "0.0", "monthly_mortgage_payment": "0.0",
+             "mortgage_rate_pct": "0.0", "monthly_rent": "0.0", "monthly_expenses": "0.0"}]
     assert not at.exception and at.radio(key="portfolio_mode").value == "My saved portfolios"
 
 
@@ -1027,7 +1238,7 @@ def test_rows_to_properties_pure():
                           PVALUE: [400000.5, float("nan")], PMORT: [float("nan"), float("nan")], PRENT: [2500.0, float("nan")], PCOSTS: [float("nan"), float("nan")]})
     props, rows, problems = rows_to_properties(table)
     assert problems == [] and rows == [1] and props == [{"name": "Maple St", "property_type": "condo", "purchase_price": "300000.0", "current_value": "400000.5",
-                                                          "mortgage_balance": "0.0", "monthly_rent": "2500.0", "monthly_expenses": "0.0", "purchase_date": "2019-06-01"}]
+                                                          "mortgage_balance": "0.0", "monthly_mortgage_payment": "0.0", "mortgage_rate_pct": "0.0", "monthly_rent": "2500.0", "monthly_expenses": "0.0", "purchase_date": "2019-06-01"}]
 
 
 # ---- the grouped view with real estate
@@ -1052,25 +1263,13 @@ def with_real_estate(api):
     return api
 
 
-def test_the_grouped_view_adds_mortgage_net_value_rent_and_yield_when_there_is_real_estate():
-    at = open_saved(with_real_estate(FakeApi()))
-    metrics = {m.label: m.value for m in at.metric}
-    assert metrics["Mortgage owed"] == "$200,000.00" and metrics["Net value"] == "$202,500.00" and metrics["Rent per year"] == "$30,000.00" and metrics["Net yield"] == "5.1%"
-    headers = [plain(e.label) for e in at.expander if not e.label.startswith("Have a portfolio id")]
-    assert headers[0].startswith("Real estate (1): $400,000.00 · 99.4% of the total · gain +33.3%")
 
 
-def test_the_property_table_shows_equity_income_and_yields():
-    at = open_saved(with_real_estate(FakeApi()))
-    table = next(d.value for d in at.dataframe if "Property" in d.value.columns)
-    row = table.iloc[0].to_dict()
-    assert (row["Property"], row["Kind"], row["Equity"], row["Net income / yr"], row["Gross yield"], row["Net yield"], row["Loan-to-value"]) == ("Maple St", "House", 200000.0, 20400.0, 7.5, 5.1, 50.0)
-    assert any("Values are your own estimates" in c.value for c in at.caption)
 
 
 def test_a_portfolio_without_real_estate_shows_no_mortgage_row():
     at = open_saved(FakeApi())
-    assert "Mortgage owed" not in {m.label for m in at.metric} and not [d for d in at.dataframe if "Property" in d.value.columns]
+    assert [m.label for m in at.metric].count("Mortgage owed") == 1 and not [d for d in at.dataframe if "Gross yield" in d.value.columns]   # only the dashboard's total, no per-portfolio row or table
 
 
 def test_explain_is_switched_off_for_a_portfolio_that_holds_only_real_estate():
@@ -1093,3 +1292,24 @@ def test_saved_portfolios_in_the_picker_mention_their_properties():
 
 def at_picker_labels(at):
     return list(at.selectbox(key="pf_pick").options)
+
+
+# ---------- chat box under the portfolio ----------
+def test_the_saved_portfolio_has_its_own_chat_that_sends_the_holdings_and_keeps_its_own_session():
+    api = FakeApi()
+    at = open_saved(api)
+    box = next(c for c in at.chat_input if c.key == "pf_chat_input")
+    box.set_value("What if the market is up tomorrow?").run()
+    next(c for c in at.chat_input if c.key == "pf_chat_input").set_value("And if I buy NVDA?").run()
+    assert [c[0] for c in api.chats] == ["What if the market is up tomorrow?", "And if I buy NVDA?"]
+    assert api.chats[0][1] is None and api.chats[1][1] == "sess-1"                      # second question continues the first one's conversation
+    assert "ticker,shares,avg_cost" in api.chats[0][2] and "VTI" in api.chats[0][2]     # the portfolio travels with the question; cash is left out
+    assert "CASH" not in api.chats[0][2] and not at.session_state["messages"]           # the Chat tab's own conversation is untouched
+    assert all(pid for pid in api.chat_portfolio_ids)                                   # the saved portfolio's id travels too, so mortgage questions can use it
+
+
+def test_the_analyze_view_has_a_chat_box_too():
+    api = FakeApi()
+    at = analyze(app(api))
+    next(c for c in at.chat_input if c.key == "pf_chat_input").set_value("How risky is this?").run()
+    assert len(api.chats) == 1 and api.chats[0][2] == at.session_state["portfolio_csv"]

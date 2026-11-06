@@ -4,8 +4,11 @@ What it adds on top of a raw SDK call:
   - a timeout (never wait forever)
   - retry with exponential backoff + jitter, for TRANSIENT errors only
   - one log line per call: model, latency, tokens, estimated cost
+  - cooperative cancellation: a caller that gives up on a piece of work (the graph's branch timeout) sets a cancel event, and no further model call or retry starts
 """
+import contextvars
 import json
+import threading
 from dataclasses import dataclass, field
 
 import openai
@@ -32,6 +35,20 @@ TRANSIENT_ERRORS = (
     openai.APIConnectionError,
     openai.InternalServerError,  # 5xx
 )
+
+
+# The cancel event of the work running on this thread (set by `run_cancellable`). A thread cannot be killed, so abandoned work stops itself at its next model call.
+_cancel_event: contextvars.ContextVar[threading.Event | None] = contextvars.ContextVar("llm_cancel_event", default=None)
+
+
+class CallCancelled(Exception):
+    """The work this call belongs to was abandoned (timed out), so no new model call is started."""
+
+
+def run_cancellable(fn, cancel: threading.Event):
+    """Run `fn` with `cancel` visible to every LLMClient call made on this thread. Use it as the target of the thread that may be abandoned."""
+    _cancel_event.set(cancel)
+    return fn()
 
 
 @dataclass
@@ -142,8 +159,18 @@ class LLMClient:
             reraise=True,   # after the last attempt, raise the real error
         )
 
+        cancel = _cancel_event.get()
+
+        def attempt(**call_kwargs):
+            if cancel is not None and cancel.is_set():
+                raise CallCancelled("the work was abandoned before this model call started")   # not in TRANSIENT_ERRORS, so it is never retried
+            return self._client.chat.completions.create(**call_kwargs)
+
+        if cancel is not None:
+            retrying.sleep = lambda seconds: cancel.wait(seconds)   # a backoff wait ends the moment the work is abandoned; the next attempt then raises
+
         with timer() as timing:
-            response = retrying(self._client.chat.completions.create, **kwargs)
+            response = retrying(attempt, **kwargs)
 
         usage = response.usage
         result = LLMResult(

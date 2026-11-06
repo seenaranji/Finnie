@@ -36,11 +36,18 @@ def render_message(message: dict) -> None:
             st.caption(md(f"{meta['disclaimer']}  ·  {meta['latency_s']:.1f}s  ·  ${meta['cost_usd']:.4f}"))
 
 
+def saved_portfolio_kwargs(portfolio_id: str | None) -> dict:
+    """Send the saved portfolio's id only when one was picked (so mortgage questions can use it)."""
+    return {"portfolio_id": portfolio_id} if portfolio_id else {}
+
+
 def toolbar() -> None:
     """A thin row above the conversation: what the chat is using, and a way to start over."""
     left, right = st.columns([4, 1.4], vertical_alignment="center")
     with left:
-        if st.session_state.get("portfolio_csv"):
+        if st.session_state.get("portfolio_id"):
+            st.caption(":material/check_circle: Answers about 'my portfolio' and 'my mortgage' use the saved portfolio you picked.")
+        elif st.session_state.get("portfolio_csv"):
             st.caption(":material/check_circle: Answers about 'my portfolio' use the portfolio you loaded.")
         elif st.session_state.get("session_id"):
             st.caption(f"Conversation `{st.session_state.session_id}`")
@@ -77,7 +84,7 @@ def render(client: FinnieClient) -> None:
     with st.chat_message("assistant", avatar=AVATARS["assistant"]):
         try:
             with st.spinner("Thinking…"):
-                reply = client.chat(prompt, st.session_state.session_id, st.session_state.get("portfolio_csv"))
+                reply = client.chat(prompt, st.session_state.session_id, st.session_state.get("portfolio_csv"), **saved_portfolio_kwargs(st.session_state.get("portfolio_id")))
         except ApiError as error:
             st.session_state.messages.append({"role": "assistant", "error": error})
             st.rerun()

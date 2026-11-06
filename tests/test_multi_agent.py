@@ -332,3 +332,35 @@ def test_a_plan_with_an_invented_dependency_runs_its_independent_tasks_in_parall
     start = time.perf_counter()
     state = ask(graph)
     assert time.perf_counter() - start < 0.9 and state["plan"]["dropped_dependencies"] == ["news after market"]
+
+
+def test_a_timed_out_branch_starts_no_further_model_calls():
+    import threading
+    from types import SimpleNamespace
+    from src.core.llm import CallCancelled, LLMClient
+
+    started, outcome = [], {}
+
+    def create(**kwargs):
+        started.append(1)
+        return SimpleNamespace(model="m", usage=SimpleNamespace(prompt_tokens=1, completion_tokens=1), choices=[SimpleNamespace(message=SimpleNamespace(content="x", tool_calls=None))])
+
+    client = object.__new__(LLMClient)   # skip __init__ (no API key needed): only the pieces _complete uses
+    client.settings = SimpleNamespace(llm=SimpleNamespace(answer_model="m", max_retries=0, prices_per_million_tokens={"answer_model": SimpleNamespace(input=0, output=0)}))
+    client._client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+    released = threading.Event()
+
+    def branch():   # an agent's tool loop: one model call, a slow tool, then a second model call
+        client.chat("first")
+        released.wait(2)
+        try:
+            client.chat("second")
+        except CallCancelled as error:
+            outcome["error"] = error
+
+    assert run_with_timeout(branch, 0.05) == ("timeout", None)
+    released.set()
+    deadline = time.time() + 2
+    while "error" not in outcome and time.time() < deadline:
+        time.sleep(0.01)
+    assert isinstance(outcome.get("error"), CallCancelled) and len(started) == 1

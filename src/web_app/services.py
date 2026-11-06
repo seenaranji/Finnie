@@ -28,7 +28,8 @@ class Services:
         with self._lock:
             if self._news is None:
                 from src.data.news import NewsService
-                self._news = NewsService(self.settings.news)
+                from src.data.factory import build_cache
+                self._news = NewsService(self.settings.news, build_cache(self.settings))
             return self._news
 
     @property
@@ -70,7 +71,8 @@ class Services:
         with self._lock:
             if self._graph is None:
                 from src.workflow.factory import build_default_graph
-                self._graph = build_default_graph(settings=self.settings, llm=self._llm, retriever=self._retriever, market_service=self._market, news_service=self._news)
+                self._graph = build_default_graph(settings=self.settings, llm=self._llm, retriever=self._retriever, market_service=self._market, news_service=self._news,
+                                                  repository_getter=lambda: self.portfolios)
             return self._graph
 
     @property

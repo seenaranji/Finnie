@@ -23,6 +23,22 @@ services:
       timeout: 3s
       retries: 10
 
+  # Shared cache for PUBLIC market data and news only. Password required, no host port, no disk persistence (nothing to retain or erase),
+  # memory-capped with LRU eviction. Turn it on with cache.backend: redis in config.yaml and REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0 in .env.
+  redis:
+    profiles: ["cache"]   # off by default: start with `docker compose --profile cache up -d`
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}", "--save", "", "--appendonly", "no",
+              "--maxmemory", "128mb", "--maxmemory-policy", "allkeys-lru"]
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$$REDIS_PASSWORD\" ping | grep PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+
   # One-off job: bring the schema up to date, then exit. api and ui wait for it to finish successfully.
   migrate:
     build: .

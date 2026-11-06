@@ -63,6 +63,10 @@ class FinnieClient:
     def save_portfolio(self, name: str, holdings: list[dict], properties: list[dict] | None = None) -> dict:
         return self._call("POST", "/portfolios", json={"name": name, "holdings": holdings, **({"properties": properties} if properties else {})})
 
+    def update_portfolio(self, portfolio_id: str, name: str, holdings: list[dict], properties: list[dict] | None = None) -> None:
+        """Replace a saved portfolio's name, holdings and properties (an empty properties list removes them all)."""
+        self._call("PUT", f"/portfolios/{portfolio_id_or_error(portfolio_id)}", json={"name": name, "holdings": holdings, "properties": properties or []})
+
     def list_portfolios(self) -> list[dict]:
         return self._call("GET", "/portfolios")
 
@@ -72,11 +76,21 @@ class FinnieClient:
     def analyze_saved_portfolio(self, portfolio_id: str, question: str | None = None) -> dict:
         return self._call("GET", f"/portfolios/{portfolio_id_or_error(portfolio_id)}/analysis", params={"question": question} if question else None)
 
+    def get_portfolio(self, portfolio_id: str) -> dict:
+        return self._call("GET", f"/portfolios/{portfolio_id_or_error(portfolio_id)}")
+
+    def mortgage_payoff(self, portfolio_id: str, extra: float = 0) -> dict:
+        return self._call("GET", f"/portfolios/{portfolio_id_or_error(portfolio_id)}/mortgage-payoff", params={"extra": repr(float(extra))})
+
+    def set_mortgage_terms(self, portfolio_id: str, property_name: str, monthly_payment: float, rate_pct: float) -> None:
+        self._call("PUT", f"/portfolios/{portfolio_id_or_error(portfolio_id)}/mortgage-terms",
+                   json={"property": property_name, "monthly_payment": repr(float(monthly_payment)), "rate_pct": repr(float(rate_pct))})
+
     def delete_portfolio(self, portfolio_id: str) -> None:
         self._call("DELETE", f"/portfolios/{portfolio_id_or_error(portfolio_id)}")
 
-    def chat(self, message: str, session_id: str | None = None, portfolio_csv: str | None = None) -> dict:
-        body = {"message": message, **({"session_id": session_id} if session_id else {}), **({"portfolio_csv": portfolio_csv} if portfolio_csv else {})}
+    def chat(self, message: str, session_id: str | None = None, portfolio_csv: str | None = None, portfolio_id: str | None = None) -> dict:
+        body = {"message": message, **({"portfolio_id": portfolio_id} if portfolio_id else {}), **({"session_id": session_id} if session_id else {}), **({"portfolio_csv": portfolio_csv} if portfolio_csv else {})}
         return self._call("POST", "/chat", json=body)
 
     def quote(self, ticker: str) -> dict:

@@ -2,39 +2,39 @@
 # Every value below is a starting default; later steps tune them with data.
 
 app:
-  log_level: INFO            # DEBUG | INFO | WARNING | ERROR
+  log_level: INFO # DEBUG | INFO | WARNING | ERROR
 
 llm:
   # Verified 2026-10-29: prices from OpenAI's pricing page; models checked against what
   # THIS API key can actually use (client.models.list()). gpt-6* exist but are not enabled
   # for this project (403).
-  answer_model: gpt-4o       # non-reasoning, so it accepts temperature
-  router_model: gpt-4o-mini  # cheapest accessible: the router only classifies
+  answer_model: gpt-4o # non-reasoning, so it accepts temperature
+  router_model: gpt-4o-mini # cheapest accessible: the router only classifies
   timeout_seconds: 30
   max_retries: 3
   # Dollars per 1 million tokens (standard). Re-check before trusting cost numbers.
   prices_per_million_tokens:
-    answer_model:    {input: 2.50, output: 10.00}
-    router_model:    {input: 0.15, output: 0.60}
-    embedding_model: {input: 0.02, output: 0.0}
+    answer_model: { input: 2.50, output: 10.00 }
+    router_model: { input: 0.15, output: 0.60 }
+    embedding_model: { input: 0.02, output: 0.0 }
 
 rag:
   embedding_model: text-embedding-3-small
-  chunk_size: 500            # characters; a guess, compared with 200/1000 in Step 8
+  chunk_size: 500 # characters; a guess, compared with 200/1000 in Step 8
   chunk_overlap: 50
   top_k: 5
-  similarity_threshold: 0.465  # midpoint of the gap between answerable (min 0.482) and unanswerable (max 0.448) scores, Step 7
-  vector_store: pgvector     # PostgreSQL + pgvector (Chroma was removed after Step 23b). The keyword search is PostgreSQL full-text
-  candidate_k: 20            # fetch this many, then threshold -> dedupe -> (rerank) -> keep top_k
-  embedding_prefetch: true   # embed the user's message while the router is still deciding (Step 25)
-  embedding_cache_size: 256  # question embeddings remembered (same question again = no embedding call); 0 = none
-  rerank: false              # LLM re-ordering of candidates; off until Step 8 measures it
-  dedupe_overlap: 0.8        # drop a chunk if 80% of its words already appear in a better-ranked chunk
+  similarity_threshold: 0.465 # midpoint of the gap between answerable (min 0.482) and unanswerable (max 0.448) scores, Step 7
+  vector_store: pgvector # PostgreSQL + pgvector (Chroma was removed after Step 23b). The keyword search is PostgreSQL full-text
+  candidate_k: 20 # fetch this many, then threshold -> dedupe -> (rerank) -> keep top_k
+  embedding_prefetch: true # embed the user's message while the router is still deciding (Step 25)
+  embedding_cache_size: 256 # question embeddings remembered (same question again = no embedding call); 0 = none
+  rerank: true # LLM re-ordering of candidates; off until Step 8 measures it
+  dedupe_overlap: 0.8 # drop a chunk if 80% of its words already appear in a better-ranked chunk
   # Step 7c: hybrid search (spec calls these retrieval.*; kept under rag: next to the other retrieval settings)
-  retrieval_mode: dense      # dense | bm25 | hybrid. Stays dense until Step 8 measures hybrid
-  rrf_k: 60                  # RRF constant from the original paper; compared with 20/100 in Step 8
-  candidates_per_retriever: 20   # each retriever contributes its top 20 to the fusion
-  bm25_min_score:            # empty = BM25 cannot open the gate on its own; chosen with data below
+  retrieval_mode: hybrid # dense | bm25 | hybrid. Stays dense until Step 8 measures hybrid
+  rrf_k: 60 # RRF constant from the original paper; compared with 20/100 in Step 8
+  candidates_per_retriever: 20 # each retriever contributes its top 20 to the fusion
+  bm25_min_score: # empty = BM25 cannot open the gate on its own; chosen with data below
 
 # PostgreSQL + pgvector (Steps 6, 7c, 15b). The connection URL is the DATABASE_URL environment variable (.env), because it holds the password.
 database:
@@ -42,30 +42,35 @@ database:
   pool_max_size: 10
   pool_timeout_seconds: 10
   max_holdings_per_portfolio: 500
-  keyword_match: any          # any | all (see src/rag/pg_keyword_index.py)
+  keyword_match: any # any | all (see src/rag/pg_keyword_index.py)
 
 # Authentication (Step 27). The signing secret is the JWT_SECRET environment variable (.env), never this file.
 auth:
   token_minutes: 60
   min_password_length: 10
   max_password_length: 128
-  max_failed_logins: 5          # per email + client address
+  max_failed_logins: 5 # per email + client address
   lockout_minutes: 15
   max_registrations_per_hour: 10
 
 cache:
   quote_ttl_seconds: 60
-  history_ttl_seconds: 900   # 15 minutes
+  history_ttl_seconds: 900 # 15 minutes
+  # Banking rules: the shared Redis cache holds PUBLIC market data and news only (never portfolios, chats, user ids or LLM answers),
+  # stores JSON (no pickle), and expires every entry after ttl + stale_grace_seconds. Redis down = cache miss, never an error.
+  backend: memory # memory | redis (redis needs REDIS_URL in .env)
+  stale_grace_seconds: 3600 # redis only: a flagged-stale price may be served this long past its TTL when the provider is down
+  redis_socket_timeout_seconds: 0.5
 
 market_data:
   timeout_seconds: 10
-  max_attempts: 3            # 1 try + 2 retries, transient errors only
-  retry_base_seconds: 0.5    # doubles each retry, with jitter
-  provider_order: [yfinance, alpha_vantage]   # tried left to right
+  max_attempts: 3 # 1 try + 2 retries, transient errors only
+  retry_base_seconds: 0.5 # doubles each retry, with jitter
+  provider_order: [yfinance, alpha_vantage] # tried left to right
 
 alpha_vantage:
-  max_calls_per_day: 20      # free key allows 25; margin kept on purpose
-  min_interval_seconds: 1.1  # free key allows 1 request per second
+  max_calls_per_day: 20 # free key allows 25; margin kept on purpose
+  min_interval_seconds: 1.1 # free key allows 1 request per second
   usage_file: .alpha_usage.json
 
 # Goal planning (Step 16). ASSUMPTIONS, NOT FORECASTS. These numbers were chosen by the project author for illustration;
@@ -73,11 +78,11 @@ alpha_vantage:
 # A risk profile changes the assumed return range; it guarantees nothing. Percent per year, before inflation and fees.
 goal_planning:
   inflation_pct: 3.0
-  large_monthly_usd: 5000   # assumption: monthly savings above this are flagged as a large commitment (income is unknown to us)
+  large_monthly_usd: 5000 # assumption: monthly savings above this are flagged as a large commitment (income is unknown to us)
   risk_profiles:
-    low:      {conservative: 1.0, expected: 3.0, optimistic: 5.0}    # mostly cash and bonds
-    medium:   {conservative: 2.0, expected: 5.0, optimistic: 8.0}    # a mix of stocks and bonds
-    high:     {conservative: 0.0, expected: 7.0, optimistic: 11.0}   # mostly stocks
+    low: { conservative: 1.0, expected: 3.0, optimistic: 5.0 } # mostly cash and bonds
+    medium: { conservative: 2.0, expected: 5.0, optimistic: 8.0 } # a mix of stocks and bonds
+    high: { conservative: 0.0, expected: 7.0, optimistic: 11.0 } # mostly stocks
 
 # News (Step 19). TERMS OF USE: the Federal Reserve and SEC feeds are official government announcements. Yahoo Finance, MarketWatch (Dow Jones)
 # and CNBC are commercial publishers: Yahoo and Dow Jones declare "All rights reserved" in their feeds and I could not verify their RSS terms.
@@ -86,28 +91,37 @@ goal_planning:
 news:
   ttl_seconds: 900
   timeout_seconds: 10
-  max_items: 8                 # items shown to the model after dedupe
-  max_per_feed: 3              # at most this many from any one feed (market news only; a ticker has one feed)
-  max_age_days: 7              # older items are dropped
+  max_items: 8 # items shown to the model after dedupe
+  max_per_feed: 3 # at most this many from any one feed (market news only; a ticker has one feed)
+  max_age_days: 7 # older items are dropped
   max_title_chars: 200
   max_summary_chars: 500
   user_agent: "FinnieLearningProject/0.1 (educational)"
   ticker_feed_url: "https://feeds.finance.yahoo.com/rss/2.0/headline?s={symbol}&region=US&lang=en-US"
   market_feeds:
-    - {name: "CNBC Finance", url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664"}
-    - {name: "MarketWatch Top Stories", url: "https://feeds.content.dowjones.io/public/rss/mw_topstories"}
-    - {name: "Federal Reserve Press Releases", url: "https://www.federalreserve.gov/feeds/press_all.xml"}
+    - {
+        name: "CNBC Finance",
+        url: "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664",
+      }
+    - {
+        name: "MarketWatch Top Stories",
+        url: "https://feeds.content.dowjones.io/public/rss/mw_topstories",
+      }
+    - {
+        name: "Federal Reserve Press Releases",
+        url: "https://www.federalreserve.gov/feeds/press_all.xml",
+      }
 
 # Workflow (Steps 20-21): fixed replies, so they cost nothing, never vary and cannot hallucinate.
 workflow:
-  history_turns_for_rewrite: 3     # how many recent exchanges the "it/that" resolver may read
+  history_turns_for_rewrite: 3 # how many recent exchanges the "it/that" resolver may read
   clarify_reply: "I want to make sure I help with the right thing. Are you asking about a concept (like ETFs or bonds), a stock or fund price, your own portfolio, a savings goal, the news, or taxes? Tell me a little more and I'll take it from there."
   fallback_reply: "Sorry, something went wrong on my side and I couldn't finish that. Please try again in a moment."
   scope_reply: "I can only help with finance and investing topics. Try asking about ETFs, saving for a goal, or how a stock is doing."
-  scope_log_path: logs/out_of_scope.jsonl   # every out-of-scope decision is appended here, so wrongly blocked questions can be reviewed
+  scope_log_path: logs/out_of_scope.jsonl # every out-of-scope decision is appended here, so wrongly blocked questions can be reviewed
   needs_portfolio_reply: "To analyze your portfolio I need your holdings. Please upload or paste them as a CSV with the columns ticker, shares and avg_cost."
   # Step 21b: several agents for one message
-  execution: parallel               # parallel | sequential (sequential exists to measure the speedup)
-  max_tasks: 4                      # the most sub-tasks a plan may have
-  max_concurrency: 4                # at most this many branches at once (respect API rate limits)
-  branch_timeout_seconds: 25        # per sub-task; a branch that takes longer is abandoned and reported as missing
+  execution: parallel # parallel | sequential (sequential exists to measure the speedup)
+  max_tasks: 4 # the most sub-tasks a plan may have
+  max_concurrency: 4 # at most this many branches at once (respect API rate limits)
+  branch_timeout_seconds: 25 # per sub-task; a branch that takes longer is abandoned and reported as missing
